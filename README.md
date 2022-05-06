@@ -1,2 +1,4 @@
 # Easy14_Programing_language
-this will be my actually good programming language..
+Finally a nice language for beginners
+Basically a mashup of Python + C#
+So yea, i will update with more info soon
