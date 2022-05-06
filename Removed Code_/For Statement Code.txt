@@ -1,0 +1,151 @@
+else if (line.StartsWith($"for") && line.EndsWith("{"))
+                {
+                    string[] _lines_ = lines;
+                    int end_line_IDX = 0;
+                    int line_counterr = 1;
+                    List<string> while_lines_list = new List<string>(_lines_);
+                    foreach (string line__ in _lines_)
+                    {
+                        if (line__ == line)
+                        {
+                            while_lines_list.RemoveRange(0, line_counterr - 1);
+                            break;
+                        }
+                        line_counterr++;
+                    }
+                    line_counterr = 0;
+                    List<string> understuff = new List<string>(while_lines_list);
+                    foreach (string line__ in while_lines_list)
+                    {
+                        line_counterr++;
+                        if (line__ == "}")
+                        {
+                            end_line_IDX = line_counterr;
+                            if (while_lines_list.Count != end_line_IDX)
+                            {
+                                try
+                                {
+                                    while_lines_list.RemoveRange(end_line_IDX, while_lines_list.Count - end_line_IDX);
+                                    understuff.RemoveRange(0, end_line_IDX);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e);
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    string[] arr = while_lines_list.ToArray();
+                    //Console.WriteLine(String.Join("\n", arr));
+                    //Console.WriteLine(String.Join("\n", while_lines_list.GetRange(1, end_line_IDX - 2).ToArray()));
+                    string if_Line = while_lines_list[0];
+                    if_Line = if_Line.Substring(5);
+                    if_Line = if_Line.Substring(1, if_Line.Length - 2);
+                    //Console.WriteLine(if_Line + "   this the condition");
+                    string[] parts = if_Line.Split(";");
+                    string part1 = null;
+                    string part2 = null;
+                    string part3 = null;
+                    try
+                    {
+                        part1 = parts[0]; //i hate how arrays start with 0's
+                        part2 = parts[1];
+                        part3 = parts[2];
+                    }
+                    catch (Exception e)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nERROR; For loop doesnt contain all the conditions");
+                        Console.WriteLine("Extra Info is below;\n\n" + e);
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    string obj1 = null;
+                    bool obj1_variable = false;
+                    if (part2.Contains("=="))
+                        obj1 = part2.Substring(0, part2.IndexOf("==") - 0);
+                    if (if_Line.Contains("!="))
+                        obj1 = part2.Substring(0, part2.IndexOf("!=") - 0);
+
+                    if (if_Line.Contains("=="))
+                    {
+                        string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                        foreach (string ffile in Directory.GetFiles(dir))
+                        {
+                            if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj1)
+                            {
+                                obj1_variable = true;
+                            }
+                        }
+                        foreach (string ffile in Directory.GetFiles(dir))
+                        {
+                            if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj2)
+                            {
+                                obj2_variable = true;
+                            }
+                        }
+
+                        List<string> someLINEs = null;
+                        if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
+                        else if (textArray != null && fileloc == null) someLINEs = new List<string>(textArray);
+                        int lin_count = 1;
+                        foreach (string x in someLINEs)
+                        {
+                            lin_count++;
+                            if (!x.StartsWith("using") && x != "" && x != null)
+                            {
+                                break;
+                            }
+                        }
+
+                        lin_count = lin_count - 2;
+
+                        if (obj1_variable == true && obj2_variable == false)
+                        {
+                            while (File.ReadAllText(dir + @$"\{obj1}.txt") == obj2)
+                            {
+                                List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                                usings_code.AddRange(e_code);
+                                e_code = usings_code;
+                                compileCode(null, e_code.ToArray());
+                            }
+                        }
+                        else if (obj1_variable == false && obj2_variable == true)
+                        {
+                            while (obj1 == File.ReadAllText(dir + @$"\{obj2}.txt"))
+                            {
+                                List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                                usings_code.AddRange(e_code);
+                                e_code = usings_code;
+                                compileCode(null, e_code.ToArray());
+                            }
+                        }
+                        else if (obj1_variable == true && obj2_variable == true)
+                        {
+                            while (File.ReadAllText(dir + @$"\{obj1}.txt") == File.ReadAllText(dir + @$"\{obj2}.txt"))
+                            {
+                                List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                                usings_code.AddRange(e_code);
+                                e_code = usings_code;
+                                compileCode(null, e_code.ToArray());
+                            }
+                        }
+                        else if (obj1_variable == false && obj2_variable == false)
+                        {
+                            while (obj1 == obj2)
+                            {
+                                List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                                usings_code.AddRange(e_code);
+                                e_code = usings_code;
+                                compileCode(null, e_code.ToArray());
+                            }
+                        }
+                        understuff.RemoveRange(0, end_line_IDX - 1);
+                        compileCode(null, understuff.ToArray());
+                        break;
+                    }
+                }

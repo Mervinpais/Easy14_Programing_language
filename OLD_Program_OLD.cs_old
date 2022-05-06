@@ -1,0 +1,1661 @@
+﻿/*===========================================
+
+    
+░█▀▀█ ░█▀▀█ ░█▀▀▀█ 　 ░█──░█ ░█─░█ ─█▀▀█ ▀▀█▀▀ 　 ─█▀▀█ ░█▀▀█ ░█▀▀▀ 　 ░█──░█ ░█▀▀▀█ ░█─░█ 　 ░█▀▀▄ ░█▀▀▀█ ▀█▀ ░█▄─░█ ░█▀▀█ 
+░█▀▀▄ ░█▄▄▀ ░█──░█ 　 ░█░█░█ ░█▀▀█ ░█▄▄█ ─░█── 　 ░█▄▄█ ░█▄▄▀ ░█▀▀▀ 　 ░█▄▄▄█ ░█──░█ ░█─░█ 　 ░█─░█ ░█──░█ ░█─ ░█░█░█ ░█─▄▄ 
+░█▄▄█ ░█─░█ ░█▄▄▄█ 　 ░█▄▀▄█ ░█─░█ ░█─░█ ─░█── 　 ░█─░█ ░█─░█ ░█▄▄▄ 　 ──░█── ░█▄▄▄█ ─▀▄▄▀ 　 ░█▄▄▀ ░█▄▄▄█ ▄█▄ ░█──▀█ ░█▄▄█
+
+
+𝙐𝙣𝙡𝙚𝙨𝙨 𝙮𝙤𝙪 𝙟𝙪𝙨𝙩 𝙬𝙖𝙣𝙩 𝙩𝙤 𝙡𝙤𝙤𝙠 𝙖𝙧𝙤𝙪𝙣𝙙, 𝙙𝙤𝙣𝙩 𝙧𝙚𝙥𝙡𝙖𝙘𝙚 𝙩𝙝𝙞𝙨 𝙛𝙞𝙡𝙚 𝙬𝙞𝙩𝙝 ❞𝙋𝙧𝙤𝙜𝙧𝙖𝙢.𝙘𝙨❞ 𝙗𝙚𝙘𝙖𝙪𝙨𝙚 𝙩𝙝𝙞𝙨 𝙞𝙨 𝙩𝙝𝙚 𝙤𝙡𝙙 𝙫𝙚𝙧𝙨𝙞𝙤𝙣 𝙤𝙛 𝙩𝙝𝙚 𝙛𝙞𝙡𝙚
+𝙇𝙖𝙨𝙩 𝙢𝙤𝙙𝙞𝙛𝙞𝙚𝙙 𝙖𝙩 11𝙋𝙈 𝙤𝙣 3𝙧𝙙 𝙤𝙛 𝙈𝙖𝙮 2022
+
+जब तक आप केवल चारों ओर देखना न चाहें, इस फ़ाइल को "Program.cs" से न बदलें क्योंकि यह फ़ाइल का पुराना संस्करण है
+अंतिम बार 3 मई 2022 को रात 11 बजे संशोधित किया गया
+
+لا تستبدل هذا الملف بـ "Program.cs" ، إلا إذا كنت تريد إلقاء نظرة حولك فقط ، لأن هذا هو الإصدار القديم من الملف
+تم إجراء آخر تعديل في الساعة 11 مساءً في 3 مايو 2022
+
+*/
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.NetworkInformation;
+using System.Threading;
+using System.Net;
+using System.Linq;
+using System.Management;
+
+//C:\Users\mervi\source\repos\Easy14 Coding Language\Easy14 Coding Language\bin\Debug\net5.0\Easy14 Coding Language.exe -run C:\Users\mervi\Desktop\EASY14 TEST FILES\testcode.ese14
+namespace Easy14_Coding_Language
+{
+    class Program
+    {
+        public static char quotes = '"';
+
+        public static bool showCommands = false;
+        public static bool previewTheFile = false;
+
+        static void Main(string[] args)
+        {
+            if (args.Length != 0)
+            {
+                foreach (string item in args)
+                {
+                    Console.Write(item + " ");
+                }
+            }
+            Console.WriteLine("\n====Easy14====\n");
+            Thread.Sleep(100);
+            if (args.Length != 0)
+            {
+                if (args[0] == "-run")
+                {
+                    int item_count = 1;
+                    string[] filePath = null;
+                    foreach (var item in args)
+                    {
+                        if (item.EndsWith(".ese14"))
+                        {
+                            filePath = args[1..item_count];
+                        }
+                        item_count = item_count + 1;
+                    }
+
+                    if (filePath == null)
+                    {
+                        Console.WriteLine("\n ERROR; CAN NOT FIND FILE SPECIFIED \n");
+                    }
+
+                    if (filePath[filePath.Length - 1].EndsWith(".ese14"))
+                    {
+                        if (args.Length > 2)
+                        {
+                            if (args[filePath.Length] == "-show_cmds")
+                            {
+                                showCommands = true;
+                            }
+                            else if (args[filePath.Length] == "-preview_only")
+                            {
+                                previewTheFile = true;
+                            }
+                        }
+                        if (!previewTheFile) { compileCode(String.Join(" ", filePath)); }
+                        else
+                        {
+                            try
+                            {
+                                Console.WriteLine(String.Join(Environment.NewLine, File.ReadAllLines(args[1])));
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("\n An Error Occured While Reading File To Display in Preview, Below Is the Full Error Exception Message\n");
+                                Console.WriteLine(e);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("\n Uh Oh, this file isnt an actual .ese14 file!, please change the file extention to .ese14 to use thiss file \n");
+                    }
+                }
+                if (args[0] == "-help")
+                {
+                    Console.WriteLine("Hello! Welcome to the help section of Easy14!");
+                    Console.WriteLine(
+                        "\n   -help = Show the list of arguments you can run with the Easy14 Framework(ish) app"
+                    );
+                    Console.WriteLine(
+                        "\n   -run = Runs an easy14 file, the file extention must be .ese14 (ex; *easy14 app path* run *file.s14c*)"
+                    );
+                    Console.WriteLine("    |");
+                    Console.WriteLine(
+                        "     -show_cmds = shows what command runs while running a file"
+                    );
+                    Console.WriteLine("\n");
+                    Console.WriteLine("     |More Args Commands Comming Soon|");
+                }
+            }
+            else if (args.Length == 0)
+            {
+                Console.WriteLine("No Arguments to run Given :/");
+                Console.WriteLine(
+                    "if you need help with what args you can run, run the app with argument '-help' to get args help"
+                );
+            }
+            Thread.Sleep(500);
+            Console.WriteLine("\nPress Any Key to exit");
+            Console.ReadKey();
+            if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
+            {
+                string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                foreach (string file in files)
+                {
+                    File.Delete(file);
+                }
+                Console.WriteLine("\nDeleting current project variables folder...");
+                Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+            }
+            Console.WriteLine("\n Exiting Console...");
+            Environment.Exit(-1);
+        }
+        public class SendException : Exception
+        {
+            public SendException(Exception innerException, int typeOfException) : base(GetMessage(typeOfException), innerException)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(GetMessage(typeOfException));
+                Console.WriteLine("Please Fix this error to continue :(");
+                Console.ReadKey();
+                Environment.Exit(-1);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            
+            private static string GetMessage(int typeOfException) 
+            {
+                string Message = null;
+                switch (typeOfException)
+                {
+                    //! NOTE: These codes below are not error codes that meantions a part in memory where the error happened, these erorr codes are for like example;
+                    //! - Uh oh, file 02EKOUI is not found, ERROR CODE: 0x2431 (Not real error code)
+                    //! So just be aware about this
+                    //* Also The Error codes are in Hexa-Decimal
+                    case 0x0000:
+                        Message = "EXCEPTION " + typeOfException + "; No-Error Exception";
+                        break;
+                    case 0x0001:
+                        Message = "EXCEPTION " + typeOfException + "; No-Error Exception";
+                        break;
+                    case 0x0002:
+                        Message = "EXCEPTION " + typeOfException + "; Basic Exception - No Data Was Given";
+                        break;
+                    case 0x0003:
+                        Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Not enough computer memory!";
+                        break;
+                    case 0x0004:
+                        Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Missing Files...";
+                        break;
+                    case 0x0005:
+                        Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Missing System Dll's!";
+                        break;
+                    case 0x0006:
+                        Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Not Responding..";
+                        break;
+                    case 0x0404:
+                        Message = "EXCEPTION " + typeOfException + "; 404 - Failed to Get ERROR of ERROR";
+                        break;
+                    case 0xFACE:
+                        Message = "EXCEPTION " + typeOfException + "; O_O Did you want Facey?";
+                        break;
+                    case 0xABCD:
+                        Message = "EXCEPTION " + typeOfException + "; Are you reciting the alaphabet O_O?";
+                        break;
+                }
+                return Message;
+            }
+        }
+        public static void compileCode(string fileloc = null, string[] textArray = null, int lineIDX = 0)
+        {
+            //Checks before Running code
+            ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(wql);
+            ManagementObjectCollection results = searcher.Get();
+            /*====Easy14====
+
+Unhandled exception. System.Management.ManagementException: Invalid query
+   at System.Management.ManagementException.ThrowWithExtendedInfo(ManagementStatus errorCode)
+   at System.Management.ManagementObjectCollection.ManagementObjectEnumerator.MoveNext()
+   at Easy14_Coding_Language.Program.compileCode(String fileloc, String[] textArray, Int32 lineIDX) in C:\Users\mervi\source\repos\Easy14 Coding Language\Easy14 Coding Language\Program.cs:line 212
+   at Easy14_Coding_Language.Program.Main(String[] args) in C:\Users\mervi\source\repos\Easy14 Coding Language\Easy14 Coding Language\Program.cs:line 64
+
+
+                */
+            foreach (ManagementObject result in results)
+            {
+                int freeMemory = Convert.ToInt32(result["FreePhysicalMemory"]) / 1024;
+                //Console.WriteLine("Free Memory {0} MB", freeMemory);
+                if (freeMemory < 25)
+                {
+                    Exception ex = new Exception();
+                    throw new SendException(ex, 0x0003);
+                }
+            }
+
+            int line_count = 1;
+            string[] lines = null;
+            if (textArray == null && fileloc != null) lines = File.ReadAllLines(fileloc);
+            else if (textArray != null && fileloc == null) lines = textArray;
+
+            List<string> lines_list = new List<string>(lines);
+            if (lineIDX != 0)
+            {
+                lines_list.RemoveRange(0, lineIDX);
+            }
+
+            List<string> lines_list_mod = new List<string>();
+            foreach (string item_ in lines_list)
+            {
+                lines_list_mod.Add(item_.TrimStart());
+            }
+
+            lines = lines_list_mod.ToArray();
+            foreach (string line in lines)
+            {
+                if (showCommands == true)
+                {
+                    Console.WriteLine(">>>" + line);
+                }
+                if (line.StartsWith($"Console.print(") || line.StartsWith($"print(") && line.EndsWith($");"))
+                {
+                    if (line.StartsWith($"print("))
+                    {
+                        bool foundUsing = false;
+                        string[] someLINEs = null;
+                        if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
+                        else if (textArray != null && fileloc == null) someLINEs = textArray;
+                        foreach (string x in someLINEs)
+                        {
+                            if (x.StartsWith("using"))
+                            {
+                                if (x == "using Console;")
+                                {
+                                    foundUsing = true;
+                                    break;
+                                }
+                            }
+                            if (x == line)
+                            {
+                                break;
+                            }
+                        }
+                        if (foundUsing == false)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'print' without its reference  (Use Console.print({quotes}*Text To Print*{quotes}) to fix this error :)");
+                            break;
+                        }
+                    }
+                    else if (line.StartsWith($"Console.print(")) { }
+                    string line_ = line;
+                    line_ = line_.TrimStart();
+
+                    if (line.StartsWith($"Console.print("))
+                        line_ = line_.Substring(14);
+                    else if (line.StartsWith($"print("))
+                        line_ = line_.Substring(6);
+
+                    line_ = line_.Substring(0, line_.Length - 2);
+                    string textToPrint = line_;
+                    if (textToPrint == "Time.Now")
+                    {
+                        Console.WriteLine(DateTime.Now);
+                    }
+                    else if (textToPrint.StartsWith("random.range("))
+                    {
+                        string text = textToPrint;
+                        text = text.Replace("random.range(", "").Replace(")", "");
+                        int number1 = Convert.ToInt32(
+                            text.Substring(0, text.IndexOf(",")).Replace(",", "")
+                        );
+                        int number2 = Convert.ToInt32(
+                            text.Substring(text.IndexOf(",")).Replace(",", "")
+                        );
+                        Random rnd = new Random();
+                        Console.WriteLine(rnd.Next(number1, number2));
+                    }
+                    else if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
+                    {
+                        Console.WriteLine(textToPrint.Replace('"'.ToString(), ""));
+                    }
+                    else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                    {
+                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                        foreach (string file in files)
+                        {
+                            if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                            {
+                                var contentInFile = File.ReadAllText(file);
+                                Console.WriteLine(contentInFile.ToString());
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (line.StartsWith($"Console.input(") || line.StartsWith($"input(") && line.EndsWith($");"))
+                {
+                    if (line.StartsWith($"input("))
+                    {
+                        bool foundUsing = false;
+                        string[] someLines = null;
+                        if (textArray == null && fileloc != null) someLines = File.ReadAllLines(fileloc);
+                        else if (textArray != null && fileloc == null) someLines = textArray;
+
+                        foreach (string x in someLines)
+                        {
+                            if (x == line)
+                            {
+                                break;
+                            }
+                            if (x.StartsWith("using"))
+                            {
+                                if (x == "using Console;")
+                                {
+                                    foundUsing = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (foundUsing == false)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'input' without its reference  (Use Console.input({quotes}*Text*{quotes}) to fix this error :)");
+                            break;
+                        }
+                    }
+                    else if (line.StartsWith($"Console.input(")) { }
+                    string line_ = line;
+                    line_ = line_.TrimStart();
+                    line_ = line_.Substring(14);
+                    line_ = line_.Substring(0, line_.Length - 2);
+                    string textToPrint = line_;
+                    if (textToPrint == "Time.Now")
+                    {
+                        Console.WriteLine(DateTime.Now);
+                    }
+                    else if (textToPrint.StartsWith("random.range("))
+                    {
+                        string text = textToPrint;
+                        text = text.Replace("random.range(", "");
+                        text = text.Replace(")", "");
+                        int number1 = Convert.ToInt32(
+                            text.Substring(0, text.IndexOf(",")).Replace(",", "")
+                        );
+                        int number2 = Convert.ToInt32(
+                            text.Substring(text.IndexOf(",")).Replace(",", "")
+                        );
+                        Random rnd = new Random();
+                        Console.WriteLine(rnd.Next(number1, number2));
+                    }
+                    else if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
+                    {
+                        Console.WriteLine(textToPrint);
+                    }
+                    else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                    {
+                        string[] files = Directory.GetFiles(
+                            Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                                + @$"\EASY14_Variables_TEMP"
+                        );
+                        foreach (string file in files)
+                        {
+                            if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                            {
+                                var contentInFile = File.ReadAllText(file);
+                                Console.WriteLine(contentInFile.ToString());
+                                break;
+                            }
+                        }
+                    }
+                    Console.Write(">");
+                    Console.ReadLine();
+                }
+                else if (line.StartsWith($"wait(") && line.EndsWith($");"))
+                {
+                    string line_ = line;
+                    line_ = line_.TrimStart();
+                    line_ = line_.Substring(5);
+                    line_ = line_.Substring(0, line_.Length - 2);
+                    var textToPrint = line_;
+                    if (textToPrint.StartsWith("random.range("))
+                    {
+                        string text = textToPrint;
+                        text = text.Replace("random.range(", "");
+                        text = text.Replace(")", "");
+                        int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
+                        int number2 = Convert.ToInt32(text.Substring(text.IndexOf(",")).Replace(",", ""));
+                        Random rnd = new Random();
+                        int rnd_number = rnd.Next(number1 * 1000, number2 * 1000);
+                        Thread.Sleep(rnd_number);
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.WriteLine("waited for " + Math.Round(Convert.ToDecimal(rnd_number / 1000)) + " seconds");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var n = textToPrint;
+                            int n_decimal = Convert.ToInt32(n);
+                            Thread.Sleep(n_decimal * 500);
+                        }
+                        catch
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"ERROR; Cant implicitly Convert from (string/bool/decimal) to int in 'wait'\n  Error was located on Line {line_count}");
+                            break;
+                        }
+                    }
+                }
+                else if (line.StartsWith($"var") && line.EndsWith($";"))
+                {
+                    string line_ = line;
+                    line_ = line_.TrimStart();
+                    line_ = line_.Substring(3);
+                    line_ = line_.Substring(0, line_.Length - 1);
+                    var textToPrint = line_;
+                    if (textToPrint.Contains("="))
+                    {
+                        string varName = textToPrint.Substring(0, textToPrint.IndexOf("=")).ToString();
+                        varName = varName.TrimStart().TrimEnd();
+                        string varContent = textToPrint.Substring(textToPrint.IndexOf("="), textToPrint.Length - textToPrint.IndexOf("=")).ToString();
+                        if (
+                            varName.StartsWith("0")
+                            || varName.StartsWith("1")
+                            || varName.StartsWith("2")
+                            || varName.StartsWith("3")
+                            || varName.StartsWith("4")
+                            || varName.StartsWith("5")
+                            || varName.StartsWith("6")
+                            || varName.StartsWith("7")
+                            || varName.StartsWith("8")
+                            || varName.StartsWith("9")
+                        )
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine(
+                                $"ERROR; You cant have numbers at the start of a variable name"
+                            );
+                            break;
+                        }
+                        else
+                        {
+                            Directory.CreateDirectory(
+                                Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                                    + @$"\EASY14_Variables_TEMP"
+                            );
+                            varContent = varContent.Replace("=", "").TrimStart();
+                            if (varContent.StartsWith("random.range(") && varContent.EndsWith($")"))
+                            {
+                                string text = varContent;
+                                text = text.Replace("random.range(", "");
+                                text = text.Replace(")", "");
+                                int number1 = Convert.ToInt32(
+                                    text.Substring(0, text.IndexOf(",")).Replace(",", "")
+                                );
+                                int number2 = Convert.ToInt32(
+                                    text.Substring(text.IndexOf(",")).Replace(",", "")
+                                );
+                                Random rnd = new Random();
+                                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", Convert.ToString(rnd.Next(number1, number2)));
+                            }
+                            else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith($")"))
+                            {
+                                if (varContent.StartsWith($"input("))
+                                {
+                                    IList<string> lines_Ilist = new List<string>(lines);
+                                    //Console.WriteLine(String.Join(Environment.NewLine, lines_Ilist));
+                                    bool foundUsing = false;
+                                    //Finally got thw time to learn Linq and its just like sql query :D
+                                    var TheUsingFound = from l in lines_Ilist
+                                                        where l == ("using Console;")
+                                                        select l;
+                                    Console.WriteLine(String.Join(Environment.NewLine, TheUsingFound));
+                                    if (TheUsingFound.ToArray()[0] == ("using Console;"))
+                                    {
+                                        foundUsing = true;
+                                        Console.WriteLine(foundUsing);
+                                    }
+                                    else
+                                    {
+                                        foundUsing = false;
+                                        Console.WriteLine(foundUsing);
+                                    }
+
+                                    if (TheUsingFound.ToArray().Length > 1)
+                                    {
+                                        
+                                    }
+                                    /*foreach (string x in lines)
+                                    {
+                                        if (x == varContent)
+                                        {
+                                            break;
+                                        }
+                                        if (x.StartsWith("using"))
+                                        {
+                                            if (x == "using Console;")
+                                            {
+                                                foundUsing = true;
+                                                break;
+                                            }
+                                        }
+                                    }*/
+                                    if (foundUsing == false)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine(
+                                            $"ERROR; The Using 'Console' wasnt referenced to use 'input' without its reference  (Use Console.input({quotes}*Text*{quotes}) to fix this error :)"
+                                        );
+                                        break;
+                                    }
+                                }
+                                else if (varContent.StartsWith($"Console.input(")) { }
+                                string input_line_ = varContent;
+                                input_line_ = input_line_.TrimStart();
+                                if (varContent.StartsWith("Console.input("))
+                                {
+                                    input_line_ = input_line_.Substring(14);
+                                }
+                                else if (varContent.StartsWith("input("))
+                                {
+                                    input_line_ = input_line_.Substring(6);
+                                }
+                                string input_textToPrint = input_line_;
+                                if (input_textToPrint.StartsWith('"'.ToString()) && input_textToPrint.EndsWith('"'.ToString()))
+                                {
+                                    Console.WriteLine(input_textToPrint);
+                                }
+                                else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                                {
+                                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                                    foreach (string file in files)
+                                    {
+                                        if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == input_textToPrint)
+                                        {
+                                            var contentInFile = File.ReadAllText(file);
+                                            Console.WriteLine(contentInFile.ToString());
+                                            break;
+                                        }
+                                    }
+                                }
+                                Console.Write(">");
+                                string textFromUser = Console.ReadLine();
+                                File.WriteAllText(
+                                    Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                                        + @$"\EASY14_Variables_TEMP\{varName}.txt",
+                                    textFromUser
+                                );
+                            }
+                            else if (varContent.StartsWith($"Math.Add(") || varContent.StartsWith($"Add(") && varContent.EndsWith($")"))
+                            {
+                                if (varContent.StartsWith($"Add("))
+                                {
+                                    bool foundUsing = false;
+                                    foreach (string x in lines)
+                                    {
+                                        if (x == varContent)
+                                        {
+                                            break;
+                                        }
+                                        if (x.StartsWith("using"))
+                                        {
+                                            if (x == "using Math;")
+                                            {
+                                                foundUsing = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (foundUsing == false)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine(
+                                            $"ERROR; The Using 'Math' wasnt referenced to use 'Add' without its reference  (Use Console.input({quotes}*Text*{quotes}) to fix this error :)"
+                                        );
+                                        break;
+                                    }
+                                }
+                                else if (varContent.StartsWith($"Math.Add(")) { }
+                                string input_line_ = varContent;
+                                input_line_ = input_line_.TrimStart();
+                                if (varContent.StartsWith("Math.Add("))
+                                {
+                                    input_line_ = input_line_.Substring(9);
+                                }
+                                else if (varContent.StartsWith("Add("))
+                                {
+                                    input_line_ = input_line_.Substring(4);
+                                }
+                                string input_textToPrint = input_line_;
+                                if (input_textToPrint.StartsWith('"'.ToString()) && input_textToPrint.EndsWith('"'.ToString()))
+                                {
+                                    Console.WriteLine(input_textToPrint);
+                                }
+                                else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                                {
+                                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                                    foreach (string file in files)
+                                    {
+                                        if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == input_textToPrint)
+                                        {
+                                            var contentInFile = File.ReadAllText(file);
+                                            Console.WriteLine(contentInFile.ToString());
+                                            break;
+                                        }
+                                    }
+                                }
+                                Console.Write(">");
+                                string textFromUser = Console.ReadLine();
+                                File.WriteAllText(
+                                    Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+                                        + @$"\EASY14_Variables_TEMP\{varName}.txt",
+                                    textFromUser
+                                );
+                            }
+                            else if (varContent.StartsWith('"'.ToString()) && varContent.EndsWith('"'.ToString()))
+                            {
+                                varContent = varContent.Substring(1);
+                                varContent = varContent.Substring(0, varContent.Length - 1);
+                                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", varContent);
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine($"ERROR; '{line}' is not a vaild value of any data-type\n  Error was located on Line {line_count}");
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        string varName = textToPrint.ToString();
+                        varName = varName.TrimStart().TrimEnd();
+                        if (varName.StartsWith("0")
+                            || varName.StartsWith("1")
+                            || varName.StartsWith("2")
+                            || varName.StartsWith("3")
+                            || varName.StartsWith("4")
+                            || varName.StartsWith("5")
+                            || varName.StartsWith("6")
+                            || varName.StartsWith("7")
+                            || varName.StartsWith("8")
+                            || varName.StartsWith("9"))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine(
+                                $"ERROR; You cant have numbers at the start of a variable name"
+                            );
+                            break;
+                        }
+                        else
+                        {
+                            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                            File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", null);
+                        }
+                    }
+                }
+                else if (line.StartsWith($"if") && line.EndsWith("{"))
+                {
+                    string[] if_lines = lines;
+                    int end_line_IDX = 0;
+                    int line_counterr = 1;
+                    List<string> if_lines_list = new List<string>(if_lines);
+
+                    foreach (string line__ in if_lines)
+                    {
+                        if (line__ == line)
+                        {
+                            if_lines_list.RemoveRange(0, line_counterr - 1);
+                            break;
+                        }
+                        line_counterr++;
+                    }
+                    line_counterr = 0;
+                    List<string> understuff = new List<string>(if_lines_list);
+                    foreach (string line__ in if_lines_list)
+                    {
+                        line_counterr++;
+                        if (line__ == "}")
+                        {
+                            end_line_IDX = line_counterr;
+                            if (if_lines_list.Count != end_line_IDX)
+                            {
+                                try
+                                {
+                                    if_lines_list.RemoveRange(end_line_IDX, if_lines_list.Count - end_line_IDX);
+                                    understuff.RemoveRange(0, end_line_IDX);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e);
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    string[] arr = if_lines_list.ToArray();
+                    string if_Line = if_lines_list[0];
+                    if_Line = if_Line.Substring(2);
+                    if_Line = if_Line.Substring(1, if_Line.Length - 2);
+                    string obj1 = null;
+                    bool obj1_variable = false;
+                    if (if_Line.Contains("=="))
+                        obj1 = if_Line.Substring(0, if_Line.IndexOf("==") - 0);
+                    if (if_Line.Contains("!="))
+                        obj1 = if_Line.Substring(0, if_Line.IndexOf("!=") - 0);
+                    string obj2 = null;
+                    bool obj2_variable = false;
+                    if (if_Line.Contains("=="))
+                        obj2 = if_Line.Substring(if_Line.IndexOf("==") + 2).TrimEnd();
+                    if (if_Line.Contains("!="))
+                        obj2 = if_Line.Substring(if_Line.IndexOf("!=") + 2).TrimEnd();
+                    if (if_Line.Contains("=="))
+                    {
+                        string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                        foreach (string ffile in Directory.GetFiles(dir))
+                        {
+                            if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj1.Replace(".txt", ""))
+                            {
+                                obj1_variable = true;
+                            }
+                        }
+                        foreach (string ffile in Directory.GetFiles(dir))
+                        {
+                            if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj2.Replace(".txt", ""))
+                            {
+                                obj2_variable = true;
+                            }
+                        }
+
+                        List<string> someLINEs = null;
+                        if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
+                        else if (textArray != null && fileloc == null) someLINEs = new List<string>(textArray);
+                        int lin_count = 1;
+                        foreach (string x in someLINEs)
+                        {
+                            lin_count++;
+                            if (!x.StartsWith("using") && x != "" && x != null)
+                            {
+                                break;
+                            }
+                        }
+
+                        lin_count = lin_count - 2;
+
+                        if (obj1_variable == true && obj2_variable == false)
+                        {
+                            if (File.ReadAllText(dir + @$"\{obj1}.txt") == obj2)
+                            {
+                                List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
+                                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                                usings_code.AddRange(e_code);
+                                e_code = usings_code;
+                                compileCode(null, e_code.ToArray());
+                            }
+                        }
+                        else if (obj1_variable == false && obj2_variable == true)
+                        {
+                            if (obj1 == File.ReadAllText(dir + @$"\{obj2}.txt"))
+                            {
+                                List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
+                                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                                usings_code.AddRange(e_code);
+                                e_code = usings_code;
+                                compileCode(null, e_code.ToArray());
+                            }
+                        }
+                        else if (obj1_variable == true && obj2_variable == true)
+                        {
+                            if (File.ReadAllText(dir + @$"\{obj1}.txt") == File.ReadAllText(dir + @$"\{obj2}.txt"))
+                            {
+                                List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
+                                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                                usings_code.AddRange(e_code);
+                                e_code = usings_code;
+                                compileCode(null, e_code.ToArray());
+                            }
+                        }
+                        else if (obj1_variable == false && obj2_variable == false)
+                        {
+                            if (obj1 == obj2)
+                            {
+                                List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
+                                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                                usings_code.AddRange(e_code);
+                                e_code = usings_code;
+                                compileCode(null, e_code.ToArray());
+                            }
+                        }
+                        understuff.RemoveRange(0, end_line_IDX - 1);
+                        compileCode(null, understuff.ToArray());
+                        break;
+                    }
+                }
+                else if (line.StartsWith($"while") && line.EndsWith("{"))
+                {
+                    string[] _lines_ = lines;
+                    int end_line_IDX = 0;
+                    int line_counterr = 1;
+                    List<string> while_lines_list = new List<string>(_lines_);
+                    foreach (string line__ in _lines_)
+                    {
+                        if (line__ == line)
+                        {
+                            while_lines_list.RemoveRange(0, line_counterr - 1);
+                            break;
+                        }
+                        line_counterr++;
+                    }
+                    line_counterr = 0;
+                    List<string> understuff = new List<string>(while_lines_list);
+                    foreach (string line__ in while_lines_list)
+                    {
+                        line_counterr++;
+                        if (line__ == "}")
+                        {
+                            end_line_IDX = line_counterr;
+                            if (while_lines_list.Count != end_line_IDX)
+                            {
+                                try
+                                {
+                                    while_lines_list.RemoveRange(end_line_IDX, while_lines_list.Count - end_line_IDX);
+                                    understuff.RemoveRange(0, end_line_IDX);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e);
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    string[] arr = while_lines_list.ToArray();
+                    string if_Line = while_lines_list[0];
+                    if_Line = if_Line.Substring(5);
+                    if_Line = if_Line.Substring(1, if_Line.Length - 2);
+                    string obj1 = null;
+                    bool obj1_variable = false;
+                    if (if_Line.Contains("=="))
+                        obj1 = if_Line.Substring(0, if_Line.IndexOf("==") - 0);
+                    if (if_Line.Contains("!="))
+                        obj1 = if_Line.Substring(0, if_Line.IndexOf("!=") - 0);
+                    string obj2 = null;
+                    bool obj2_variable = false;
+                    if (if_Line.Contains("=="))
+                        obj2 = if_Line.Substring(if_Line.IndexOf("==") + 2).TrimEnd();
+                    if (if_Line.Contains("!="))
+                        obj2 = if_Line.Substring(if_Line.IndexOf("!=") + 2).TrimEnd();
+                    if (if_Line.Contains("=="))
+                    {
+                        string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                        foreach (string ffile in Directory.GetFiles(dir))
+                        {
+                            if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj1.Replace(".txt", ""))
+                            {
+                                obj1_variable = true;
+                            }
+                        }
+                        foreach (string ffile in Directory.GetFiles(dir))
+                        {
+                            if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj2.Replace(".txt", ""))
+                            {
+                                obj2_variable = true;
+                            }
+                        }
+
+                        List<string> someLINEs = null;
+                        if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
+                        else if (textArray != null && fileloc == null) someLINEs = new List<string>(textArray);
+                        int lin_count = 1;
+                        foreach (string x in someLINEs)
+                        {
+                            lin_count++;
+                            if (!x.StartsWith("using") && x != "" && x != null)
+                            {
+                                break;
+                            }
+                        }
+
+                        lin_count = lin_count - 2;
+
+                        if (obj1_variable == true && obj2_variable == false)
+                        {
+                            while (File.ReadAllText(dir + @$"\{obj1}.txt") == obj2)
+                            {
+                                List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                                usings_code.AddRange(e_code);
+                                e_code = usings_code;
+                                compileCode(null, e_code.ToArray());
+                            }
+                        }
+                        else if (obj1_variable == false && obj2_variable == true)
+                        {
+                            while (obj1 == File.ReadAllText(dir + @$"\{obj2}.txt"))
+                            {
+                                List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                                usings_code.AddRange(e_code);
+                                e_code = usings_code;
+                                compileCode(null, e_code.ToArray());
+                            }
+                        }
+                        else if (obj1_variable == true && obj2_variable == true)
+                        {
+                            while (File.ReadAllText(dir + @$"\{obj1}.txt") == File.ReadAllText(dir + @$"\{obj2}.txt"))
+                            {
+                                List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                                usings_code.AddRange(e_code);
+                                e_code = usings_code;
+                                compileCode(null, e_code.ToArray());
+                            }
+                        }
+                        else if (obj1_variable == false && obj2_variable == false)
+                        {
+                            while (obj1 == obj2)
+                            {
+                                List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                                usings_code.AddRange(e_code);
+                                e_code = usings_code;
+                                compileCode(null, e_code.ToArray());
+                            }
+                        }
+                        understuff.RemoveRange(0, end_line_IDX - 1);
+                        compileCode(null, understuff.ToArray());
+                        break;
+                    }
+                }
+                else if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"MakeFile(") && line.EndsWith($");"))
+                {
+                    if (line.StartsWith($"MakeFile("))
+                    {
+                        bool foundUsing = false;
+                        string[] someLINEs = null;
+                        if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
+                        else if (textArray != null && fileloc == null) someLINEs = textArray;
+                        foreach (string x in someLINEs)
+                        {
+                            if (x.StartsWith("using"))
+                            {
+                                if (x == "using FileSystem;")
+                                {
+                                    foundUsing = true;
+                                    break;
+                                }
+                            }
+                            if (x == line)
+                            {
+                                break;
+                            }
+                        }
+                        if (foundUsing == false)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"ERROR; The Using 'FileSystem' wasnt referenced to use 'MakeFile' without its reference  (Use FileSystem.MakeFile({quotes}*File Location*{quotes}) to fix this error :)");
+                            break;
+                        }
+                    }
+                    else if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"Filesystem.MakeFile(")) { }
+                    string line_ = line;
+                    line_ = line_.TrimStart();
+
+                    if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"Filesystem.MakeFile("))
+                        line_ = line_.Substring(20);
+                    else if (line.StartsWith($"MakeFile("))
+                        line_ = line_.Substring(9);
+
+                    line_ = line_.Substring(0, line_.Length - 2);
+                    string textToPrint = line_;
+                    if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
+                    {
+                        var contentInFile = textToPrint.Replace('"'.ToString(), "");
+                        try
+                        {
+                            using (FileStream fs = File.Create(contentInFile))
+                            {
+                                fs.Dispose();
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nERROR; Can't Create A File at the specified location");
+                            Console.WriteLine("Extra Info is below;\n\n" + e);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                    }
+                    else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                    {
+                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                        foreach (string file in files)
+                        {
+                            if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                            {
+                                try
+                                {
+                                    var contentInFile = file;
+                                    using (FileStream fs = File.Create(contentInFile))
+                                    {
+                                        fs.Dispose();
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("\nERROR; Can't Create A File at the specified location");
+                                    Console.WriteLine("Extra Info is below;\n\n" + e);
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (line.StartsWith($"FileSystem.MakeFolder(") || line.StartsWith($"MakeFolder(") && line.EndsWith($");"))
+                {
+                    if (line.StartsWith($"MakeFolder("))
+                    {
+                        bool foundUsing = false;
+                        string[] someLINEs = null;
+                        if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
+                        else if (textArray != null && fileloc == null) someLINEs = textArray;
+                        foreach (string x in someLINEs)
+                        {
+                            if (x.StartsWith("using"))
+                            {
+                                if (x == "using FileSystem;")
+                                {
+                                    foundUsing = true;
+                                    break;
+                                }
+                            }
+                            if (x == line)
+                            {
+                                break;
+                            }
+                        }
+                        if (foundUsing == false)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"ERROR; The Using 'FileSystem' wasnt referenced to use 'MakeFolder' without its reference  (Use FileSystem.MakeFile({quotes}*File Location*{quotes}) to fix this error :)");
+                            break;
+                        }
+                    }
+                    else if (line.StartsWith($"FileSystem.MakeFolder(") || line.StartsWith($"Filesystem.MakeFolder(")) { }
+                    string line_ = line;
+                    line_ = line_.TrimStart();
+
+                    if (line.StartsWith($"FileSystem.MakeFolder(") || line.StartsWith($"Filesystem.MakeFolder("))
+                        line_ = line_.Substring(22);
+                    else if (line.StartsWith($"MakeFolder("))
+                        line_ = line_.Substring(11);
+
+                    line_ = line_.Substring(0, line_.Length - 2);
+                    string textToPrint = line_;
+                    if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
+                    {
+                        var contentInFile = textToPrint.Replace('"'.ToString(), "");
+                        try
+                        {
+                            Directory.CreateDirectory(contentInFile);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nERROR; Can't Create A Folder at the specified location");
+                            Console.WriteLine("Extra Info is below;\n\n" + e);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                    }
+                    else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                    {
+                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                        foreach (string file in files)
+                        {
+                            if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                            {
+                                try
+                                {
+                                    var contentInFile = file;
+                                    Directory.CreateDirectory(contentInFile);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("\nERROR; Can't Create A Folder at the specified location");
+                                    Console.WriteLine("Extra Info is below;\n\n" + e);
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (line.StartsWith($"FileSystem.DeleteFile(") || line.StartsWith($"DeleteFile(") && line.EndsWith($");"))
+                {
+                    if (line.StartsWith($"DeleteFile("))
+                    {
+                        bool foundUsing = false;
+                        string[] someLINEs = null;
+                        if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
+                        else if (textArray != null && fileloc == null) someLINEs = textArray;
+                        foreach (string x in someLINEs)
+                        {
+                            if (x.StartsWith("using"))
+                            {
+                                if (x == "using FileSystem;")
+                                {
+                                    foundUsing = true;
+                                    break;
+                                }
+                            }
+                            if (x == line)
+                            {
+                                break;
+                            }
+                        }
+                        if (foundUsing == false)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"ERROR; The Using 'FileSystem' wasnt referenced to use 'DeleteFile' without its reference  (Use Console.print({quotes}*Text To Print*{quotes}) to fix this error :)");
+                            break;
+                        }
+                    }
+                    else if (line.StartsWith($"FileSystem.DeleteFile(") || line.StartsWith($"Filesystem.DeleteFile(")) { }
+                    string line_ = line;
+                    line_ = line_.TrimStart();
+
+                    if (line.StartsWith($"FileSystem.DeleteFile("))
+                        line_ = line_.Substring(22);
+                    else if (line.StartsWith($"DeleteFile("))
+                        line_ = line_.Substring(11);
+
+                    line_ = line_.Substring(0, line_.Length - 2);
+                    string textToPrint = line_;
+                    if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
+                    {
+                        var contentInFile = textToPrint.Replace('"'.ToString(), "");
+                        try
+                        {
+                            File.Delete(contentInFile);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nERROR; Can't Delete A File at the specified location");
+                            Console.WriteLine("Extra Info is below;\n\n" + e);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                    }
+                    else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                    {
+                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                        foreach (string file in files)
+                        {
+                            if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                            {
+                                try
+                                {
+                                    var contentInFile = file;
+                                    File.Delete(contentInFile);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("\nERROR; Can't Delete A File at the specified location");
+                                    Console.WriteLine("Extra Info is below;\n\n" + e);
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (line.StartsWith($"FileSystem.DeleteFolder(") || line.StartsWith($"DeleteFolder(") && line.EndsWith($");"))
+                {
+                    if (line.StartsWith($"DeleteFolder("))
+                    {
+                        bool foundUsing = false;
+                        string[] someLINEs = null;
+                        if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
+                        else if (textArray != null && fileloc == null) someLINEs = textArray;
+                        foreach (string x in someLINEs)
+                        {
+                            if (x.StartsWith("using"))
+                            {
+                                if (x == "using FileSystem;")
+                                {
+                                    foundUsing = true;
+                                    break;
+                                }
+                            }
+                            if (x == line)
+                            {
+                                break;
+                            }
+                        }
+                        if (foundUsing == false)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"ERROR; The Using 'FileSystem' wasnt referenced to use 'DeleteFolder' without its reference  (Use Console.print({quotes}*Text To Print*{quotes}) to fix this error :)");
+                            break;
+                        }
+                    }
+                    else if (line.StartsWith($"FileSystem.DeleteFolder(") || line.StartsWith($"Filesystem.DeleteFolder(")) { }
+                    string line_ = line;
+                    line_ = line_.TrimStart();
+
+                    if (line.StartsWith($"FileSystem.DeleteFolder("))
+                        line_ = line_.Substring(22);
+                    else if (line.StartsWith($"DeleteFolder("))
+                        line_ = line_.Substring(11);
+
+                    line_ = line_.Substring(0, line_.Length - 2);
+                    string textToPrint = line_;
+                    if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
+                    {
+                        var contentInFile = textToPrint.Replace('"'.ToString(), "");
+                        try
+                        {
+                            if (Directory.GetFiles(contentInFile).Length > 0)
+                            {
+                                foreach (string File_ in Directory.GetFiles(contentInFile))
+                                {
+                                    File.Delete(File_);
+                                }
+                            }
+                            Directory.Delete(contentInFile);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nERROR; Can't Delete A Folder at the specified location");
+                            Console.WriteLine("Extra Info is below;\n\n" + e);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                    }
+                    else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                    {
+                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                        foreach (string file in files)
+                        {
+                            if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                            {
+                                try
+                                {
+                                    var contentInFile = file;
+                                    if (Directory.GetFiles(contentInFile).Length > 0)
+                                    {
+                                        foreach (string File_ in Directory.GetFiles(contentInFile))
+                                        {
+                                            File.Delete(File_);
+                                        }
+                                    }
+                                    Directory.Delete(contentInFile);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("\nERROR; Can't Delete A Folder at the specified location");
+                                    Console.WriteLine("Extra Info is below;\n\n" + e);
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (line.StartsWith($"FileSystem.ReadFile(") || line.StartsWith($"ReadFile(") && line.EndsWith($");"))
+                {
+                    if (line.StartsWith($"ReadFile("))
+                    {
+                        bool foundUsing = false;
+                        string[] someLINEs = null;
+                        if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
+                        else if (textArray != null && fileloc == null) someLINEs = textArray;
+                        foreach (string x in someLINEs)
+                        {
+                            if (x.StartsWith("using"))
+                            {
+                                if (x == "using FileSystem;")
+                                {
+                                    foundUsing = true;
+                                    break;
+                                }
+                            }
+                            if (x == line)
+                            {
+                                break;
+                            }
+                        }
+                        if (foundUsing == false)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"ERROR; The Using 'FileSystem' wasnt referenced to use 'ReadFile' without its reference  (Use FileSystem.ReadFile({quotes}*File Location*{quotes}) to fix this error :)");
+                            break;
+                        }
+                    }
+                    else if (line.StartsWith($"FileSystem.ReadFile(")) { }
+                    string line_ = line;
+                    line_ = line_.TrimStart();
+
+                    if (line.StartsWith($"FileSystem.ReadFile("))
+                        line_ = line_.Substring(20);
+                    else if (line.StartsWith($"ReadFile("))
+                        line_ = line_.Substring(9);
+
+                    line_ = line_.Substring(0, line_.Length - 2);
+                    string textToPrint = line_;
+                    if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
+                    {
+                        var contentInFile = textToPrint.Replace('"'.ToString(), "");
+                        try
+                        {
+                            Console.WriteLine(File.ReadAllText(contentInFile));
+                        }
+                        catch (Exception e)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nERROR; Can't Read File at the specified location");
+                            Console.WriteLine("Extra Info is below;\n\n" + e);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                    }
+                    else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                    {
+                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                        foreach (string file in files)
+                        {
+                            if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                            {
+                                try
+                                {
+                                    var contentInFile = file;
+                                    Console.WriteLine(File.ReadAllText(contentInFile));
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("\nERROR; Can't Find File at the specified location");
+                                    Console.WriteLine("Extra Info is below;\n\n" + e);
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (line.StartsWith($"FileSystem.RenameFile(") || line.StartsWith($"RenameFile(") && line.EndsWith($");"))
+                {
+                    if (line.StartsWith($"RenameFile("))
+                    {
+                        bool foundUsing = false;
+                        string[] someLINEs = null;
+                        if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
+                        else if (textArray != null && fileloc == null) someLINEs = textArray;
+                        foreach (string x in someLINEs)
+                        {
+                            if (x.StartsWith("using"))
+                            {
+                                if (x == "using FileSystem;")
+                                {
+                                    foundUsing = true;
+                                    break;
+                                }
+                            }
+                            if (x == line)
+                            {
+                                break;
+                            }
+                        }
+                        if (foundUsing == false)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"ERROR; The Using 'FileSystem' wasnt referenced to use 'RenameFile' without its reference  (Use FileSystem.ReadFile({quotes}*File Location*{quotes}) to fix this error :)");
+                            break;
+                        }
+                    }
+                    else if (line.StartsWith($"FileSystem.RenameFile(")) { }
+                    string line_ = line;
+                    line_ = line_.TrimStart();
+
+                    if (line.StartsWith($"FileSystem.RenameFile("))
+                        line_ = line_.Substring(22);
+                    else if (line.StartsWith($"RenameFile("))
+                        line_ = line_.Substring(11);
+
+                    line_ = line_.Substring(0, line_.Length - 2);
+                    string textToPrint = line_;
+                    string[] thePathAndContent = textToPrint.Split(',');
+                    string oldpath = thePathAndContent[0];
+                    string newpath = thePathAndContent[1];
+                    if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
+                    {
+                        try
+                        {
+                            oldpath = oldpath.Replace('"'.ToString(), "");
+                            newpath = newpath.Replace('"'.ToString(), "");
+                            newpath = newpath.TrimStart();
+                            File.Move(oldpath, newpath);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nERROR; Can't Rename File at the specified location");
+                            Console.WriteLine("Extra Info is below;     (Note: Please Enter the FULL FILE PATH when renaming a file for both the old name and new name)\n\n" + e);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                    }
+                    else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                    {
+                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                        foreach (string file in files)
+                        {
+                            if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                            {
+                                try
+                                {
+                                    var contentInFile = file;
+                                    Console.WriteLine(File.ReadAllText(contentInFile));
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("\nERROR; Can't Rename File at the specified location");
+                                    Console.WriteLine("Extra Info is below;\n\n" + e);
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (line.StartsWith($"FileSystem.WriteFile(") || line.StartsWith($"WriteFile(") && line.EndsWith($");"))
+                {
+                    if (line.StartsWith($"WriteFile("))
+                    {
+                        bool foundUsing = false;
+                        string[] someLINEs = null;
+                        if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
+                        else if (textArray != null && fileloc == null) someLINEs = textArray;
+                        foreach (string x in someLINEs)
+                        {
+                            if (x.StartsWith("using"))
+                            {
+                                if (x == "using FileSystem;")
+                                {
+                                    foundUsing = true;
+                                    break;
+                                }
+                            }
+                            if (x == line)
+                            {
+                                break;
+                            }
+                        }
+                        if (foundUsing == false)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"ERROR; The Using 'FileSystem' wasnt referenced to use 'WriteFile' without its reference  (Use FileSystem.ReadFile({quotes}*FilePath*{quotes}) to fix this error :)");
+                            break;
+                        }
+                    }
+                    else if (line.StartsWith($"FileSystem.WriteFile(")) { }
+                    string line_ = line;
+                    line_ = line_.TrimStart();
+
+                    if (line.StartsWith($"FileSystem.WriteFile("))
+                        line_ = line_.Substring(21);
+                    else if (line.StartsWith($"WriteFile("))
+                        line_ = line_.Substring(10);
+
+                    line_ = line_.Substring(0, line_.Length - 2);
+                    string textToPrint = line_;
+                    string[] thePathAndContent = textToPrint.Split(',');
+                    string path = thePathAndContent[0];
+                    string contentInFile = thePathAndContent[1];
+                    if (path.StartsWith('"'.ToString()) && path.EndsWith('"'.ToString()))
+                    {
+                        try
+                        {
+                            path = path.Replace('"'.ToString(), "");
+                            contentInFile = contentInFile.Replace('"'.ToString(), "");
+                            contentInFile = contentInFile.TrimStart();
+                            File.WriteAllText(path, contentInFile);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nERROR; Can't Write To File at the specified location");
+                            Console.WriteLine("Extra Info is below;\n\n" + e);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                    }
+                    else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                    {
+                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                        foreach (string file in files)
+                        {
+                            if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                            {
+                                try
+                                {
+                                    File.WriteAllText(path, contentInFile);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("\nERROR; Can't Write To File at the specified location");
+                                    Console.WriteLine("Extra Info is below;\n\n" + e);
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (line.StartsWith($"Network.Ping(") || line.StartsWith($"Ping(") && line.EndsWith($");"))
+                {
+                    if (line.StartsWith($"Ping("))
+                    {
+                        bool foundUsing = false;
+                        string[] someLINEs = null;
+                        if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
+                        else if (textArray != null && fileloc == null) someLINEs = textArray;
+                        foreach (string x in someLINEs)
+                        {
+                            if (x.StartsWith("using"))
+                            {
+                                if (x == "using Network;")
+                                {
+                                    foundUsing = true;
+                                    break;
+                                }
+                            }
+                            if (x == line)
+                            {
+                                break;
+                            }
+                        }
+                        if (foundUsing == false)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"ERROR; The Using 'Network' wasnt referenced to use 'Ping' without its reference  (Use Network.Ping({quotes}*Website*{quotes}) to fix this error :)");
+                            break;
+                        }
+                    }
+                    else if (line.StartsWith($"Network.Ping(")) { }
+                    string line_ = line;
+                    line_ = line_.TrimStart();
+
+                    if (line.StartsWith($"Network.Ping("))
+                        line_ = line_.Substring(13);
+                    else if (line.StartsWith($"Ping("))
+                        line_ = line_.Substring(5);
+
+                    line_ = line_.Substring(0, line_.Length - 2);
+                    string textToPrint = line_;
+                    if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
+                    {
+                        var contentInFile = textToPrint.Replace('"'.ToString(), "");
+                        try
+                        {
+                            try
+                            {
+                                Ping ping = new Ping();
+                                PingReply reply = ping.Send(contentInFile, 1500);
+                                if (reply != null)
+                                {
+                                    Console.WriteLine("\nStatus;\n   " + reply.Status + "\nTime;\n   " + reply.RoundtripTime + "\nAddress;\n   " + reply.Address);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("ERROR; Couldn't Ping Address due to an error");
+                                Console.WriteLine("Extra Info is below;\n\n" + e);
+                                Console.ForegroundColor = ConsoleColor.White;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("\nERROR; Can't Read File at the specified location");
+                            Console.WriteLine("Extra Info is below;\n\n" + e);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                    }
+                    else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                    {
+                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                        foreach (string file in files)
+                        {
+                            if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                            {
+                                try
+                                {
+                                    Ping ping = new Ping();
+                                    PingReply reply = ping.Send(file, 1500);
+                                    if (reply != null)
+                                    {
+                                        Console.WriteLine("Status;\n" + reply.Status + "\n Time;\n" + reply.RoundtripTime + "\n Address;\n" + reply.Address);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("ERROR; Couldn't Ping Address due to an error");
+                                    Console.WriteLine("Extra Info is below;\n\n" + e);
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(line) && !string.IsNullOrWhiteSpace(line) && line != "}" && line != "break" && line != "return" && !line.StartsWith("using"))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"ERROR; '{line}' is not a vaild code statement\n  Error was located on Line {line_count}");
+                        break;
+                    }
+                }
+                line_count++;
+            }
+        }
+    }
+}

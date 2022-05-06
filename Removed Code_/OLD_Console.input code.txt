@@ -1,0 +1,80 @@
+//This is the old code for it, when it was not as a seperate function but in Program.cs
+
+                                            ==================CODE PART====================
+
+if (line.StartsWith($"input("))
+{
+    bool foundUsing = false;
+    string[] someLines = null;
+    if (textArray == null && fileloc != null) someLines = File.ReadAllLines(fileloc);
+    else if (textArray != null && fileloc == null) someLines = textArray;
+
+    foreach (string x in someLines)
+    {
+        if (x == line)
+        {
+            break;
+        }
+        if (x.StartsWith("using"))
+        {
+            if (x == "using Console;")
+            {
+                foundUsing = true;
+                break;
+            }
+        }
+    }
+    if (foundUsing == false)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'input' without its reference  (Use Console.input({quotes}*Text*{quotes}) to fix this error :)");
+        break;
+    }
+}
+else if (line.StartsWith($"Console.input(")) { }                 
+
+string line_ = line;
+line_ = line_.TrimStart();
+line_ = line_.Substring(14);
+line_ = line_.Substring(0, line_.Length - 2);
+string textToPrint = line_;
+if (textToPrint == "Time.Now")
+{
+    Console.WriteLine(DateTime.Now);
+}
+else if (textToPrint.StartsWith("random.range("))
+{
+    string text = textToPrint;
+    text = text.Replace("random.range(", "");
+    text = text.Replace(")", "");
+    int number1 = Convert.ToInt32(
+        text.Substring(0, text.IndexOf(",")).Replace(",", "")
+    );
+    int number2 = Convert.ToInt32(
+        text.Substring(text.IndexOf(",")).Replace(",", "")
+    );
+    Random rnd = new Random();
+    Console.WriteLine(rnd.Next(number1, number2));
+}
+else if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
+{
+    Console.WriteLine(textToPrint);
+}
+else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+{
+    string[] files = Directory.GetFiles(
+        Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+            + @$"\EASY14_Variables_TEMP"
+    );
+    foreach (string file in files)
+    {
+        if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+        {
+            var contentInFile = File.ReadAllText(file);
+            Console.WriteLine(contentInFile.ToString());
+            break;
+        }
+    }
+}
+Console.Write(">");
+Console.ReadLine();
