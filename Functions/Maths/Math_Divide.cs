@@ -11,7 +11,7 @@ namespace Easy14_Coding_Language
 {
     class Math_Divide
     {
-        public void interperate(string code_part, int lineNumber, string fileName = null)
+        public double interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;
 
@@ -21,7 +21,7 @@ namespace Easy14_Coding_Language
             string expression = code_part;
             if (expression is null && !expression.Contains("/")) {
                 Console.WriteLine("ERROR; Can't Divide, please check your code and fix the error");
-                return;
+                return 0.0;
             }
             expression = expression.Replace(" ", "");
             expression = expression.Replace("=", "");
@@ -37,15 +37,17 @@ namespace Easy14_Coding_Language
             {
                 Console.WriteLine("ERROR; Can't Divide these 2 integers, please check your code and fix the error");
                 //Console.WriteLine(sum);
-                return;
+                return 0.0;
             }
             //Console.WriteLine(sum);
             if (fileName is not null) {
                 File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{fileName}.txt", result.ToString());
             }
             else if (fileName is null) {
-                Console.WriteLine(result);
+                //Console.WriteLine(result);
+                return result;
             }
+            return result;
         }
     }
 }

@@ -178,6 +178,11 @@ namespace Easy14_Coding_Language
                         Math_Equals math_equals = new Math_Equals();
                         math_equals.interperate(varContent, line_count, varName);
                     }
+                    else if (varContent.Replace("=","").TrimStart().ToLower().StartsWith("cos"))
+                    {
+                        Math_Cos math_cos = new Math_Cos();
+                        math_cos.interperate(varContent, line_count, varName);
+                    }
                     else if (varContent.StartsWith($"Math.Add(") || varContent.StartsWith($"Add(") && varContent.EndsWith($")"))
                     {
                         if (varContent.StartsWith($"Add("))

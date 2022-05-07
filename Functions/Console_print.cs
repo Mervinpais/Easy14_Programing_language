@@ -11,17 +11,16 @@ namespace Easy14_Coding_Language
 {
     class Console_print
     {
-        public void interperate(string code_part , string[] textArray, string fileloc)
+        public void interperate(string code_part, string[] textArray, string fileloc)
         {
             string code_part_unedited;
             string textToPrint;
 
             code_part_unedited = code_part;
             code_part = code_part_unedited.TrimStart();
-
+            bool foundUsing = false;
             if (code_part.StartsWith($"print("))
             {
-                bool foundUsing = false;
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
@@ -44,6 +43,7 @@ namespace Easy14_Coding_Language
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'print' without its reference  (Use Console.print(\"*Text To Print*\") to fix this error :)");
+                    return;
                 }
             }
             else if (code_part.StartsWith($"Console.print(")) { }
@@ -55,33 +55,36 @@ namespace Easy14_Coding_Language
 
             code_part = code_part.Substring(0, code_part.Length - 2);
             textToPrint = code_part;
-            if (textToPrint == "Time.Now")
+            if (foundUsing == true)
             {
-                Console.WriteLine(DateTime.Now);
-            }
-            else if (textToPrint.StartsWith("random.range("))
-            {
-                string text = textToPrint;
-                text = text.Replace("random.range(", "").Replace(")", "");
-                int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
-                int number2 = Convert.ToInt32(text.Substring(text.IndexOf(",")).Replace(",", ""));
-                Random rnd = new Random();
-                Console.WriteLine(rnd.Next(number1, number2));
-            }
-            else if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
-            {
-                Console.WriteLine(textToPrint.Replace('"'.ToString(), ""));
-            }
-            else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
-            {
-                string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
-                foreach (string file in files)
+                if (textToPrint == "Time.Now")
                 {
-                    if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                    Console.WriteLine(DateTime.Now);
+                }
+                else if (textToPrint.StartsWith("random.range("))
+                {
+                    string text = textToPrint;
+                    text = text.Replace("random.range(", "").Replace(")", "");
+                    int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
+                    int number2 = Convert.ToInt32(text.Substring(text.IndexOf(",")).Replace(",", ""));
+                    Random rnd = new Random();
+                    Console.WriteLine(rnd.Next(number1, number2));
+                }
+                else if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
+                {
+                    Console.WriteLine(textToPrint.Replace('"'.ToString(), ""));
+                }
+                else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                {
+                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                    foreach (string file in files)
                     {
-                        var contentInFile = File.ReadAllText(file);
-                        Console.WriteLine(contentInFile.ToString());
-                        break;
+                        if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                        {
+                            var contentInFile = File.ReadAllText(file);
+                            Console.WriteLine(contentInFile.ToString());
+                            break;
+                        }
                     }
                 }
             }
