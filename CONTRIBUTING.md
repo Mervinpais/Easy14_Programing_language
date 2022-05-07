@@ -1,5 +1,5 @@
 # Contributing
-![Contributing can help me continue my Project](Images\Contribution_Image1.png)
+![Contributing can help me continue my Project](https://raw.githubusercontent.com/Mervinpais/Easy14_Programing_language/Latest_version/Images/Contribution_Image1.png)
 Contributing to this project can help me finish off work that i can't solve, example there is a security bug and i'm asleep, if you can, you can patch the bug and notify me about the bug and the patch you mnade so i know you have atleast helpped in fixing the bugs in the project
 
 ## What to do if a contributer added some malicious code
