@@ -37,7 +37,7 @@ Here is what you need to know
 	* / (Divide)
 	* * (Multiply)
 	* % (Module)
-# Version 1
+# Version 1.1
 
 The Cool Stuff and Bugfix's arrived,
 
