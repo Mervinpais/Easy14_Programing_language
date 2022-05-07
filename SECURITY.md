@@ -8,7 +8,7 @@ Version 1.0 is still in support but will be soon out of style due to version 1.1
 | Version | Supported          |
 | ------- | ------------------ |
 | 1.2.x   | 🚫 Not Yet Avaliable|
-| 1.1.x   | 🚫 Not Yet Avaliable (Soon will)|
+| 1.1.x   | :white_check_mark: Still in support|
 | 1.0.x   | :white_check_mark: Still in support|
 | < 1.0   | :x:  No Support |
 
