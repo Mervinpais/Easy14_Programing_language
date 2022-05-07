@@ -7,8 +7,8 @@ Basically a mashup of Python + C#
 	</head>
 </html>
 
-# Version 1
-The Cool Sh!t finally arrived, here is what you need to know
+# Main Stuff
+Here is what you need to know
 
 * This is just like any other hight level language
 * Runs on C#
@@ -37,4 +37,11 @@ The Cool Sh!t finally arrived, here is what you need to know
 	* / (Divide)
 	* * (Multiply)
 	* % (Module)
-More stuff will be updated soon :)
+# Version 1
+
+The Cool Stuff and Bugfix's arrived,
+
+* Fixed bugs with Print() and Input()
+* Updated The Repair Tool(s)
+* Optimised 5-10% of the code
+* Added COS, SIN, TAN to the maths operator list
