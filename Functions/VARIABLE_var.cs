@@ -178,10 +178,20 @@ namespace Easy14_Coding_Language
                         Math_Equals math_equals = new Math_Equals();
                         math_equals.interperate(varContent, line_count, varName);
                     }
-                    else if (varContent.Replace("=","").TrimStart().ToLower().StartsWith("cos"))
+                    else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("cos"))
                     {
                         Math_Cos math_cos = new Math_Cos();
                         math_cos.interperate(varContent, line_count, varName);
+                    }
+                    else if (varContent.Replace("=","").TrimStart().ToLower().StartsWith("sin"))
+                    {
+                        Math_Sin math_sin = new Math_Sin();
+                        math_sin.interperate(varContent, line_count, varName);
+                    }
+                    else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("tan"))
+                    {
+                        Math_Tan math_tan = new Math_Tan();
+                        math_tan.interperate(varContent, line_count, varName);
                     }
                     else if (varContent.StartsWith($"Math.Add(") || varContent.StartsWith($"Add(") && varContent.EndsWith($")"))
                     {
