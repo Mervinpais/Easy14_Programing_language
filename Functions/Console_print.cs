@@ -26,15 +26,12 @@ namespace Easy14_Coding_Language
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
                 foreach (string x in someLINEs)
                 {
-                    if (x.StartsWith("using"))
+                    if (x.TrimStart().TrimEnd() == "using Console;")
                     {
-                        if (x == "using Console;")
-                        {
-                            foundUsing = true;
-                            break;
-                        }
+                        foundUsing = true;
+                        break;
                     }
-                    if (x == code_part)
+                    if (x.TrimStart().TrimEnd() == code_part)
                     {
                         break;
                     }

@@ -11,7 +11,7 @@ namespace Easy14_Coding_Language
 {
     class While_loop
     {
-        Program prog = new Program(); 
+        Program prog = new Program();
         //Above needed as functions like 'compileCode' in Program.cs cant be accessed here and instead of copying it to other functions, just make an object of it 
         //and use it's 'compileCode_forOtherFiles' function to get 'compileCode' (because 'compileCode' is static, we need another function that is not static to access
         //the static function, kinda smart in my opinion), its kind of a bad way of doing it but it the easy way and has no error with it :|
@@ -118,7 +118,7 @@ namespace Easy14_Coding_Language
 
                 if (obj1_variable == true && obj2_variable == false)
                 {
-                    while (File.ReadAllText(dir + @$"\{obj1}.txt") == obj2)
+                    while (File.ReadAllText(dir + @$"\{obj1}.txt") == obj2.Replace("\"", ""))
                     {
                         List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -129,7 +129,7 @@ namespace Easy14_Coding_Language
                 }
                 else if (obj1_variable == false && obj2_variable == true)
                 {
-                    while (obj1 == File.ReadAllText(dir + @$"\{obj2}.txt"))
+                    while (obj1.Replace("\"", "") == File.ReadAllText(dir + @$"\{obj2}.txt"))
                     {
                         List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -151,7 +151,7 @@ namespace Easy14_Coding_Language
                 }
                 else if (obj1_variable == false && obj2_variable == false)
                 {
-                    while (obj1 == obj2)
+                    while (obj1.Replace("\"", "") == obj2.Replace("\"", ""))
                     {
                         List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -160,7 +160,7 @@ namespace Easy14_Coding_Language
                         prog.compileCode_fromOtherFiles(null, e_code.ToArray());
                     }
                 }
-                understuff.RemoveRange(0, end_line_IDX - 1);
+                understuff.RemoveRange(0, end_line_IDX - 3);
                 prog.compileCode_fromOtherFiles(null, understuff.ToArray());
             }
         }

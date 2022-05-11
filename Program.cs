@@ -109,22 +109,25 @@ namespace Easy14_Coding_Language
             Console.Read();
             if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
             {
+                Console.WriteLine("\nDeleting current project variables folder...");
                 string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
                 foreach (string file in files)
                 {
                     File.Delete(file);
                 }
-                Console.WriteLine("\nDeleting current project variables folder...");
-                Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                
+                string var_or_method_path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+
+                Directory.Delete(var_or_method_path, true);
             }
             Console.WriteLine("\n Exiting Console...");
             Environment.Exit(-1);
         }
-        public void compileCode_fromOtherFiles(string fileloc = null, string[] textArray = null, int lineIDX = 0)
+        public void compileCode_fromOtherFiles(string fileloc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
-            compileCode(fileloc, textArray, lineIDX);
+            compileCode(fileloc, textArray, lineIDX, isInAMethod, methodName);
         }
-        public static void compileCode(string fileloc = null, string[] textArray = null, int lineIDX = 0)
+        public static void compileCode(string fileloc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
             ObjectQuery wql = null;
             ManagementObjectSearcher searcher = null;
@@ -187,8 +190,14 @@ namespace Easy14_Coding_Language
                 {
                     Console.WriteLine(">>>" + line);
                 }
-                var backslash = "\\";
-                if (line.StartsWith($"Console.print(") || line.StartsWith($"print(") && line.EndsWith($");"))
+
+                if (line.StartsWith($"using") && line.EndsWith($";"))
+                {
+                    //assume its a library :) 👍👍👍💯💯🔥🔥
+                    //though it my not be and its just "fjejfiofiriojfeojiws" or some random sh!t like that
+                    /* just */ continue;
+                }
+                else if (line.StartsWith($"Console.print(") || line.StartsWith($"print(") && line.EndsWith($");"))
                 {
                     Console_print con_print = new Console_print();
                     con_print.interperate(line, textArray, fileloc);
@@ -213,13 +222,27 @@ namespace Easy14_Coding_Language
                 else if (line.StartsWith($"if") && line.EndsWith("{"))
                 {
                     If_loop if_loop = new If_loop();
-                    if_loop.interperate(line, textArray, lines, fileloc);
+                    if_loop.interperate(line, lines, textArray, fileloc, line_count, true, methodName);
+                    return;
                 }
-                else if (line.StartsWith($"while") && line.EndsWith("{"))
+                else if (line.StartsWith($"while") && line.EndsWith("{")) // || (lines[line_count + 1] == "{")
                 {
                     //since we need the part that we need to loop until x == true, we first get and save the lines of the file/textArray
                     While_loop while_Loop = new While_loop();
                     while_Loop.interperate(line, textArray, lines, fileloc);
+                    return;
+                }
+                else if (line.StartsWith("func ") && line.EndsWith(") {")) // || line.EndsWith("()" + (lines[line_count + 1] == "{")
+                {
+                    Methods_code method_code = new Methods_code();
+                    method_code.interperate(line, textArray, lines, fileloc, true);
+                    return;
+                }
+                else if (line.EndsWith("();"))
+                {
+                    Methods_code method_code = new Methods_code();
+                    method_code.interperate(line, textArray, lines, fileloc, false);
+                    return;
                 }
                 else if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"MakeFile(") && line.EndsWith($");"))
                 {

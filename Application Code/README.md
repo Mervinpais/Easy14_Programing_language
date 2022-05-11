@@ -9,7 +9,7 @@
 2. 0x0000B# or 0x000B## = Other error
 3. 0x0000C# or 0x000C## = Code error (error with the application itself)
 4. 0x0000D# or 0x000D## = DLL File error
-5. 0x0000E# or 0x000E## = Missing Files error
+5. 0x0000E# or 0x000E## = ???
 6. 0x0000F# or 0x000F## = IO/FileSystem error
 
 # Funni Stuff :)
@@ -20,27 +20,36 @@
 # Each Error Code's Meaning
 ## 0x0000A# Meaning(s);
 
-1. 0x0000A0 - Excuse Error for stuff ununderstandable stuff
-2. 0x0000A1 - Application Failed to do a task
-3. 0x0000A2 - Application Failed to load something (dll's/file)
-4. 0x0000A3 - Application Failed to even start
-5. 0x0000A4 - Application Crashed
-6. 0x0000A5 - Application failed to compile (Developer Error)
-* 0x0000A6, 0x0000A7,0x0000A8,0x0000A9 - Unknown/Not yet identified
+1. 0x0000A0 - Unknown App Error
+2. 0x0000A1 - Not Enough Computer Memory
+3. 0x0000A2 - Missing Files
+4. 0x0000A3 - Missing System Dll's
+5. 0x0000A4 - Not Responding
+6. 0x0000A5 - Application Crashed
 
 ## 0x0000B# Meaning(s);
 
-* 0x0000B0 - Excuse Error for stuff ununderstandable stuff
+* 0x0000B0 - Unknown Error
 
 ## 0x0000C# Meaning(s);
 
-1. 0x0000C0 - Excuse Error for stuff ununderstandable stuff
-2. 0x0000C1 - Missing Code
+1. 0x0000C0 - Unknown Code Error
+2. 0x0000C1 - Failed to run code
+3. 0x0000C2 - Missing Code
 
 ## 0x0000D# Meaning(s);
 
+1. 0x0000D0 - Unknown DLL Error
+1. 0x0000D1 - Missing DLL Error
+
 ## 0x0000E# Meaning(s);
+
+1. 0x0000E0 - Unknown Error
 
 ## 0x0000F# Meaning(s);
 
-0x0000F
+1. 0x0000F0 - Unknown File Error
+2. 0x0000F1 - Can't Access Code File
+3. 0x0000F2 - File Not Found
+4. 0x0000F3 - Method Not Found
+5. 0x0000F4 - Variable Not Found

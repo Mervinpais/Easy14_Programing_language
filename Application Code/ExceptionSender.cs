@@ -37,21 +37,51 @@ public class ExceptionSender
             case 0x000002:
                 Message = "EXCEPTION " + typeOfException + "; Basic Exception - No Data Was Given";
                 break;
-            case 0x000003:
+            case 0x0000A0:
+                Message = "EXCEPTION " + typeOfException + "; Application Error - Unknown Application Error";
+                break;
+            case 0x0000A1:
                 Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Not enough computer memory!";
                 break;
-            case 0x000004:
+            case 0x0000A2:
                 Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Missing Files...";
                 break;
-            case 0x000005:
+            case 0x0000A3:
                 Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Missing System Dll's!";
                 break;
-            case 0x000006:
+            case 0x0000A4:
                 Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Not Responding..";
                 break;
+            case 0x0000A5:
+                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Application Crash";
+                break;
+            //Code Errors (App Errors)
+            case 0x0000C0:
+                Message = "EXCEPTION " + typeOfException + "; Application Code Error - Unknown Code Error";
+                break;
+            case 0x0000C1:
+                Message = "EXCEPTION " + typeOfException + "; Application Code Error - Failed to run code";
+                break;
+            case 0x0000C2:
+                Message = "EXCEPTION " + typeOfException + "; Application Code Error - Missing Code";
+                break;
+            //File Errors
             case 0x0000F0:
+                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Unknown File Error";
+                break;
+            case 0x0000F1:
                 Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Can't Access Code File";
                 break;
+            case 0x0000F2:
+                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - File Not Found";
+                break;
+            case 0x0000F3:
+                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Method Not Found";
+                break;
+            case 0x0000F4:
+                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Variable Not Found";
+                break;
+            //Funni/Not Real Errors (or you could say a 0% Chance Error since you can't get it ever)
             case 0x000404:
                 Message = "EXCEPTION " + typeOfException + "; 404 - Failed to Get ERROR of ERROR";
                 break;
