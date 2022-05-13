@@ -1,12 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.NetworkInformation;
-using System.Threading;
-using System.Net;
-using System.Linq;
-using System.Management;
-
 namespace Easy14_Coding_Language
 {
     class Math_Cos

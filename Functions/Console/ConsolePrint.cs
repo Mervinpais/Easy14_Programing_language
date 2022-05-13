@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Net.NetworkInformation;
-using System.Threading;
-using System.Net;
-using System.Linq;
-using System.Management;
 
 namespace Easy14_Coding_Language
 {
-    class Console_print
+    class ConsolePrint
     {
         public void interperate(string code_part, string[] textArray, string fileloc)
         {
@@ -52,8 +46,8 @@ namespace Easy14_Coding_Language
 
             code_part = code_part.Substring(0, code_part.Length - 2);
             textToPrint = code_part;
-            if (foundUsing == true)
-            {
+            /*if (foundUsing == true)
+            {*/
                 if (textToPrint == "Time.Now")
                 {
                     Console.WriteLine(DateTime.Now);
@@ -84,7 +78,7 @@ namespace Easy14_Coding_Language
                         }
                     }
                 }
-            }
+            //}
         }
     }
 }

@@ -1,15 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.NetworkInformation;
-using System.Threading;
-using System.Net;
-using System.Linq;
-using System.Management;
 
 namespace Easy14_Coding_Language
 {
-    class Methods_code
+    class MethodCode
     {
         //we will take the code of while loop and convert to a method
         Program prog = new Program();
@@ -74,20 +69,21 @@ namespace Easy14_Coding_Language
                 }
 
                 string[] arr = while_lines_list.ToArray();
-                List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                
+                List<string> code_in_method_code = while_lines_list.GetRange(1, end_line_IDX - 1);
                 List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                // This \/ is just something i added and it just fixes everything
                 List<string> usings_code_undercode = someLINEs.GetRange(0, lin_count);
-                usings_code.AddRange(e_code);
+                usings_code.AddRange(code_in_method_code);
                 usings_code_undercode.AddRange(understuff);
-                e_code = usings_code;
+                code_in_method_code = usings_code;
                 understuff = usings_code_undercode;
-                //This is will easy they(online forum) said, it will be fun they said
                 //anyway we will make a folder as a method and a file inside will be it's instructions, though long instructions will take some space
                 /*
                 Console.WriteLine("===TEST1===");
                 Console.WriteLine(string.Join(Environment.NewLine, arr));
                 Console.WriteLine("===TEST2===");
-                Console.WriteLine(string.Join(Environment.NewLine, e_code));
+                Console.WriteLine(string.Join(Environment.NewLine, code_in_method_code));
                 Console.WriteLine("===TESTS ENDED===");
                 */
                 string methodName = code_part_unedited;
@@ -96,7 +92,7 @@ namespace Easy14_Coding_Language
                 //Console.WriteLine(methodName);
 
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}");
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}\INSTRUCTIONS.txt", string.Join(Environment.NewLine, e_code.ToArray()));
+                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}\INSTRUCTIONS.txt", string.Join(Environment.NewLine, code_in_method_code.ToArray()));
                 //prog.compileCode_fromOtherFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}\INSTRUCTIONS.txt");
                 prog.compileCode_fromOtherFiles(null, understuff.ToArray(), 0, true, methodName);
             }

@@ -17,13 +17,13 @@ Here is what you need to know
 
 <hr>
 
-# Version 1.2
+# Version 1.3
 
-The Cool Stuff and Bugfixs arrived,
+The New Stuff and Bugfixs arrived,
 
-* Fixed bugs with functions (many 'functions' aka statements were fixed)
+* Fixed bugs
 * Optimised a bit of the code
-* METHODS! (Parameters are not yet there, please wait till version 1.3 or 1.4) Example;
+* Added a new -keywords args to launching the app
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;func methodName() { <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("This was printed from a method!"); <br>
@@ -46,10 +46,10 @@ The Cool Stuff and Bugfixs arrived,
 
 ### This is Causes major bugs
 
-- A Fix will be coming soon, probably in version 1.3 or 1.4, if not, the bug may be too much to handle
+- A Fix will be coming soon, probably in version 1.4, if not, the bug may be too much to handle
 
-## Another similer bug
-
+## Fixed Bug!
+### (This bug has been fixed)
 - When using an if/while statement inside a method, the if loop has to get whatever is below to continue, and since im so bad at programming (aka "im lazy so i make code without documenting it so i cant understand it later", known as the ILSIMCWDISICUIL condtion) example;
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;func methodName() { <br>
@@ -81,4 +81,5 @@ Im more of a B3 and a bit of B4, but you choose yourself, you may need to improv
 <hr>
 
 # _Quote_ of the Version
-_"But Can you this"_ - "But can you do this" song by Lolnein
+_"<unknown>" quotes from <unknown>_
+- FAILED THE GET QUOTES FROM QUOTE LIST
