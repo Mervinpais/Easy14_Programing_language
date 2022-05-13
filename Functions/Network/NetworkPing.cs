@@ -1,15 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.NetworkInformation;
-using System.Threading;
-using System.Net;
-using System.Linq;
-using System.Management;
 
 namespace Easy14_Coding_Language
 {
-    class Network_Ping
+    class NetworkPing
     {
         public void interperate(string code_part, string fileloc, string[] textArray, int line_count)
         {

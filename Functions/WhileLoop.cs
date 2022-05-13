@@ -1,15 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.NetworkInformation;
-using System.Threading;
-using System.Net;
-using System.Linq;
-using System.Management;
 
 namespace Easy14_Coding_Language
 {
-    class While_loop
+    class WhileLoop
     {
         Program prog = new Program();
         //Above needed as functions like 'compileCode' in Program.cs cant be accessed here and instead of copying it to other functions, just make an object of it 
@@ -62,22 +57,25 @@ namespace Easy14_Coding_Language
             if_Line = if_Line.Substring(5);
             if_Line = if_Line.Substring(1, if_Line.Length - 2);
             string obj1 = null;
+            string obj2 = null;
             bool obj1_variable = false;
+            bool obj2_variable = false;
+
             if (if_Line.Contains("=="))
                 obj1 = if_Line.Substring(0, if_Line.IndexOf("==") - 0);
             if (if_Line.Contains("!="))
                 obj1 = if_Line.Substring(0, if_Line.IndexOf("!=") - 0);
+            
+            if (if_Line.Contains("=="))
+                obj2 = if_Line.Substring((if_Line.IndexOf("==") + 3));
+            if (if_Line.Contains("!="))
+                obj2 = if_Line.Substring(if_Line.IndexOf("!=") + 2);
+
+            obj1 = obj1.TrimStart().TrimEnd();
+            obj2 = obj2.TrimStart().TrimEnd();
 
             if (obj1.StartsWith("\"") && obj1.EndsWith("\"")) obj1_variable = false;
             else obj1_variable = true;
-
-            string obj2 = null;
-            bool obj2_variable = false;
-            if (if_Line.Contains("=="))
-                obj2 = if_Line.Substring(if_Line.IndexOf("==") + 2).TrimEnd();
-            if (if_Line.Contains("!="))
-                obj2 = if_Line.Substring(if_Line.IndexOf("!=") + 2).TrimEnd();
-
             if (obj2.StartsWith("\"") && obj2.EndsWith("\"")) obj2_variable = false;
             else obj2_variable = true;
 
@@ -116,9 +114,15 @@ namespace Easy14_Coding_Language
 
                 lin_count = lin_count - 2;
 
+                obj1 = obj1.Replace("\"", "");
+                obj2 = obj2.Replace("\"", "");
+
+                string obj_1_fileContents = File.ReadAllText(dir + @$"\{obj1}.txt");
+                string obj_2_fileContents = File.ReadAllText(dir + @$"\{obj2}.txt");
+
                 if (obj1_variable == true && obj2_variable == false)
                 {
-                    while (File.ReadAllText(dir + @$"\{obj1}.txt") == obj2.Replace("\"", ""))
+                    while (obj_1_fileContents == obj2)
                     {
                         List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -129,7 +133,7 @@ namespace Easy14_Coding_Language
                 }
                 else if (obj1_variable == false && obj2_variable == true)
                 {
-                    while (obj1.Replace("\"", "") == File.ReadAllText(dir + @$"\{obj2}.txt"))
+                    while (obj1 == obj_2_fileContents)
                     {
                         List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -140,7 +144,7 @@ namespace Easy14_Coding_Language
                 }
                 else if (obj1_variable == true && obj2_variable == true)
                 {
-                    while (File.ReadAllText(dir + @$"\{obj1}.txt") == File.ReadAllText(dir + @$"\{obj2}.txt"))
+                    while (obj_1_fileContents == obj_2_fileContents)
                     {
                         List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -151,7 +155,7 @@ namespace Easy14_Coding_Language
                 }
                 else if (obj1_variable == false && obj2_variable == false)
                 {
-                    while (obj1.Replace("\"", "") == obj2.Replace("\"", ""))
+                    while (obj1 == obj2)
                     {
                         List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);

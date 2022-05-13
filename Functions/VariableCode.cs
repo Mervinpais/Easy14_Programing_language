@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.NetworkInformation;
-using System.Threading;
-using System.Net;
 using System.Linq;
-using System.Management;
 
 namespace Easy14_Coding_Language
 {
-    class VARIABLE_var
+    class VariableCode
     {
         Program prog = new Program();
         //Above needed as functions like 'compileCode' in Program.cs cant be accessed here and instead of copying it to other functions, just make an object of it 
