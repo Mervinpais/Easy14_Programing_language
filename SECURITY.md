@@ -3,7 +3,7 @@
 ## Supported Versions
 
 As of 14th of May 2022 7:40PM;
-Version 1.0 is still in support but will be soon out of style due to version 1.1's newer features, coming soon!
+Version 1.3 is still in support but version 1.0 is starting to die of support
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -11,7 +11,7 @@ Version 1.0 is still in support but will be soon out of style due to version 1.1
 | 1.3.x   | :white_check_mark: Still in support|
 | 1.2.x   | :white_check_mark: Still in support|
 | 1.1.x   | :white_check_mark: Still in support|
-| 1.1.x   | ⚠️ Losing support on July 1st 2022|
+| 1.0.x   | ⚠️ Losing support on July 1st 2022|
 | =< 1.0   | :x:  No Support |
 
 ## Reporting a Vulnerability
