@@ -32,8 +32,12 @@ namespace Easy14_Coding_Language
                 Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
             }
 
-            //============================================================\\
+            //==================The Update Checker====================\\
 
+            updateChecker uc = new updateChecker();
+            uc.checkLatestVersion();
+
+            //=========================================================\\
             foreach (string line in configFile)
             {
                 if (line.StartsWith("delay")) {
