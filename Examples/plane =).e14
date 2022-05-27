@@ -1,0 +1,127 @@
+using Console;
+using FileSystem;
+using Network;
+using Maths;
+
+//Plane Animation :D
+
+wait(100)
+
+print("        _|_        ")
+print("--o--o--(_)--o--o--")
+
+wait(15)
+clear()
+
+print("")
+print("        _|_        ")
+print("--o--o--(_)--o--o--")
+
+wait(15)
+clear()
+
+print("        _|_        ")
+print("--o--o--(_)--o--o--")
+
+wait(15)
+clear()
+
+print("")
+print("        _|_        ")
+print("--o--o--(_)--o--o--")
+
+wait(15)
+clear()
+
+print("        _|_        ")
+print("--o--o--(_)--o--o--")
+
+wait(15)
+clear()
+
+print("     ______ ")
+print("     _\ _~_\___ ")
+print("= =(____AA____D ")
+print("     \_____\___________________,-~~~~~~~`-..___ ")
+print("     //     o O o o o o O O o o o o o O o O o  |\_ ")
+print("     `~-.__        ___..----..                    ) ")
+print("            `---~~\\___________//------------````` ")
+print("            =  ===(_________D") ")
+
+wait(15)
+clear()
+print("")
+print("")
+print("     ______ ")
+print("     _\ _~_\___ ")
+print("= =(____AA____D ")
+print("     \_____\___________________,-~~~~~~~`-..___ ")
+print("     //     o O o o o o O O o o o o o O o O o  |\_ ")
+print("     `~-.__        ___..----..                    ) ")
+print("            `---~~\\___________//------------````` ")
+print("            =  ===(_________D") ")
+
+wait(15)
+clear()
+
+print("")
+print("")
+print("")
+print("     ______ ")
+print("     _\ _~_\___ ")
+print("= =(____AA____D ")
+print("     \_____\___________________,-~~~~~~~`-..___ ")
+print("     //     o O o o o o O O o o o o o O o O o  |\_ ")
+print("     `~-.__        ___..----..                    ) ")
+print("            `---~~\\___________//------------````` ")
+print("                     0                  0 ")
+
+wait(15)
+clear()
+
+print("")
+print("")
+print("")
+print("     ______ ")
+print("     _\ _~_\___ ")
+print("= =(____AA____D ")
+print("     \_____\___________________,-~~~~~~~`-..___ ")
+print("     //     o O o o o o O O o o o o o O o O o  |\_ ")
+print("     `~-.__        ___..----..                    ) ")
+print("            `---~~\\___________//------------````` ")
+print("              ======0              ======0 ")
+
+wait(15)
+clear()
+
+print("")
+print("")
+print("")
+print("     ______ ")
+print("     _\ _~_\___ ")
+print("= =(____AA____D ")
+print("     \_____\___________________,-~~~~~~~`-..___ ")
+print("     //     o O o o o o O O o o o o o O o O o  |\_ ")
+print("     `~-.__        ___..----..                    ) ")
+print("            `---~~\\___________//------------````` ")
+print("                   0                    0 ")
+
+wait(15)
+clear()
+
+print("")
+print("")
+print("")
+print("     ______ ")
+print("     _\ _~_\___ ")
+print("= =(____AA____D ")
+print("     \_____\___________________,-~~~~~~~`-..___ ")
+print("     //     o O o o o o O O o o o o o O o O o  |\_ ")
+print("     `~-.__        ___..----..                    ) ")
+print("            `---~~\\___________//------------````` ")
+print("                   0                    0 ")
+
+print("███████████████████████████████████████  ▄ ▀▄")
+print("█─▄─▄─█─█─█▄─▄▄─███▄─▄▄─█▄─▀█▄─▄█▄─▄▄▀█      █")
+print("███─███─▄─██─▄█▀████─▄█▀██─█▄▀─███─██─█      █")
+print("██▄▄▄██▄█▄█▄▄▄▄▄███▄▄▄▄▄█▄▄▄█▄▄▄██▄▄▄▄█  ▀ ▄▀ ")
