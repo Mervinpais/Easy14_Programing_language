@@ -51,7 +51,7 @@ namespace Easy14_Coding_Language
             {
                 line_counterr++;
                 if (line__ == "}")
-                {
+                {                    
                     end_line_IDX = line_counterr;
                     if (if_lines_list.Count != end_line_IDX)
                     {
@@ -91,6 +91,22 @@ namespace Easy14_Coding_Language
             if (if_Line.Contains("=="))
             {
                 string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                if (!Directory.Exists(dir) || Directory.GetFiles(dir).Length <= 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("ERROR; No variables were ever made so the program can't find any variables :(");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    return;
+                }
+                if (!obj1.Contains("\""))
+                {
+                    obj1_variable = true;
+                }
+                if (!obj2.Contains("\""))
+                {
+                    obj2_variable = true;
+                }
+                /*
                 foreach (string ffile in Directory.GetFiles(dir))
                 {
                     if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj1)
@@ -100,6 +116,96 @@ namespace Easy14_Coding_Language
                 {
                     if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj2)
                     { obj2_variable = true; }
+                }*/
+
+                List<string> someLINEs = null;
+                if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
+                else if (textArray != null && fileloc == null) someLINEs = new List<string>(textArray);
+                int lin_count = 1;
+                foreach (string x in someLINEs)
+                {
+                    lin_count++;
+                    if (!x.StartsWith("using") && x != "" && x != null)
+                    {
+                        break;
+                    }
+                }
+
+                lin_count = lin_count - 2;
+
+                string obj1_fileContent = null;
+                string obj2_fileContent = null;
+                if (obj1_variable)
+                    obj1_fileContent = File.ReadAllText(dir + @$"\{obj1}.txt");
+                if (obj2_variable)
+                    obj2_fileContent = File.ReadAllText(dir + @$"\{obj2}.txt");
+
+                if (obj1_variable && !obj2_variable)
+                {
+                    if (obj1_fileContent == obj2.Replace("\"", ""))
+                    {
+                        List<string> e_code = if_lines_list.GetRange(1, if_lines_list.Count - 2 );
+                        List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                        usings_code.AddRange(e_code);
+                        e_code = usings_code;
+                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                    }
+                }
+                else if (!obj1_variable && obj2_variable)
+                {
+                    if (obj1.Replace("\"", "") == obj2_fileContent)
+                    {
+                        List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                        usings_code.AddRange(e_code);
+                        e_code = usings_code;
+                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                    }
+                }
+                else if (obj1_variable && obj2_variable)
+                {
+                    if (obj1_fileContent == obj2_fileContent)
+                    {
+                        List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                        usings_code.AddRange(e_code);
+                        e_code = usings_code;
+                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                    }
+                }
+                else if (!obj1_variable && !obj2_variable)
+                {
+                    if (obj1.Replace("\"", "") == obj2.Replace("\"", ""))
+                    {
+                        List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                        usings_code.AddRange(e_code);
+                        e_code = usings_code;
+                        prog.compileCode_fromOtherFiles(fileloc, e_code.ToArray(), lineIDX);
+                    }
+                }
+                
+                understuff.RemoveRange(0, end_line_IDX - 2);
+                List<string> code_toContinueExceuting = new List<string>();
+                code_toContinueExceuting.AddRange(usings_lines_list);
+                code_toContinueExceuting.AddRange(understuff);
+
+                //int lineIDX_underpart = lineIDX + (code_toContinueExceuting.ToArray().Length - lineIDX);
+                if (isInAMethod != true)
+                {
+                    prog.compileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
+                }
+            }
+            else if (if_Line.Contains("!="))
+            {
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                if (!obj1.Contains("\""))
+                {
+                    obj1_variable = true;
+                }
+                if (!obj2.Contains("\""))
+                {
+                    obj2_variable = true;
                 }
 
                 List<string> someLINEs = null;
@@ -119,103 +225,15 @@ namespace Easy14_Coding_Language
 
                 string obj1_fileContent = null;
                 string obj2_fileContent = null;
-                if (obj1_variable) {
+
+                if (obj1_variable)
                     obj1_fileContent = File.ReadAllText(dir + @$"\{obj1}.txt");
-                }
-                if (obj2_variable) {
+                if (obj2_variable)
                     obj2_fileContent = File.ReadAllText(dir + @$"\{obj2}.txt");
-                }
 
                 if (obj1_variable == true && obj2_variable == false)
                 {
-                    if (obj1_fileContent == obj2)
-                    {
-                        List<string> e_code = if_lines_list.GetRange(1, if_lines_list.Count - 1);
-                        List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                        usings_code.AddRange(e_code);
-                        e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
-                    }
-                }
-                else if (obj1_variable == false && obj2_variable == true)
-                {
-                    if (obj1 == obj2_fileContent)
-                    {
-                        List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
-                        List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                        usings_code.AddRange(e_code);
-                        e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
-                    }
-                }
-                else if (obj1_variable == true && obj2_variable == true)
-                {
-                    if (obj1_fileContent == obj2_fileContent)
-                    {
-                        List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
-                        List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                        usings_code.AddRange(e_code);
-                        e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
-                    }
-                }
-                else if (obj1_variable == false && obj2_variable == false)
-                {
-                    if (obj1 == obj2)
-                    {
-                        List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
-                        List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                        usings_code.AddRange(e_code);
-                        e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(fileloc, e_code.ToArray(), lineIDX);
-                    }
-                }
-                understuff.RemoveRange(0, end_line_IDX);
-
-                List<string> code_toContinueExceuting = new List<string>();
-                code_toContinueExceuting.AddRange(usings_lines_list);
-                code_toContinueExceuting.AddRange(understuff);
-
-                //int lineIDX_underpart = lineIDX + (code_toContinueExceuting.ToArray().Length - lineIDX);
-                prog.compileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
-            }
-            else if (if_Line.Contains("!="))
-            {
-                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
-                foreach (string ffile in Directory.GetFiles(dir))
-                {
-                    if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj1.Replace(".txt", ""))
-                    {
-                        obj1_variable = true;
-                    }
-                }
-                foreach (string ffile in Directory.GetFiles(dir))
-                {
-                    if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj2.Replace(".txt", ""))
-                    {
-                        obj2_variable = true;
-                    }
-                }
-
-                List<string> someLINEs = null;
-                if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
-                else if (textArray != null && fileloc == null) someLINEs = new List<string>(textArray);
-                int lin_count = 1;
-                foreach (string x in someLINEs)
-                {
-                    lin_count++;
-                    if (!x.StartsWith("using") && x != "" && x != null)
-                    {
-                        break;
-                    }
-                }
-
-                lin_count = lin_count - 2;
-
-                string obj1_fileContent = File.ReadAllText(dir + @$"\{obj1}.txt");
-                if (obj1_variable == true && obj2_variable == false)
-                {
-                    if (obj1_fileContent != obj2)
+                    if (obj1_fileContent != obj2.Replace("\"", ""))
                     {
                         List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -226,7 +244,7 @@ namespace Easy14_Coding_Language
                 }
                 else if (obj1_variable == false && obj2_variable == true)
                 {
-                    if (obj1 != File.ReadAllText(dir + @$"\{obj2}.txt"))
+                    if (obj1.Replace("\"", "") != obj2_fileContent)
                     {
                         List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -237,7 +255,7 @@ namespace Easy14_Coding_Language
                 }
                 else if (obj1_variable == true && obj2_variable == true)
                 {
-                    if (obj1_fileContent != File.ReadAllText(dir + @$"\{obj2}.txt"))
+                    if (obj1_fileContent != obj2_fileContent)
                     {
                         List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -248,7 +266,7 @@ namespace Easy14_Coding_Language
                 }
                 else if (obj1_variable == false && obj2_variable == false)
                 {
-                    if (obj1 != obj2)
+                    if (obj1.Replace("\"", "") != obj2.Replace("\"", ""))
                     {
                         List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -267,6 +285,7 @@ namespace Easy14_Coding_Language
                     }
                     part_to_continue_at++;
                 }
+                
                 understuff.RemoveRange(0, end_line_IDX - 1);
                 List<string> code_toContinueExceuting = new List<string>();
                 code_toContinueExceuting.AddRange(usings_lines_list);
@@ -285,7 +304,7 @@ namespace Easy14_Coding_Language
                 }*/
 
                 //int lineIDX_underpart = lineIDX + (code_toContinueExceuting.ToArray().Length - lineIDX);
-                if (isInAMethod == true) {
+                if (isInAMethod != true) {
                     prog.compileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
                 }
             }

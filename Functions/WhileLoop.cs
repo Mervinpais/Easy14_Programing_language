@@ -61,43 +61,30 @@ namespace Easy14_Coding_Language
             bool obj1_variable = false;
             bool obj2_variable = false;
 
-            if (if_Line.Contains("=="))
-                obj1 = if_Line.Substring(0, if_Line.IndexOf("==") - 0);
-            if (if_Line.Contains("!="))
-                obj1 = if_Line.Substring(0, if_Line.IndexOf("!=") - 0);
-            
-            if (if_Line.Contains("=="))
-                obj2 = if_Line.Substring((if_Line.IndexOf("==") + 3));
-            if (if_Line.Contains("!="))
-                obj2 = if_Line.Substring(if_Line.IndexOf("!=") + 2);
+            if (if_Line.TrimEnd().TrimStart() != "(true)")
+            {
+                if (if_Line.Contains("=="))
+                    obj1 = if_Line.Substring(0, if_Line.IndexOf("==") - 0);
+                if (if_Line.Contains("!="))
+                    obj1 = if_Line.Substring(0, if_Line.IndexOf("!=") - 0);
+                
+                if (if_Line.Contains("=="))
+                    obj2 = if_Line.Substring((if_Line.IndexOf("==") + 3));
+                if (if_Line.Contains("!="))
+                    obj2 = if_Line.Substring(if_Line.IndexOf("!=") + 2);
 
-            obj1 = obj1.TrimStart().TrimEnd();
-            obj2 = obj2.TrimStart().TrimEnd();
+                obj1 = obj1.TrimStart().TrimEnd();
+                obj2 = obj2.TrimStart().TrimEnd();
 
-            if (obj1.StartsWith("\"") && obj1.EndsWith("\"")) obj1_variable = false;
-            else obj1_variable = true;
-            if (obj2.StartsWith("\"") && obj2.EndsWith("\"")) obj2_variable = false;
-            else obj2_variable = true;
+                if (obj1.StartsWith("\"") && obj1.EndsWith("\"")) obj1_variable = false;
+                else obj1_variable = true;
+                if (obj2.StartsWith("\"") && obj2.EndsWith("\"")) obj2_variable = false;
+                else obj2_variable = true;
+            }
 
-            if (if_Line.Contains("=="))
+            if (if_Line.TrimEnd().TrimStart() == "(true)")
             {
                 string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
-                foreach (string ffile in Directory.GetFiles(dir))
-                {
-                    if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj1.Replace(".txt", ""))
-                    {
-                        obj1_variable = true;
-                        break;
-                    }
-                }
-                foreach (string ffile in Directory.GetFiles(dir))
-                {
-                    if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj2.Replace(".txt", ""))
-                    {
-                        obj2_variable = true;
-                        break;
-                    }
-                }
 
                 List<string> someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
@@ -114,15 +101,71 @@ namespace Easy14_Coding_Language
 
                 lin_count = lin_count - 2;
 
-                obj1 = obj1.Replace("\"", "");
-                obj2 = obj2.Replace("\"", "");
+                List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                usings_code.AddRange(e_code);
+                e_code = usings_code;
 
-                string obj_1_fileContents = File.ReadAllText(dir + @$"\{obj1}.txt");
-                string obj_2_fileContents = File.ReadAllText(dir + @$"\{obj2}.txt");
+                while (true)
+                {
+                    prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                    System.Threading.Thread.Sleep(100); //Just to not cause a stackoverflow/lag the computer
+                }
+            }
+            else if (if_Line.Contains("=="))
+            {
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
 
+                List<string> someLINEs = null;
+                if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
+                else if (textArray != null && fileloc == null) someLINEs = new List<string>(textArray);
+                int lin_count = 1;
+                foreach (string x in someLINEs)
+                {
+                    lin_count++;
+                    if (!x.StartsWith("using") && x != "" && x != null)
+                    {
+                        break;
+                    }
+                }
+
+                lin_count = lin_count - 2;
+
+                string obj1_fileContent = null;
+                string obj2_fileContent = null;
+                if (obj1_variable)
+                {
+                    if (!File.Exists(dir + @$"\{obj1}.txt"))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"ERROR; Variable \"{obj1}\" does not exist!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        return;
+                    }
+                    else
+                    {
+                        obj1_fileContent = File.ReadAllText(dir + @$"\{obj1}.txt");
+                    }
+                }
+
+                if (obj2_variable)
+                {
+                    if (!File.Exists(dir + @$"\{obj2}.txt"))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"ERROR; Variable \"{obj2}\" does not exist!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        return;
+                    }
+                    else
+                    {
+                        obj2_fileContent = File.ReadAllText(dir + @$"\{obj2}.txt");
+                    }
+                }
+                
                 if (obj1_variable == true && obj2_variable == false)
                 {
-                    while (obj_1_fileContents == obj2)
+                    while (obj1_fileContent == obj2.Replace("\"", ""))
                     {
                         List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -133,7 +176,7 @@ namespace Easy14_Coding_Language
                 }
                 else if (obj1_variable == false && obj2_variable == true)
                 {
-                    while (obj1 == obj_2_fileContents)
+                    while (obj1.Replace("\"", "") == obj2_fileContent)
                     {
                         List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -144,7 +187,7 @@ namespace Easy14_Coding_Language
                 }
                 else if (obj1_variable == true && obj2_variable == true)
                 {
-                    while (obj_1_fileContents == obj_2_fileContents)
+                    while (obj1_fileContent == obj2_fileContent)
                     {
                         List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -155,7 +198,7 @@ namespace Easy14_Coding_Language
                 }
                 else if (obj1_variable == false && obj2_variable == false)
                 {
-                    while (obj1 == obj2)
+                    while (obj1.Replace("\"", "") == obj2.Replace("\"", ""))
                     {
                         List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
@@ -164,7 +207,100 @@ namespace Easy14_Coding_Language
                         prog.compileCode_fromOtherFiles(null, e_code.ToArray());
                     }
                 }
-                understuff.RemoveRange(0, end_line_IDX - 3);
+                understuff.RemoveRange(0, end_line_IDX);
+                prog.compileCode_fromOtherFiles(null, understuff.ToArray());
+            }
+            else if (if_Line.Contains("!="))
+            {
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+
+                List<string> someLINEs = null;
+                if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
+                else if (textArray != null && fileloc == null) someLINEs = new List<string>(textArray);
+                int lin_count = 1;
+                foreach (string x in someLINEs)
+                {
+                    lin_count++;
+                    if (!x.StartsWith("using") && x != "" && x != null)
+                    {
+                        break;
+                    }
+                }
+
+                lin_count = lin_count - 2;
+
+                string obj1_fileContent = null;
+                string obj2_fileContent = null;
+                if (obj1_variable) {
+                    if (!File.Exists(dir + @$"\{obj1}.txt")) {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"ERROR; Variable \"{obj1}\" does not exist!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        return;
+                    }
+                    else {
+                        obj1_fileContent = File.ReadAllText(dir + @$"\{obj1}.txt");
+                    }
+                }
+
+                if (obj2_variable) {
+                    if (!File.Exists(dir + @$"\{obj2}.txt"))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"ERROR; Variable \"{obj2}\" does not exist!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        return;
+                    }
+                    else {
+                        obj2_fileContent = File.ReadAllText(dir + @$"\{obj2}.txt");
+                    }
+                }
+
+                if (obj1_variable == true && obj2_variable == false)
+                {
+                    while (obj1_fileContent != obj2.Replace("\"", ""))
+                    {
+                        List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                        usings_code.AddRange(e_code);
+                        e_code = usings_code;
+                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                    }
+                }
+                else if (obj1_variable == false && obj2_variable == true)
+                {
+                    while (obj1.Replace("\"", "") != obj2_fileContent)
+                    {
+                        List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                        usings_code.AddRange(e_code);
+                        e_code = usings_code;
+                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                    }
+                }
+                else if (obj1_variable == true && obj2_variable == true)
+                {
+                    while (obj1_fileContent != obj2_fileContent)
+                    {
+                        List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                        usings_code.AddRange(e_code);
+                        e_code = usings_code;
+                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                    }
+                }
+                else if (obj1_variable == false && obj2_variable == false)
+                {
+                    while (obj1.Replace("\"", "") != obj2.Replace("\"", ""))
+                    {
+                        List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                        usings_code.AddRange(e_code);
+                        e_code = usings_code;
+                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                    }
+                }
+                understuff.RemoveRange(0, end_line_IDX);
                 prog.compileCode_fromOtherFiles(null, understuff.ToArray());
             }
         }

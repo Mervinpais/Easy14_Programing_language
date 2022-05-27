@@ -1,11 +1,18 @@
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Easy14_Coding_Language
 {
     class ConsoleInput
     {
-        public void interperate(string code_part, string[] textArray, string fileloc)
+        private string endOfStatementCode_;
+        public string endOfStatementCode
+        {
+            get { return endOfStatementCode_; }
+            set { endOfStatementCode_ = value; }
+        }
+        public void interperate(string code_part, string[] textArray, string fileloc, string varName)
         {
             string code_part_unedited;
             string textToPrint;
@@ -36,15 +43,22 @@ namespace Easy14_Coding_Language
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'input' without its reference  (Use Console.input(\"*Text*\") to fix this error :)");
+                    Console.ForegroundColor = ConsoleColor.Gray;
                     return;
                 }
             }
             else if (code_part.StartsWith($"Console.input(")) { }
 
             code_part_unedited = code_part;
+            code_part = code_part.Substring(code_part.IndexOf("="));
             code_part = code_part_unedited.TrimStart();
-            code_part = code_part.Substring(14);
-            code_part = code_part.Substring(0, code_part.Length - 2);
+            code_part = code_part.Substring(10);
+
+            if (endOfStatementCode == ");")
+                code_part = code_part.Substring(0, code_part.Length - 3);
+            else
+                code_part = code_part.Substring(0, code_part.Length - 2);
+
             textToPrint = code_part;
             if (foundUsing == false)
             {
@@ -66,9 +80,63 @@ namespace Easy14_Coding_Language
                     Random rnd = new Random();
                     Console.WriteLine(rnd.Next(number1, number2));
                 }
-                else if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
+                else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1)
                 {
-                    Console.WriteLine(textToPrint);
+                    var num1 = textToPrint.Substring(3, textToPrint.IndexOf("+") - 3);
+                    var num2 = textToPrint.Substring(textToPrint.IndexOf("+") + 1);
+                    num1 = num1.TrimEnd().TrimStart();
+                    num2 = num2.TrimEnd().TrimStart();
+                    var sum = Convert.ToInt32(num1) + Convert.ToInt32(num2);
+                    Console.WriteLine(sum);
+                }
+                else if (textToPrint.Contains("-") && textToPrint.Count(f => (f == '-')) == 1)
+                {
+                    var num1 = textToPrint.Substring(3, textToPrint.IndexOf("-") - 3);
+                    var num2 = textToPrint.Substring(textToPrint.IndexOf("-") + 1);
+                    num1 = num1.TrimEnd().TrimStart();
+                    num2 = num2.TrimEnd().TrimStart();
+                    var difference = Convert.ToInt32(num1) - Convert.ToInt32(num2);
+                    Console.WriteLine(difference);
+                }
+                else if (textToPrint.Contains("*") && textToPrint.Count(f => (f == '*')) == 1)
+                {
+                    var num1 = textToPrint.Substring(3, textToPrint.IndexOf("*") - 3);
+                    var num2 = textToPrint.Substring(textToPrint.IndexOf("*") + 1);
+                    num1 = num1.TrimEnd().TrimStart();
+                    num2 = num2.TrimEnd().TrimStart();
+                    var result = Convert.ToInt32(num1) * Convert.ToInt32(num2);
+                    Console.WriteLine(result);
+                }
+                else if (textToPrint.Contains("/") && textToPrint.Count(f => (f == '/')) == 1)
+                {
+                    var num1 = textToPrint.Substring(3, textToPrint.IndexOf("/") - 3);
+                    var num2 = textToPrint.Substring(textToPrint.IndexOf("/") + 1);
+                    num1 = num1.TrimEnd().TrimStart();
+                    num2 = num2.TrimEnd().TrimStart();
+                    var result = Convert.ToInt32(num1) / Convert.ToInt32(num2);
+                    Console.WriteLine(result);
+                }
+                else if (textToPrint.Contains("%") && textToPrint.Count(f => (f == '%')) == 1)
+                {
+                    var num1 = textToPrint.Substring(3, textToPrint.IndexOf("%") - 3);
+                    var num2 = textToPrint.Substring(textToPrint.IndexOf("%") + 1);
+                    num1 = num1.TrimEnd().TrimStart();
+                    num2 = num2.TrimEnd().TrimStart();
+                    var result = Convert.ToInt32(num1) / Convert.ToInt32(num2);
+                    Console.WriteLine(result);
+                }
+                else if (textToPrint.Contains("==") && textToPrint.Count(f => (f == '=')) == 2)
+                {
+                    var num1 = textToPrint.Substring(3, textToPrint.IndexOf("==") - 4);
+                    var num2 = textToPrint.Substring(textToPrint.IndexOf("==") + 2);
+                    num1 = num1.TrimEnd().TrimStart();
+                    num2 = num2.TrimEnd().TrimStart();
+                    var result = Convert.ToInt32(num1) == Convert.ToInt32(num2);
+                    Console.WriteLine(result);
+                }
+                else if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith(endOfStatementCode == ")" ? "\"" : "\")"))
+                {
+                    Console.WriteLine(textToPrint.Substring(1).Substring(0, textToPrint.Length - 3));
                 }
                 else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
                 {
@@ -87,7 +155,8 @@ namespace Easy14_Coding_Language
                     }
                 }
                 Console.Write(">");
-                Console.ReadLine();
+                string textFromUser = Console.ReadLine();
+                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", textFromUser);
             }
         }
     }

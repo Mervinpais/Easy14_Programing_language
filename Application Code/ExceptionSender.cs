@@ -1,12 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.NetworkInformation;
-using System.Threading;
-using System.Net;
-using System.Linq;
-using System.Management;
-
 public class ExceptionSender
 {
     public void SendException(int typeOfException)
@@ -25,7 +19,7 @@ public class ExceptionSender
         switch (typeOfException)
         {
             //! NOTE: These codes below are not error codes that meantions a part in memory where the error happened, these erorr codes are for like example;
-            //! - Uh oh, file Math_().cs is not found, ERROR CODE: 0x2431 (Not real error code)
+            //! - Uh oh, file Math_function1().cs is not found, ERROR CODE: 0x2431 (Not real error code)
             //! So just be aware about this
             //* Also The Error codes are in Hexa-Decimal
             case 0x000000:

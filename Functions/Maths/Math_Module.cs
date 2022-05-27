@@ -23,9 +23,51 @@ namespace Easy14_Coding_Language
             string[] intergers = expression.Split('%');
             int result = 0; //incase the below sum can't be added
             try {
-                int integer1 = Convert.ToInt32(intergers[0]);
-                int integer2 = Convert.ToInt32(intergers[1]);
-                result = integer1 % integer2;
+                Nullable<int> integer1 = null;
+                Nullable<int> integer2 = null;
+                string integer1_str = null;
+                string integer2_str = null;
+
+                if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                {
+                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                    foreach (string file in files)
+                    {
+                        string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
+                        if (_file == intergers[0])
+                        {
+                            integer1_str = File.ReadAllText(file);
+                            //Console.WriteLine(contentInFile.ToString());
+                            break;
+                        }
+                    }
+                    foreach (string file in files)
+                    {
+                        string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
+                        if (_file == intergers[1])
+                        {
+                            integer2_str = File.ReadAllText(file);
+                            //Console.WriteLine(contentInFile.ToString());
+                            break;
+                        }
+                    }
+                }
+
+                if (integer1_str == null)
+                    integer1 = Convert.ToInt32(intergers[0]);
+                if (integer2_str == null)
+                    integer2 = Convert.ToInt32(intergers[1]);
+
+                //Seperatated Sections
+
+                if (integer1_str == null || integer2_str == null)
+                    result = Convert.ToInt32(integer1) % Convert.ToInt32(integer2);
+                else if (integer1_str != null || integer2_str != null)
+                    result = Convert.ToInt32(integer1_str) % Convert.ToInt32(integer2_str);
+                else if (integer1_str == null || integer2_str != null)
+                    result = Convert.ToInt32(integer1) % Convert.ToInt32(integer2_str);
+                else if (integer1_str != null || integer2_str == null)
+                    result = Convert.ToInt32(integer1_str) % Convert.ToInt32(integer2);
             }
             catch
             {

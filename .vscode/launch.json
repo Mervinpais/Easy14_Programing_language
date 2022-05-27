@@ -11,11 +11,8 @@
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/bin/Debug/net5.0/Easy14 Coding Language.dll",
-            "args": [
-                /*"-run", 
-                "C:\\Users\\mervi\\Desktop\\EASY14 TEST FILES\\testcode.ese14"*/
-            ],
-            //C:\Users\mervi\source\repos\Easy14 Coding Language\Easy14 Coding Language\bin\Debug\net5.0\Easy14 Coding Language.exe -run C:\Users\mervi\Desktop\EASY14 TEST FILES\testcode.ese14
+            "args": [],
+            
             "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "externalTerminal",

@@ -11,12 +11,20 @@ namespace Easy14_Coding_Language
         //Above needed as functions like 'compileCode' in Program.cs cant be accessed here and instead of copying it to other functions, just make an object of it 
         //and use it's 'compileCode_forOtherFiles' function to get 'compileCode' (because 'compileCode' is static, we need another function that is not static to access
         //the static function, kinda smart in my opinion), its kind of a bad way of doing it but it the easy way and has no error with it :|
+
+        private string endOfStatementCode_;
+        public string endOfStatementCode
+        {
+            get { return endOfStatementCode_; }
+            set { endOfStatementCode_ = value; }
+        }
+
         public void interperate(string code_part, string[] lines, int line_count)
         {
             string code_part_unedited = code_part;
             code_part = code_part.TrimStart();
             code_part = code_part.Substring(3);
-            code_part = code_part.Substring(0, code_part.Length - 1);
+            //code_part = code_part.Substring(0, code_part.Length - 1);
             var textToPrint = code_part;
             if (textToPrint.Contains("="))
             {
@@ -47,7 +55,11 @@ namespace Easy14_Coding_Language
                             + @$"\EASY14_Variables_TEMP"
                     );
                     varContent = varContent.Substring(1).TrimStart();
-                    if (varContent.StartsWith("random.range(") && varContent.EndsWith($")"))
+                    //Below 2 lines of code will be used later in the code, its just for not needing to copy and paste alot
+                    var varContent_clone = varContent.Replace("=", "").TrimStart().ToLower();
+                    bool doesContainMathFunctions = varContent_clone.StartsWith("cos") || varContent_clone.StartsWith("sin") || varContent_clone.StartsWith("tan") || varContent_clone.StartsWith("abs");
+
+                    if (varContent.StartsWith("random.range(") && varContent.EndsWith(endOfStatementCode == ")" ? "" : ";"))
                     {
                         string text = varContent;
                         text = text.Replace("random.range(", "");
@@ -57,208 +69,107 @@ namespace Easy14_Coding_Language
                         Random rnd = new Random();
                         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", Convert.ToString(rnd.Next(number1, number2)));
                     }
-                    else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith($")"))
+                    else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith(endOfStatementCode == ")" ? "" : ";"))
                     {
-                        if (varContent.StartsWith($"input("))
-                        {
-                            IList<string> lines_Ilist = new List<string>(lines);
-                            //Console.WriteLine(String.Join(Environment.NewLine, lines_Ilist));
-                            bool foundUsing = false;
-                            //Finally got thw time to learn Linq and its just like sql query :D
-                            var TheUsingFound = from l in lines_Ilist
-                                                where l == ("using Console;")
-                                                select l;
-                            //Console.WriteLine(String.Join(Environment.NewLine, TheUsingFound));
-                            if (TheUsingFound.ToArray()[0] == ("using Console;"))
-                            {
-                                foundUsing = true;
-                                //Console.WriteLine(foundUsing);
-                            }
-                            else
-                            {
-                                foundUsing = false;
-                                //Console.WriteLine(foundUsing);
-                            }
-
-                            if (TheUsingFound.ToArray().Length > 1)
-                            {
-
-                            }
-                            /*foreach (string x in lines)
-                            {
-                                if (x == varContent)
-                                {
-                                    break;
-                                }
-                                if (x.StartsWith("using"))
-                                {
-                                    if (x == "using Console;")
-                                    {
-                                        foundUsing = true;
-                                        break;
-                                    }
-                                }
-                            }*/
-                            if (foundUsing == false)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine(
-                                    $"ERROR; The Using 'Console' wasnt referenced to use 'input' without its reference  (Use Console.input(\"*Text*\") to fix this error :)"
-                                );
-                            }
-                        }
-                        else if (varContent.StartsWith($"Console.input(")) { }
-                        string input_line_ = varContent;
-                        input_line_ = input_line_.TrimStart();
-                        if (varContent.StartsWith("Console.input("))
-                        {
-                            input_line_ = input_line_.Substring(14);
-                        }
-                        else if (varContent.StartsWith("input("))
-                        {
-                            input_line_ = input_line_.Substring(6);
-                        }
-                        string input_textToPrint = input_line_;
-                        if (input_textToPrint.StartsWith('"'.ToString()) && input_textToPrint.EndsWith('"'.ToString()))
-                        {
-                            Console.WriteLine(input_textToPrint);
-                        }
-                        else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
-                        {
-                            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
-                            foreach (string file in files)
-                            {
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == input_textToPrint)
-                                {
-                                    var contentInFile = File.ReadAllText(file);
-                                    Console.WriteLine(contentInFile.ToString());
-                                    break;
-                                }
-                            }
-                        }
-                        Console.Write(">");
-                        string textFromUser = Console.ReadLine();
-                        File.WriteAllText(
-                            Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
-                                + @$"\EASY14_Variables_TEMP\{varName}.txt",
-                            textFromUser
-                        );
+                        ConsoleInput conInput = new ConsoleInput();
+                        conInput.interperate(code_part, null, null, varName);
                     }
+
                     else if (varContent.Contains("+"))
                     {
+                        if (doesContainMathFunctions) return;
+                        if (varContent.Contains("\"")) return;
+
                         Math_Add math_add = new Math_Add();
-                        math_add.interperate(varContent, line_count, varName);
+                        var result = math_add.interperate(varContent, line_count, varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt",result.ToString());
                     }
                     else if (varContent.Contains("-"))
                     {
+                        if (doesContainMathFunctions) return;
+                        if (varContent.Contains("\"")) return;
+                        
                         Math_Subtract math_sub = new Math_Subtract();
-                        math_sub.interperate(varContent, line_count, varName);
+                        var result = math_sub.interperate(varContent, line_count, varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Contains("/"))
                     {
+                        if (doesContainMathFunctions) return;
+                        if (varContent.Contains("\"")) return;
+
                         Math_Divide math_div = new Math_Divide();
-                        math_div.interperate(varContent, line_count, varName);
+                        var result = math_div.interperate(varContent, line_count, varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Contains("*"))
                     {
+                        if (doesContainMathFunctions) return;
+                        if (varContent.Contains("\"")) return;
+
                         Math_Multiply math_multiply = new Math_Multiply();
-                        math_multiply.interperate(varContent, line_count, varName);
+                        var result = math_multiply.interperate(varContent, line_count, varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Contains("%"))
                     {
+                        if (doesContainMathFunctions) return;
+                        if (varContent.Contains("\"")) return;
+
                         Math_Module math_mod = new Math_Module();
-                        math_mod.interperate(varContent, line_count, varName);
+                        var result = math_mod.interperate(varContent, line_count, varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Contains("=="))
                     {
+                        if (doesContainMathFunctions) return;
+                        
                         Math_Equals math_equals = new Math_Equals();
-                        math_equals.interperate(varContent, line_count, varName);
+                        var result = math_equals.interperate(varContent, line_count, varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("cos"))
                     {
                         Math_Cos math_cos = new Math_Cos();
-                        math_cos.interperate(varContent, line_count, varName);
+                        var result = math_cos.interperate(varContent, line_count, varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Replace("=","").TrimStart().ToLower().StartsWith("sin"))
                     {
                         Math_Sin math_sin = new Math_Sin();
-                        math_sin.interperate(varContent, line_count, varName);
+                        var result = math_sin.interperate(varContent, line_count, varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("tan"))
                     {
                         Math_Tan math_tan = new Math_Tan();
-                        math_tan.interperate(varContent, line_count, varName);
+                        var result = math_tan.interperate(varContent, line_count, varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
                     }
-                    else if (varContent.StartsWith($"Math.Add(") || varContent.StartsWith($"Add(") && varContent.EndsWith($")"))
+                    else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("abs"))
                     {
-                        if (varContent.StartsWith($"Add("))
-                        {
-                            bool foundUsing = false;
-                            foreach (string x in lines)
-                            {
-                                if (x == varContent)
-                                {
-                                    break;
-                                }
-                                if (x.StartsWith("using"))
-                                {
-                                    if (x == "using Math;")
-                                    {
-                                        foundUsing = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (foundUsing == false)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine(
-                                    $"ERROR; The Using 'Math' wasnt referenced to use 'Add' without its reference  (Use Console.input(\"*Text*\") to fix this error :)"
-                                );
-                            }
-                        }
-                        else if (varContent.StartsWith($"Math.Add(")) { }
-                        string input_line_ = varContent;
-                        input_line_ = input_line_.TrimStart();
-                        if (varContent.StartsWith("Math.Add("))
-                        {
-                            input_line_ = input_line_.Substring(9);
-                        }
-                        else if (varContent.StartsWith("Add("))
-                        {
-                            input_line_ = input_line_.Substring(4);
-                        }
-                        string input_textToPrint = input_line_;
-                        if (input_textToPrint.StartsWith('"'.ToString()) && input_textToPrint.EndsWith('"'.ToString()))
-                        {
-                            Console.WriteLine(input_textToPrint);
-                        }
-                        else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
-                        {
-                            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
-                            foreach (string file in files)
-                            {
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == input_textToPrint)
-                                {
-                                    var contentInFile = File.ReadAllText(file);
-                                    Console.WriteLine(contentInFile.ToString());
-                                    break;
-                                }
-                            }
-                        }
-                        Console.Write(">");
-                        string textFromUser = Console.ReadLine();
-                        File.WriteAllText(
-                            Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
-                                + @$"\EASY14_Variables_TEMP\{varName}.txt",
-                            textFromUser
-                        );
+                        Math_Abs math_abs = new Math_Abs();
+                        var result = math_abs.interperate(varContent, line_count, varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
                     }
-                    else if (varContent.StartsWith('"'.ToString()) && varContent.EndsWith('"'.ToString()))
+                    else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("sq"))
+                    {
+                        Math_Square math_sq = new Math_Square();
+                        var result = math_sq.interperate(varContent, line_count, varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
+                    }
+                    else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("sqrt"))
+                    {
+                        Math_SquareRoot math_sqrt = new Math_SquareRoot();
+                        var result = math_sqrt.interperate(varContent, line_count, varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
+                    }
+                    else if (varContent.StartsWith('"'.ToString()) && varContent.EndsWith(endOfStatementCode == ")" ? "\"" : "\";"))
                     {
                         varContent = varContent.Substring(1);
-                        varContent = varContent.Substring(0, varContent.Length - 1);
+                        varContent = varContent.Substring(0, endOfStatementCode == ")" ? varContent.Length - 1  : varContent.Length - 2);
                         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", varContent);
+                        return;
                     }
                     else
                     {

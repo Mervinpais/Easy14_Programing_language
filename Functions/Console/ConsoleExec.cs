@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Easy14_Coding_Language
 {
-    class ConsolePrint
+    class ConsoleExec
     {
         private string endOfStatementCode_;
         public string endOfStatementCode
@@ -21,7 +21,7 @@ namespace Easy14_Coding_Language
             code_part_unedited = code_part;
             code_part = code_part_unedited.TrimStart();
             bool foundUsing = false;
-            if (code_part.StartsWith($"print("))
+            if (code_part.StartsWith($"exec("))
             {
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
@@ -41,17 +41,17 @@ namespace Easy14_Coding_Language
                 if (foundUsing == false)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'print' without its reference  (Use Console.print(\"*Text To Print*\") to fix this error :)");
+                    Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'exec' without its reference  (Use Console.exec(\"*Text To Execute*\") to fix this error :)");
                     Console.ForegroundColor = ConsoleColor.Gray;
                     return;
                 }
             }
-            else if (code_part.StartsWith($"Console.print(")) { }
+            else if (code_part.StartsWith($"Console.exec(")) { }
 
-            if (code_part_unedited.StartsWith($"Console.print("))
-                code_part = code_part.Substring(14);
-            else if (code_part_unedited.StartsWith($"print("))
-                code_part = code_part.Substring(6);
+            if (code_part_unedited.StartsWith($"Console.exec("))
+                code_part = code_part.Substring(13);
+            else if (code_part_unedited.StartsWith($"exec("))
+                code_part = code_part.Substring(5);
 
             if (endOfStatementCode == ");")
                 code_part = code_part.Substring(0, code_part.Length - 2);
@@ -71,11 +71,18 @@ namespace Easy14_Coding_Language
             int textToPrint_int;
             isAnInt = int.TryParse(textToPrint, out textToPrint_int);
 
-            
+            Program prog = new Program();
 
             if (textToPrint == "Time.Now")
             {
-                Console.WriteLine(DateTime.Now);
+                //Console.WriteLine(DateTime.Now);
+                string[] execArray = {DateTime.Now.ToString()};
+                prog.compileCode_fromOtherFiles(null, execArray);
+            }
+            else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\""))
+            {
+                string[] execArray = { textToPrint.TrimEnd().TrimStart().Substring(1).Substring(0, textToPrint.Length - 2).ToString() };
+                prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.StartsWith("random.range("))
             {
@@ -84,7 +91,9 @@ namespace Easy14_Coding_Language
                 int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
                 int number2 = Convert.ToInt32(text.Substring(text.IndexOf(",")).Replace(",", ""));
                 Random rnd = new Random();
-                Console.WriteLine(rnd.Next(number1, number2));
+                //Console.WriteLine(rnd.Next(number1, number2));
+                string[] execArray = {rnd.Next(number1, number2).ToString()};
+                prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString)
             {
@@ -93,7 +102,9 @@ namespace Easy14_Coding_Language
                 num1 = num1.TrimEnd().TrimStart();
                 num2 = num2.TrimEnd().TrimStart();
                 var sum = Convert.ToInt32(num1) + Convert.ToInt32(num2);
-                Console.WriteLine(sum);
+                //Console.WriteLine(sum);
+                string[] execArray = { sum.ToString() };
+                prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.Contains("-") && textToPrint.Count(f => (f == '-')) == 1 && !isAString)
             {
@@ -102,7 +113,9 @@ namespace Easy14_Coding_Language
                 num1 = num1.TrimEnd().TrimStart();
                 num2 = num2.TrimEnd().TrimStart();
                 var difference = Convert.ToInt32(num1) - Convert.ToInt32(num2);
-                Console.WriteLine(difference);
+                //Console.WriteLine(difference);
+                string[] execArray = { difference.ToString() };
+                prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.Contains("*") && textToPrint.Count(f => (f == '*')) == 1 && !isAString)
             {
@@ -111,7 +124,9 @@ namespace Easy14_Coding_Language
                 num1 = num1.TrimEnd().TrimStart();
                 num2 = num2.TrimEnd().TrimStart();
                 var result = Convert.ToInt32(num1) * Convert.ToInt32(num2);
-                Console.WriteLine(result);
+                //Console.WriteLine(result);
+                string[] execArray = { result.ToString() };
+                prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.Contains("/") && textToPrint.Count(f => (f == '/')) == 1 && !isAString)
             {
@@ -120,7 +135,9 @@ namespace Easy14_Coding_Language
                 num1 = num1.TrimEnd().TrimStart();
                 num2 = num2.TrimEnd().TrimStart();
                 var result = Convert.ToInt32(num1) / Convert.ToInt32(num2);
-                Console.WriteLine(result);
+                //Console.WriteLine(result);
+                string[] execArray = { result.ToString() };
+                prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.Contains("%") && textToPrint.Count(f => (f == '%')) == 1 && !isAString)
             {
@@ -129,7 +146,9 @@ namespace Easy14_Coding_Language
                 num1 = num1.TrimEnd().TrimStart();
                 num2 = num2.TrimEnd().TrimStart();
                 var result = Convert.ToInt32(num1) / Convert.ToInt32(num2);
-                Console.WriteLine(result);
+                //Console.WriteLine(result);
+                string[] execArray = { result.ToString() };
+                prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.Contains("==") && textToPrint.Count(f => (f == '=')) == 2 && !isAString)
             {
@@ -138,11 +157,15 @@ namespace Easy14_Coding_Language
                 num1 = num1.TrimEnd().TrimStart();
                 num2 = num2.TrimEnd().TrimStart();
                 var result = Convert.ToInt32(num1) == Convert.ToInt32(num2);
-                Console.WriteLine(result);
+                //Console.WriteLine(result);
+                string[] execArray = { result.ToString() };
+                prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith(endOfStatementCode == ")" ? "\"" : "\";"))
             {
-                Console.WriteLine(textToPrint.Replace('"'.ToString(), ""));
+                //Console.WriteLine(textToPrint.Replace('"'.ToString(), ""));
+                string[] execArray = { textToPrint.Replace('"'.ToString(), "").ToString() };
+                prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (!isAString && !isAnInt)
             {
@@ -156,7 +179,9 @@ namespace Easy14_Coding_Language
                             if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint)
                             {
                                 var contentInFile = File.ReadAllText(file);
-                                Console.WriteLine(contentInFile.ToString());
+                                //Console.WriteLine(contentInFile.ToString());
+                                string[] execArray = { contentInFile };
+                                prog.compileCode_fromOtherFiles(null, execArray);
                                 break;
                             }
                         }
