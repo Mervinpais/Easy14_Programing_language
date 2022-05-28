@@ -41,16 +41,25 @@ Me before; (#°Д°) (ﾟДﾟ*)ﾉ :Future Me
 <hr>
 # Known Issues
 
-None :) atleast as of now
+~None :) atleast as of now~
+When using print statemnts(in the intractive console/not), there is a bug which is just a silly issue which is that an if statement to check if the parament is a string has an ")" or ");", but before in the code, the code removes those stuff so it causes issue with "syntax error"
 
-### This is Causes major bugs
+===Code===
+print("Test stuff");
 
-- A Fix will be coming soon, probably in version 2.1, if not, the bug may be too much to handle
+===Output===
+Syntax Error!, your syntax is not correct!
+at line 1
+at line print("Test stuff");
+
+### This is Causes many bugs with the print statement
+
+- A Fix will be coming soon, probably in version 2.1, if not, me dum and didnt fix it
 
 ## Fixed Bug!
 ### (This bug has been fixed)
 
-I cant list them here as it would be too long but atleast 12 bugs have been fixed
+I cant list them here as it would be too long but atleast 12(now 11 due to a new one) bugs have been fixed
 
 # Why are there bugs?!
 
