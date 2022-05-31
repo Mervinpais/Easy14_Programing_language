@@ -16,40 +16,21 @@ Here is what you need to know
 * Runs on C#
 <hr>
 
-# Version 2.0 (Originally planed to be 1.4)
+# Version 2.1
 
-<img src="./Images/version 2.0.png">
+<!---<img src="./Images/version 2.0.png">-->
 
-## The New Stuff and Bugfixs arrived,
+## The Bugfixs arrived,
 
 * Fixed bugs
-* Optimised code
-* Added a new exec function to run code from other files (NOTE; for now, only variables are supported)
-* New Abs, Sq (Square) and Sqrt (Square Root) functions are 
-added
-* Got more sleep 👍
 
-<hr>
-
-# Uh no, its the If/while Statements!
-
-<img src="./Images/goddam its if and while statements causing bugs.png">
-Basically If statements are hard to repair as they are stupidly complicated thanks to me
-
-Me before; (#°Д°) (ﾟДﾟ*)ﾉ :Future Me
-<hr>
 # Known Issues
 
-None :) atleast as of now
-
-### This is Causes major bugs
-
-- A Fix will be coming soon, probably in version 2.1, if not, the bug may be too much to handle
+doing arithmethic operations in the interactive console dont work, it just continues the program (this is a simple bug, will be fixed in either 2.1.1 or 2.2)
 
 ## Fixed Bug!
-### (This bug has been fixed)
 
-I cant list them here as it would be too long but atleast 12 bugs have been fixed
+The interactive interperater wouldn't do any functions because of my stupid programming/bugs and its been fixed now :)
 
 # Why are there bugs?!
 

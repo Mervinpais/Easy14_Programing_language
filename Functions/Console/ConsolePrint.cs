@@ -77,8 +77,17 @@ namespace Easy14_Coding_Language
             {
                 Console.WriteLine(DateTime.Now);
             }
-            else if (textToPrint.StartsWith("random.range("))
+
+            else if (textToPrint.StartsWith("random.range(") && textToPrint.EndsWith(")"))
             {
+                //Random range is just a random function, it will automatically get converted to a string cuz why not :)
+                bool isAString2 = textToPrint.Substring(0, textToPrint.Length).Substring(13).StartsWith("\"") && textToPrint.Substring(0, textToPrint.Length).Substring(13).EndsWith("\"");
+                if (isAString2)
+                {
+                    ExceptionSender exceptionSender = new ExceptionSender();
+                    exceptionSender.SendException(0x0000B3);
+                    return;
+                }
                 string text = textToPrint;
                 text = text.Replace("random.range(", "").Replace(")", "");
                 int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
@@ -86,6 +95,8 @@ namespace Easy14_Coding_Language
                 Random rnd = new Random();
                 Console.WriteLine(rnd.Next(number1, number2));
             }
+            
+            //=======================START OF MATH FUNCTIONS==========================\\
             else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString)
             {
                 var num1 = textToPrint.Substring(0, textToPrint.IndexOf("+") - 1);
@@ -131,8 +142,10 @@ namespace Easy14_Coding_Language
                 var result = Convert.ToInt32(num1) / Convert.ToInt32(num2);
                 Console.WriteLine(result);
             }
+            //=======================END OF MATH FUNCTIONS==========================\\
             else if (textToPrint.Contains("==") && textToPrint.Count(f => (f == '=')) == 2 && !isAString)
             {
+                //basically an if statement in a print statement and the result is either true or false, nothing in between or there will be an error
                 var num1 = textToPrint.Substring(0, textToPrint.IndexOf("==") - 1);
                 var num2 = textToPrint.Substring(textToPrint.IndexOf("==") + 2);
                 num1 = num1.TrimEnd().TrimStart();
@@ -140,7 +153,8 @@ namespace Easy14_Coding_Language
                 var result = Convert.ToInt32(num1) == Convert.ToInt32(num2);
                 Console.WriteLine(result);
             }
-            else if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith(endOfStatementCode == ")" ? "\"" : "\";"))
+            else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\""))
+            //example; print("Test");, we just detect if it contains Double Quotes " in the parameter
             {
                 Console.WriteLine(textToPrint.Replace('"'.ToString(), ""));
             }

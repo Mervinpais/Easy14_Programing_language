@@ -6,7 +6,7 @@ namespace Easy14_Coding_Language
 {
     class If_Loop
     {
-        Program prog = new Program(); 
+        Program prog = new Program();
         //Above needed as functions like 'compileCode' in Program.cs cant be accessed here and instead of copying it to other functions, just make an object of it 
         //and use it's 'compileCode_forOtherFiles' function to get 'compileCode' (because 'compileCode' is static, we need another function that is not static to access
         //the static function, kinda smart in my opinion), its kind of a bad way of doing it but it the easy way and has no error with it :|
@@ -51,7 +51,7 @@ namespace Easy14_Coding_Language
             {
                 line_counterr++;
                 if (line__ == "}")
-                {                    
+                {
                     end_line_IDX = line_counterr;
                     if (if_lines_list.Count != end_line_IDX)
                     {
@@ -72,23 +72,93 @@ namespace Easy14_Coding_Language
             string if_Line = if_lines_list[0];
             if_Line = if_Line.Substring(2);
             if_Line = if_Line.Substring(1, if_Line.Length - 2);
-            
+
             string obj1 = null; bool obj1_variable = false;
             string obj2 = null; bool obj2_variable = false;
 
-            if (if_Line.Contains("==")) {
-                obj1 = if_Line.Substring(0, if_Line.IndexOf("==") - 0);
-                obj2 = if_Line.Substring(if_Line.IndexOf("==") + 2).TrimEnd();
-            }
-            else if (if_Line.Contains("!=")) {
-                obj1 = if_Line.Substring(0, if_Line.IndexOf("!=") - 0);
-                obj2 = if_Line.Substring(if_Line.IndexOf("!=") + 2).TrimEnd();
+            if (if_Line.TrimEnd().TrimStart() != "(true)" && if_Line.TrimEnd().TrimStart() != "(false)")
+            {
+                if (if_Line.Contains("=="))
+                    obj1 = if_Line.Substring(0, if_Line.IndexOf("==") - 0);
+                if (if_Line.Contains("!="))
+                    obj1 = if_Line.Substring(0, if_Line.IndexOf("!=") - 0);
+
+                if (if_Line.Contains("=="))
+                    obj2 = if_Line.Substring((if_Line.IndexOf("==") + 3));
+                if (if_Line.Contains("!="))
+                    obj2 = if_Line.Substring(if_Line.IndexOf("!=") + 2);
+
+                obj1 = obj1.TrimStart().TrimEnd();
+                obj2 = obj2.TrimStart().TrimEnd();
+
+                if (obj1.StartsWith("\"") && obj1.EndsWith("\"")) obj1_variable = false;
+                else obj1_variable = true;
+                if (obj2.StartsWith("\"") && obj2.EndsWith("\"")) obj2_variable = false;
+                else obj2_variable = true;
             }
 
-            obj1 = obj1.TrimStart().TrimEnd();
-            obj2 = obj2.TrimStart().TrimEnd();
-            
-            if (if_Line.Contains("=="))
+            if (if_Line.TrimEnd().TrimStart() == "(true)")
+            {
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+
+                List<string> someLINEs = null;
+                if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
+                else if (textArray != null && fileloc == null) someLINEs = new List<string>(textArray);
+                int lin_count = 1;
+                foreach (string x in someLINEs)
+                {
+                    lin_count++;
+                    if (!x.StartsWith("using") && x != "" && x != null)
+                    {
+                        break;
+                    }
+                }
+
+                lin_count = lin_count - 2;
+
+                List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
+                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                usings_code.AddRange(e_code);
+                e_code = usings_code;
+
+                if (true)
+                {
+                    prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                    System.Threading.Thread.Sleep(100);
+                }
+            }
+            if (if_Line.TrimEnd().TrimStart() == "(false)")
+            {
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+
+                List<string> someLINEs = null;
+                if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
+                else if (textArray != null && fileloc == null) someLINEs = new List<string>(textArray);
+                int lin_count = 1;
+                foreach (string x in someLINEs)
+                {
+                    lin_count++;
+                    if (!x.StartsWith("using") && x != "" && x != null)
+                    {
+                        break;
+                    }
+                }
+
+                lin_count = lin_count - 2;
+
+                List<string> e_code = if_lines_list.GetRange(1, end_line_IDX - 2);
+                List<string> usings_code = someLINEs.GetRange(0, lin_count);
+                usings_code.AddRange(e_code);
+                e_code = usings_code;
+
+                if (false)
+                {
+                    //Yes C#, i wnat this code to be unreachable ok? :)
+                    prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                    System.Threading.Thread.Sleep(100);
+                }
+            }
+            else if (if_Line.Contains("=="))
             {
                 string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
                 if (!Directory.Exists(dir) || Directory.GetFiles(dir).Length <= 0)
@@ -144,7 +214,7 @@ namespace Easy14_Coding_Language
                 {
                     if (obj1_fileContent == obj2.Replace("\"", ""))
                     {
-                        List<string> e_code = if_lines_list.GetRange(1, if_lines_list.Count - 2 );
+                        List<string> e_code = if_lines_list.GetRange(1, if_lines_list.Count - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(e_code);
                         e_code = usings_code;
@@ -184,7 +254,7 @@ namespace Easy14_Coding_Language
                         prog.compileCode_fromOtherFiles(fileloc, e_code.ToArray(), lineIDX);
                     }
                 }
-                
+
                 understuff.RemoveRange(0, end_line_IDX - 2);
                 List<string> code_toContinueExceuting = new List<string>();
                 code_toContinueExceuting.AddRange(usings_lines_list);
@@ -285,7 +355,7 @@ namespace Easy14_Coding_Language
                     }
                     part_to_continue_at++;
                 }
-                
+
                 understuff.RemoveRange(0, end_line_IDX - 1);
                 List<string> code_toContinueExceuting = new List<string>();
                 code_toContinueExceuting.AddRange(usings_lines_list);
@@ -304,7 +374,8 @@ namespace Easy14_Coding_Language
                 }*/
 
                 //int lineIDX_underpart = lineIDX + (code_toContinueExceuting.ToArray().Length - lineIDX);
-                if (isInAMethod != true) {
+                if (isInAMethod != true)
+                {
                     prog.compileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
                 }
             }
