@@ -39,33 +39,22 @@ namespace Easy14_Coding_Language
             foreach (string line_inText in currentVersionFile)
             {
                 if (nextLineEqualsCurrentVer == true)
-                {
-                    currentVersion = line_inText;
-                    nextLineEqualsCurrentVer = false;
-                }
+                    currentVersion = line_inText; nextLineEqualsCurrentVer = false;
+
                 if (nextLineEqualsCurrentVerDateInstall == true)
-                {
-                    dateOfVerInstall = line_inText;
-                    nextLineEqualsCurrentVerDateInstall = false;
-                }
-                if (nextLineEqualsBuildType == true)
-                {
-                    BuildTypeOfApp = line_inText;
-                    nextLineEqualsBuildType = false;
-                }
+                    dateOfVerInstall = line_inText; nextLineEqualsCurrentVerDateInstall = false;
+
+                if (nextLineEqualsBuildType == true) 
+                    BuildTypeOfApp = line_inText; nextLineEqualsBuildType = false;
 
                 if (line_inText == "[CURRENT VERSION]")
-                {
                     nextLineEqualsCurrentVer = true;
-                }
+
                 if (line_inText == "[DATE OF VERSION INSTALLED]")
-                {
                     nextLineEqualsCurrentVerDateInstall = true;
-                }
+
                 if (line_inText == "[TYPE OF BUILD]")
-                {
                     nextLineEqualsBuildType = true;
-                }
             }
 
             Console.WriteLine($"\n Current Version; {currentVersion}, The Current Version was installed on {dateOfVerInstall} and is a {BuildTypeOfApp}");

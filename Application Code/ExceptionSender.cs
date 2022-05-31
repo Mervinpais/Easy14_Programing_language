@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 public class ExceptionSender
 {
-    public void SendException(int typeOfException)
+    public void SendException(int typeOfException, string[] textArray = null)
     {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine(GetMessage(typeOfException));
+        if (textArray != null)
+            Console.WriteLine(textArray);
         Console.WriteLine("Please Fix this error to continue :(");
         Console.ForegroundColor = ConsoleColor.White;
         Console.ReadKey();
@@ -49,6 +51,47 @@ public class ExceptionSender
             case 0x0000A5:
                 Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Application Crash";
                 break;
+            //Program Errors (User code)
+            
+            //NotInterger/NotDecimal inside Integer/Deciml Function Error
+            case 0x0000B1:
+                Message = "EXCEPTION" + typeOfException + "; String inside an Integer/Decimal Function!";
+                break;
+            case 0x0000B2:
+                Message = "EXCEPTION" + typeOfException + "; Bool inside an Integer/Decimal Function!";
+                break;
+
+            //NotString inside String Function Error
+            case 0x0000B3:
+                Message = "EXCEPTION" + typeOfException + "; Integer/Decimal inside an String Function!";
+                break;
+            case 0x0000B4:
+                Message = "EXCEPTION" + typeOfException + "; Bool inside a String Function!";
+                break;
+            //NotBool inside Bool function
+            case 0x0000B5:
+                Message = "EXCEPTION" + typeOfException + "; Integer/Decimal inside an Bool Function!";
+                break;
+            case 0x0000B6:
+                Message = "EXCEPTION" + typeOfException + "; String inside a Bool Function!";
+                break;
+            //Arithmitic/Math Error(s)
+            case 0x0000B7:
+                Message = "EXCEPTION" + typeOfException + "; An Error Occured while adding 2 numbers";
+                break;
+            case 0x0000B8:
+                Message = "EXCEPTION" + typeOfException + "; An Error Occured while subtracting 2 numbers";
+                break;
+            case 0x0000B9:
+                Message = "EXCEPTION" + typeOfException + "; An Error Occured while multiplying 2 numbers";
+                break;
+            case 0x000B10:
+                Message = "EXCEPTION" + typeOfException + "; An Error Occured while dividing 2 numbers";
+                break;
+            case 0x000B11:
+                Message = "EXCEPTION" + typeOfException + "; An Error Occured while dividing with 0, You can't divide by Zero!";
+                break;
+
             //Code Errors (App Errors)
             case 0x0000C0:
                 Message = "EXCEPTION " + typeOfException + "; Application Code Error - Unknown Code Error";

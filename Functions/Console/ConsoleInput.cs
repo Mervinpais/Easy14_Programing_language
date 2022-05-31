@@ -134,7 +134,7 @@ namespace Easy14_Coding_Language
                     var result = Convert.ToInt32(num1) == Convert.ToInt32(num2);
                     Console.WriteLine(result);
                 }
-                else if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith(endOfStatementCode == ")" ? "\"" : "\")"))
+                else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\""))
                 {
                     Console.WriteLine(textToPrint.Substring(1).Substring(0, textToPrint.Length - 3));
                 }
