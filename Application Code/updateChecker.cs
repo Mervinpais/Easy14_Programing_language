@@ -10,29 +10,29 @@ namespace Easy14_Coding_Language
     {
         public void checkLatestVersion(bool UpdatesWarningsDisabled = false)
         {
-			//Initialize Variables
-			double currentVer = 0.0;
-            ThrowErrorMessage tErM = new ThrowErrorMessage();
+            //Initialize Variables
+            double currentVer = 0.0;
+                  ThrowErrorMessage tErM = new ThrowErrorMessage();
 
-			string wot = "<FAILED_TO_GET_UPDATEINFO>"; //incase we cant get the data this will be the error data
-			
-			try {
-				string[] currentVerFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\currentVersion.txt");
-				currentVer = Convert.ToDouble(currentVerFile[1]);
-			}
-			catch
-			{
-                if (UpdatesWarningsDisabled)
-                    tErM.sendErrMessage("Uh oh! We can't find the version file(s)!, using cached version Files...", null, "warning");
-                try {
-                    string[] currentVerFile_cached = File.ReadAllLines("C:\\Users\\mervi\\AppData\\Local\\Temp\\EASY14_TEMP\\cachedVersion.txt");
-                    currentVer = Convert.ToDouble(currentVerFile_cached[1]);
-                }
-                catch {
-                    if (UpdatesWarningsDisabled)
-                        tErM.sendErrMessage("AN ERROR OCCURED! WE CAN'T FIND OUT WHAT VERSION THIS LANGUAGE IS, REINSTALL APP TO FIX THIS ISSUE! (OR YOU CAN DISABLE THIS WARNING IN OPTIONS.INI)", null, "error");
-                }
-			}
+            string wot = "<FAILED_TO_GET_UPDATEINFO>"; //incase we cant get the data this will be the error data
+
+            try {
+              string[] currentVerFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\currentVersion.txt");
+              currentVer = Convert.ToDouble(currentVerFile[1]);
+            }
+            catch
+            {
+                      if (UpdatesWarningsDisabled)
+                          tErM.sendErrMessage("Uh oh! We can't find the version file(s)!, using cached version Files...", null, "warning");
+                      try {
+                          string[] currentVerFile_cached = File.ReadAllLines("C:\\Users\\mervi\\AppData\\Local\\Temp\\EASY14_TEMP\\cachedVersion.txt");
+                          currentVer = Convert.ToDouble(currentVerFile_cached[1]);
+                      }
+                      catch {
+                          if (UpdatesWarningsDisabled)
+                              tErM.sendErrMessage("AN ERROR OCCURED! WE CAN'T FIND OUT WHAT VERSION THIS LANGUAGE IS, REINSTALL APP TO FIX THIS ISSUE! (OR YOU CAN DISABLE THIS WARNING IN OPTIONS.INI)", null, "error");
+                      }
+            }
 
             try {
                 WebClient wc = new WebClient();
