@@ -27,11 +27,15 @@ Here is what you need to know
 
 # Known Issues
 
-None, atleast of now :|
+~~None, atleast of now :|~~
+
+when using a while(true) {} statement, the whole program just freaks out and crashs
+
+A fix will come soon!
 
 ## Fixed Bug!
 
-doing arithmethic operations in the interactive console dont work, it just continues the program (this is a simple bug, will be fixed in either 2.1.1 or 2.2)
+doing arithmethic operations in the interactive console dont work, it just continues the program
 
 
 Update!;
