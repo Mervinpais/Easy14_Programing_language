@@ -1,37 +1,31 @@
-## Welcome to GitHub Pages
+# Easy 14 (or E14)
+An easy language for begginers?! wOW iTs NoT lIkE pYthOn EiXsTs (seriously though, try python first, it may be easier than this, this language is if you wanted to, say go from python to C# or C or even C++)
 
-You can use the [editor on GitHub](https://github.com/Mervinpais/Easy14_Programing_language/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## Code Example
+```C#
+//Syntax highlighted code block
+Console.print("You cant use a print statement without a Console. if you didn't import the Console");
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+using Console;
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+print("Hello Coders! or whatever that funny starter Hello world stater project said..");
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+# FAQ
+## Will This language support One-Liner Code?
+No sadly i wont do that as my language does the "Scratch" way of execution by running from top to down and you can't have other lines(statments) within one line
 
-### Jekyll Themes
+I Might add it later, there is/was some code still left over from an attempt in the Console.Print if statment ;)
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Mervinpais/Easy14_Programing_language/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Will this be a genral purpose language?
 
-### Support or Contact
+Not yet, there are still bugs needed to be fixed before it because genral purpose
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## What is the syntax for loops?
+
+```C#
+if condition {
+  //Code
+}
+```
+though i may add () in the condition part, im just too focued on fixing bugs first
