@@ -17,9 +17,9 @@ No sadly i wont do that as my language does the "Scratch" way of execution by ru
 
 I Might add it later, there is/was some code still left over from an attempt in the Console.Print if statment ;)
 
-## Will this be a genral purpose language?
+## Will this be a general purpose language?
 
-Not yet, there are still bugs needed to be fixed before it because genral purpose
+Not yet, there are still bugs needed to be fixed before it because general purpose
 
 ## What is the syntax for loops?
 
