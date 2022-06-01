@@ -27,11 +27,15 @@ Here is what you need to know
 
 # Known Issues
 
-doing arithmethic operations in the interactive console dont work, it just continues the program (this is a simple bug, will be fixed in either 2.1.1 or 2.2)
+None, atleast of now :|
 
 ## Fixed Bug!
 
-The interactive interperater wouldn't do any functions because of my stupid programming/bugs and its been fixed now :)
+doing arithmethic operations in the interactive console dont work, it just continues the program (this is a simple bug, will be fixed in either 2.1.1 or 2.2)
+
+
+Update!;
+Now this bug has been fixed!
 
 # Why are there bugs?!
 
