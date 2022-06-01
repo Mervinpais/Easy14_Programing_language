@@ -623,9 +623,11 @@ namespace Easy14_Coding_Language
                             exceptionSend.SendException(0x0000B1, errText); //String in int/decimal function exception
                             break;
                         }
+                        double answer = 0;
                         try
                         {
-                            double answer = Convert.ToDouble(double1 + double2);
+                            answer = Convert.ToDouble(double1 + double2);
+                            Console.WriteLine(answer);
                         }
                         catch (Exception e)
                         {
@@ -679,9 +681,11 @@ namespace Easy14_Coding_Language
                             exceptionSend.SendException(0x0000B1, errText); //String in int/decimal function exception
                             break;
                         }
+                        double answer = 0;
                         try
                         {
-                            double answer = Convert.ToDouble(double1 - double2);
+                            answer = Convert.ToDouble(double1 - double2);
+                            Console.WriteLine(answer);
                         }
                         catch (Exception e)
                         {
@@ -735,9 +739,11 @@ namespace Easy14_Coding_Language
                             exceptionSend.SendException(0x0000B1, errText); //String in int/decimal function exception
                             break;
                         }
+                        double answer = 0;
                         try
                         {
-                            double answer = Convert.ToDouble(double1 * double2);
+                            answer = Convert.ToDouble(double1 * double2);
+                            Console.WriteLine(answer);
                         }
                         catch (Exception e)
                         {
@@ -791,9 +797,11 @@ namespace Easy14_Coding_Language
                             exceptionSend.SendException(0x0000B1, errText); //String in int/decimal function exception
                             break;
                         }
+                        double answer = 0;
                         try
                         {
-                            double answer = Convert.ToDouble(double1 / double2);
+                            answer = Convert.ToDouble(double1 / double2);
+                            Console.WriteLine(answer);
                         }
                         catch (DivideByZeroException divBy0)
                         {
