@@ -29,3 +29,7 @@ if condition {
 }
 ```
 though i may add () in the condition part, im just too focued on fixing bugs first
+
+# Tutorial Homepage below
+
+<a href="/webpages/tutorial_homepage.md">link text</a>
