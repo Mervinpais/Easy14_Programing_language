@@ -32,4 +32,4 @@ though i may add () in the condition part, im just too focued on fixing bugs fir
 
 # Tutorial Homepage below
 
-<a href="/webpages/tutorial_homepage.md">link text</a>
+<a href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorial_homepage.html">Tutorial Home Page</a>
