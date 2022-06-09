@@ -2,13 +2,13 @@
 
 ## Supported Versions
 
-As of 2nd of June 2022 3:10PM;
+As of 3th of June 2022 5:00PM;
 Version 1.3 is still in support but will be soon off the hook (in support) due to me having to support enwer versions than older ones
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 2.2   | 🚫 Not Yet Avaliable|
-| 2.1.x   | ✅ Supported!|
+| 2.3   | 🚫 Not Yet Avaliable|
+| 2.2 - 2.0   | ✅ Supported!|
 | 1.3 - 1.4   | ✅ Still in support|
 | < 1.2   | ❌  No/Lost Support |
 
@@ -34,4 +34,4 @@ If a problem related to compatablity is found, please report it (below is the OS
 |  └─ Pop! OS       |    😞❌  |
 
 The Operating system's mentioned here are the one's i want to support and other operating systems wont be supported cuz i dont want to support them (yet)
-- (Im not sure if an ubuntu linux app will work on debian and i dont have a spare pc to run an OS on so :/)
+- (Im not sure if an ubuntu linux app will work on debian and i dont have a spare pc to run an OS on so :/

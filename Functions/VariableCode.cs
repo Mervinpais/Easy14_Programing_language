@@ -33,20 +33,21 @@ namespace Easy14_Coding_Language
                 string varContent = textToPrint.Substring(textToPrint.IndexOf("="), textToPrint.Length - textToPrint.IndexOf("=")).ToString();
                 //Console.WriteLine(varContent);
                 if (
-                    varName.StartsWith("0")
-                    || varName.StartsWith("1")
-                    || varName.StartsWith("2")
-                    || varName.StartsWith("3")
-                    || varName.StartsWith("4")
-                    || varName.StartsWith("5")
-                    || varName.StartsWith("6")
-                    || varName.StartsWith("7")
-                    || varName.StartsWith("8")
-                    || varName.StartsWith("9")
-                )
+                    varName.StartsWith("0") || varName.StartsWith("1") || varName.StartsWith("2") || varName.StartsWith("3") || varName.StartsWith("4") || varName.StartsWith("5") || varName.StartsWith("6") || varName.StartsWith("7") || varName.StartsWith("8") || varName.StartsWith("9")
+                    )
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"ERROR; You cant have numbers at the start of a variable name");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+
+                if (
+                    varName.Contains("/") || varName.Contains(@"\") || varName.Contains(":") || varName.Contains("*") || varName.Contains("?") || varName.Contains("\"") || varName.Contains("<") || varName.Contains(">") || varName.Contains("|") || varName.Contains(";") || varName.Contains("{") || varName.Contains("}")
+                    )
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"ERROR; You cant have Special Letters in the variable name");
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
                 else
                 {
@@ -169,7 +170,6 @@ namespace Easy14_Coding_Language
                         varContent = varContent.Substring(1);
                         varContent = varContent.Substring(0, endOfStatementCode == ")" ? varContent.Length - 1  : varContent.Length - 2);
                         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", varContent);
-                        return;
                     }
                     else
                     {

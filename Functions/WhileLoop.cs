@@ -207,7 +207,7 @@ namespace Easy14_Coding_Language
                         prog.compileCode_fromOtherFiles(null, e_code.ToArray());
                     }
                 }
-                understuff.RemoveRange(0, end_line_IDX);
+                //understuff.RemoveRange(0, end_line_IDX);
                 prog.compileCode_fromOtherFiles(null, understuff.ToArray());
             }
             else if (if_Line.Contains("!="))
