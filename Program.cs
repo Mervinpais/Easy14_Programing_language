@@ -917,12 +917,6 @@ namespace Easy14_Coding_Language
                     methodCode.interperate(line, textArray, lines, fileLoc, true);
                     return;
                 }
-                else if (line.EndsWith("();")) //Means its probably a function
-                {
-                    MethodCode methodCode = new MethodCode();
-                    methodCode.interperate(line, textArray, lines, fileLoc, false);
-                    return;
-                }
                 else if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"MakeFile(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     FileSystem_MakeFile fs_mkFile = new FileSystem_MakeFile();
@@ -963,6 +957,27 @@ namespace Easy14_Coding_Language
                     NetworkPing netPing = new NetworkPing();
                     netPing.interperate(line, fileLoc, textArray, lineCount);
                 }
+                else if (line.StartsWith($"Time.CurrentTime(") || line.StartsWith($"CurrentTime(") && line.EndsWith($"{endOfStatementCode}"))
+                {
+                    Time_CurrentTime currentTime = new Time_CurrentTime();
+                    currentTime.endOfStatementCode = endOfStatementCode;
+                    string time = currentTime.interperate(line, textArray, fileLoc);
+                    Console.WriteLine(time);
+                }
+                else if (line.StartsWith($"Time.IsLeapYear(") || line.StartsWith($"IsLeapYear(") && line.EndsWith($"{endOfStatementCode}"))
+                {
+                    Time_IsLeapYear isLeapYear = new Time_IsLeapYear();
+                    isLeapYear.endOfStatementCode = endOfStatementCode;
+                    string isLeapYear_str = isLeapYear.interperate(line, textArray, fileLoc);
+                    Console.WriteLine(Convert.ToBoolean(isLeapYear_str));
+                }
+                else if (line.StartsWith($"Random.RandomRange(") || line.StartsWith($"RandomRange(") && line.EndsWith($"{endOfStatementCode}"))
+                {
+                    Random_RandomRange randomRange = new Random_RandomRange();
+                    randomRange.endOfStatementCode = endOfStatementCode;
+                    string randomRange_str = randomRange.interperate(line, textArray, fileLoc);
+                    Console.WriteLine(randomRange_str);
+                }
                 else
                 {
                     if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
@@ -970,6 +985,12 @@ namespace Easy14_Coding_Language
                         bool gotFiles = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length > -1;
                         if (gotFiles)
                         {
+                            if (line.EndsWith("();")) //Means its probably a function
+                            {
+                                MethodCode methodCode = new MethodCode();
+                                methodCode.interperate(line, textArray, lines, fileLoc, false);
+                                return;
+                            }
                             foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
                             {
                                 string supposedVar = file.Substring(file.LastIndexOf("\\")).Replace(".txt", "").Substring(1);
@@ -991,9 +1012,29 @@ namespace Easy14_Coding_Language
                                         string[] FileContents = File.ReadAllLines(filePath);
                                         string content = line.Replace(partToReplace, "");
                                         content = content.Substring(1).Substring(0, content.Length - 2);
-                                        content = content.Substring(8).Substring(0, content.Length - 9);
+                                        content = content.Substring(5);
+                                        content = content.Substring(0, content.Length - 1);
                                         List<string> FileContents_list = new List<string>(FileContents);
                                         FileContents_list.Add(content);
+                                        File.WriteAllText(filePath, string.Join(Environment.NewLine, FileContents_list.ToArray()));
+                                        break;
+                                    }
+                                    if (line.Contains("-=") && line.Count(f => (f == '-')) == 1 && line.Count(f => (f == '-')) == 1 && line.IndexOf("-") == (line.IndexOf("-") + 1))
+                                    {
+                                        string filePath = file;
+                                        string partToReplace = file.Substring(file.LastIndexOf("\\") + 1).Replace(".txt", "") + " = ";
+                                        string[] FileContents = File.ReadAllLines(filePath);
+                                        string content = line.Replace(partToReplace, "");
+                                        content = content.Substring(1).Substring(0, content.Length - 2);
+                                        content = content.Substring(5);
+                                        content = content.Substring(0, content.Length - 1);
+                                        List<string> FileContents_list = new List<string>(FileContents);
+                                        try {
+                                            FileContents_list.Remove(content);
+                                        }
+                                        catch {
+                                            
+                                        }
                                         File.WriteAllText(filePath, string.Join(Environment.NewLine, FileContents_list.ToArray()));
                                         break;
                                     }

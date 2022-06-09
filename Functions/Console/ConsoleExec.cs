@@ -72,99 +72,48 @@ namespace Easy14_Coding_Language
             isAnInt = int.TryParse(textToPrint, out textToPrint_int);
 
             Program prog = new Program();
+            string[] execArray = { textToPrint.ToString() };
 
-            if (textToPrint == "Time.Now")
+            if (textToPrint == "Time.CurrentTime")
             {
                 //Console.WriteLine(DateTime.Now);
-                string[] execArray = {DateTime.Now.ToString()};
                 prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\""))
             {
-                string[] execArray = { textToPrint.TrimEnd().TrimStart().Substring(1).Substring(0, textToPrint.Length - 2).ToString() };
                 prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.StartsWith("random.range("))
             {
-                string text = textToPrint;
-                text = text.Replace("random.range(", "").Replace(")", "");
-                int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
-                int number2 = Convert.ToInt32(text.Substring(text.IndexOf(",")).Replace(",", ""));
-                Random rnd = new Random();
-                //Console.WriteLine(rnd.Next(number1, number2));
-                string[] execArray = {rnd.Next(number1, number2).ToString()};
                 prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString)
             {
-                var num1 = textToPrint.Substring(0, textToPrint.IndexOf("+") - 1);
-                var num2 = textToPrint.Substring(textToPrint.IndexOf("+") + 2);
-                num1 = num1.TrimEnd().TrimStart();
-                num2 = num2.TrimEnd().TrimStart();
-                var sum = Convert.ToInt32(num1) + Convert.ToInt32(num2);
-                //Console.WriteLine(sum);
-                string[] execArray = { sum.ToString() };
                 prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.Contains("-") && textToPrint.Count(f => (f == '-')) == 1 && !isAString)
             {
-                var num1 = textToPrint.Substring(0, textToPrint.IndexOf("-") - 1);
-                var num2 = textToPrint.Substring(textToPrint.IndexOf("-") + 1);
-                num1 = num1.TrimEnd().TrimStart();
-                num2 = num2.TrimEnd().TrimStart();
-                var difference = Convert.ToInt32(num1) - Convert.ToInt32(num2);
-                //Console.WriteLine(difference);
-                string[] execArray = { difference.ToString() };
                 prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.Contains("*") && textToPrint.Count(f => (f == '*')) == 1 && !isAString)
             {
-                var num1 = textToPrint.Substring(0, textToPrint.IndexOf("*") - 1);
-                var num2 = textToPrint.Substring(textToPrint.IndexOf("*") + 1);
-                num1 = num1.TrimEnd().TrimStart();
-                num2 = num2.TrimEnd().TrimStart();
-                var result = Convert.ToInt32(num1) * Convert.ToInt32(num2);
-                //Console.WriteLine(result);
-                string[] execArray = { result.ToString() };
                 prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.Contains("/") && textToPrint.Count(f => (f == '/')) == 1 && !isAString)
             {
-                var num1 = textToPrint.Substring(0, textToPrint.IndexOf("/") - 1);
-                var num2 = textToPrint.Substring(textToPrint.IndexOf("/") + 1);
-                num1 = num1.TrimEnd().TrimStart();
-                num2 = num2.TrimEnd().TrimStart();
-                var result = Convert.ToInt32(num1) / Convert.ToInt32(num2);
-                //Console.WriteLine(result);
-                string[] execArray = { result.ToString() };
                 prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.Contains("%") && textToPrint.Count(f => (f == '%')) == 1 && !isAString)
             {
-                var num1 = textToPrint.Substring(0, textToPrint.IndexOf("%") - 1);
-                var num2 = textToPrint.Substring(textToPrint.IndexOf("%") + 1);
-                num1 = num1.TrimEnd().TrimStart();
-                num2 = num2.TrimEnd().TrimStart();
-                var result = Convert.ToInt32(num1) / Convert.ToInt32(num2);
-                //Console.WriteLine(result);
-                string[] execArray = { result.ToString() };
                 prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.Contains("==") && textToPrint.Count(f => (f == '=')) == 2 && !isAString)
             {
-                var num1 = textToPrint.Substring(0, textToPrint.IndexOf("==") - 1);
-                var num2 = textToPrint.Substring(textToPrint.IndexOf("==") + 2);
-                num1 = num1.TrimEnd().TrimStart();
-                num2 = num2.TrimEnd().TrimStart();
-                var result = Convert.ToInt32(num1) == Convert.ToInt32(num2);
-                //Console.WriteLine(result);
-                string[] execArray = { result.ToString() };
                 prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith(endOfStatementCode == ")" ? "\"" : "\";"))
             {
                 //Console.WriteLine(textToPrint.Replace('"'.ToString(), ""));
-                string[] execArray = { textToPrint.Replace('"'.ToString(), "").ToString() };
                 prog.compileCode_fromOtherFiles(null, execArray);
             }
             else if (!isAString && !isAnInt)
@@ -180,8 +129,8 @@ namespace Easy14_Coding_Language
                             {
                                 var contentInFile = File.ReadAllText(file);
                                 //Console.WriteLine(contentInFile.ToString());
-                                string[] execArray = { contentInFile };
-                                prog.compileCode_fromOtherFiles(null, execArray);
+                                string[] fContent = { contentInFile };
+                                prog.compileCode_fromOtherFiles(null, fContent);
                                 break;
                             }
                         }

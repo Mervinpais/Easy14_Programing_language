@@ -1,9 +1,21 @@
 # Easy14_Programing_language
-Finally a nice language for beginners
+Finally an *ok* language for beginners
 Basically a mashup of Python + C#
+
 <html>
+	<style>
+		#donateText {
+			font-family: 'Lucida Console', monospace;
+			//background-color: #10AA;
+			z-index: 1;
+			//border: 12px #10AA solid;
+			color: #20AAFF;
+			font-size: 15px;
+		}
+	</style>
 	<head>
-		<a><img width="75" href="" src="https://www.svgrepo.com/show/86407/donate.svg"></img>Donations can help me improve this language :) *Note that this is not finished so you can't donate yet</a>
+		<img width="75" href="" src="https://www.svgrepo.com/show/86407/donate.svg"><br></img>
+		<a id="donateText">Donations can help me improve this language :) *Note that this is not finished so you can't donate yet</a>
 	</head>
 </html>
 
@@ -17,33 +29,17 @@ Here is what you need to know
 
 <hr>
 
-# Version 2.1
-
-<!---<img src="./Images/version 2.0.png">-->
+# Version 2.2
 
 ## The Bugfixs arrived,
 
-* Fixed bugs
+* Fixed ALL bugs with;
+	* print();
+	* input();
 
 # Known Issues
 
-~~None, atleast of now :|~~
-
-when using a while(true) {} statement, the whole program just freaks out and crashs
-
-A fix will come soon!
-
-## Fixed Bug!
-
-doing arithmethic operations in the interactive console dont work, it just continues the program
-
-
-Update!;
-Now this bug has been fixed!
-
-# Why are there bugs?!
-
-Bruh do you expect a single person to get all the bugs? Lower your expectations dude
+None, atleast of now :|
 
 <hr>
 

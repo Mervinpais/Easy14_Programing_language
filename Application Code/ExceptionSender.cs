@@ -91,6 +91,21 @@ public class ExceptionSender
             case 0x000B11:
                 Message = "EXCEPTION" + typeOfException + "; An Error Occured while dividing with 0, You can't divide by Zero!";
                 break;
+            case 0x000BC1:
+                Message = "EXCEPTION" + typeOfException + "; An Error Occured while Converting a variable to a string";
+                break;
+            case 0x000BC2:
+                Message = "EXCEPTION" + typeOfException + "; An Error Occured while Converting a variable to a integer/Decimal";
+                break;
+            case 0x000BC3:
+                Message = "EXCEPTION" + typeOfException + "; An Error Occured while Converting a variable to a boolean";
+                break;
+            case 0x000B12:
+                Message = "EXCEPTION" + typeOfException + "; An Error Occured; You entered less than the required Digits needed!";
+                break;
+            case 0x000B13:
+                Message = "EXCEPTION" + typeOfException + "; An Error Occured; You entered more than the required Digits needed!";
+                break;
 
             //Code Errors (App Errors)
             case 0x0000C0:
