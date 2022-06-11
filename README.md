@@ -25,7 +25,7 @@ Here is what you need to know
 
 ___
 
-## Version 2.2
+## Version 2.3
 
 ## The Bugfixs arrived
 
@@ -35,7 +35,14 @@ ___
 
 ## Known Issues
 
-None, atleast of now :|
+<!--None, atleast of now :|-->
+A New bug found with variables
+
+```C#
+var myVar = 5;
+myVar = myVar + 2;
+print(myVar);
+```
 
 ___
 
