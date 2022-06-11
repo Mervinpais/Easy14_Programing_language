@@ -403,6 +403,24 @@ namespace Easy14_Coding_Language
                     else if (line.EndsWith("hide")) windowState = "hidden";
                     else if (line.EndsWith("normal")) windowState = "normal";
                     else windowState = "normal";
+                if (line.StartsWith("showOptionsINI_DataWhenE14_Loads"))
+                {
+                    if (line.EndsWith("true"))
+                    {
+                        List<string> configFileLIST = new List<string>();
+
+                        foreach (string line_ in configFile)
+                        {
+                            if (line_.StartsWith(";") || line_ == "" || line_ == " ") continue;
+                            configFileLIST.Add(line_);
+                        }
+
+                        string[] configFile_modified = configFileLIST.ToArray();
+
+                        Console.WriteLine(string.Join(Environment.NewLine, configFile_modified));
+                        Console.WriteLine("\n========================\n\n");
+                    }
+                }
             }
 
             //========== Only thing using System.Runtime.InteropServices =========//
@@ -426,6 +444,8 @@ namespace Easy14_Coding_Language
                 ShowWindow(ThisConsole, MINIMIZE);
             if (windowState == "hidden")
                 ShowWindow(ThisConsole, HIDE);
+            if (windowState == "restore")
+                ShowWindow(ThisConsole, RESTORE);
             // ============================================================ //
             if (Console.WindowHeight != windowHeight)
             {
@@ -980,9 +1000,9 @@ namespace Easy14_Coding_Language
                 }
                 else
                 {
-                    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
+                    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP"))
                     {
-                        bool gotFiles = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length > -1;
+                        bool gotFiles = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP").Length > -1;
                         if (gotFiles)
                         {
                             if (line.EndsWith("();")) //Means its probably a function
@@ -991,7 +1011,7 @@ namespace Easy14_Coding_Language
                                 methodCode.interperate(line, textArray, lines, fileLoc, false);
                                 return;
                             }
-                            foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
+                            foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP"))
                             {
                                 string supposedVar = file.Substring(file.LastIndexOf("\\")).Replace(".txt", "").Substring(1);
                                 if (line.StartsWith(supposedVar))
@@ -1002,7 +1022,14 @@ namespace Easy14_Coding_Language
                                         string partToReplace = file.Substring(file.LastIndexOf("\\") + 1).Replace(".txt", "") + " = ";
                                         string content = line.Replace(partToReplace, "");
                                         content = content.Substring(1).Substring(0, content.Length - 2);
-                                        File.WriteAllText(filePath, content);
+                                        if (content.Contains("+") && content.Count(f => (f == '+')) == 1)
+                                        {
+                                            Math_Add math_Add = new Math_Add();
+                                            math_Add.interperate(content, 0);
+                                        }
+                                        else {
+                                            File.WriteAllText(filePath, content);
+                                        }
                                         break;
                                     }
                                     if (line.Contains("+=") && line.Count(f => (f == '=')) == 1 && line.Count(f => (f == '+')) == 1 && line.IndexOf("=") == (line.IndexOf("+") + 1))
@@ -1029,11 +1056,13 @@ namespace Easy14_Coding_Language
                                         content = content.Substring(5);
                                         content = content.Substring(0, content.Length - 1);
                                         List<string> FileContents_list = new List<string>(FileContents);
-                                        try {
+                                        try
+                                        {
                                             FileContents_list.Remove(content);
                                         }
-                                        catch {
-                                            
+                                        catch
+                                        {
+
                                         }
                                         File.WriteAllText(filePath, string.Join(Environment.NewLine, FileContents_list.ToArray()));
                                         break;

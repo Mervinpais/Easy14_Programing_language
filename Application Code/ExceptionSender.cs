@@ -14,10 +14,11 @@ public class ExceptionSender
         Console.ReadKey();
         Environment.Exit(-1);
     }
-    
-    private static string GetMessage(int typeOfException) 
+
+    private static string GetMessage(int typeOfException)
     {
         string Message = null;
+        string typeOfException_str = typeOfException.ToString();
         switch (typeOfException)
         {
             //! NOTE: These codes below are not error codes that meantions a part in memory where the error happened, these erorr codes are for like example;
@@ -25,123 +26,130 @@ public class ExceptionSender
             //! So just be aware about this
             //* Also The Error codes are in Hexa-Decimal
             case 0x000000:
-                Message = "EXCEPTION " + typeOfException + "; No-Error Exception";
+                Message = "EXCEPTION " + typeOfException_str + "; No-Error Exception";
                 break;
             case 0x000001:
-                Message = "EXCEPTION " + typeOfException + "; No-Error Exception";
+                Message = "EXCEPTION " + typeOfException_str + "; No-Error Exception";
                 break;
             case 0x000002:
-                Message = "EXCEPTION " + typeOfException + "; Basic Exception - No Data Was Given";
+                Message = "EXCEPTION " + typeOfException_str + "; Basic Exception - No Data Was Given";
                 break;
             case 0x0000A0:
-                Message = "EXCEPTION " + typeOfException + "; Application Error - Unknown Application Error";
+                Message = "EXCEPTION " + typeOfException_str + "; Application Error - Unknown Application Error";
                 break;
             case 0x0000A1:
-                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Not enough computer memory!";
+                Message = "EXCEPTION " + typeOfException_str + "; Failed to interperate - Not enough computer memory!";
                 break;
             case 0x0000A2:
-                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Missing Files...";
+                Message = "EXCEPTION " + typeOfException_str + "; Failed to interperate - Missing Files...";
                 break;
             case 0x0000A3:
-                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Missing System Dll's!";
+                Message = "EXCEPTION " + typeOfException_str + "; Failed to interperate - Missing System Dll's!";
                 break;
             case 0x0000A4:
-                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Not Responding..";
+                Message = "EXCEPTION " + typeOfException_str + "; Failed to interperate - Not Responding..";
                 break;
             case 0x0000A5:
-                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Application Crash";
+                Message = "EXCEPTION " + typeOfException_str + "; Failed to interperate - Application Crash";
                 break;
             //Program Errors (User code)
-            
-            //NotInterger/NotDecimal inside Integer/Deciml Function Error
+
             case 0x0000B1:
-                Message = "EXCEPTION" + typeOfException + "; String inside an Integer/Decimal Function!";
+                Message = "EXCEPTION " + typeOfException_str + "; String inside an Integer/Decimal Function!";
                 break;
             case 0x0000B2:
-                Message = "EXCEPTION" + typeOfException + "; Bool inside an Integer/Decimal Function!";
+                Message = "EXCEPTION " + typeOfException_str + "; Bool inside an Integer/Decimal Function!";
                 break;
-
-            //NotString inside String Function Error
             case 0x0000B3:
-                Message = "EXCEPTION" + typeOfException + "; Integer/Decimal inside an String Function!";
+                Message = "EXCEPTION " + typeOfException_str + "; Integer/Decimal inside an String Function!";
                 break;
             case 0x0000B4:
-                Message = "EXCEPTION" + typeOfException + "; Bool inside a String Function!";
+                Message = "EXCEPTION " + typeOfException_str + "; Bool inside a String Function!";
                 break;
-            //NotBool inside Bool function
             case 0x0000B5:
-                Message = "EXCEPTION" + typeOfException + "; Integer/Decimal inside an Bool Function!";
+                Message = "EXCEPTION " + typeOfException_str + "; Integer/Decimal inside an Bool Function!";
                 break;
             case 0x0000B6:
-                Message = "EXCEPTION" + typeOfException + "; String inside a Bool Function!";
+                Message = "EXCEPTION " + typeOfException_str + "; String inside a Bool Function!";
                 break;
-            //Arithmitic/Math Error(s)
             case 0x0000B7:
-                Message = "EXCEPTION" + typeOfException + "; An Error Occured while adding 2 numbers";
+                Message = "EXCEPTION " + typeOfException_str + "; An Error Occured while adding 2 numbers";
                 break;
             case 0x0000B8:
-                Message = "EXCEPTION" + typeOfException + "; An Error Occured while subtracting 2 numbers";
+                Message = "EXCEPTION " + typeOfException_str + "; An Error Occured while subtracting 2 numbers";
                 break;
             case 0x0000B9:
-                Message = "EXCEPTION" + typeOfException + "; An Error Occured while multiplying 2 numbers";
+                Message = "EXCEPTION " + typeOfException_str + "; An Error Occured while multiplying 2 numbers";
                 break;
             case 0x000B10:
-                Message = "EXCEPTION" + typeOfException + "; An Error Occured while dividing 2 numbers";
+                Message = "EXCEPTION " + typeOfException_str + "; An Error Occured while dividing 2 numbers";
                 break;
             case 0x000B11:
-                Message = "EXCEPTION" + typeOfException + "; An Error Occured while dividing with 0, You can't divide by Zero!";
+                Message = "EXCEPTION " + typeOfException_str + "; An Error Occured while dividing with 0, You can't divide by Zero!";
                 break;
             case 0x000BC1:
-                Message = "EXCEPTION" + typeOfException + "; An Error Occured while Converting a variable to a string";
+                Message = "EXCEPTION " + typeOfException_str + "; An Error Occured while Converting a variable to a string";
                 break;
             case 0x000BC2:
-                Message = "EXCEPTION" + typeOfException + "; An Error Occured while Converting a variable to a integer/Decimal";
+                Message = "EXCEPTION " + typeOfException_str + "; An Error Occured while Converting a variable to a integer/Decimal";
                 break;
             case 0x000BC3:
-                Message = "EXCEPTION" + typeOfException + "; An Error Occured while Converting a variable to a boolean";
+                Message = "EXCEPTION " + typeOfException_str + "; An Error Occured while Converting a variable to a boolean";
                 break;
             case 0x000B12:
-                Message = "EXCEPTION" + typeOfException + "; An Error Occured; You entered less than the required Digits needed!";
+                Message = "EXCEPTION " + typeOfException_str + "; An Error Occured; You entered less than the required Digits needed!";
                 break;
             case 0x000B13:
-                Message = "EXCEPTION" + typeOfException + "; An Error Occured; You entered more than the required Digits needed!";
+                Message = "EXCEPTION " + typeOfException_str + "; An Error Occured; You entered more than the required Digits needed!";
+                break;
+            case 0xF00001:
+                Message = "FILE IO EXCEPTION " + typeOfException_str + "; File Not Found";
+                break;
+            case 0xF00002:
+                Message = "FILE IO EXCEPTION " + typeOfException_str + "; Folder Not Found";
+                break;
+            case 0xF00003:
+                Message = "FILE IO EXCEPTION " + typeOfException_str + "; File is UnReadable!";
+                break;
+            case 0xF00004:
+                Message = "FILE IO EXCEPTION " + typeOfException_str + "; Folder is UnReadable!";
                 break;
 
             //Code Errors (App Errors)
             case 0x0000C0:
-                Message = "EXCEPTION " + typeOfException + "; Application Code Error - Unknown Code Error";
+                Message = "EXCEPTION " + typeOfException_str + "; Application Code Error - Unknown Code Error";
                 break;
             case 0x0000C1:
-                Message = "EXCEPTION " + typeOfException + "; Application Code Error - Failed to run code";
+                Message = "EXCEPTION " + typeOfException_str + "; Application Code Error - Failed to run code";
                 break;
             case 0x0000C2:
-                Message = "EXCEPTION " + typeOfException + "; Application Code Error - Missing Code";
+                Message = "EXCEPTION " + typeOfException_str + "; Application Code Error - Missing Code";
                 break;
             //File Errors
             case 0x0000F0:
-                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Unknown File Error";
+                Message = "EXCEPTION " + typeOfException_str + "; Failed to interperate - Unknown File Error";
                 break;
             case 0x0000F1:
-                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Can't Access Code File";
+                Message = "EXCEPTION " + typeOfException_str + "; Failed to interperate - Can't Access Code File";
                 break;
             case 0x0000F2:
-                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - File Not Found";
+                Message = "EXCEPTION " + typeOfException_str + "; Failed to interperate - File Not Found";
                 break;
             case 0x0000F3:
-                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Method Not Found";
+                Message = "EXCEPTION " + typeOfException_str + "; Failed to interperate - Method Not Found";
                 break;
             case 0x0000F4:
-                Message = "EXCEPTION " + typeOfException + "; Failed to interperate - Variable Not Found";
+                Message = "EXCEPTION " + typeOfException_str + "; Failed to interperate - Variable Not Found";
                 break;
             //Funni/Not Real Errors (or you could say a 0% Chance Error since you can't get it ever)
             case 0x000404:
-                Message = "EXCEPTION " + typeOfException + "; 404 - Failed to Get ERROR of ERROR";
+                Message = "EXCEPTION " + typeOfException_str + "; 404 - Failed to Get ERROR of ERROR";
                 break;
             case 0x00FACE:
-                Message = "EXCEPTION " + typeOfException + "; O_O Did you want Facey?";
+                Message = "EXCEPTION " + typeOfException_str + "; O_O Did you want Facey?";
                 break;
             case 0x00ABCD:
-                Message = "EXCEPTION " + typeOfException + "; Are you reciting the alaphabet O_O?";
+                Message = "EXCEPTION " + typeOfException_str + "; Are you reciting the alaphabet O_O?";
                 break;
         }
         return Message;

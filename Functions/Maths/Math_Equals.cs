@@ -28,9 +28,9 @@ namespace Easy14_Coding_Language
                 string integer1_str = null;
                 string integer2_str = null;
 
-                if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP").Length != 0)
                 {
-                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP");
                     foreach (string file in files)
                     {
                         string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
@@ -60,13 +60,13 @@ namespace Easy14_Coding_Language
 
                 //Seperatated Sections
 
-                if (integer1_str == null || integer2_str == null)
+                if (integer1_str == null && integer2_str == null)
                     result = Convert.ToInt32(integer1) == Convert.ToInt32(integer2);
-                else if (integer1_str != null || integer2_str != null)
+                else if (integer1_str != null && integer2_str != null)
                     result = Convert.ToInt32(integer1_str) == Convert.ToInt32(integer2_str);
-                else if (integer1_str == null || integer2_str != null)
+                else if (integer1_str == null && integer2_str != null)
                     result = Convert.ToInt32(integer1) == Convert.ToInt32(integer2_str);
-                else if (integer1_str != null || integer2_str == null)
+                else if (integer1_str != null && integer2_str == null)
                     result = Convert.ToInt32(integer1_str) == Convert.ToInt32(integer2);
             }
             catch
@@ -77,7 +77,7 @@ namespace Easy14_Coding_Language
             }
             //Console.WriteLine(sum);
             if (fileName is not null) {
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{fileName}.txt", result.ToString());
+                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{fileName}.txt", result.ToString());
             }
             else if (fileName is null) {
                 return result;
