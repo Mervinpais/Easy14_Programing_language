@@ -5,6 +5,13 @@ namespace Easy14_Coding_Language
 {
     class Math_Subtract
     {
+        /// <summary>
+        /// This function takes in a string of code, a line number, and a file name, and returns an
+        /// integer
+        /// </summary>
+        /// <param name="code_part">The code to be interperated.</param>
+        /// <param name="lineNumber">The line number of the code that is being interperated.</param>
+        /// <param name="fileName">The name of the file that the code is in.</param>
         public int interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;

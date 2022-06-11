@@ -28,7 +28,14 @@ namespace Easy14_Coding_Language
                 string integer1_str = null;
                 string integer2_str = null;
 
-                if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP").Length != 0)
+                /// <summary>
+                /// This function takes in a string of code, a line number, and a file name, and returns a
+                /// double
+                /// </summary>
+                /// <param name="code_part">The code to be interperated.</param>
+                /// <param name="lineNumber">The line number of the code that is being interperated.</param>
+                /// <param name="fileName">The name of the file that the code is in.</param>
+                if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP").Length != 0)
                 {
                     string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP");
                     foreach (string file in files)
@@ -75,9 +82,12 @@ namespace Easy14_Coding_Language
                 //Console.WriteLine(sum);
                 return 0.0;
             }
-            //Console.WriteLine(sum);
+            
+            /* Checking if the fileName is null, if it is, it will return the result, if it isn't, it
+            will write the result to a file. */
+            
             if (fileName is not null) {
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{fileName}.txt", result.ToString());
+                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{fileName}.txt", result.ToString());
             }
             else if (fileName is null) {
                 //Console.WriteLine(result);

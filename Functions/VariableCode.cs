@@ -19,6 +19,12 @@ namespace Easy14_Coding_Language
             set { endOfStatementCode_ = value; }
         }
 
+        /// <summary>
+        /// It takes a string, an array of strings, and an integer, and does something with them.
+        /// </summary>
+        /// <param name="code_part">The part of the code that is being interperated.</param>
+        /// <param name="lines">The lines of code</param>
+        /// <param name="line_count">The line number of the code_part</param>
         public void interperate(string code_part, string[] lines, int line_count)
         {
             string code_part_unedited = code_part;
@@ -31,7 +37,9 @@ namespace Easy14_Coding_Language
                 string varName = textToPrint.Substring(0, textToPrint.IndexOf("=")).ToString();
                 varName = varName.TrimStart().TrimEnd();
                 string varContent = textToPrint.Substring(textToPrint.IndexOf("="), textToPrint.Length - textToPrint.IndexOf("=")).ToString();
-                //Console.WriteLine(varContent);
+                
+                
+                /* Checking if the variable name starts with a number. */
                 if (
                     varName.StartsWith("0") || varName.StartsWith("1") || varName.StartsWith("2") || varName.StartsWith("3") || varName.StartsWith("4") || varName.StartsWith("5") || varName.StartsWith("6") || varName.StartsWith("7") || varName.StartsWith("8") || varName.StartsWith("9")
                     )
@@ -41,6 +49,7 @@ namespace Easy14_Coding_Language
                     Console.ForegroundColor = ConsoleColor.White;
                 }
 
+                /* Checking if the variable name contains any of the special characters. */
                 if (
                     varName.Contains("/") || varName.Contains(@"\") || varName.Contains(":") || varName.Contains("*") || varName.Contains("?") || varName.Contains("\"") || varName.Contains("<") || varName.Contains(">") || varName.Contains("|") || varName.Contains(";") || varName.Contains("{") || varName.Contains("}")
                     )
@@ -53,13 +62,20 @@ namespace Easy14_Coding_Language
                 {
                     Directory.CreateDirectory(
                         Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
-                            + @$"\EASY14_Variables_TEMP"
+                            + $"\\EASY14_Variables_TEMP"
                     );
                     varContent = varContent.Substring(1).TrimStart();
+                    
                     //Below 2 lines of code will be used later in the code, its just for not needing to copy and paste alot
                     var varContent_clone = varContent.Replace("=", "").TrimStart().ToLower();
+                    
+                    /* Checking if the variable content starts with any of the math functions. */
                     bool doesContainMathFunctions = varContent_clone.StartsWith("cos") || varContent_clone.StartsWith("sin") || varContent_clone.StartsWith("tan") || varContent_clone.StartsWith("abs");
 
+                    /* Checking if the variable content starts with "random.range(" and ends with ")" or ";" (depending on
+                    the end of statement code). If it does, it will replace "random.range(" with nothing, and replace
+                    ")" with nothing. Then it will get the first number, and the second number. Then it will create a
+                    random number between the two numbers. Then it will write the random number to a file. */
                     if (varContent.StartsWith("random.range(") && varContent.EndsWith(endOfStatementCode == ")" ? "" : ";"))
                     {
                         string text = varContent;
@@ -70,6 +86,8 @@ namespace Easy14_Coding_Language
                         Random rnd = new Random();
                         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", Convert.ToString(rnd.Next(number1, number2)));
                     }
+                    
+                    /* Checking if the code is a console input. */
                     else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith(endOfStatementCode == ")" ? "" : ";"))
                     {
                         ConsoleInput conInput = new ConsoleInput();

@@ -10,11 +10,21 @@ namespace Easy14_Coding_Language
         //Above needed as functions like 'compileCode' in Program.cs cant be accessed here and instead of copying it to other functions, just make an object of it 
         //and use it's 'compileCode_forOtherFiles' function to get 'compileCode' (because 'compileCode' is static, we need another function that is not static to access
         //the static function, kinda smart in my opinion), its kind of a bad way of doing it but it the easy way and has no error with it :|
-        public void interperate(string code_part, string[] lines, string[] textArray, string fileloc, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
+
+
+        /// <summary>
+        /// This function takes in a string, an array of strings, an array of strings, a string, a
+        /// boolean, and a string.
+        /// </summary>
+        /// <param name="code_part">The code part that is being interperated.</param>
+        /// <param name="lines">The lines of the code</param>
+        /// <param name="textArray">The array of strings that contains the code.</param>
+        /// <param name="fileloc">The location of the file</param>
+        /// <param name="isInAMethod">If the code is in a method, this is true.</param>
+        /// <param name="methodName">The name of the method that the code is in.</param>
+        public void interperate(string code_part, string[] lines, string[] textArray, string fileloc,  bool isInAMethod = false, string methodName = "}")
         {
-            string code_part_unedited;
-            //string textToPrint;
-            code_part_unedited = code_part;
+            string code_part_unedited = code_part;
 
             string[] if_lines = lines;
             int end_line_IDX = 0;
@@ -23,10 +33,11 @@ namespace Easy14_Coding_Language
             //Take all lines and convert them to a list
             List<string> if_lines_list = new List<string>(if_lines);
             List<string> usings_lines_list = new List<string>(if_lines_list);
-            //below is a way to get the usings and then use them for other stuff
-            foreach (string line__ in if_lines)
+
+            //Below we get the usings and then use them for other stuff
+            foreach (string line_withUsings in if_lines)
             {
-                if (!line__.StartsWith("using"))
+                if (!line_withUsings.StartsWith("using"))
                 {
                     usings_lines_list.RemoveRange(line_counterr, usings_lines_list.Count - line_counterr);
                     break;
@@ -36,16 +47,18 @@ namespace Easy14_Coding_Language
 
             line_counterr = 1;
             //Below is a method to find the code under the if statement
-            foreach (string line__ in if_lines)
+            foreach (string line_ifStatement in if_lines)
             {
-                if (line__ == code_part)
+                if (line_ifStatement == code_part)
                 {
                     if_lines_list.RemoveRange(0, line_counterr - 1);
                     break;
                 }
                 line_counterr++;
             }
+
             line_counterr = 0;
+
             List<string> understuff = new List<string>(if_lines_list);
             foreach (string line__ in if_lines_list)
             {
@@ -76,6 +89,7 @@ namespace Easy14_Coding_Language
             string obj1 = null; bool obj1_variable = false;
             string obj2 = null; bool obj2_variable = false;
 
+            /* Checking if the if statement is true or false. */
             if (if_Line.TrimEnd().TrimStart() != "(true)" && if_Line.TrimEnd().TrimStart() != "(false)")
             {
                 if (if_Line.Contains("=="))
@@ -99,7 +113,7 @@ namespace Easy14_Coding_Language
 
             if (if_Line.TrimEnd().TrimStart() == "(true)")
             {
-                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP";
 
                 List<string> someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
@@ -129,7 +143,7 @@ namespace Easy14_Coding_Language
             }
             if (if_Line.TrimEnd().TrimStart() == "(false)")
             {
-                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP";
 
                 List<string> someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
@@ -160,7 +174,8 @@ namespace Easy14_Coding_Language
             }
             else if (if_Line.Contains("=="))
             {
-                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                /* Checking if the variables are variables or not. */
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
                 if (!Directory.Exists(dir) || Directory.GetFiles(dir).Length <= 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -251,7 +266,7 @@ namespace Easy14_Coding_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(e_code);
                         e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(fileloc, e_code.ToArray(), lineIDX);
+                        prog.compileCode_fromOtherFiles(fileloc, e_code.ToArray());
                     }
                 }
 
@@ -261,6 +276,7 @@ namespace Easy14_Coding_Language
                 code_toContinueExceuting.AddRange(understuff);
 
                 //int lineIDX_underpart = lineIDX + (code_toContinueExceuting.ToArray().Length - lineIDX);
+                
                 if (isInAMethod != true)
                 {
                     prog.compileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
@@ -268,7 +284,7 @@ namespace Easy14_Coding_Language
             }
             else if (if_Line.Contains("!="))
             {
-                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
                 if (!obj1.Contains("\""))
                 {
                     obj1_variable = true;
@@ -342,7 +358,7 @@ namespace Easy14_Coding_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(e_code);
                         e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(fileloc, e_code.ToArray(), lineIDX);
+                        prog.compileCode_fromOtherFiles(fileloc, e_code.ToArray());
                     }
                 }
 

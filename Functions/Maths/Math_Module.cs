@@ -5,6 +5,13 @@ namespace Easy14_Coding_Language
 {
     class Math_Module
     {
+        /// <summary>
+        /// This function takes in a string of code, a line number, and a file name, and returns a
+        /// double
+        /// </summary>
+        /// <param name="code_part">The code to be interperated.</param>
+        /// <param name="lineNumber">The line number of the code that is being interperated.</param>
+        /// <param name="fileName">The name of the file that the code is in.</param>
         public double interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;
@@ -75,7 +82,9 @@ namespace Easy14_Coding_Language
                 //Console.WriteLine(sum);
                 return 0.0;
             }
-            //Console.WriteLine(sum);
+            
+            /* Checking if the fileName is null, if it is not null, it will write the result to a file,
+            if it is null, it will return the result. */
             if (fileName is not null) {
                 File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{fileName}.txt", result.ToString());
             }

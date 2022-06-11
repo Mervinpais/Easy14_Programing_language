@@ -53,25 +53,25 @@ namespace Easy14_Coding_Language
                 }
             }
             string[] arr = while_lines_list.ToArray();
-            string if_Line = while_lines_list[0];
-            if_Line = if_Line.Substring(5);
-            if_Line = if_Line.Substring(1, if_Line.Length - 2);
+            string while_Line = while_lines_list[0];
+            while_Line = while_Line.Substring(5);
+            while_Line = while_Line.Substring(1, while_Line.Length - 2);
             string obj1 = null;
             string obj2 = null;
             bool obj1_variable = false;
             bool obj2_variable = false;
 
-            if (if_Line.TrimEnd().TrimStart() != "(true)")
+            if (while_Line.TrimEnd().TrimStart() != "(true)")
             {
-                if (if_Line.Contains("=="))
-                    obj1 = if_Line.Substring(0, if_Line.IndexOf("==") - 0);
-                if (if_Line.Contains("!="))
-                    obj1 = if_Line.Substring(0, if_Line.IndexOf("!=") - 0);
+                if (while_Line.Contains("=="))
+                    obj1 = while_Line.Substring(0, while_Line.IndexOf("==") - 0);
+                if (while_Line.Contains("!="))
+                    obj1 = while_Line.Substring(0, while_Line.IndexOf("!=") - 0);
 
-                if (if_Line.Contains("=="))
-                    obj2 = if_Line.Substring((if_Line.IndexOf("==") + 3));
-                if (if_Line.Contains("!="))
-                    obj2 = if_Line.Substring(if_Line.IndexOf("!=") + 2);
+                if (while_Line.Contains("=="))
+                    obj2 = while_Line.Substring((while_Line.IndexOf("==") + 3));
+                if (while_Line.Contains("!="))
+                    obj2 = while_Line.Substring(while_Line.IndexOf("!=") + 2);
 
                 obj1 = obj1.TrimStart().TrimEnd();
                 obj2 = obj2.TrimStart().TrimEnd();
@@ -82,7 +82,7 @@ namespace Easy14_Coding_Language
                 else obj2_variable = true;
             }
 
-            if (if_Line.TrimEnd().TrimStart() == "(true)")
+            if (while_Line.TrimEnd().TrimStart() == "(true)")
             {
                 string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
 
@@ -112,7 +112,7 @@ namespace Easy14_Coding_Language
                     System.Threading.Thread.Sleep(100); //Just to not cause a stackoverflow/lag the computer
                 }
             }
-            else if (if_Line.Contains("=="))
+            else if (while_Line.Contains("=="))
             {
                 string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
 
@@ -210,7 +210,7 @@ namespace Easy14_Coding_Language
                 //understuff.RemoveRange(0, end_line_IDX);
                 prog.compileCode_fromOtherFiles(null, understuff.ToArray());
             }
-            else if (if_Line.Contains("!="))
+            else if (while_Line.Contains("!="))
             {
                 string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
 
