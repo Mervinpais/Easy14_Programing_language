@@ -8,33 +8,73 @@ namespace Easy14_Coding_Language
 {
     class updateChecker
     {
+        /// <summary>
+        /// It checks for the latest version of the program.
+        /// </summary>
+        /// <param name="UpdatesWarningsDisabled">If you want to disable the warning message that
+        /// appears when the user is running an outdated version of your app, set this to true.</param>
         public void checkLatestVersion(bool UpdatesWarningsDisabled = false)
         {
             //Initialize Variables
+            /* It's initializing the variable `currentVer` to 0.0, so we can use it later. */
             double currentVer = 0.0;
-                  ThrowErrorMessage tErM = new ThrowErrorMessage();
+            ThrowErrorMessage tErM = new ThrowErrorMessage();
 
+            /* It's just a variable that is used to store the data that we get from the update server,
+            and if we can't get the data, it will be set to that. */
             string wot = "<FAILED_TO_GET_UPDATEINFO>"; //incase we cant get the data this will be the error data
 
-            try {
-              string[] currentVerFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\currentVersion.txt");
-              currentVer = Convert.ToDouble(currentVerFile[1]);
+            try
+            {
+                /* It's getting the current version of the language, and saving it to a variable. */
+                string[] currentVerFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\currentVersion.txt");
+                currentVer = Convert.ToDouble(currentVerFile[1]);
+                
+                /* It's saving the current version to a cache file, so if the currentVersion.txt file
+                goes missing, it can still get the version from the cache file. */
+                try {
+                    string currentVerFile_cached_FILE = "C:\\Users\\mervi\\AppData\\Local\\Temp\\EASY14_TEMP\\cachedVersion.txt";
+                    if (Directory.Exists("C:\\Users\\mervi\\AppData\\Local\\Temp\\EASY14_TEMP"))
+                        Directory.Delete("C:\\Users\\mervi\\AppData\\Local\\Temp\\EASY14_TEMP");
+                    Directory.CreateDirectory("C:\\Users\\mervi\\AppData\\Local\\Temp\\EASY14_TEMP");
+                    File.WriteAllLines(currentVerFile_cached_FILE, currentVerFile);
+                }
+                catch (Exception e){
+                    /* It's sending an error message to the user, telling them that we can't find out
+                    what version this language is, and telling them to install the latest version
+                    for their safety. */
+                    tErM.sendErrMessage("AN ERROR OCCURED WHEN SAVING TO CACHE (TO SAVE CURRENT VERSION) THIS WILL PREVENT THE LANGUAGE FROM REMEBERING IT'S VERSION IN THE CASE IF THE currentVersion.txt FILE GOES MISSING, ERROR MESSAGE BELOW\n", null, "error");
+
+                    tErM.sendErrMessage(e.Message, null, "error");
+                }
             }
             catch
             {
-                      if (UpdatesWarningsDisabled)
-                          tErM.sendErrMessage("Uh oh! We can't find the version file(s)!, using cached version Files...", null, "warning");
-                      try {
-                          string[] currentVerFile_cached = File.ReadAllLines("C:\\Users\\mervi\\AppData\\Local\\Temp\\EASY14_TEMP\\cachedVersion.txt");
-                          currentVer = Convert.ToDouble(currentVerFile_cached[1]);
-                      }
-                      catch {
-                          if (UpdatesWarningsDisabled)
-                              tErM.sendErrMessage("AN ERROR OCCURED! WE CAN'T FIND OUT WHAT VERSION THIS LANGUAGE IS, REINSTALL APP TO FIX THIS ISSUE! (OR YOU CAN DISABLE THIS WARNING IN OPTIONS.INI)", null, "error");
-                      }
+                /* It's checking if the user has disabled the update warnings, and if they have, it
+                will not show the warning. */
+                if (UpdatesWarningsDisabled)
+                    tErM.sendErrMessage("Uh oh! We can't find the version file(s)!, using cached version Files...", null, "warning");
+                
+                try
+                {
+                    /* It's getting the current version of the language, and saving it to a variable. */
+                    string[] currentVerFile_cached = File.ReadAllLines("C:\\Users\\mervi\\AppData\\Local\\Temp\\EASY14_TEMP\\cachedVersion.txt");
+                    currentVer = Convert.ToDouble(currentVerFile_cached[1]);
+                }
+                catch
+                {
+                    if (UpdatesWarningsDisabled)
+                        /* It's sending an error message to the user, telling them that we can't find
+                        out what version this language is, and telling them to install the latest
+                        version for their safety. */
+                        tErM.sendErrMessage("AN ERROR OCCURED! WE CAN'T FIND OUT WHAT VERSION THIS LANGUAGE IS, INSTALL THE LATEST VERSION FOR YOUR SAFETY", null, "error");
+                }
             }
 
-            try {
+            /* It's checking if there is an update available, and if there is, it will tell you. */
+            try
+            {
+                /* It's getting the latest version of the language, and saving it to a variable. */
                 WebClient wc = new WebClient();
                 wot = wc.DownloadString("https://pastebin.com/raw/nETTM1ih");
                 string[] upd = wot.Split(',');
@@ -55,8 +95,9 @@ namespace Easy14_Coding_Language
                     Console.ForegroundColor = ConsoleColor.Gray;
                 }
             }
-            catch {
-                if (UpdatesWarningsDisabled) 
+            catch
+            {
+                if (UpdatesWarningsDisabled)
                     tErM.sendErrMessage("Uh oh! we can't check if you have the latest version of this language, please make sure you have the latest version yourself", null, "error");
             }
         }
