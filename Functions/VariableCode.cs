@@ -68,7 +68,7 @@ namespace Easy14_Coding_Language
                         int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
                         int number2 = Convert.ToInt32(text.Substring(text.IndexOf(",")).Replace(",", ""));
                         Random rnd = new Random();
-                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", Convert.ToString(rnd.Next(number1, number2)));
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", Convert.ToString(rnd.Next(number1, number2)));
                     }
                     else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith(endOfStatementCode == ")" ? "" : ";"))
                     {
@@ -83,7 +83,7 @@ namespace Easy14_Coding_Language
 
                         Math_Add math_add = new Math_Add();
                         var result = math_add.interperate(varContent, line_count, varName);
-                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt",result.ToString());
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt",result.ToString());
                     }
                     else if (varContent.Contains("-"))
                     {
@@ -92,7 +92,7 @@ namespace Easy14_Coding_Language
                         
                         Math_Subtract math_sub = new Math_Subtract();
                         var result = math_sub.interperate(varContent, line_count, varName);
-                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Contains("/"))
                     {
@@ -101,7 +101,7 @@ namespace Easy14_Coding_Language
 
                         Math_Divide math_div = new Math_Divide();
                         var result = math_div.interperate(varContent, line_count, varName);
-                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Contains("*"))
                     {
@@ -110,7 +110,7 @@ namespace Easy14_Coding_Language
 
                         Math_Multiply math_multiply = new Math_Multiply();
                         var result = math_multiply.interperate(varContent, line_count, varName);
-                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Contains("%"))
                     {
@@ -119,7 +119,7 @@ namespace Easy14_Coding_Language
 
                         Math_Module math_mod = new Math_Module();
                         var result = math_mod.interperate(varContent, line_count, varName);
-                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Contains("=="))
                     {
@@ -127,7 +127,7 @@ namespace Easy14_Coding_Language
                         
                         Math_Equals math_equals = new Math_Equals();
                         var result = math_equals.interperate(varContent, line_count, varName);
-                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", result.ToString());
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("cos"))
                     {
