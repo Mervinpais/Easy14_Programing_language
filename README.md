@@ -1,4 +1,5 @@
 # Easy14_Programing_language
+
 Finally an *ok* language for beginners
 Basically a mashup of Python + C#
 
@@ -19,28 +20,35 @@ Basically a mashup of Python + C#
 	</head>
 </html>
 
-<hr>
+___
 
-# Main Stuff
+## Main Stuff
 Here is what you need to know
 
 * This is just like any other high level language
 * Runs on C#
 
-<hr>
+___
 
-# Version 2.2
+## Version 2.2
 
-## The Bugfixs arrived,
+## The Bugfixs arrived
 
 * Fixed ALL bugs with;
-	* print();
-	* input();
+  * print();
+  * input();
 
-# Known Issues
+## Known Issues
 
-None, atleast of now :|
+<!--None, atleast of now :|-->
+A New bug found with variables
 
-<hr>
+```C#
+var myVar = 5;
+myVar = myVar + 2;
+print(myVar);
+```
+
+___
 
 ## Thanks for reading :)
