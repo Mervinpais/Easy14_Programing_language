@@ -67,7 +67,7 @@ namespace Easy14_Coding_Language
                     obj1 = if_Line.Substring(0, if_Line.IndexOf("==") - 0);
                 if (if_Line.Contains("!="))
                     obj1 = if_Line.Substring(0, if_Line.IndexOf("!=") - 0);
-                
+
                 if (if_Line.Contains("=="))
                     obj2 = if_Line.Substring((if_Line.IndexOf("==") + 3));
                 if (if_Line.Contains("!="))
@@ -84,7 +84,7 @@ namespace Easy14_Coding_Language
 
             if (if_Line.TrimEnd().TrimStart() == "(true)")
             {
-                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
 
                 List<string> someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
@@ -114,7 +114,7 @@ namespace Easy14_Coding_Language
             }
             else if (if_Line.Contains("=="))
             {
-                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
 
                 List<string> someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
@@ -135,7 +135,7 @@ namespace Easy14_Coding_Language
                 string obj2_fileContent = null;
                 if (obj1_variable)
                 {
-                    if (!File.Exists(dir + @$"\{obj1}.txt"))
+                    if (!File.Exists(dir + $"\\{obj1}.txt"))
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"ERROR; Variable \"{obj1}\" does not exist!");
@@ -144,13 +144,13 @@ namespace Easy14_Coding_Language
                     }
                     else
                     {
-                        obj1_fileContent = File.ReadAllText(dir + @$"\{obj1}.txt");
+                        obj1_fileContent = File.ReadAllText(dir + $"\\{obj1}.txt");
                     }
                 }
 
                 if (obj2_variable)
                 {
-                    if (!File.Exists(dir + @$"\{obj2}.txt"))
+                    if (!File.Exists(dir + $"\\{obj2}.txt"))
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"ERROR; Variable \"{obj2}\" does not exist!");
@@ -159,10 +159,10 @@ namespace Easy14_Coding_Language
                     }
                     else
                     {
-                        obj2_fileContent = File.ReadAllText(dir + @$"\{obj2}.txt");
+                        obj2_fileContent = File.ReadAllText(dir + $"\\{obj2}.txt");
                     }
                 }
-                
+
                 if (obj1_variable == true && obj2_variable == false)
                 {
                     while (obj1_fileContent == obj2.Replace("\"", ""))
@@ -212,7 +212,7 @@ namespace Easy14_Coding_Language
             }
             else if (if_Line.Contains("!="))
             {
-                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
 
                 List<string> someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
@@ -231,28 +231,33 @@ namespace Easy14_Coding_Language
 
                 string obj1_fileContent = null;
                 string obj2_fileContent = null;
-                if (obj1_variable) {
-                    if (!File.Exists(dir + @$"\{obj1}.txt")) {
+                if (obj1_variable)
+                {
+                    if (!File.Exists(dir + $"\\{obj1}.txt"))
+                    {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"ERROR; Variable \"{obj1}\" does not exist!");
                         Console.ForegroundColor = ConsoleColor.White;
                         return;
                     }
-                    else {
-                        obj1_fileContent = File.ReadAllText(dir + @$"\{obj1}.txt");
+                    else
+                    {
+                        obj1_fileContent = File.ReadAllText(dir + $"\\{obj1}.txt");
                     }
                 }
 
-                if (obj2_variable) {
-                    if (!File.Exists(dir + @$"\{obj2}.txt"))
+                if (obj2_variable)
+                {
+                    if (!File.Exists(dir + $"\\{obj2}.txt"))
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"ERROR; Variable \"{obj2}\" does not exist!");
                         Console.ForegroundColor = ConsoleColor.White;
                         return;
                     }
-                    else {
-                        obj2_fileContent = File.ReadAllText(dir + @$"\{obj2}.txt");
+                    else
+                    {
+                        obj2_fileContent = File.ReadAllText(dir + $"\\{obj2}.txt");
                     }
                 }
 

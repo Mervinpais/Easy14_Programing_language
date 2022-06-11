@@ -91,8 +91,8 @@ namespace Easy14_Coding_Language
                 methodName = methodName.Substring(0, methodName.IndexOf("("));
                 //Console.WriteLine(methodName);
 
-                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}");
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}\INSTRUCTIONS.txt", string.Join(Environment.NewLine, code_in_method_code.ToArray()));
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}");
+                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", string.Join(Environment.NewLine, code_in_method_code.ToArray()));
                 //prog.compileCode_fromOtherFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}\INSTRUCTIONS.txt");
                 prog.compileCode_fromOtherFiles(null, understuff.ToArray(), 0, true, methodName);
             }
@@ -102,15 +102,15 @@ namespace Easy14_Coding_Language
                 methodName = methodName.Replace("func", "").TrimStart();
                 methodName = methodName.Substring(0, methodName.IndexOf("("));
                 //Console.WriteLine(methodName);
-                if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}") == false)
+                if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}") == false)
                 {
                     Console.WriteLine("ERROR; Can't Find method, make sure you made the method in your code");
                     return;
                 }
-                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}");
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}");
                 //File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}\INSTRUCTIONS.txt", string.Join(Environment.NewLine, e_code.ToArray()));
                 try {
-                    prog.compileCode_fromOtherFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}\INSTRUCTIONS.txt", null, 0, true, methodName);
+                    prog.compileCode_fromOtherFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", null, 0, true, methodName);
                 }
                 catch
                 {

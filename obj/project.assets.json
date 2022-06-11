@@ -327,30 +327,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\mervi\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\mervi\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mervi\\source\\repos\\Easy14 Coding Language\\Easy14 Coding Language\\Easy14 Coding Language.csproj",
+      "projectUniqueName": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programing_language\\Easy14 Coding Language.csproj",
       "projectName": "Easy14 Coding Language",
-      "projectPath": "C:\\Users\\mervi\\source\\repos\\Easy14 Coding Language\\Easy14 Coding Language\\Easy14 Coding Language.csproj",
+      "projectPath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programing_language\\Easy14 Coding Language.csproj",
       "packagesPath": "C:\\Users\\mervi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mervi\\source\\repos\\Easy14 Coding Language\\Easy14 Coding Language\\obj\\",
+      "outputPath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programing_language\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\mervi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\mervi\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -384,6 +378,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[5.0.0, 5.0.0]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[5.0.17, 5.0.17]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[5.0.0, 5.0.0]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[5.0.0, 5.0.0]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"

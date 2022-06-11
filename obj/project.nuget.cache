@@ -1,15 +1,19 @@
 {
   "version": 2,
-  "dgSpecHash": "6NaFRZouv8Ld1cTnUOuHb3YDFeDYPhwCMpB8fKj9rH8rt7cHRggKJquZS/fBKz2hSPG42BtfvZ6H0NF/GBScqA==",
+  "dgSpecHash": "wFK+D3sgPKFLqDd6vRVzBYBzMRt0NM5MDcsdeDajykI45Gub6i9E6ymnI3nUXIagOZeYCsVFCCZZg8ZB9OO0QA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mervi\\source\\repos\\Easy14 Coding Language\\Easy14 Coding Language\\Easy14 Coding Language.csproj",
+  "projectFilePath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programing_language\\Easy14 Coding Language.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mervi\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\mervi\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\mervi\\.nuget\\packages\\system.codedom\\6.0.0\\system.codedom.6.0.0.nupkg.sha512",
     "C:\\Users\\mervi\\.nuget\\packages\\system.management\\6.0.0\\system.management.6.0.0.nupkg.sha512",
     "C:\\Users\\mervi\\.nuget\\packages\\system.security.accesscontrol\\5.0.0\\system.security.accesscontrol.5.0.0.nupkg.sha512",
-    "C:\\Users\\mervi\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512"
+    "C:\\Users\\mervi\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\microsoft.netcore.app.ref\\5.0.0\\microsoft.netcore.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\5.0.0\\microsoft.windowsdesktop.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\5.0.0\\microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.17\\microsoft.netcore.app.host.win-x64.5.0.17.nupkg.sha512"
   ],
   "logs": []
 }

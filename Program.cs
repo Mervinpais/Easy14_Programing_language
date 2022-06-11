@@ -33,9 +33,9 @@ namespace Easy14_Coding_Language
                 Console.WriteLine("\n==== Easy14 Console ====\n");
             //============================================================\\
             //There is a bug where if i entered a random statement and there was the var temp folder, it would think there was a variable and try checking it, then it just continues so we need to delete the variable temp folder, it like initializing variables except we just delete the leftover variables from the last session
-            if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
+            if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
             {
-                foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
+                foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
                 {
                     try
                     {
@@ -50,7 +50,7 @@ namespace Easy14_Coding_Language
                         Directory.Delete(file);
                     }
                 }
-                Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP");
             }
 
             //==================The Update Checker====================\\
@@ -349,15 +349,15 @@ namespace Easy14_Coding_Language
             }
             /*Console.WriteLine("\nPress Any Key to exit");
             Console.Read();
-            if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
+            if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
             {
                 Console.WriteLine("\nDeleting current project variables folder...");
-                string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP");
                 foreach (string file in files)
                 {
                     File.Delete(file);
                 }
-                string var_MethodPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP";
+                string var_MethodPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
 
                 Directory.Delete(var_MethodPath, true);
             }
@@ -1000,9 +1000,9 @@ namespace Easy14_Coding_Language
                 }
                 else
                 {
-                    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP"))
+                    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
                     {
-                        bool gotFiles = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP").Length > -1;
+                        bool gotFiles = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP").Length > -1;
                         if (gotFiles)
                         {
                             if (line.EndsWith("();")) //Means its probably a function
@@ -1011,7 +1011,7 @@ namespace Easy14_Coding_Language
                                 methodCode.interperate(line, textArray, lines, fileLoc, false);
                                 return;
                             }
-                            foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP"))
+                            foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
                             {
                                 string supposedVar = file.Substring(file.LastIndexOf("\\")).Replace(".txt", "").Substring(1);
                                 if (line.StartsWith(supposedVar))
