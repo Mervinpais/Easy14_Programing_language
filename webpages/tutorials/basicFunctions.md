@@ -1,4 +1,9 @@
-# Basic Functions
+<head>
+<link rel="stylesheet" type="text/css" href="https://mervinpais.github.io/Easy14_Programing_language/style.css">
+</head>
+
+<body>
+<head1> Basic Functions </head1>
 
 ## Console.print()
 
@@ -49,3 +54,4 @@ input();
 input("My Input");
 //Wont work :(
 ```
+</body>
