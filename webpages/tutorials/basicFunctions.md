@@ -83,6 +83,8 @@ Console.input();
 <div class="code">
 <code class="language-csharp">
 using Console;
+</div>
+<code class="language-csharp">
 <a style="color: #bc57ff;">input</a>();
 </code>
 </div>
