@@ -18,9 +18,11 @@
 
 <br>
 
+<div class="code">
 <code class="language-csharp">
-Console.print("Hello World");
+<mark style="color: #0092fa;">Console</mark>.<mark style="color: #bc57ff;">print</mark>(<mark style="color: #2b6426;">"Hello World"</mark>);
 </code>
+</div>
 
 <br>
 
@@ -28,10 +30,12 @@ Console.print("Hello World");
 
 <br>
 
+<div class="code">
 <code class="language-csharp">
 using Console;
 print("Hello world");
 </code>
+</div>
 
 <br>
 
@@ -39,12 +43,15 @@ print("Hello world");
 
 <br>
 
+<div class="code">
 <code class="language-csharp">
 print(1+2);
 //Works
 print(1+4-2);
 //Wont work :(
 </code>
+</div>
+
 <br>
 
 <para> You can do +, -, *, /, % (Modulo), and == in a print statement </para>
@@ -59,16 +66,20 @@ print(1+4-2);
 
 <br>
 
+<div class="code">
 <code class="language-csharp">
 Console.input();
 </code>
+</div>
 
 <br>
 
+<div class="code">
 <code class="language-csharp">
 using Console;
 input();
 </code>
+</div>
 
 <br>
 
@@ -76,12 +87,14 @@ input();
 
 <br>
 
+<div class="code">
 <code class="language-csharp">
 input();
 //Works
 input("My Input");
 //Wont work :(
 </code>
+</div>
 
 <br>
 
