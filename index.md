@@ -3,7 +3,9 @@ body {
   background-color: #202020;
   color: #ffffff;
 }
-
+h1,h2,h3,h4,h5,h6,p {
+  font: monospace;
+}
 </style>
 
 <h1> Easy 14 (or E14) </h1>
