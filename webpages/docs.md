@@ -1,4 +1,4 @@
-# Tutorials
+# Documentation 
 
 ## Here are the tutorials i currently offer for the language
 
