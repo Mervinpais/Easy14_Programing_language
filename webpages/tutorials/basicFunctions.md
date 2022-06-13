@@ -31,12 +31,15 @@
 <br>
 
 <div class="code">
-<code class="language-csharp">
-using Console;
-<br>
-<a style="color: #bc57ff;">print</a>(<a style="color: #409438;">"Hello world"</a>);
-<br>
-</code>
+    <code class="language-csharp">
+        <a style="color: #0662b2;">using</a><a style="color: ##78ce7f;">Console;</a>
+    </code>
+</div>
+
+<div class="code">
+    <code class="language-csharp">
+        <a style="color: #bc57ff;">print</a>(<a style="color: #409438;">"Hello world"</a>);
+    </code>
 </div>
 
 <br>
@@ -85,7 +88,7 @@ using Console;
 
 <div class="code">
     <code class="language-csharp">
-        Console.input();
+        <a style="color: #0092fa;">Console</a>.<a style="color: #bc57ff;">input</a>();
     </code>
 </div>
 
@@ -93,7 +96,7 @@ using Console;
 
 <div class="code">
     <code class="language-csharp">
-        using Console;
+        <a style="color: #387632;">using</a><a style="color: ##78ce7f;">Console;</a>
     </code>
 </div>
 
@@ -105,7 +108,7 @@ using Console;
 
 <br>
 
-<para> Below is what input(); can do currently </prar?>
+<para> Below is what input(); can do currently </para>
 
 <br>
 
