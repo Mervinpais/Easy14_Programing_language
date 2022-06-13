@@ -6,15 +6,16 @@ namespace Easy14_Coding_Language
 {
     class ConsolePrint
     {
-        private string endOfStatementCode_;
-        public string endOfStatementCode
-        {
-            get { return endOfStatementCode_; }
-            set { endOfStatementCode_ = value; }
-        }
-
         public void interperate(string code_part, string[] textArray, string fileloc, int lineNumber = -1)
         {
+            string endOfStatementCode = ")";
+            string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\options.ini");
+            foreach (string line in configFile)
+            {
+                if (line.StartsWith("needSemicolons"))
+                    endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ");" : endOfStatementCode = ")");
+                break;
+            }
             string code_part_unedited;
             string textToPrint;
 
@@ -53,7 +54,7 @@ namespace Easy14_Coding_Language
             else if (code_part_unedited.StartsWith($"print("))
                 code_part = code_part.Substring(6);
 
-            if (endOfStatementCode == ");")
+            if (endOfStatementCode == ")")
                 code_part = code_part.Substring(0, code_part.Length - 2);
             else
                 code_part = code_part.Substring(0, code_part.Length - 1);

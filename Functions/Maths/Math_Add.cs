@@ -38,34 +38,13 @@ namespace Easy14_Coding_Language
                 string integer1_str = null;
                 string integer2_str = null;
 
-                if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP").Length != 0)
-                {
-                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP");
-                    foreach (string file in files)
-                    {
-                        string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
-                        if (_file == intergers[0])
-                        {
-                            integer1_str = File.ReadAllText(file);
-                            //Console.WriteLine(contentInFile.ToString());
-                            break;
-                        }
-                    }
-                    foreach (string file in files)
-                    {
-                        string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
-                        if (_file == intergers[1])
-                        {
-                            integer2_str = File.ReadAllText(file);
-                            //Console.WriteLine(contentInFile.ToString());
-                            break;
-                        }
-                    }
-                }
+                GetVariable getVar = new GetVariable();
+                integer1_str = getVar.findVar(intergers[0]);
+                integer2_str = getVar.findVar(intergers[1]);
 
-                if (integer1_str == null)
+                if (integer1_str == "0xF000001")
                     integer1 = Convert.ToInt32(intergers[0]);
-                if (integer2_str == null)
+                if (integer2_str == "0xF000001")
                     integer2 = Convert.ToInt32(intergers[1]);
                 
                 //Seperatated Sections
@@ -73,19 +52,14 @@ namespace Easy14_Coding_Language
                 /* Checking if the 2 integers are variables or not, if they are variables it will get
                 the value of the variable and add them together, if they are not variables it will
                 add them together. */
-                if (integer1_str == null && integer2_str == null)
+                if (integer1_str != "0xF000001" && integer2_str == "0xF000001")
+                    result = Convert.ToInt32(integer1_str) + Convert.ToInt32(integer2);
+                else if (integer1_str == "0xF000001" && integer2_str != "0xF000001")
+                    result = Convert.ToInt32(integer1) + Convert.ToInt32(integer2_str);
+                else if (integer1_str == "0xF000001" && integer2_str == "0xF000001")
                     result = Convert.ToInt32(integer1) + Convert.ToInt32(integer2);
                 else if (integer1_str != null && integer2_str != null)
                     result = Convert.ToInt32(integer1_str) + Convert.ToInt32(integer2_str);
-                else if (integer1_str == null && integer2_str != null)
-                    result = Convert.ToInt32(integer1) + Convert.ToInt32(integer2_str);
-                
-                /// <summary>
-                /// It checks if the first integer is not null and the second integer is null.
-                /// </summary>
-                /// <param name="integer1_str">The first integer as a string.</param>
-                else if (integer1_str != null && integer2_str == null)
-                    result = Convert.ToInt32(integer1_str) + Convert.ToInt32(integer2);
             }
             catch
             {

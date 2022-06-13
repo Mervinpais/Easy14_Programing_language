@@ -60,21 +60,25 @@ namespace Easy14_Coding_Language
                     }
                 }
 
-                if (integer1_str == null)
+                GetVariable getVar = new GetVariable();
+                integer1_str = getVar.findVar(intergers[0]);
+                integer2_str = getVar.findVar(intergers[1]);
+
+                if (integer1_str == "0xF000001")
                     integer1 = Convert.ToInt32(intergers[0]);
-                if (integer2_str == null)
+                if (integer2_str == "0xF000001")
                     integer2 = Convert.ToInt32(intergers[1]);
 
                 //Seperatated Sections
 
-                if (integer1_str == null && integer2_str == null)
-                    result = Convert.ToInt32(integer1) % Convert.ToInt32(integer2);
+                if (integer1_str != "0xF000001" && integer2_str == "0xF000001")
+                    result = Convert.ToInt32(integer1_str) + Convert.ToInt32(integer2);
+                else if (integer1_str == "0xF000001" && integer2_str != "0xF000001")
+                    result = Convert.ToInt32(integer1) + Convert.ToInt32(integer2_str);
+                else if (integer1_str == "0xF000001" && integer2_str == "0xF000001")
+                    result = Convert.ToInt32(integer1) + Convert.ToInt32(integer2);
                 else if (integer1_str != null && integer2_str != null)
-                    result = Convert.ToInt32(integer1_str) % Convert.ToInt32(integer2_str);
-                else if (integer1_str == null && integer2_str != null)
-                    result = Convert.ToInt32(integer1) % Convert.ToInt32(integer2_str);
-                else if (integer1_str != null && integer2_str == null)
-                    result = Convert.ToInt32(integer1_str) % Convert.ToInt32(integer2);
+                    result = Convert.ToInt32(integer1_str) + Convert.ToInt32(integer2_str);
             }
             catch
             {

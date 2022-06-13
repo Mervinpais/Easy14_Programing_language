@@ -15,7 +15,11 @@ namespace Easy14_Coding_Language
             string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
             /* A default value for the variable. */
             string theVariable = "0xF000001";
-
+            
+            if (!Directory.Exists(dir))
+            {
+                return theVariable;
+            }
             /* Getting the variable from the file. */
             foreach (string file in Directory.GetFiles(dir))
             {

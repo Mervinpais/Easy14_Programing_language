@@ -34,6 +34,8 @@ namespace Easy14_Coding_Language
                         break;
                     }
                 }
+                /* Checking if the user has referenced the FileSystem library, if they haven't it will
+                throw an error. */
                 if (foundUsing == false)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -69,6 +71,8 @@ namespace Easy14_Coding_Language
             else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP").Length != 0)
             {
                 string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP");
+                /* Checking if the user has used a variable in the MakeFolder function, if they have it
+                will get the variable and use it as the folder location. */
                 try
                 {
                     GetVariable getVariable = new GetVariable();

@@ -6,13 +6,6 @@ namespace Easy14_Coding_Language
 {
     class Random_RandomRange
     {
-        private string endOfStatementCode_;
-        public string endOfStatementCode
-        {
-            get { return endOfStatementCode_; }
-            set { endOfStatementCode_ = value; }
-        }
-
         /// <summary>
         /// It takes a string, an array of strings, and a string, and returns a string.
         /// </summary>
@@ -21,6 +14,15 @@ namespace Easy14_Coding_Language
         /// <param name="fileloc">The location of the file</param>
         public string interperate(string code_part, string[] textArray, string fileloc)
         {
+            string endOfStatementCode = ")";
+            string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\options.ini");
+            foreach (string line in configFile)
+            {
+                if (line.StartsWith("needSemicolons"))
+                    endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ");" : endOfStatementCode = ")");
+                break;
+            }
+
             string code_part_unedited = code_part;
             bool foundUsing = false;
             if (code_part.StartsWith("RandomRange("))

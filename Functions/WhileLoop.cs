@@ -30,18 +30,36 @@ namespace Easy14_Coding_Language
                 line_counterr++;
             }
             line_counterr = 0;
+
+            //Take all lines and convert them to a list
+            List<string> if_lines_list = new List<string>(_lines_);
+            List<string> usings_lines_list = new List<string>(if_lines_list);
+
+            //Below we get the usings and then use them for other stuff
+            foreach (string line_withUsings in _lines_)
+            {
+                if (!line_withUsings.StartsWith("using"))
+                {
+                    usings_lines_list.RemoveRange(line_counterr, usings_lines_list.Count - line_counterr);
+                    break;
+                }
+                line_counterr++;
+            }
+
+            line_counterr = 1;
+
             List<string> understuff = new List<string>(while_lines_list);
             foreach (string line__ in while_lines_list)
             {
                 line_counterr++;
                 if (line__ == "}")
                 {
-                    end_line_IDX = line_counterr;
+                    end_line_IDX = line_counterr - 2;
                     if (while_lines_list.Count != end_line_IDX)
                     {
                         try
                         {
-                            while_lines_list.RemoveRange(end_line_IDX, while_lines_list.Count - end_line_IDX);
+                            while_lines_list.RemoveRange(end_line_IDX + 1, while_lines_list.Count - end_line_IDX - 1);
                             understuff.RemoveRange(0, end_line_IDX);
                         }
                         catch (Exception e)
@@ -101,14 +119,14 @@ namespace Easy14_Coding_Language
 
                 lin_count = lin_count - 2;
 
-                List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                List<string> Code_in_while_statement_List = while_lines_list.GetRange(1, end_line_IDX - 2);
                 List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                usings_code.AddRange(e_code);
-                e_code = usings_code;
+                usings_code.AddRange(Code_in_while_statement_List);
+                Code_in_while_statement_List = usings_code;
 
                 while (true)
                 {
-                    prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                    prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     System.Threading.Thread.Sleep(100); //Just to not cause a stackoverflow/lag the computer
                 }
             }
@@ -165,50 +183,60 @@ namespace Easy14_Coding_Language
 
                 if (obj1_variable == true && obj2_variable == false)
                 {
-                    while (obj1_fileContent == obj2.Replace("\"", ""))
+                    obj2 = obj2.Substring(0, obj2.Length - 1).Substring(1);
+                    while (obj1_fileContent == obj2)
                     {
-                        List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> Code_in_while_statement_List = while_lines_list.GetRange(1, end_line_IDX);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                        usings_code.AddRange(e_code);
-                        e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                        usings_code.AddRange(Code_in_while_statement_List);
+                        Code_in_while_statement_List = usings_code;
+                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == false && obj2_variable == true)
                 {
-                    while (obj1.Replace("\"", "") == obj2_fileContent)
+                    obj1 = obj1.Substring(0, obj1.Length - 1).Substring(1);
+                    while (obj1 == obj2_fileContent)
                     {
-                        List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> Code_in_while_statement_List = while_lines_list.GetRange(1, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                        usings_code.AddRange(e_code);
-                        e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                        usings_code.AddRange(Code_in_while_statement_List);
+                        Code_in_while_statement_List = usings_code;
+                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == true && obj2_variable == true)
                 {
                     while (obj1_fileContent == obj2_fileContent)
                     {
-                        List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> Code_in_while_statement_List = while_lines_list.GetRange(1, end_line_IDX);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                        usings_code.AddRange(e_code);
-                        e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                        usings_code.AddRange(Code_in_while_statement_List);
+                        Code_in_while_statement_List = usings_code;
+                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
+                        obj1_fileContent = File.ReadAllText(dir + $"\\{obj1}.txt");
+                        obj2_fileContent = File.ReadAllText(dir + $"\\{obj2}.txt");
                     }
                 }
                 else if (obj1_variable == false && obj2_variable == false)
                 {
-                    while (obj1.Replace("\"", "") == obj2.Replace("\"", ""))
+                    obj1 = obj1.Substring(0, obj1.Length - 1).Substring(1);
+                    obj2 = obj2.Substring(0, obj2.Length - 1).Substring(1);
+                    while (obj1 == obj2)
                     {
-                        List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> Code_in_while_statement_List = while_lines_list.GetRange(1, end_line_IDX);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                        usings_code.AddRange(e_code);
-                        e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                        usings_code.AddRange(Code_in_while_statement_List);
+                        Code_in_while_statement_List = usings_code;
+                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 //understuff.RemoveRange(0, end_line_IDX);
-                prog.compileCode_fromOtherFiles(null, understuff.ToArray());
+                List<string> code_toContinueExceuting = new List<string>();
+                code_toContinueExceuting.AddRange(usings_lines_list);
+                code_toContinueExceuting.AddRange(understuff);
+
+                prog.compileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
             }
             else if (while_Line.Contains("!="))
             {
@@ -265,48 +293,52 @@ namespace Easy14_Coding_Language
                 {
                     while (obj1_fileContent != obj2.Replace("\"", ""))
                     {
-                        List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> Code_in_while_statement_List = while_lines_list.GetRange(1, end_line_IDX);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                        usings_code.AddRange(e_code);
-                        e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                        usings_code.AddRange(Code_in_while_statement_List);
+                        Code_in_while_statement_List = usings_code;
+                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == false && obj2_variable == true)
                 {
                     while (obj1.Replace("\"", "") != obj2_fileContent)
                     {
-                        List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> Code_in_while_statement_List = while_lines_list.GetRange(1, end_line_IDX);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                        usings_code.AddRange(e_code);
-                        e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                        usings_code.AddRange(Code_in_while_statement_List);
+                        Code_in_while_statement_List = usings_code;
+                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == true && obj2_variable == true)
                 {
                     while (obj1_fileContent != obj2_fileContent)
                     {
-                        List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> Code_in_while_statement_List = while_lines_list.GetRange(1, end_line_IDX);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                        usings_code.AddRange(e_code);
-                        e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                        usings_code.AddRange(Code_in_while_statement_List);
+                        Code_in_while_statement_List = usings_code;
+                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == false && obj2_variable == false)
                 {
                     while (obj1.Replace("\"", "") != obj2.Replace("\"", ""))
                     {
-                        List<string> e_code = while_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> Code_in_while_statement_List = while_lines_list.GetRange(1, end_line_IDX);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
-                        usings_code.AddRange(e_code);
-                        e_code = usings_code;
-                        prog.compileCode_fromOtherFiles(null, e_code.ToArray());
+                        usings_code.AddRange(Code_in_while_statement_List);
+                        Code_in_while_statement_List = usings_code;
+                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
-                understuff.RemoveRange(0, end_line_IDX);
-                prog.compileCode_fromOtherFiles(null, understuff.ToArray());
+                //understuff.RemoveRange(0, end_line_IDX);
+                List<string> code_toContinueExceuting = new List<string>();
+                code_toContinueExceuting.AddRange(usings_lines_list);
+                code_toContinueExceuting.AddRange(understuff);
+
+                prog.compileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
             }
         }
     }

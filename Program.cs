@@ -909,27 +909,23 @@ namespace Easy14_Coding_Language
                 else if (line.StartsWith($"Console.print(") || line.StartsWith($"print(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsolePrint conPrint = new ConsolePrint();
-                    conPrint.endOfStatementCode = endOfStatementCode;
                     conPrint.interperate(line, textArray, fileLoc);
 
                 }
                 else if (line.StartsWith($"Console.input(") || line.StartsWith($"input(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsoleInput conInput = new ConsoleInput();
-                    conInput.endOfStatementCode = endOfStatementCode;
                     conInput.interperate(line, textArray, fileLoc, null);
 
                 }
                 else if (line.StartsWith($"Console.clear(") || line.StartsWith($"clear(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsoleClear conClear = new ConsoleClear();
-                    conClear.endOfStatementCode = endOfStatementCode;
                     conClear.interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"Console.exec(") || line.StartsWith($"exec(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsoleExec conExec = new ConsoleExec();
-                    conExec.endOfStatementCode = endOfStatementCode;
                     conExec.interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"wait(") && line.EndsWith($"{endOfStatementCode}"))
@@ -940,7 +936,6 @@ namespace Easy14_Coding_Language
                 else if (line.StartsWith($"var") && line.EndsWith(endOfStatementCode == ")" ? "" : ";"))
                 {
                     VariableCode varCode = new VariableCode();
-                    varCode.endOfStatementCode = endOfStatementCode;
                     varCode.interperate(line, lines, lineCount);
                 }
                 else if (line == "true")
@@ -1013,21 +1008,18 @@ namespace Easy14_Coding_Language
                 else if (line.StartsWith($"Time.CurrentTime(") || line.StartsWith($"CurrentTime(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     Time_CurrentTime currentTime = new Time_CurrentTime();
-                    currentTime.endOfStatementCode = endOfStatementCode;
                     string time = currentTime.interperate(line, textArray, fileLoc);
                     Console.WriteLine(time);
                 }
                 else if (line.StartsWith($"Time.IsLeapYear(") || line.StartsWith($"IsLeapYear(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     Time_IsLeapYear isLeapYear = new Time_IsLeapYear();
-                    isLeapYear.endOfStatementCode = endOfStatementCode;
                     string isLeapYear_str = isLeapYear.interperate(line, textArray, fileLoc);
                     Console.WriteLine(Convert.ToBoolean(isLeapYear_str));
                 }
                 else if (line.StartsWith($"Random.RandomRange(") || line.StartsWith($"RandomRange(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     Random_RandomRange randomRange = new Random_RandomRange();
-                    randomRange.endOfStatementCode = endOfStatementCode;
                     string randomRange_str = randomRange.interperate(line, textArray, fileLoc);
                     Console.WriteLine(randomRange_str);
                 }
@@ -1062,11 +1054,11 @@ namespace Easy14_Coding_Language
                                         string filePath = file;
                                         string partToReplace = file.Substring(file.LastIndexOf("\\") + 1).Replace(".txt", "") + " = ";
                                         string content = line.Replace(partToReplace, "");
-                                        content = content.Substring(1).Substring(0, content.Length - 2);
+                                        //content = content.Substring(1).Substring(0, content.Length - 2);
                                         if (content.Contains("+") && content.Count(f => (f == '+')) == 1)
                                         {
                                             Math_Add math_Add = new Math_Add();
-                                            math_Add.interperate(content, 0);
+                                            int result = math_Add.interperate(content, 0, supposedVar);
                                         }
                                         else {
                                             File.WriteAllText(filePath, content);
