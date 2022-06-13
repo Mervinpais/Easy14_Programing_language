@@ -20,7 +20,7 @@
 
 <div class="code">
 <code class="language-csharp">
-<a style="color: #0092fa;">Console</a>.<a style="color: #bc57ff;">print</a>(<a style="color: #2b6426;">"Hello World"</a>);
+<a style="color: #0092fa;">Console</a>.<a style="color: #bc57ff;">print</a>(<a style="color: #409438;">"Hello World"</a>);
 </code>
 </div>
 
@@ -33,7 +33,9 @@
 <div class="code">
 <code class="language-csharp">
 using Console;
-print("Hello world");
+<br>
+<a style="color: #bc57ff;">print</a>(<a style="color: #409438;">"Hello world"</a>);
+<br>
 </code>
 </div>
 
@@ -45,10 +47,14 @@ print("Hello world");
 
 <div class="code">
 <code class="language-csharp">
-print(1+2);
+<a style="color: #bc57ff;">print</a>(1+2);
+<br>
 //Works
-print(1+4-2);
+<br>
+<a style="color: #bc57ff;">print</a>(1+4-2);
+<br>
 //Wont work :(
+<br>
 </code>
 </div>
 
@@ -77,7 +83,7 @@ Console.input();
 <div class="code">
 <code class="language-csharp">
 using Console;
-input();
+<a style="color: #bc57ff;">input</a>();
 </code>
 </div>
 
@@ -89,10 +95,14 @@ input();
 
 <div class="code">
 <code class="language-csharp">
-input();
+<a style="color: #bc57ff;">input</a>();
+<br>
 //Works
-input("My Input");
+<br>
+<a style="color: #bc57ff;">input</a>("My Input");
+<br>
 //Wont work :(
+<br>
 </code>
 </div>
 
