@@ -9,49 +9,50 @@
 <br>
 <para>Console.print() is used to print stuff to the screen</para>
 
-```csharp
+<code class="language-csharp">
 Console.print("Hello World");
-```
+</code>
 
-we can remove the unnessary "Console" part of our code by add a using statement at the top
+<para> we can remove the unnessary "Console" part of our code by add a using statement at the top </para>
 
-```csharp
+<code class="language-csharp">
 using Console;
 print("Hello world");
-```
+</code>
 
-You can also print arithmetic operations (only one at a time though :(
+<para> You can also print arithmetic operations (only one at a time though :( </para>
 
-```csharp
+<code class="language-csharp">
 print(1+2);
 //Works
 print(1+4-2);
 //Wont work :(
-```
+</code>
 
-You can do +, -, *, /, % (Modulo), and == in a print statement
+<para> You can do +, -, *, /, % (Modulo), and == in a print statement </para>
 
 ___
 
-## Console.input()
+<head2> Console.input() </head2>
 
-Console.input() is used to ask the user for input
+<para> Console.input() is used to ask the user for input </para>
 
-```csharp
+<code class="language-csharp">
 Console.input();
-```
+</code>
 
-```csharp
+<code class="language-csharp">
 using Console;
 input();
-```
+</code>
 
 Below is what input(); can do currently
 
-```csharp
+<code class="language-csharp">
 input();
 //Works
 input("My Input");
 //Wont work :(
-```
+</code>
+
 </body>
