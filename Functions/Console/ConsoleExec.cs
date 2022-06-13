@@ -141,11 +141,16 @@ namespace Easy14_Coding_Language
             }
             else
             {
-                ThrowErrorMessage tErM = new ThrowErrorMessage();
-                string unknownLine = "<unknownLineNumber>";
-                var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
-                string[] errorText = {" Your syntax/parameters were incorrect!", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n"};
-                tErM.sendErrMessage(null, errorText, "error");
+                try {
+
+                }
+                catch {
+                    ThrowErrorMessage tErM = new ThrowErrorMessage();
+                    string unknownLine = "<unknownLineNumber>";
+                    var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
+                    string[] errorText = {" An error occurred while executing commands from the exec command", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n"};
+                    tErM.sendErrMessage(null, errorText, "error");
+                }
             }
             //}
         }
