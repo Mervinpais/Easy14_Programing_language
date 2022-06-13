@@ -44,6 +44,8 @@ if condition {
 
 <h4> though i may add () in the condition part, im just too focued on fixing bugs first </h4>
 </body>
-# Tutorial Homepage below
+<footer> 
+<h1> Tutorial Homepage below </h1>
 
 <a href="https://mervinpais.github.io/Easy14_Programing_language/webpages/docs.html">Tutorial Home Page</a>
+</footer>
