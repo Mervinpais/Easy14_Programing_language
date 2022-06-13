@@ -28,7 +28,7 @@ Here is what you need to know
 
 ___
 
-## Version 2.3
+## Version 2.4
 
 ## The Bugfixs arrived
 
