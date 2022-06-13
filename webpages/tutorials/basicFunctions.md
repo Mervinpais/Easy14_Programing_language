@@ -20,7 +20,7 @@
 
 <div class="code">
 <code class="language-csharp">
-<mark style="color: #0092fa;">Console</mark>.<mark style="color: #bc57ff;">print</mark>(<mark style="color: #2b6426;">"Hello World"</mark>);
+<a style="color: #0092fa;">Console</a>.<a style="color: #bc57ff;">print</a>(<a style="color: #2b6426;">"Hello World"</a>);
 </code>
 </div>
 
