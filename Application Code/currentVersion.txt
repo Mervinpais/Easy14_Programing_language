@@ -3,9 +3,9 @@
 
 //By date of version install, i mean when the last time this version was updated (not when you installed the update, when i released the current version update)
 [DATE OF VERSION INSTALLED]
-12/6/2022
+13/6/2022
 
 [TYPE OF BUILD]
-Dev Build
+Finished Build
 
 //[Date Format]: (DD/MM/YYYY)
