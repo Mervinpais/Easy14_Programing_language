@@ -52,6 +52,6 @@ if condition {
 <a href="https://mervinpais.github.io/Easy14_Programing_language/webpages/docs.html">Tutorial Home Page</a>
 </footer>
 <script>
-const node = document.getElementsByClassName('.markdown-body')[0];
+var node = document.getElementsByClassName('.markdown-body')[0];
 node.replaceWith(...node.childNodes); // or node.children, if you don't want textNodes
 </script>
