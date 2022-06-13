@@ -32,7 +32,7 @@
 
 <div class="code">
     <code class="language-csharp">
-        <a style="color: #0662b2;">using</a><a style="color: #78ce7f;"> Console;</a>
+        <a style="color: #0662b2;">using</a><a style="color: #ffffff;"> Console;</a>
     </code>
 </div>
 
@@ -96,7 +96,7 @@
 
 <div class="code">
     <code class="language-csharp">
-        <a style="color: #0662b2;">using</a><a style="color: #78ce7f;"> Console;</a>
+        <a style="color: #0662b2;">using</a><a style="color: #ffffff;"> Console;</a>
     </code>
 </div>
 
