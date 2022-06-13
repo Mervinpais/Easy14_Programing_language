@@ -4,10 +4,10 @@
 
 <body class="dark_body">
 <head1> Basic Functions </head1>
-
+<br>
 <head2> Console.print() </head2>
-
-Console.print() is used to print stuff to the screen
+<br>
+<para>Console.print() is used to print stuff to the screen</para>
 
 ```csharp
 Console.print("Hello World");
