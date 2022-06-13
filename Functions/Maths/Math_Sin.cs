@@ -4,6 +4,12 @@ namespace Easy14_Coding_Language
 {
     class Math_Sin
     {
+        /// <summary>
+        /// This function takes a string, an integer, and an optional string, and returns a double.
+        /// </summary>
+        /// <param name="code_part">The code to be interperated</param>
+        /// <param name="lineNumber">The line number of the code that is being interperated.</param>
+        /// <param name="fileName">The name of the file that the code is in.</param>
         public double interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;
@@ -20,7 +26,8 @@ namespace Easy14_Coding_Language
             expression = expression.Replace("=", "");
             //Console.WriteLine(expression);
             int theNumber = Convert.ToInt32(expression.Replace("sin(", "").Replace(")", ""));
-            //Console.WriteLine(theNumber);
+            
+            /* Taking the number that the user inputted, and then it is taking the sin of that number. */
             var result = Math.Sin(theNumber);
             return result;
         }

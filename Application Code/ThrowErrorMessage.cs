@@ -5,6 +5,13 @@ namespace Easy14_Coding_Language
 {
     class ThrowErrorMessage
     {
+        /// <summary>
+        /// It sends an error message.
+        /// </summary>
+        /// <param name="text">The text to be displayed in the message box.</param>
+        /// <param name="textArray">An array of strings that will be used to replace the placeholders in
+        /// the text string.</param>
+        /// <param name="typeOfError"></param>
         public void sendErrMessage(string text, string[] textArray, string typeOfError )
         {
             /*
@@ -22,6 +29,9 @@ namespace Easy14_Coding_Language
             code_part_unedited = text;
             text = code_part_unedited.TrimStart();
             typeOfError = typeOfError.ToLower();
+            
+            /* Checking if the type of error is an error or a warning. If it is an error, it will print
+            the error in red. If it is a warning, it will print the warning in yellow. */
             if (typeOfError == "error")
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -32,6 +42,7 @@ namespace Easy14_Coding_Language
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($"WARNING: {text}");
             }
+            /* A joke. It will print a random joke from the file jokesForThrowErrorMessage.txt. */
             if (typeOfError == "joke")
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -40,6 +51,7 @@ namespace Easy14_Coding_Language
                 int line_to_choose = random.Next(1,joke_txt.Length);
                 Console.WriteLine("\n JOKE:" + joke_txt[line_to_choose]);
             }
+            /* Setting the color of the text to gray. */
             Console.ForegroundColor = ConsoleColor.Gray;
             return;
         }

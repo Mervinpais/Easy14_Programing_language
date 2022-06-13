@@ -5,6 +5,13 @@ namespace Easy14_Coding_Language
 {
     class FileSystem_MakeFile
     {
+        /// <summary>
+        /// It takes a string, a string, a string array, and an int, and returns nothing.
+        /// </summary>
+        /// <param name="code_part">The part of the code that is being interperated</param>
+        /// <param name="fileloc">The location of the file</param>
+        /// <param name="textArray">The array of strings that contains the code.</param>
+        /// <param name="line_count">The line number of the code_part</param>
         public void interperate(string code_part, string fileloc, string[] textArray, int line_count)
         {
             string code_part_unedited;
@@ -34,6 +41,8 @@ namespace Easy14_Coding_Language
                         break;
                     }
                 }
+                /* Checking if the user has referenced the FileSystem library, if they haven't, it will
+                throw an error. */
                 if (foundUsing == false)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -54,6 +63,7 @@ namespace Easy14_Coding_Language
                 var contentInFile = textToPrint.Replace('"'.ToString(), "");
                 try
                 {
+                    /* Creating a file at the specified location. */
                     using (FileStream fs = File.Create(contentInFile))
                     {
                         fs.Dispose();
@@ -67,30 +77,30 @@ namespace Easy14_Coding_Language
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             }
-            else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+            /* Checking if there is a file in the EASY14_Variables_TEMP folder, if there is, it will
+            get the variable from the file and use it as the file location. */
+            else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP").Length != 0)
             {
-                string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
-                foreach (string file in files)
+                string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP");
+
+                /* Checking if there is a file in the EASY14_Variables_TEMP folder, if there is, it
+                will get the variable from the file and use it as the file location. */
+                try
                 {
-                    if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
+                    GetVariable getVariable = new GetVariable();
+                    string file = getVariable.findVar(textToPrint);
+                    var contentInFile = file;
+                    using (FileStream fs = File.Create(contentInFile))
                     {
-                        try
-                        {
-                            var contentInFile = file;
-                            using (FileStream fs = File.Create(contentInFile))
-                            {
-                                fs.Dispose();
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("\nERROR; Can't Create A File at the specified location");
-                            Console.WriteLine("Extra Info is below;\n\n" + e);
-                            Console.ForegroundColor = ConsoleColor.White;
-                        }
-                        break;
+                        fs.Dispose();
                     }
+                }
+                catch (Exception e)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nERROR; Can't Create A File at the specified location");
+                    Console.WriteLine("Extra Info is below;\n\n" + e);
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
             }
         }
