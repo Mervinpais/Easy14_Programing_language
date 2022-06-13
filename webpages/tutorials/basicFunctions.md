@@ -46,16 +46,27 @@ using Console;
 <br>
 
 <div class="code">
-<code class="language-csharp">
-<a style="color: #bc57ff;">print</a>(1+2);
-<br>
-//Works
-<br>
-<a style="color: #bc57ff;">print</a>(1+4-2);
-<br>
-//Wont work :(
-<br>
-</code>
+    <code class="language-csharp">
+        <a style="color: #bc57ff;">print</a>(1+2);
+    </code>
+</div>
+
+<div class="code">
+    <code class="language-csharp">
+        <a style="color: #387632;">//Works</a>
+    </code>
+</div>
+
+<div class="code">
+    <code class="language-csharp">
+        <a style="color: #bc57ff;">print</a>(1+4-2);
+    </code>
+</div>
+
+<div class="code">
+    <code class="language-csharp">
+        <a style="color: #387632;">//Wont work :(</a>
+    </code>
 </div>
 
 <br>
@@ -73,23 +84,23 @@ using Console;
 <br>
 
 <div class="code">
-<code class="language-csharp">
-Console.input();
-</code>
+    <code class="language-csharp">
+        Console.input();
+    </code>
 </div>
 
 <br>
 
 <div class="code">
-<code class="language-csharp">
-using Console;
-</code>
+    <code class="language-csharp">
+        using Console;
+    </code>
 </div>
 
 <div class="code">
-<code class="language-csharp">
-<a style="color: #bc57ff;">input</a>();
-</code>
+    <code class="language-csharp">
+        <a style="color: #bc57ff;">input</a>();
+    </code>
 </div>
 
 <br>
@@ -99,16 +110,24 @@ using Console;
 <br>
 
 <div class="code">
-<code class="language-csharp">
-<a style="color: #bc57ff;">input</a>();
-<br>
-//Works
-<br>
-<a style="color: #bc57ff;">input</a>("My Input");
-<br>
-//Wont work :(
-<br>
-</code>
+    <code class="language-csharp">
+        <a style="color: #bc57ff;">input</a>();
+    </code>
+</div>
+<div class="code">
+    <code class="language-csharp">
+        <a style="color: #387632;">//Works</a>
+    </code>
+</div>
+<div class="code">
+    <code class="language-csharp">
+        <a style="color: #bc57ff;">input</a>("My Input");
+    </code>
+</div>
+<div class="code">
+    <code class="language-csharp">
+        <a style="color: #387632;">//Wont work :(</a>
+    </code>
 </div>
 
 <br>
