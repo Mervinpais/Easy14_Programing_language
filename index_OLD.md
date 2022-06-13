@@ -12,37 +12,36 @@ An easy language for begginers?! wOW iTs NoT lIkE pYthOn EiXsTs (seriously thoug
 ## Code Example
 
 <body>
-
-<code class="language-csharp">
+```C#
 //Syntax highlighted code block
 Console.print("You cant use a print statement without a Console. if you didn't import the Console");
 
 using Console;
 
 print("Hello Coders! or whatever that funny starter Hello world stater project said..");
-</code>
+```
 
-<h2> FAQ </h2>
+# FAQ
 
-<h2> Will This language support One-Liner Code? </h2>
+## Will This language support One-Liner Code?
 
-<h3> No sadly i wont do that as my language does the "Scratch" way of execution by running from top to down and you can't have other lines(statments) within one line
+No sadly i wont do that as my language does the "Scratch" way of execution by running from top to down and you can't have other lines(statments) within one line
 
-I Might add it later, there is/was some code still left over from an attempt in the Console.Print if statment ;) </h3>
+I Might add it later, there is/was some code still left over from an attempt in the Console.Print if statment ;)
 
-<h2> Will this be a general purpose language? </h2>
+## Will this be a general purpose language?
 
-<h3> Not yet, there are still bugs needed to be fixed before it because general purpose </h3>
+Not yet, there are still bugs needed to be fixed before it because general purpose
 
-<h2> What is the syntax for loops? </h2>
+## What is the syntax for loops?
 
-<code class="language-csharp">
+```C#
 if condition {
   //Code
 }
-</code>
+```
 
-<h3> though i may add () in the condition part, im just too focued on fixing bugs first </h3>
+though i may add () in the condition part, im just too focued on fixing bugs first
 </body>
 # Tutorial Homepage below
 
