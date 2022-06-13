@@ -27,17 +27,20 @@ head1 {
     font-size: 25px;
 }
 head2 {
-    font-size: 15px;
+    font-size: 21px;
 }
 head3 {
-    font-size: 10px;
+    font-size: 16px;
 }
 head4 {
-    font-size: 7px;
+    font-size: 12px;
 }
 head5 {
-    font-size: 5px;
+    font-size: 10px;
 }
 head6 {
+    font-size: 5px;
+}
+para {
     font-size: 3px;
 }
