@@ -22,3 +22,22 @@ head6,
 para {
     font-family: monospace;
 }
+
+head1 {
+    font-size: 25px;
+}
+head2 {
+    font-size: 15px;
+}
+head3 {
+    font-size: 10px;
+}
+head4 {
+    font-size: 7px;
+}
+head5 {
+    font-size: 5px;
+}
+head6 {
+    font-size: 3px;
+}
