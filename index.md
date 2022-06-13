@@ -51,3 +51,4 @@ if condition {
 
 <a href="https://mervinpais.github.io/Easy14_Programing_language/webpages/docs.html">Tutorial Home Page</a>
 </footer>
+<script>  $('.markdown-body').contents().unwrap();  </script>
