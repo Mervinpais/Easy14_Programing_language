@@ -1,4 +1,4 @@
-# Easy 14 (or E14)
+<h1> Easy 14 (or E14) </h1>
 An easy language for begginers?! wOW iTs NoT lIkE pYthOn EiXsTs (seriously though, try python first, it may be easier than this, this language is if you wanted to, say go from python to C# or C or even C++)
 
 ## Code Example
