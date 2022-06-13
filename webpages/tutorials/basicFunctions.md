@@ -2,10 +2,10 @@
 <link rel="stylesheet" type="text/css" href="https://mervinpais.github.io/Easy14_Programing_language/style.css">
 </head>
 
-<body>
+<body class="dark_body">
 <head1> Basic Functions </head1>
 
-## Console.print()
+<head2> Console.print() </head2>
 
 Console.print() is used to print stuff to the screen
 
