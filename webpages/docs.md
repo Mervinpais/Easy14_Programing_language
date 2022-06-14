@@ -1,12 +1,8 @@
-<style>
-body {
-  background-color: #202020;
-  color: #ffffff;
-}
-h1,h2,h3,h4,h5,h6,p {
-  font-family: monospace;
-}
-</style>
+<head>
+
+<link rel="stylesheet" type="text/css" href="https://mervinpais.github.io/Easy14_Programing_language/style.css">
+
+</head>
 
 <h1> Documentation  </h1>
 
