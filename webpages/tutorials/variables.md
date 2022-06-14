@@ -18,7 +18,7 @@
    <br>
    <div class="code">
       <code class="language-csharp">
-      <a style="color: #5016c5;">var</a>myVariable = <a style="color: #409438;">""</a>;
+      <a style="color: #5016c5;">var</a> myVariable = <a style="color: #409438;">""</a>;
       </code>
    </div>
    <div class="code">
@@ -28,7 +28,7 @@
    </div>
    <div class="code">
       <code class="language-csharp">
-      <a style="color: #5016c5;">var</a>myVariable = <a style="color: #bce4b9;">14</a>;
+      <a style="color: #5016c5;">var</a> myVariable = <a style="color: #bce4b9;">14</a>;
       </code>
    </div>
    <div class="code">
@@ -38,53 +38,7 @@
    </div>
    <div class="code">
       <code class="language-csharp">
-      <a style="color: #5016c5;">var</a>myVariable;
-      </code>
-   </div>
-   <div class="code">
-      <code class="language-csharp">
-      <a style="color: #387632;">//Wont work :(</a>
-      </code>
-   </div>
-   <br>
-   <para> You can do +, -, *, /, % (Modulo), and == in a print statement </para>
-   <br>
-   <head3> Console.input() </head3>
-   <br>
-   <para> Console.input() is used to ask the user for input </para>
-   <br>
-   <div class="code">
-      <code class="language-csharp">
-      <a style="color: #0092fa;">Console</a>.<a style="color: #bc57ff;">input</a>();
-      </code>
-   </div>
-   <br>
-   <div class="code">
-      <code class="language-csharp">
-      <a style="color: #0662b2;">using</a><a style="color: #ffffff;"> Console;</a>
-      </code>
-   </div>
-   <div class="code">
-      <code class="language-csharp">
-      <a style="color: #bc57ff;">input</a>();
-      </code>
-   </div>
-   <br>
-   <para> Below is what input(); can do currently </para>
-   <br>
-   <div class="code">
-      <code class="language-csharp">
-      <a style="color: #bc57ff;">input</a>();
-      </code>
-   </div>
-   <div class="code">
-      <code class="language-csharp">
-      <a style="color: #387632;">//Works</a>
-      </code>
-   </div>
-   <div class="code">
-      <code class="language-csharp">
-      <a style="color: #bc57ff;">input</a>("My Input");
+      <a style="color: #5016c5;">var</a> myVariable;
       </code>
    </div>
    <div class="code">
