@@ -1,6 +1,7 @@
 <head>
    <link rel="stylesheet" type="text/css" href="https://mervinpais.github.io/Easy14_Programing_language/style.css">
 </head>
+
 <body class="dark_body">
    <head2> Documentation  </head2>
    <br>
@@ -8,7 +9,7 @@
    <br>
 
    <ol>
-   
+
    <li>
       <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/basicFunctions.html">Basic Functions</a>
    </li>
