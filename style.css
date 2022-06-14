@@ -47,3 +47,8 @@ para {
 .code {
     background-color: #101010;
 }
+
+.link {
+    color: #4aa1ff;
+    text-decoration: underline;
+}

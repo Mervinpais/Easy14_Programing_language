@@ -12,5 +12,5 @@
 
 <head4> Here are the tutorials i currently offer for the language </head4>
 
-<a href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/basicFunctions.html">Basic Functions</a>
+<a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/basicFunctions.html">Basic Functions</a>
 </body>
