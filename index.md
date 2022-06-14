@@ -15,9 +15,15 @@ h1,h2,h3,h4,h5,h6,p {
 
 <body class="dark_body">
   <head1> Easy 14 (or E14) </head1>
-  An easy language for begginers?! wOW iTs NoT lIkE pYthOn EiXsTs (seriously though, try python first, it may be easier than this, this language is if you wanted to, say go from python to C# or C or even C++)
+  
+  <br>
+  
+  <head3>An easy language for begginers?! wOW iTs NoT lIkE pYthOn EiXsTs (seriously though, try python first, it may be easier than this, this language is if you wanted to, say go from python to C# or C or even C++)
+  </head3>
 
-  ## Code Example
+  <br>
+  
+  <head2> Code Example </head2>
 
   <body>
 
@@ -53,9 +59,9 @@ h1,h2,h3,h4,h5,h6,p {
   
   <br>
   
-  <head4> No sadly i wont do that as my language does the "Scratch" way of execution by running from top to down and you can't have other lines(statments) within one line
+  <head5> No sadly i wont do that as my language does the "Scratch" way of execution by running from top to down and you can't have other lines(statments) within one line
   
-  I Might add it later, there is/was some code still left over from an attempt in the Console.Print if statment ;) </head4>
+  I Might add it later, there is/was some code still left over from an attempt in the Console.Print if statment ;) </head5>
 
   <br>
   
@@ -63,7 +69,7 @@ h1,h2,h3,h4,h5,h6,p {
 
   <br>
   
-  <head4> Not yet, there are still bugs needed to be fixed before it because general purpose </head4>
+  <head5> Not yet, there are still bugs needed to be fixed before it because general purpose </head5>
 
   <br>
   
@@ -89,7 +95,7 @@ h1,h2,h3,h4,h5,h6,p {
 
   <br>
   
-  <head4> though i may add () in the condition part, im just too focued on fixing bugs first </head4>
+  <head5> though i may add () in the condition part, im just too focued on fixing bugs first </head5>
   </body>
   <footer> 
   
