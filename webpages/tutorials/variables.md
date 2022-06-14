@@ -8,7 +8,7 @@
    <br>
    <div class="code">
       <code class="language-csharp">
-      <a style="color: #5016c5;">var</a>myVariable = "";
+      <a style="color: #5016c5;">var</a> myVariable = <a style="color: #409438;">""</a>;
       </code>
    </div>
    <br>
