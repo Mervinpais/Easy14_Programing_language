@@ -4,8 +4,8 @@
 
 </head>
 
-<h1> Documentation  </h1>
+<head1> Documentation  </head1>
 
-<h2> Here are the tutorials i currently offer for the language </h2>
+<head2> Here are the tutorials i currently offer for the language </head2>
 
 <a href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/basicFunctions.html">Basic Functions</a>
