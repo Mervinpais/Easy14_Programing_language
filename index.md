@@ -18,8 +18,8 @@ h1,h2,h3,h4,h5,h6,p {
   
   <br>
   
-  <head3>An easy language for begginers?! wOW iTs NoT lIkE pYthOn EiXsTs (seriously though, try python first, it may be easier than this, this language is if you wanted to, say go from python to C# or C or even C++)
-  </head3>
+  <head4>An easy language for begginers?! wOW iTs NoT lIkE pYthOn EiXsTs (seriously though, try python first, it may be easier than this, this language is if you wanted to, say go from python to C# or C or even C++)
+  </head4>
 
   <br>
   
