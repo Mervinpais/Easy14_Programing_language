@@ -2,36 +2,23 @@
    <link rel="stylesheet" type="text/css" href="https://mervinpais.github.io/Easy14_Programing_language/style.css">
 </head>
 <body class="dark_body">
-   <head1> Basic Functions </head1>
+   <head1> Variables </head1>
    <br>
-   <head3> Console.print() </head3>
-   <br>
-   <para>Console.print() is used to print stuff to the screen</para>
+   <para>Easy14 is Dynamically Typed (AKA you dont need to specifiy the type of data like string, bool, int)</para>
    <br>
    <div class="code">
       <code class="language-csharp">
-      <a style="color: #0092fa;">Console</a>.<a style="color: #bc57ff;">print</a>(<a style="color: #409438;">"Hello World"</a>);
+      <a style="color: #5016c5;">var</a>myVariable = "";
       </code>
    </div>
    <br>
-   <para> we can remove the unnessary "Console" part of our code by add a using statement at the top </para>
+   <para>NOTE; you can not have a local variable without a value<, so you need to specify "" as null so there is no error (will be fixed in version 2.5)</para>
+   <br>
+   <para>See below for what is/isn't allowed;</para>
    <br>
    <div class="code">
       <code class="language-csharp">
-      <a style="color: #0662b2;">using</a><a style="color: #ffffff;"> Console;</a>
-      </code>
-   </div>
-   <div class="code">
-      <code class="language-csharp">
-      <a style="color: #bc57ff;">print</a>(<a style="color: #409438;">"Hello world"</a>);
-      </code>
-   </div>
-   <br>
-   <para> You can also print arithmetic operations (only one at a time though :( </para>
-   <br>
-   <div class="code">
-      <code class="language-csharp">
-      <a style="color: #bc57ff;">print</a>(1+2);
+      <a style="color: #5016c5;">var</a>myVariable = <a style="color: #409438;">""</a>;
       </code>
    </div>
    <div class="code">
@@ -41,7 +28,17 @@
    </div>
    <div class="code">
       <code class="language-csharp">
-      <a style="color: #bc57ff;">print</a>(1+4-2);
+      <a style="color: #5016c5;">var</a>myVariable = <a style="color: #bce4b9;">14</a>;
+      </code>
+   </div>
+   <div class="code">
+      <code class="language-csharp">
+      <a style="color: #387632;">//Works</a>
+      </code>
+   </div>
+   <div class="code">
+      <code class="language-csharp">
+      <a style="color: #5016c5;">var</a>myVariable;
       </code>
    </div>
    <div class="code">
