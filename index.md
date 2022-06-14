@@ -46,17 +46,27 @@ h1,h2,h3,h4,h5,h6,p {
   </div>
 
   <head2> FAQ </head2>
+  
+  <br>
 
   <head2> Will This language support One-Liner Code? </head2>
-
+  
+  <br>
+  
   <head4> No sadly i wont do that as my language does the "Scratch" way of execution by running from top to down and you can't have other lines(statments) within one line
-
+  
   I Might add it later, there is/was some code still left over from an attempt in the Console.Print if statment ;) </head4>
 
+  <br>
+  
   <head2> Will this be a general purpose language? </head2>
 
+  <br>
+  
   <head4> Not yet, there are still bugs needed to be fixed before it because general purpose </head4>
 
+  <br>
+  
   <head2> What is the syntax for loops? </head2>
 
   <div class="code">
@@ -77,11 +87,18 @@ h1,h2,h3,h4,h5,h6,p {
     </code>
   </div>
 
+  <br>
+  
   <head4> though i may add () in the condition part, im just too focued on fixing bugs first </head4>
   </body>
   <footer> 
+  
+  <br>
+  
   <head1> Tutorial Homepage below </head1>
 
+  <br>
+  
   <a href="https://mervinpais.github.io/Easy14_Programing_language/webpages/docs.html">Tutorial Home Page</a>
   </footer>
 </body>
