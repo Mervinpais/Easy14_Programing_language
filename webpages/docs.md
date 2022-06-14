@@ -16,33 +16,43 @@
 
 <ol>
 <li>
-<a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/basicFunctions.html">Basic Functions</a>
+  <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/basicFunctions.html">Basic Functions</a>
 </li>
-<li>
+
 <head2> Upcomming Documentation </head2>
-<a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/variables.
+
+<li>
+  <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/variables.
 html">Variables</a>
 </li>
+
 <li>
-<a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/ifStatements.html">If Statements</a>
+  <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/ifStatements.html">If Statements</a>
 </li>
+
 <li>
-<a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/loops.html">Loops</a>
+  <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/loops.html">Loops</a>
 </li>
+
 <li>
-<a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/arrays.html">Arrays</a>
+  <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/arrays.html">Arrays</a>
 </li>
+
 <li>
-<a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/functions.html">Functions</a>
+  <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/functions.html">Functions</a>
 </li>
+
 <li>
-<a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/classes.html">Classes</a>
+  <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/classes.html">Classes</a>
 </li>
+
 <li>
-<a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/objects.html">Objects</a>
+  <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/objects.html">Objects</a>
 <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/files.html">Files</a>
 </li>
+
 <li>
-<a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/console.html">Console</a>
+  <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/console.html">Console</a>
 </li>
+
 </body>
