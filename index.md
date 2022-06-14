@@ -13,73 +13,75 @@ h1,h2,h3,h4,h5,h6,p {
 
 </head>
 
-<h1> Easy 14 (or E14) </h1>
-An easy language for begginers?! wOW iTs NoT lIkE pYthOn EiXsTs (seriously though, try python first, it may be easier than this, this language is if you wanted to, say go from python to C# or C or even C++)
+<body class="dark_body">
+  <head1> Easy 14 (or E14) </head1>
+  An easy language for begginers?! wOW iTs NoT lIkE pYthOn EiXsTs (seriously though, try python first, it may be easier than this, this language is if you wanted to, say go from python to C# or C or even C++)
 
-## Code Example
+  ## Code Example
 
-<body>
+  <body>
 
-<div class="code">
-  <code class="language-csharp">
-    //Syntax highlighted code block
-  </code>
-</div>
-
-<div class="code">
-  <code class="language-csharp">
-      Console.print("You cant use a print statement without a Console. if you didn't import the Console");
-  </code>
-</div>
-
-<div class="code">
+  <div class="code">
     <code class="language-csharp">
-        <a style="color: #0662b2;">using</a><a style="color: #ffffff;"> Console;</a>
+      //Syntax highlighted code block
     </code>
-</div>
+  </div>
 
-<div class="code">
-  <code class="language-csharp">
-    print("Hello Coders! or whatever that funny starter Hello world stater project said..");
-  </code>
-</div>
+  <div class="code">
+    <code class="language-csharp">
+        Console.print("You cant use a print statement without a Console. if you didn't import the Console");
+    </code>
+  </div>
 
-<h2> FAQ </h2>
+  <div class="code">
+      <code class="language-csharp">
+          <a style="color: #0662b2;">using</a><a style="color: #ffffff;"> Console;</a>
+      </code>
+  </div>
 
-<h2> Will This language support One-Liner Code? </h2>
+  <div class="code">
+    <code class="language-csharp">
+      print("Hello Coders! or whatever that funny starter Hello world stater project said..");
+    </code>
+  </div>
 
-<h4> No sadly i wont do that as my language does the "Scratch" way of execution by running from top to down and you can't have other lines(statments) within one line
+  <head2> FAQ </head2>
 
-I Might add it later, there is/was some code still left over from an attempt in the Console.Print if statment ;) </h4>
+  <head2> Will This language support One-Liner Code? </head2>
 
-<h2> Will this be a general purpose language? </h2>
+  <head4> No sadly i wont do that as my language does the "Scratch" way of execution by running from top to down and you can't have other lines(statments) within one line
 
-<h4> Not yet, there are still bugs needed to be fixed before it because general purpose </h4>
+  I Might add it later, there is/was some code still left over from an attempt in the Console.Print if statment ;) </head4>
 
-<h2> What is the syntax for loops? </h2>
+  <head2> Will this be a general purpose language? </head2>
 
-<div class="code">
-  <code class="language-csharp">
-  if condition {
-  </code>
-</div>
+  <head4> Not yet, there are still bugs needed to be fixed before it because general purpose </head4>
 
-<div class="code">
-  <code class="language-csharp">
-    //Code
-  </code>
-</div>
+  <head2> What is the syntax for loops? </head2>
 
-<div class="code">
-  <code class="language-csharp">
-  }
-  </code>
-</div>
+  <div class="code">
+    <code class="language-csharp">
+    if condition {
+    </code>
+  </div>
 
-<h4> though i may add () in the condition part, im just too focued on fixing bugs first </h4>
+  <div class="code">
+    <code class="language-csharp">
+      //Code
+    </code>
+  </div>
+
+  <div class="code">
+    <code class="language-csharp">
+    }
+    </code>
+  </div>
+
+  <head4> though i may add () in the condition part, im just too focued on fixing bugs first </head4>
+  </body>
+  <footer> 
+  <head1> Tutorial Homepage below </head1>
+
+  <a href="https://mervinpais.github.io/Easy14_Programing_language/webpages/docs.html">Tutorial Home Page</a>
+  </footer>
 </body>
-<footer> 
-<h1> Tutorial Homepage below </h1>
-
-<a href="https://mervinpais.github.io/Easy14_Programing_language/webpages/docs.html">Tutorial Home Page</a>
-</footer>
