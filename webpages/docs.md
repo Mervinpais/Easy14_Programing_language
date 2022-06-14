@@ -19,7 +19,7 @@
   <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/basicFunctions.html">Basic Functions</a>
 </li>
 
-<head2> Upcomming Documentation </head2>
+<head3> Upcomming Documentation (Currently Unavaliable) </head3>
 
 <li>
   <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/variables.
