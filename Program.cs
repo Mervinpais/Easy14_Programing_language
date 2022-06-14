@@ -336,7 +336,7 @@ namespace Easy14_Coding_Language
                 /// If the command is a single line, then it will run it. If it's a multiline, then it
                 /// will not run it
                 /// </summary>
-                else if (command.Contains("\n")) //This is impossible since pasting a multiline will just paste one lines, then will automatically hit enter and continue on
+                else if (command.Contains("\n"))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("ERROR; Easy14 Interactive Cannot run multiline code \n");
