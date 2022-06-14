@@ -12,7 +12,7 @@
       </code>
    </div>
    <br>
-   <para>NOTE; you can not have a local variable without a value<, so you need to specify "" as null so there is no error (will be fixed in version 2.5)</para>
+   <para>NOTE; you can not have a local variable without a value, so you need to specify "" as null so there is no error (will be fixed in version 2.5)</para>
    <br>
    <para>See below for what is/isn't allowed;</para>
    <br>
