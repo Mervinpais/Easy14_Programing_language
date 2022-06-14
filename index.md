@@ -1,4 +1,4 @@
-<style>
+<!--<style>
 body {
   background-color: #202020;
   color: #ffffff;
@@ -6,7 +6,12 @@ body {
 h1,h2,h3,h4,h5,h6,p {
   font-family: monospace;
 }
-</style>
+</style>-->
+<head>
+
+<link rel="stylesheet" type="text/css" href="https://mervinpais.github.io/Easy14_Programing_language/style.css">
+
+</head>
 
 <h1> Easy 14 (or E14) </h1>
 An easy language for begginers?! wOW iTs NoT lIkE pYthOn EiXsTs (seriously though, try python first, it may be easier than this, this language is if you wanted to, say go from python to C# or C or even C++)
@@ -15,14 +20,29 @@ An easy language for begginers?! wOW iTs NoT lIkE pYthOn EiXsTs (seriously thoug
 
 <body>
 
-<code class="language-csharp">
-//Syntax highlighted code block
-Console.print("You cant use a print statement without a Console. if you didn't import the Console");
+<div class="code">
+  <code class="language-csharp">
+    //Syntax highlighted code block
+  </code>
+</div>
 
-using Console;
+<div class="code">
+  <code class="language-csharp">
+      Console.print("You cant use a print statement without a Console. if you didn't import the Console");
+  </code>
+</div>
 
-print("Hello Coders! or whatever that funny starter Hello world stater project said..");
-</code>
+<div class="code">
+    <code class="language-csharp">
+        <a style="color: #0662b2;">using</a><a style="color: #ffffff;"> Console;</a>
+    </code>
+</div>
+
+<div class="code">
+  <code class="language-csharp">
+    print("Hello Coders! or whatever that funny starter Hello world stater project said..");
+  </code>
+</div>
 
 <h2> FAQ </h2>
 
@@ -38,11 +58,23 @@ I Might add it later, there is/was some code still left over from an attempt in 
 
 <h2> What is the syntax for loops? </h2>
 
-<code class="language-csharp">
-if condition {
-  //Code
-}
-</code>
+<div class="code">
+  <code class="language-csharp">
+  if condition {
+  </code>
+</div>
+
+<div class="code">
+  <code class="language-csharp">
+    //Code
+  </code>
+</div>
+
+<div class="code">
+  <code class="language-csharp">
+  }
+  </code>
+</div>
 
 <h4> though i may add () in the condition part, im just too focued on fixing bugs first </h4>
 </body>
