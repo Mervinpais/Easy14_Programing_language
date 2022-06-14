@@ -43,4 +43,5 @@ html">Variables</a>
 </li>
 <li>
 <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/console.html">Console</a>
+</li>
 </body>
