@@ -16,11 +16,13 @@ h1,h2,h3,h4,h5,h6,p {
 <body class="dark_body">
   <head1> Easy 14 (or E14) </head1>
   
+  <hr>
   <br>
   
   <head4>An easy language for begginers?! wOW iTs NoT lIkE pYthOn EiXsTs (seriously though, try python first, it may be easier than this, this language is if you wanted to, say go from python to C# or C or even C++)
   </head4>
 
+  <hr>
   <br>
   
   <head2> Code Example </head2>
@@ -53,7 +55,7 @@ h1,h2,h3,h4,h5,h6,p {
 
   <head2> FAQ </head2>
   
-  <br>
+  <br><hr>
 
   <head2> Will This language support One-Liner Code? </head2>
   
@@ -63,15 +65,15 @@ h1,h2,h3,h4,h5,h6,p {
   
   I Might add it later, there is/was some code still left over from an attempt in the Console.Print if statment ;) </head5>
 
-  <br>
+  <br><br>
   
   <head2> Will this be a general purpose language? </head2>
 
-  <br>
+  <br><br>
   
   <head5> Not yet, there are still bugs needed to be fixed before it because general purpose </head5>
 
-  <br>
+  <br><br>
   
   <head2> What is the syntax for loops? </head2>
 
@@ -93,17 +95,17 @@ h1,h2,h3,h4,h5,h6,p {
     </code>
   </div>
 
-  <br>
+  <br><br>
   
   <head5> though i may add () in the condition part, im just too focued on fixing bugs first </head5>
   </body>
   <footer> 
   
-  <br>
+  <br><br>
   
   <head1> Tutorial Homepage below </head1>
 
-  <br>
+  <br><br>
   
   <a href="https://mervinpais.github.io/Easy14_Programing_language/webpages/docs.html">Tutorial Home Page</a>
   </footer>
