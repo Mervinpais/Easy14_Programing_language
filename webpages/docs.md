@@ -15,11 +15,11 @@
    </li>
    <li>
       <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/variables.html">Variables</a>
-   </li>
-   <head3> Upcomming Documentation (Currently Unavaliable) </head3>
+   </li>   
    <li>
       <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/ifStatements.html">If Statements</a>
    </li>
+   <head3> Upcomming Documentation (Currently Unavaliable) </head3>
    <li>
       <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/loops.html">Loops</a>
    </li>
