@@ -23,8 +23,8 @@ public class ExceptionSender
         {
             //! NOTE: These codes below are not error codes that meantions a part in memory where the error happened, these erorr codes are for like example;
             //! - Uh oh, file Math_function1().cs is not found, ERROR CODE: 0x2431 (Not real error code)
-            //! So just be aware about this
             //* Also The Error codes are in Hexa-Decimal
+
             case 0x000000:
                 Message = "EXCEPTION " + typeOfException_str + "; No-Error Exception";
                 break;
@@ -32,7 +32,7 @@ public class ExceptionSender
                 Message = "EXCEPTION " + typeOfException_str + "; No-Error Exception";
                 break;
             case 0x000002:
-                Message = "EXCEPTION " + typeOfException_str + "; Basic Exception - No Data Was Given";
+                Message = "EXCEPTION " + typeOfException_str + "; Unknown Exception - No Data Was Given";
                 break;
             case 0x0000A0:
                 Message = "EXCEPTION " + typeOfException_str + "; Application Error - Unknown Application Error";

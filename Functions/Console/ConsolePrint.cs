@@ -6,7 +6,7 @@ namespace Easy14_Coding_Language
 {
     class ConsolePrint
     {
-        public void interperate(string code_part, string[] textArray, string fileloc, int lineNumber = -1)
+        public void interperate(string code_part, string[] textArray = null, string fileloc = null, int lineNumber = -1)
         {
             string endOfStatementCode = ")";
             string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\options.ini");
@@ -27,6 +27,13 @@ namespace Easy14_Coding_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
+                else {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to print()");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    return;
+                }
+                
                 foreach (string x in someLINEs)
                 {
                     if (x.TrimStart().TrimEnd() == "using Console;")

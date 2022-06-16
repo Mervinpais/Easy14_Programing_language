@@ -28,6 +28,12 @@ namespace Easy14_Coding_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
+                else {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to exec()");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    return;
+                }
                 foreach (string x in someLINEs)
                 {
                     if (x.TrimStart().TrimEnd() == "using Console;")

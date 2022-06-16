@@ -30,6 +30,12 @@ namespace Easy14_Coding_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
+                else {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to the RandomRange function.");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    return null;
+                }
                 
                 /* Checking if the code has the using Random; statement. */
                 foreach (string x in someLINEs)

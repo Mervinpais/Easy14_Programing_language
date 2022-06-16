@@ -25,10 +25,14 @@ namespace Easy14_Coding_Language
                 bool foundUsing = false;
                 string[] someLINEs = null;
 
-                if (textArray == null && fileloc != null)
-                    someLINEs = File.ReadAllLines(fileloc);
-                else if (textArray != null && fileloc == null)
-                    someLINEs = textArray;
+                if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
+                else if (textArray != null && fileloc == null) someLINEs = textArray;
+                else {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to the ReadAllLines function.");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    return null;
+                }
 
                 foreach (string x in someLINEs)
                 {
