@@ -1,0 +1,64 @@
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\bin\Debug\net5.0\Easy14_Programing_language.exe
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\bin\Debug\net5.0\Easy14_Programing_language.deps.json
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\bin\Debug\net5.0\Easy14_Programing_language.runtimeconfig.json
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\bin\Debug\net5.0\Easy14_Programing_language.runtimeconfig.dev.json
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\bin\Debug\net5.0\Easy14_Programing_language.dll
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\bin\Debug\net5.0\Easy14_Programing_language.pdb
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.csproj.AssemblyReference.cache
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.AssemblyInfoInputs.cache
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.AssemblyInfo.cs
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.csproj.CoreCompileInputs.cache
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.dll
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\refint\Easy14_Programing_language.dll
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.pdb
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.genruntimeconfig.cache
+C:\Users\mervi\source\repos\EASY14 CONSOLE PORT TEST\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\ref\Easy14_Programing_language.dll
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.csproj.AssemblyReference.cache
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.AssemblyInfoInputs.cache
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.AssemblyInfo.cs
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.csproj.CoreCompileInputs.cache
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.dll
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\refint\Easy14_Programing_language.dll
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.pdb
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\bin\Debug\net5.0\Easy14_Programing_language.exe
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\bin\Debug\net5.0\Easy14_Programing_language.deps.json
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\bin\Debug\net5.0\Easy14_Programing_language.runtimeconfig.json
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\bin\Debug\net5.0\Easy14_Programing_language.runtimeconfig.dev.json
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\bin\Debug\net5.0\Easy14_Programing_language.dll
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\bin\Debug\net5.0\Easy14_Programing_language.pdb
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\Easy14_Programing_language.genruntimeconfig.cache
+C:\Users\mervi\source\repos\Easy14_Programing_language\EASY14 CONSOLE PORT TEST\obj\Debug\net5.0\ref\Easy14_Programing_language.dll
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\bin\Debug\net5.0\Easy14_Programing_language.exe
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\bin\Debug\net5.0\Easy14_Programing_language.deps.json
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\bin\Debug\net5.0\Easy14_Programing_language.runtimeconfig.json
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\bin\Debug\net5.0\Easy14_Programing_language.runtimeconfig.dev.json
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\bin\Debug\net5.0\Easy14_Programing_language.dll
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\bin\Debug\net5.0\Easy14_Programing_language.pdb
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\obj\Debug\net5.0\Easy14_Programing_language.csproj.AssemblyReference.cache
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\obj\Debug\net5.0\Easy14_Programing_language.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\obj\Debug\net5.0\Easy14_Programing_language.AssemblyInfoInputs.cache
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\obj\Debug\net5.0\Easy14_Programing_language.AssemblyInfo.cs
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\obj\Debug\net5.0\Easy14_Programing_language.csproj.CoreCompileInputs.cache
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\obj\Debug\net5.0\Easy14_Programing_language.dll
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\obj\Debug\net5.0\refint\Easy14_Programing_language.dll
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\obj\Debug\net5.0\Easy14_Programing_language.pdb
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\obj\Debug\net5.0\Easy14_Programing_language.genruntimeconfig.cache
+C:\Users\mervi\source\repos\Easy14_Programing_language\Easy14_Programing_language\obj\Debug\net5.0\ref\Easy14_Programing_language.dll
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Debug\net5.0\Easy14_Programing_language.exe
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Debug\net5.0\Easy14_Programing_language.deps.json
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Debug\net5.0\Easy14_Programing_language.runtimeconfig.json
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Debug\net5.0\Easy14_Programing_language.runtimeconfig.dev.json
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Debug\net5.0\Easy14_Programing_language.dll
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Debug\net5.0\Easy14_Programing_language.pdb
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net5.0\Easy14_Programing_language.csproj.AssemblyReference.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net5.0\Easy14_Programing_language.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net5.0\Easy14_Programing_language.AssemblyInfoInputs.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net5.0\Easy14_Programing_language.AssemblyInfo.cs
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net5.0\Easy14_Programing_language.csproj.CoreCompileInputs.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net5.0\Easy14_Programing_language.dll
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net5.0\refint\Easy14_Programing_language.dll
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net5.0\Easy14_Programing_language.pdb
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net5.0\Easy14_Programing_language.genruntimeconfig.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net5.0\ref\Easy14_Programing_language.dll
