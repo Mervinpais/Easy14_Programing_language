@@ -9,7 +9,7 @@ namespace Easy14_Programming_Language
         public string interperate(string code_part, string[] textArray, string fileloc)
         {
             string endOfStatementCode = ")";
-            string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\options.ini");
+            string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "") + "\\Application Code\\options.ini");
             foreach (string line in configFile)
             {
                 if (line.StartsWith("needSemicolons"))

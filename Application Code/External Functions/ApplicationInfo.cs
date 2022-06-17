@@ -16,7 +16,7 @@ namespace Easy14_Programming_Language
                         "Copyright © Mervinpaismakeswindows14"
                         };
             Console.WriteLine(String.Join(Environment.NewLine, logo));
-            string[] currentVersionFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\currentVersion.txt");
+            string[] currentVersionFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "") + "\\Application Code\\currentVersion.txt");
 
             string currentVersion = null;
             string dateOfVerInstall = null;
