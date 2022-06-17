@@ -3,4 +3,5 @@ using FileSystem;
 
 //Tests (For latest Features)
 
-print(cl"");
+print(cl"Line1");
+print(cl"Line2");

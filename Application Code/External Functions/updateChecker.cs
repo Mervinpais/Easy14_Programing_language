@@ -27,7 +27,7 @@ namespace Easy14_Programming_Language
             try
             {
                 /* It's getting the current version of the language, and saving it to a variable. */
-                string[] currentVerFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "") + "\\Application Code\\currentVersion.txt");
+                string[] currentVerFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\currentVersion.txt");
                 currentVer = Convert.ToDouble(currentVerFile[1]);
 
                 /* It's saving the current version to a cache file, so if the currentVersion.txt file

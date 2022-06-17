@@ -46,7 +46,7 @@ namespace Easy14_Programming_Language
             if (typeOfError == "joke")
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                string[] joke_txt = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "") + "\\Application Code\\jokesForThrowErrorMessage.txt");
+                string[] joke_txt = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\jokesForThrowErrorMessage.txt");
                 Random random = new Random();
                 int line_to_choose = random.Next(1,joke_txt.Length);
                 Console.WriteLine("\n JOKE:" + joke_txt[line_to_choose]);
