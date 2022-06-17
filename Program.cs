@@ -15,7 +15,7 @@ namespace Easy14_Programming_Language
         public static bool showCommands = false;
         public static bool previewTheFile = false;
 
-        static string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
+        static string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
         static void Main(string[] args)
         {
             if (args.Length != 0)
