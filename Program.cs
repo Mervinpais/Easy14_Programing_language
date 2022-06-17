@@ -13,7 +13,7 @@ namespace Easy14_Coding_Language
         public static bool showCommands = false;
         public static bool previewTheFile = false;
 
-        static string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\options.ini");
+        static string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "") + "\\Application Code\\options.ini");
         static void Main(string[] args)
         {
             if (args.Length != 0)
