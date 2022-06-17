@@ -1146,7 +1146,8 @@ namespace Easy14_Programming_Language
                     try { title = values[4]; } catch { }
                     IntPtr window = (IntPtr)0;
                     long window_int = -1;
-                    window_int = makeWindow.interperate(sizeX, sizeY, posX, posY, title);
+                    new Task(() => { window_int = makeWindow.interperate(sizeX, sizeY, posX, posY, title); }).Start();
+                    //window_int = makeWindow.interperate(sizeX, sizeY, posX, posY, title);
                     window = (IntPtr)window_int;
                     Thread.Sleep(100);
                     continue;

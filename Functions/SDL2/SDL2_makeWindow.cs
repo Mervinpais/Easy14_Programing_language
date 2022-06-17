@@ -1,6 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using SDL2;
+﻿using SDL2;
+using System;
 
 namespace Easy14_Programming_Language
 {
@@ -59,11 +58,19 @@ namespace Easy14_Programming_Language
             // Check to see if there are any events and continue to do so until the queue is empty.
             while (SDL.SDL_PollEvent(out SDL.SDL_Event e) == 1)
             {
-                switch (e.type)
+                //Console.WriteLine(e.type);
+                if (e.type == SDL.SDL_EventType.SDL_WINDOWEVENT && e.window.windowEvent == SDL.SDL_WindowEventID.SDL_WINDOWEVENT_CLOSE)
                 {
-                    case SDL.SDL_EventType.SDL_QUIT:
+                    // ... Handle window close for each window ...
+                    // Note, you can also check e.window.windowID to check which
+                    // of your windows the event came from.
+                    // e.g.:
+                    if (SDL.SDL_GetWindowID(window) == e.window.windowID)
+                    {
+                        // ... close window A ...
                         running = false;
                         break;
+                    }
                 }
             }
         }
@@ -98,7 +105,7 @@ namespace Easy14_Programming_Language
         {
             SDL.SDL_DestroyRenderer(renderer);
             SDL.SDL_DestroyWindow(window);
-            SDL.SDL_Quit();
+            //SDL.SDL_Quit();
         }
 
         public long interperate(int sizeX = 200, int sizeY = 200, int posX = SDL.SDL_WINDOWPOS_UNDEFINED, int posY = SDL.SDL_WINDOWPOS_UNDEFINED, string title = "myWindow", byte red = 30, byte green = 30, byte blue = 30, byte alpha = 255)
@@ -108,7 +115,7 @@ namespace Easy14_Programming_Language
             {
                 PollEvents();
                 Render(red, green, blue, alpha);
-                //System.Threading.Thread.Sleep(1);
+                //System.Threading.Thread.Sleep(100);
             }
 
             CleanUp();
