@@ -1,19 +1,18 @@
-﻿using System.Net.NetworkInformation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Management;
 using System.Threading;
 using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Easy14_Coding_Language
 {
-    class Program
+    internal class Program
     {
         public static bool showCommands = false;
         public static bool previewTheFile = false;
+
         static string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\options.ini");
         static void Main(string[] args)
         {
@@ -33,7 +32,7 @@ namespace Easy14_Coding_Language
             else
                 Console.WriteLine("\n==== Easy14 Console ====\n");
             //============================================================\\
-            
+
             /* Deleting the temporary folder that was created in the previous step. */
             if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
             {
@@ -58,7 +57,8 @@ namespace Easy14_Coding_Language
                 }
                 if (item.StartsWith("UpdatesWarningsDisabled"))
                 {
-                    if (item.EndsWith("true")) {
+                    if (item.EndsWith("true"))
+                    {
                         UpdatesWarningsDisabled = true;
                     }
                 }
@@ -71,7 +71,7 @@ namespace Easy14_Coding_Language
             }
 
             //=========================================================\\
-            
+
             /* Reading the config file and getting the delay value. */
             foreach (string line in configFile)
             {
@@ -196,7 +196,8 @@ namespace Easy14_Coding_Language
                     }
                     if (command.StartsWith("send_exception("))
                     {
-                        foreach (string line in configFile) {
+                        foreach (string line in configFile)
+                        {
                             if (line.StartsWith("turnOnDeveloperOptions"))
                             {
                                 if (line.EndsWith("true"))
@@ -476,48 +477,60 @@ namespace Easy14_Coding_Language
             {
                 if (line.StartsWith("needSemicolons"))
                 {
-                    if (line.EndsWith("true")) {
+                    if (line.EndsWith("true"))
+                    {
                         endOfStatementCode = ");";
                     }
-                    else { 
+                    else
+                    {
                         endOfStatementCode = ")";
                     }
                 }
                 if (line.StartsWith("disableLibraries"))
                 {
-                    if (line.EndsWith("true")) {
+                    if (line.EndsWith("true"))
+                    {
                         disableLibraries = true;
                     }
-                    else {
+                    else
+                    {
                         disableLibraries = false;
                     }
                 }
                 if (line.StartsWith("windowHeight"))
                 {
-                    if (!line.EndsWith("false")) {
+                    if (!line.EndsWith("false"))
+                    {
                         windowHeight = Convert.ToInt32(line.Replace("windowHeight = ", ""));
                     }
                 }
-                if (line.StartsWith("windowWidth")) {
-                    if (!line.EndsWith("false")) {
+                if (line.StartsWith("windowWidth"))
+                {
+                    if (!line.EndsWith("false"))
+                    {
                         windowWidth = Convert.ToInt32(line.Replace("windowWidth = ", ""));
                     }
                 }
                 if (line.StartsWith("windowState"))
                 {
-                    if (line.EndsWith("max")) {
+                    if (line.EndsWith("max"))
+                    {
                         windowState = "maximized";
                     }
-                    else if (line.EndsWith("min")) {
+                    else if (line.EndsWith("min"))
+                    {
                         windowState = "minimized";
                     }
-                    else if (line.EndsWith("hide")) {
+                    else if (line.EndsWith("hide"))
+                    {
                         windowState = "hidden";
                     }
-                    else if (line.EndsWith("normal")) {
+                    else if (line.EndsWith("normal"))
+                    {
                         windowState = "normal";
                     }
-                    else {
+                    else
+                    {
                         windowState = "normal";
                     }
                 }
@@ -539,7 +552,7 @@ namespace Easy14_Coding_Language
                         Console.WriteLine("\n========================\n\n");
                     }
                 }
-                
+
             }
 
             //========== Only thing using System.Runtime.InteropServices =========//
@@ -578,7 +591,7 @@ namespace Easy14_Coding_Language
                 ShowWindow(ThisConsole, RESTORE);
             }
             // ============================================================ //
-            
+
             /* Checking if the console window height is not equal to the windowHeight variable. If it
             is not equal, it will try to set the console window height to the windowHeight variable.
             If it can't, it will throw an error message. */
@@ -614,8 +627,10 @@ namespace Easy14_Coding_Language
                 }
             }
 
+            /*
+
             /* Checking the free memory of the system and if it is less than 25 MB it will send an
-            exception to the user. */
+            exception to the user.
             ObjectQuery wql = null;
             ManagementObjectSearcher searcher = null;
             ManagementObjectCollection results = null;
@@ -679,13 +694,13 @@ namespace Easy14_Coding_Language
             lines = lines_list_mod.ToArray();
 
             //Now below is where the magic happens!
-            
+
             foreach (string line in lines)
             {
 
                 char[] line_chrArr = line.ToCharArray();
 
-                if (showCommands == true)  Console.WriteLine(">>>" + line);
+                if (showCommands == true) Console.WriteLine(">>>" + line);
 
                 /* Checking if the line starts with "using" and ends with ";" and if it does, it checks
                 if the user has disabled libraries in the options.ini file. If the user has disabled
@@ -693,7 +708,7 @@ namespace Easy14_Coding_Language
                 it will check if the line is "using this;". If it is, it will print out a message.
                 If it is not, it will check if the using exists. If it does, it will continue. If it
                 does not, it will throw an error message. */
-                
+
                 if (line.StartsWith($"using") && line.EndsWith($";"))
                 {
                     if (disableLibraries)
@@ -712,7 +727,7 @@ namespace Easy14_Coding_Language
 
                     string currentDir = Directory.GetCurrentDirectory();
                     string theSupposedNamspace = Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
-                    
+
                     /* Checking if the using exists. */
                     bool doesUsingExist = Directory.Exists(theSupposedNamspace);
                     if (doesUsingExist)
@@ -1147,7 +1162,8 @@ namespace Easy14_Coding_Language
                                             Math_Add math_Add = new Math_Add();
                                             int result = math_Add.interperate(content, 0, supposedVar);
                                         }
-                                        else {
+                                        else
+                                        {
                                             File.WriteAllText(filePath, content);
                                         }
                                         break;

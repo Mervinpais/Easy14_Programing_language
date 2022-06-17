@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Easy14_Programing_language</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove=".vs\**" />
+    <EmbeddedResource Remove=".vs\**" />
+    <None Remove=".vs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include=".vscode\launch.json" />
+    <Content Include=".vscode\settings.json" />
+    <Content Include=".vscode\tasks.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include=".github\ISSUE_TEMPLATE\bug_report.md" />
+  </ItemGroup>
+
+</Project>
