@@ -1,55 +1,29 @@
-# ===EXCEPTION SENDER===
-* Each Hexa-Decimal Value has a meaning (based on position)
+# Why does a readme for this exsist?
 
-## Symbols and their meanings;
-* @ = Any number value ex; 0-9
-* A-F = Hexa-Decimal A-F
+## ExceptionSender.cs
 
-1. 0x0000A# or 0x000A## = Application error
-2. 0x0000B# or 0x000B## = Other error
-3. 0x0000C# or 0x000C## = Code error (error with the application itself)
-4. 0x0000D# or 0x000D## = DLL File error
-5. 0x0000E# or 0x000E## = ???
-6. 0x0000F# or 0x000F## = IO/FileSystem error
+```csharp
+//Exceptionsender is a class that sends exceptions to the user incase of an error
 
-# Funni Stuff :)
+ExceptionSender exceptionSender = new ExceptionSender();
+exceptionSender.SendException(exception);
+```
+<!--
+source: Application Code\ExceptionSender.cs
+-->
 
-* 0x00FACE = O_O Did you request Facey?
-* 0x000404 = Are you reciting the alaphabet O_O?
+The program can only send exceptions to the user if it is a fatal error/exception in C# code.
 
-# Each Error Code's Meaning
-## 0x0000A# Meaning(s);
+Example;
+```csharp
+exceptionSender.SendException(0x000001);
+```
 
-1. 0x0000A0 - Unknown App Error
-2. 0x0000A1 - Not Enough Computer Memory
-3. 0x0000A2 - Missing Files
-4. 0x0000A3 - Missing System Dll's
-5. 0x0000A4 - Not Responding
-6. 0x0000A5 - Application Crashed
+This is a "nothing" exception that is never thrown under normal circumstances.
 
-## 0x0000B# Meaning(s);
+## Throw Error Message
 
-* 0x0000B0 - Unknown Error
+```csharp
+//ThrowErrorMessage is a method that throws an exception with a message 
 
-## 0x0000C# Meaning(s);
-
-1. 0x0000C0 - Unknown Code Error
-2. 0x0000C1 - Failed to run code
-3. 0x0000C2 - Missing Code
-
-## 0x0000D# Meaning(s);
-
-1. 0x0000D0 - Unknown DLL Error
-1. 0x0000D1 - Missing DLL Error
-
-## 0x0000E# Meaning(s);
-
-1. 0x0000E0 - Unknown Error
-
-## 0x0000F# Meaning(s);
-
-1. 0x0000F0 - Unknown File Error
-2. 0x0000F1 - Can't Access Code File
-3. 0x0000F2 - File Not Found
-4. 0x0000F3 - Method Not Found
-5. 0x0000F4 - Variable Not Found
+```

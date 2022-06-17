@@ -6,7 +6,7 @@ namespace Easy14_Coding_Language
 {
     class ConsolePrint
     {
-        public void interperate(string code_part, string[] textArray, string fileloc, int lineNumber = -1)
+        public void interperate(string code_part, string[] textArray = null, string fileloc = null, int lineNumber = -1)
         {
             string endOfStatementCode = ")";
             string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\options.ini");
@@ -27,6 +27,13 @@ namespace Easy14_Coding_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
+                else {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to print()");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    return;
+                }
+                
                 foreach (string x in someLINEs)
                 {
                     if (x.TrimStart().TrimEnd() == "using Console;")
@@ -479,11 +486,11 @@ namespace Easy14_Coding_Language
             }
             else if (!isAString && !isAnInt)
             {
-                if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
+                if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP"))
                 {
-                    if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
+                    if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP").Length != 0)
                     {
-                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
+                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP");
                         foreach (string file in files)
                         {
                             if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint)

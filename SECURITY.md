@@ -2,15 +2,15 @@
 
 ## Supported Versions
 
-As of 3th of June 2022 5:00PM;
+As of 15th of June 2022 3:45PM;
 Version 1.3 is still in support but will be soon off the hook (in support) due to me having to support enwer versions than older ones
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 2.3   | 🚫 Not Yet Avaliable|
-| 2.2 - 2.0   | ✅ Supported!|
-| 1.3 - 1.4   | ✅ Still in support|
-| < 1.2   | ❌  No/Lost Support |
+| 2.6   | 🚫 Not Yet Avaliable|
+| 2.5 - 2.0   | ✅ Fully Supported!|
+| 2.5 - 1.4   | ✅ Still in support|
+| < 1.2   | ❌  No/Lost Support|
 
 ## Reporting a Vulnerability
 

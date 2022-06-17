@@ -1,4 +1,5 @@
 # Easy14_Programing_language
+
 ___
 
 ![Easy14 Repository Thumbnail](Images/repo%20github%20thumnail.png)
@@ -23,7 +24,8 @@ Here is what you need to know
 
 ___
 
-## Version 2.4
+
+## Version 2.5
 
 ## The Bugfixs arrived
 

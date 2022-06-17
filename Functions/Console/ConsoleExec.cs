@@ -28,6 +28,12 @@ namespace Easy14_Coding_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
+                else {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to exec()");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    return;
+                }
                 foreach (string x in someLINEs)
                 {
                     if (x.TrimStart().TrimEnd() == "using Console;")
@@ -141,11 +147,16 @@ namespace Easy14_Coding_Language
             }
             else
             {
-                ThrowErrorMessage tErM = new ThrowErrorMessage();
-                string unknownLine = "<unknownLineNumber>";
-                var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
-                string[] errorText = {" Your syntax/parameters were incorrect!", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n"};
-                tErM.sendErrMessage(null, errorText, "error");
+                try {
+
+                }
+                catch {
+                    ThrowErrorMessage tErM = new ThrowErrorMessage();
+                    string unknownLine = "<unknownLineNumber>";
+                    var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
+                    string[] errorText = {" An error occurred while executing commands from the exec command", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n"};
+                    tErM.sendErrMessage(null, errorText, "error");
+                }
             }
             //}
         }

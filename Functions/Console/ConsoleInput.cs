@@ -12,12 +12,13 @@ namespace Easy14_Coding_Language
             string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\options.ini");
             foreach (string line in configFile)
             {
-                if (line.StartsWith("needSemicolons"))
+                if (line.StartsWith("needSemicolons")) {
                     endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ");" : endOfStatementCode = ")");
+                }
                 break;
             }
 
-            string code_part_unedited;
+            string code_part_unedited = code_part;
             string textToPrint;
             
             bool foundUsing = false;
@@ -26,6 +27,12 @@ namespace Easy14_Coding_Language
                 string[] someLines = null;
                 if (textArray == null && fileloc != null) someLines = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLines = textArray;
+                else {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to input()");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    return;
+                }
 
                 foreach (string x in someLines)
                 {
@@ -52,9 +59,10 @@ namespace Easy14_Coding_Language
             }
             else if (code_part.StartsWith($"Console.input(")) { }
 
-            code_part_unedited = code_part;
             if (code_part.IndexOf("=") > 0)
+            {
                 code_part = code_part.Substring(code_part.IndexOf("="));
+            }
             code_part = code_part_unedited.TrimStart();
             code_part = code_part.TrimStart();
             if (code_part.StartsWith("Console."))

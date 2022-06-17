@@ -5,40 +5,6 @@ namespace Easy14_Coding_Language
 {
     class FileSystem_DeleteFolder
     {
-        /*void DeleteFolder(string folderPath) {
-            try
-            {
-                if (Directory.GetFiles(folderPath).Length > 0)
-                {
-                    foreach (string File_ in Directory.GetFiles(folderPath))
-                    {
-                        File.Delete(File_);
-                    }
-
-                    foreach (string File_ in Directory.GetDirectories(folderPath))
-                    {
-                        int lengthOfDirInDir = Directory.GetDirectories(File_).Length;
-                        if (lengthOfDirInDir < -1)
-                        {
-                            Directory.Delete(File_);
-                        }
-                        else if (lengthOfDirInDir > -1)
-                        {
-                            DeleteFolder(File_);
-                        }
-                    }
-                }
-                Directory.Delete(folderPath);
-            }
-            catch (DirectoryNotFoundException dirNotFoundEx)
-            {
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }*/
         public void interperate(string code_part, string fileloc, string[] textArray, int line_count)
         {
             string code_part_unedited;
@@ -53,6 +19,14 @@ namespace Easy14_Coding_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to the DeleteFolder function.");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    return;
+                }
+
                 foreach (string x in someLINEs)
                 {
                     if (x.StartsWith("using"))
