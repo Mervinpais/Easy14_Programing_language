@@ -1152,6 +1152,38 @@ namespace Easy14_Programming_Language
                     Thread.Sleep(100);
                     continue;
                 }
+                else if (line.StartsWith($"sdl2.createShape(") || line.StartsWith($"createShape(") && line.EndsWith($"{endOfStatementCode}"))
+                {
+                    SDL2_createShape createShape = new SDL2_createShape();
+                    string code_line = line.Replace("sdl2.", "").Replace("createShape(", "");
+                    code_line = code_line.Substring(0, code_line.Length - endOfStatementCode.Length);
+                    string[] values = code_line.Split(",");
+                    long window = 0;
+                    int x = 0;
+                    int y = 0;
+                    int w = 0;
+                    int h = 0;
+
+                    try { window = Convert.ToInt64(values[0]); } catch { }
+                    try { x = Convert.ToInt32(values[1]); } catch { }
+                    try { y = Convert.ToInt32(values[2]); } catch { }
+                    try { w = Convert.ToInt32(values[3]); } catch { }
+                    try { h = Convert.ToInt32(values[4]); } catch { }
+
+                    new Task(() => { createShape.interperate(window, x, y, w, h); }).Start();
+                }
+                else if (line.StartsWith($"sdl2.clearScreen(") || line.StartsWith($"clearScreen(") && line.EndsWith($"{endOfStatementCode}"))
+                {
+                    SDL2_clearScreen clearScreen = new SDL2_clearScreen();
+                    string code_line = line.Replace("sdl2.", "").Replace("clearScreen(", "");
+                    code_line = code_line.Substring(0, code_line.Length - endOfStatementCode.Length);
+                    long window = 0;
+                    string color = null;
+                    string[] values = code_line.Split(",");
+                    window = Convert.ToInt64(values[0]);
+                    color = values[1];
+                    clearScreen.interperate(window, color);
+                }
                 else
                 {
                     if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))

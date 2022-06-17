@@ -101,6 +101,7 @@ namespace Easy14_Programming_Language
         /// <summary>
         /// Clean up the resources that were created.
         /// </summary>
+        
         void CleanUp()
         {
             SDL.SDL_DestroyRenderer(renderer);
@@ -110,12 +111,48 @@ namespace Easy14_Programming_Language
 
         public long interperate(int sizeX = 200, int sizeY = 200, int posX = SDL.SDL_WINDOWPOS_UNDEFINED, int posY = SDL.SDL_WINDOWPOS_UNDEFINED, string title = "myWindow", byte red = 30, byte green = 30, byte blue = 30, byte alpha = 255)
         {
+            if (sizeX < 1)
+            {
+                sizeX = 200;
+            }
+            else if (sizeY < 1)
+            {
+                sizeY = 200;
+            }
+            else if (posX < 0)
+            {
+                posX = SDL.SDL_WINDOWPOS_UNDEFINED;
+            }
+            else if (posY < 0)
+            {
+                posY = SDL.SDL_WINDOWPOS_UNDEFINED;
+            }
+            else if (title == null)
+            {
+                title = "myWindow";
+            }
+            else if (red < 0 || red > 225)
+            {
+                red = 30;
+            }
+            else if (green < 0 || green > 225)
+            {
+                green = 30;
+            }
+            else if (blue < 0 || blue > 225)
+            {
+                blue = 30;
+            }
+            else if (alpha < 0 || alpha > 100)
+            {
+                alpha = 255;
+            }
+            
             Setup(sizeX, sizeY, posX, posY, title);
+            Render(red, green, blue, alpha);
             while (running)
             {
                 PollEvents();
-                Render(red, green, blue, alpha);
-                //System.Threading.Thread.Sleep(100);
             }
 
             CleanUp();
