@@ -4,7 +4,7 @@ using System.Net;
 using System.Diagnostics;
 using System.IO;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class updateChecker
     {

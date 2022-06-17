@@ -7,7 +7,7 @@ using System.Net;
 using System.Linq;
 
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class IntroductionCode
     {

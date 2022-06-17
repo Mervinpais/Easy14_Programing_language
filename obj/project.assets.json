@@ -1,11 +1,56 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {}
+    "net6.0": {
+      "Sayers.SDL2.Core/1.0.11": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Sayers.SDL2.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Sayers.SDL2.Core.dll": {}
+        },
+        "build": {
+          "build/Sayers.SDL2.Core.targets": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Sayers.SDL2.Core/1.0.11": {
+      "sha512": "K/guGaUyRdMhL2FLlUYbqJmKF3h2KtOV7l90NJfLOt/M64zLb4fkWlDGjXCZdHSZGPKsyOjps6FdsambXiLJQQ==",
+      "type": "package",
+      "path": "sayers.sdl2.core/1.0.11",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/Sayers.SDL2.Core.targets",
+        "build/win_x64/SDL2.dll",
+        "build/win_x64/SDL2_image.dll",
+        "build/win_x64/SDL2_mixer.dll",
+        "build/win_x64/SDL2_ttf.dll",
+        "build/win_x64/libFLAC-8.dll",
+        "build/win_x64/libjpeg-9.dll",
+        "build/win_x64/libmodplug-1.dll",
+        "build/win_x64/libmpg123-0.dll",
+        "build/win_x64/libogg-0.dll",
+        "build/win_x64/libopus-0.dll",
+        "build/win_x64/libopusfile-0.dll",
+        "build/win_x64/libpng16-16.dll",
+        "build/win_x64/libtiff-5.dll",
+        "build/win_x64/libvorbis-0.dll",
+        "build/win_x64/libwebp-7.dll",
+        "build/win_x64/zlib1.dll",
+        "lib/net6.0/Sayers.SDL2.Core.dll",
+        "sayers.sdl2.core.1.0.11.nupkg.sha512",
+        "sayers.sdl2.core.nuspec"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0": []
+    "net6.0": [
+      "Sayers.SDL2.Core >= 1.0.11"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\mervi\\.nuget\\packages\\": {}
@@ -45,6 +90,12 @@
     "frameworks": {
       "net6.0": {
         "targetAlias": "net6.0",
+        "dependencies": {
+          "Sayers.SDL2.Core": {
+            "target": "Package",
+            "version": "[1.0.11, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

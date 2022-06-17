@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+
 public class ExceptionSender
 {
     public void SendException(int typeOfException, string[] textArray = null)

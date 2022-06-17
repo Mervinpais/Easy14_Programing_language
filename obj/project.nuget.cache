@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "pZ5MeP3mX1bCqpDtYayu6mFMmX4J4HeiHPt1Tq0Db5H7RRwG45zN0imid0PEmZbXfLyvdFcZ301HOBuL+rqUUQ==",
+  "dgSpecHash": "ZAHpCTu40lSHdPIo+3G5JrVLswuUncXjUiYwR7nP+5tGJZXk3NiN+Xi2dpypgxRZtBBwaX282FdCzx3DK5Qp2g==",
   "success": true,
   "projectFilePath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14_Programing_language.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\mervi\\.nuget\\packages\\sayers.sdl2.core\\1.0.11\\sayers.sdl2.core.1.0.11.nupkg.sha512"
+  ],
   "logs": []
 }

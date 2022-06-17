@@ -2,7 +2,7 @@ using System;
 // Important Stuff/namespaces
 using System.IO;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class GetVariable
     {

@@ -5,8 +5,9 @@ using System.IO;
 using System.Threading;
 using System.Linq;
 using System.Runtime.InteropServices;
+using SDL2;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     internal class Program
     {
@@ -262,7 +263,7 @@ namespace Easy14_Coding_Language
                     {
                         if (!command.StartsWith("-") && !command.StartsWith("/"))
                         {
-                            string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Functions");
+                            string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "") + "\\Functions");
                             List<string> allNamespacesAvaiable_list = new List<string>();
                             foreach (string namespace_ in allNamespacesAvaiable_array)
                             {
@@ -397,7 +398,7 @@ namespace Easy14_Coding_Language
                     {
                         /* Getting all the namespaces in the Functions folder and adding them to a
                         list. */
-                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Functions");
+                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "") + "\\Functions");
                         List<string> allNamespacesAvaiable_list = new List<string>();
                         foreach (string namespace_ in allNamespacesAvaiable_array)
                         {
@@ -726,7 +727,7 @@ namespace Easy14_Coding_Language
                     }
 
                     string currentDir = Directory.GetCurrentDirectory();
-                    string theSupposedNamspace = Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
+                    string theSupposedNamspace = Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
 
                     /* Checking if the using exists. */
                     bool doesUsingExist = Directory.Exists(theSupposedNamspace);
@@ -1124,6 +1125,26 @@ namespace Easy14_Coding_Language
                     Random_RandomRange randomRange = new Random_RandomRange();
                     string randomRange_str = randomRange.interperate(line, textArray, fileLoc);
                     Console.WriteLine(randomRange_str);
+                }
+                else if (line.StartsWith($"sdl2.makeWindow(") || line.StartsWith($"makeWindow(") && line.EndsWith($"{endOfStatementCode}"))
+                {
+                    SDL2_makeWindow makeWindow = new SDL2_makeWindow();
+                    string code_line = line.Replace("sdl2.", "").Replace("makeWindow(", "");
+                    code_line = code_line.Substring(0, code_line.Length - endOfStatementCode.Length);
+                    string[] values = code_line.Split(",");
+                    int sizeX = 200;
+                    int sizeY = 200;
+                    int posX = SDL.SDL_WINDOWPOS_UNDEFINED;
+                    int posY = SDL.SDL_WINDOWPOS_UNDEFINED;
+                    string title = "myWindowTitle";
+
+                    try { sizeX = Convert.ToInt32(values[0]); } catch { }
+                    try { sizeY = Convert.ToInt32(values[1]); } catch { }
+                    try { posX = Convert.ToInt32(values[2]); } catch { }
+                    try { posY = Convert.ToInt32(values[3]); } catch { }
+                    try { title = values[4]; } catch { }
+
+                    IntPtr window = makeWindow.interperate(sizeX, sizeY, posX, posY, title);
                 }
                 else
                 {

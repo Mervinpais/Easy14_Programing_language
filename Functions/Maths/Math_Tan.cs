@@ -1,6 +1,6 @@
 using System;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class Math_Tan
     {
