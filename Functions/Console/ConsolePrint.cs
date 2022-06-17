@@ -79,7 +79,7 @@ namespace Easy14_Programming_Language
             bool isADouble2 = false;
             /*if (foundUsing == true)
             {*/
-            isAString = (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\""));
+            isAString = ((textToPrint.StartsWith("\"") || textToPrint.StartsWith("cl\"")) && textToPrint.EndsWith("\""));
             //Console.WriteLine(textToPrint.Length / 2);
             var num1_toCheck = textToPrint.Substring(0, (textToPrint.Length /  2 + 1) - 1);
             var num2_toCheck = textToPrint.Substring((textToPrint.Length / 2 - 1) + 2);
@@ -479,10 +479,15 @@ namespace Easy14_Programming_Language
                 var result = comparer == comparee;
                 Console.WriteLine(result);
             }
-            else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\"") && isAString  && !isAnInt)
-            //example; print("Test");, we just detect if it contains Double Quotes " in the parameter
+            else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\"") && isAString && !isAnInt)
             {
                 Console.WriteLine(textToPrint.Substring(0, textToPrint.Length - 1).Substring(1));
+            }
+            else if (textToPrint.StartsWith("cl\"") && textToPrint.EndsWith("\"") && isAString && !isAnInt)
+            //example; print(cl"Test");, we just detect if it contains Double Quotes " in the parameter
+            {
+                textToPrint = textToPrint.Substring(2).TrimStart();
+                Console.Write(textToPrint.Substring(0, textToPrint.Length - 1).Substring(1));
             }
             else if (!isAString && !isAnInt)
             {
