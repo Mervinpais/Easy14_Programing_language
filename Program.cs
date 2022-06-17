@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using SDL2;
 
 namespace Easy14_Programming_Language
@@ -1143,8 +1144,12 @@ namespace Easy14_Programming_Language
                     try { posX = Convert.ToInt32(values[2]); } catch { }
                     try { posY = Convert.ToInt32(values[3]); } catch { }
                     try { title = values[4]; } catch { }
-
-                    IntPtr window = makeWindow.interperate(sizeX, sizeY, posX, posY, title);
+                    IntPtr window = (IntPtr)0;
+                    long window_int = -1;
+                    window_int = makeWindow.interperate(sizeX, sizeY, posX, posY, title);
+                    window = (IntPtr)window_int;
+                    Thread.Sleep(100);
+                    continue;
                 }
                 else
                 {

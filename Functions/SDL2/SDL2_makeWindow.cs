@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using SDL2;
 
 namespace Easy14_Programming_Language
@@ -45,6 +46,9 @@ namespace Easy14_Programming_Language
             {
                 Console.WriteLine($"There was an issue creating the renderer. {SDL.SDL_GetError()}");
             }
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine($"\nWindow \"{window}\" was created and shown");
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         /// <summary>
@@ -97,19 +101,19 @@ namespace Easy14_Programming_Language
             SDL.SDL_Quit();
         }
 
-        public IntPtr interperate(int sizeX = 200, int sizeY = 200, int posX = SDL.SDL_WINDOWPOS_UNDEFINED, int posY = SDL.SDL_WINDOWPOS_UNDEFINED, string title = "myWindow", byte red = 30, byte green = 30, byte blue = 30, byte alpha = 255)
+        public long interperate(int sizeX = 200, int sizeY = 200, int posX = SDL.SDL_WINDOWPOS_UNDEFINED, int posY = SDL.SDL_WINDOWPOS_UNDEFINED, string title = "myWindow", byte red = 30, byte green = 30, byte blue = 30, byte alpha = 255)
         {
             Setup(sizeX, sizeY, posX, posY, title);
-
             while (running)
             {
                 PollEvents();
                 Render(red, green, blue, alpha);
+                //System.Threading.Thread.Sleep(1);
             }
 
             CleanUp();
-
-            return window;
+            long window_long = Convert.ToInt64(Convert.ToString(window), 16);
+            return window_long;
         }
     }
 }
