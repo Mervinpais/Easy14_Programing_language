@@ -1,9 +1,4 @@
 # Easy14_Programing_language
-
-## WARNING
-
-THIS IS NOT A COMPLETE BUILD, NEW THINGS MAY BREAK OLD STUFF AS I HAVE NOT FIXED THEM YET
-
 ___
 
 ![Easy14 Repository Thumbnail](Images/repo%20github%20thumnail.png)
