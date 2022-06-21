@@ -31,7 +31,7 @@ namespace Easy14_Programming_Language
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to the DeleteFile function.");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     return;
                 }
 

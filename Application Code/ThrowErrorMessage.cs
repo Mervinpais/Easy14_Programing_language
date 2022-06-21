@@ -52,7 +52,7 @@ namespace Easy14_Programming_Language
                 Console.WriteLine("\n JOKE:" + joke_txt[line_to_choose]);
             }
             /* Setting the color of the text to gray. */
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ResetColor();
             return;
         }
     }

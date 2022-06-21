@@ -31,3 +31,4 @@ C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Release\net6.0\Easy14_Programing_language.pdb
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Release\net6.0\Easy14_Programing_language.genruntimeconfig.cache
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Release\net6.0\ref\Easy14_Programing_language.dll
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net6.0\Application Code\options.ini

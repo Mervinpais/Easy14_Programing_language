@@ -1,10 +1,22 @@
 {
   "version": 2,
-  "dgSpecHash": "ZAHpCTu40lSHdPIo+3G5JrVLswuUncXjUiYwR7nP+5tGJZXk3NiN+Xi2dpypgxRZtBBwaX282FdCzx3DK5Qp2g==",
+  "dgSpecHash": "nm+NaBKZCP9OD3GmVuAbluUghWlrxKQaKPtypt4n4mg+wgf58vxhElG4vx1oVzq91l1nJ4IhayJAg+cnMBejjg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14_Programing_language.csproj",
+  "projectFilePath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14_Programming_language.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\mervi\\.nuget\\packages\\sayers.sdl2.core\\1.0.11\\sayers.sdl2.core.1.0.11.nupkg.sha512"
+    "C:\\Users\\mervi\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.3.3\\microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\microsoft.codeanalysis.common\\4.2.0\\microsoft.codeanalysis.common.4.2.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\microsoft.codeanalysis.csharp\\4.2.0\\microsoft.codeanalysis.csharp.4.2.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\microsoft.codeanalysis.csharp.scripting\\4.2.0\\microsoft.codeanalysis.csharp.scripting.4.2.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\microsoft.codeanalysis.scripting.common\\4.2.0\\microsoft.codeanalysis.scripting.common.4.2.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\sayers.sdl2.core\\1.0.11\\sayers.sdl2.core.1.0.11.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\system.collections.immutable\\5.0.0\\system.collections.immutable.5.0.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\system.reflection.metadata\\5.0.0\\system.reflection.metadata.5.0.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\system.text.encoding.codepages\\6.0.0\\system.text.encoding.codepages.6.0.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512"
   ],
   "logs": []
 }

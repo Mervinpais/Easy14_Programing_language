@@ -1,21 +1,30 @@
-﻿using System;
+﻿using SDL2;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
-using SDL2;
+using System.Runtime;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 
 namespace Easy14_Programming_Language
 {
-    internal class Program
+    public class Program
     {
         public static bool showCommands = false;
         public static bool previewTheFile = false;
 
-        static string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
+        //code from https://iq.direct/blog/51-how-to-get-the-current-executable-s-path-in-csharp.html :)
+        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+
+        //static string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
+        static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
+
         static void Main(string[] args)
         {
             if (args.Length != 0)
@@ -121,7 +130,6 @@ namespace Easy14_Programming_Language
                                 previewTheFile = true;
                             }
                         }
-
                         if (!previewTheFile)
                         {
                             compileCode(String.Join(" ", filePath));
@@ -147,12 +155,12 @@ namespace Easy14_Programming_Language
                 if (args[0] == "-help" || args[0] == "/help")
                 {
                     Console.WriteLine("Hello! Welcome to the help section of Easy14!");
-                    Console.WriteLine("\n   -help | /help = Show the list of arguments you can run with the Easy14 Language");
-                    Console.WriteLine("\n   -run | /run = Runs an easy14 file, the file extention must be .ese14 (ex; *easy14 app path* run *file.s14c*)");
+                    Console.WriteLine("\n   -help || /help = Show the list of arguments you can run with the Easy14 Language");
+                    Console.WriteLine("\n   -run || /run = Runs an easy14 file, the file extention must be .ese14 (ex; *easy14 app path* run *file.s14c*)");
                     Console.WriteLine("    |");
-                    Console.WriteLine("     -show_cmds | /show_cmds = shows what command runs while running a file");
-                    Console.WriteLine("\n   -keywords | /keywords = Shows all keywords that are statements in Easy14");
-                    Console.WriteLine("\n   -intro | /intro = Introduction/Tutorial of Easy14");
+                    Console.WriteLine("     -show_cmds || /show_cmds = shows what command runs while running a file");
+                    Console.WriteLine("\n   -keywords || /keywords = Shows all keywords that are statements in Easy14");
+                    Console.WriteLine("\n   -intro || /intro = Introduction/Tutorial of Easy14");
                     Console.WriteLine("\n");
                     Console.WriteLine("     |More Commands Comming Soon|");
                 }
@@ -185,15 +193,26 @@ namespace Easy14_Programming_Language
                 {
                     Console.Write("\n>>>");
                     string command = Console.ReadLine();
+
                     if (command.ToLower() == "exit()" || command.ToLower() == "exit();")
                     {
+                        /* Deleting the temporary folder that was created in the previous step. */
+                        Console.WriteLine("\n Clearing Variables... \n");
+                        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
+                        {
+                            Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP", true);
+                        }
+                        Console.WriteLine("\n Resetting Terminal Colors... \n");
+                        Console.ResetColor();
+                        Thread.Sleep(75);
+                        Console.WriteLine("\n Exiting Easy14 Interactive... \n");
                         return;
                     }
                     else if (command.ToLower() == "exit")
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("\nPlease use \"exit()\" or \"exit();\" or Ctrl+C to close the interative console");
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ResetColor();
                         continue;
                     }
                     if (command.StartsWith("send_exception("))
@@ -226,12 +245,12 @@ namespace Easy14_Programming_Language
                     else if (command.ToLower() == "/help" || command.ToLower() == "-help")
                     {
                         Console.WriteLine("Hello! Welcome to the help section of Easy14!");
-                        Console.WriteLine("\n   -help | /help = Show the list of arguments you can run with the Easy14 Language");
-                        Console.WriteLine("\n   -run | /run = Runs an easy14 file, the file extention must be .ese14 (ex; *easy14 app path* run *file.s14c*)");
+                        Console.WriteLine("\n   -help || /help = Show the list of arguments you can run with the Easy14 Language");
+                        Console.WriteLine("\n   -run || /run = Runs an easy14 file, the file extention must be .ese14 (ex; *easy14 app path* run *file.s14c*)");
                         Console.WriteLine("    |");
-                        Console.WriteLine("     -show_cmds | /show_cmds = shows what command runs while running a file");
-                        Console.WriteLine("\n   -keywords | /keywords = Shows all keywords that are statements in Easy14");
-                        Console.WriteLine("\n   -intro | /intro = Introduction/Tutorial of Easy14");
+                        Console.WriteLine("     -show_cmds || /show_cmds = shows what command runs while running a file");
+                        Console.WriteLine("\n   -keywords || /keywords = Shows all keywords that are statements in Easy14");
+                        Console.WriteLine("\n   -intro || /intro = Introduction/Tutorial of Easy14");
                         Console.WriteLine("\n");
                         Console.WriteLine("     |More Commands Comming Soon|");
                     }
@@ -257,7 +276,7 @@ namespace Easy14_Programming_Language
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("ERROR; Easy14 Interactive Cannot run multiline code \n");
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ResetColor();
                         continue;
                     }
                     else
@@ -287,7 +306,7 @@ namespace Easy14_Programming_Language
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("ERROR; Easy14 Interactive can't understand what the args you specified \n");
-                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.ResetColor();
                             continue;
                         }
                     }
@@ -328,7 +347,7 @@ namespace Easy14_Programming_Language
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("\nPlease use \"exit()\" or \"exit();\" or Ctrl+C to close the interative console");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     continue;
                 }
                 else if (command.ToLower().StartsWith("/run") || command.ToLower().StartsWith("-run"))
@@ -390,7 +409,7 @@ namespace Easy14_Programming_Language
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("ERROR; Easy14 Interactive Cannot run multiline code \n");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     continue;
                 }
                 else
@@ -422,7 +441,7 @@ namespace Easy14_Programming_Language
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("ERROR; Easy14 Interactive can't understand what the args you specified \n");
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ResetColor();
                         continue;
                     }
                 }
@@ -739,9 +758,9 @@ namespace Easy14_Programming_Language
                     }
                     else
                     {
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ResetColor();
                         Console.WriteLine($"ERROR; The Using {line.Replace("using ", "").Replace(";", "")} Mentioned on line {lineCount} is not found!");
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ResetColor();
                         break;
                     }
                 }
@@ -1009,7 +1028,7 @@ namespace Easy14_Programming_Language
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("\nPlease use \"exit()\" or \"exit();\" or Ctrl+C to close the interative console");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     continue;
                 }
                 else if (line.StartsWith($"Console.print(") || line.StartsWith($"print(") && line.EndsWith($"{endOfStatementCode}"))
@@ -1274,9 +1293,42 @@ namespace Easy14_Programming_Language
                     message. */
                     else if (!string.IsNullOrEmpty(line) && !string.IsNullOrWhiteSpace(line) && line != "}" && line != "break" && line != "return" && !line.StartsWith("using") && !line.StartsWith("//"))
                     {
+                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
+                        List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
+                        List<string> allNamespacesAvaiable_list_main = new List<string>();
+                        foreach (string item in allNamespacesAvaiable_list)
+                        {
+                            allNamespacesAvaiable_list_main.Add(item.Substring(item.LastIndexOf("\\") + 1));
+                        }
+                        allNamespacesAvaiable_array = allNamespacesAvaiable_list_main.ToArray();
+                        string theNamespaceOfTheLine = line.Split(".")[0];
+                        if (allNamespacesAvaiable_array.Contains(theNamespaceOfTheLine))
+                        {
+                            int index = Array.IndexOf(allNamespacesAvaiable_array, theNamespaceOfTheLine);
+                            string theClassOfTheLine = line.Split(".")[0];
+                            string theFunctionOfTheLine = line.Split(".")[1];
+                            theFunctionOfTheLine = theFunctionOfTheLine.Replace("(", "").Replace(");", "");
+                            
+                            //Older
+                            /*Type type_ = Type.GetType(theFunctionOfTheLine);
+                            MethodInfo method = type_.GetMethod("run");
+                            method.Invoke(null, null);*/
+
+                            //Old
+                            //Activator.CreateInstance(Convert.ToString(Assembly.GetExecutingAssembly()), Convert.ToString(Type.GetType(theFunctionOfTheLine)));                            
+
+                            string[] code =
+                            {
+                                $"Easy14_Programming_Language.{theFunctionOfTheLine} myfunc = new Easy14_Programming_Language.{theFunctionOfTheLine}();",
+                                "myfunc.interperate();"
+                            };
+                            myFunc myfunc = new myFunc();
+                            CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                            return;
+                        }
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"ERROR; '{line}' is not a vaild code statement\n  Error was located on Line {lineCount}");
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ResetColor();
                         break;
                     }
                 }

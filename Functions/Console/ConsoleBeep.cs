@@ -28,7 +28,7 @@ namespace Easy14_Programming_Language
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to the Console.beep function.");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     return "";
                 }
 
@@ -48,7 +48,7 @@ namespace Easy14_Programming_Language
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'Beep' without its reference  (Use Console.Beep() to fix this error :)");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     return "<ERROR_USED_FUNCTION_WHICH_NEEDED_A_USING_NAMESPACE_BEFORE>";
                 }
             }

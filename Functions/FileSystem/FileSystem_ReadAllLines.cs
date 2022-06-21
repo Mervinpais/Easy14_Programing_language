@@ -30,7 +30,7 @@ namespace Easy14_Programming_Language
                 else {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to the ReadAllLines function.");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     return null;
                 }
 

@@ -22,7 +22,7 @@ namespace Easy14_Programming_Language
                 else {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to the RenameFile function.");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     return;
                 }
 

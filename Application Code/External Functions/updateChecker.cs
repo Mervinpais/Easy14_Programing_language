@@ -98,7 +98,7 @@ namespace Easy14_Programming_Language
                     };
                     Console.WriteLine(string.Join(Environment.NewLine, updateText));
                     Console.BackgroundColor = ConsoleColor.Black;
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                 }
             }
             catch

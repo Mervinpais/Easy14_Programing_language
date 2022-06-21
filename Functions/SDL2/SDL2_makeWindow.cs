@@ -47,7 +47,7 @@ namespace Easy14_Programming_Language
             }
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine($"\nWindow \"{window}\" was created and shown");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ResetColor();
         }
 
         /// <summary>
