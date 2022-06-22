@@ -7,10 +7,10 @@ Version 1.3 is still in support but will be soon off the hook (in support) due t
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 2.6   | 🚫 Not Yet Avaliable|
-| 2.5 - 2.0   | ✅ Fully Supported!|
-| 2.5 - 1.4   | ✅ Still in support|
-| < 1.2   | ❌  No/Lost Support|
+| 2.8   | 🚫 Not Yet Avaliable|
+| 2.7 - 2.1   | ✅ Fully Supported!|
+| 2.1 - 2.0 (1.4)   | ✅ Still in support|
+| < 1.3   | ❌  No/Lost Support|
 
 ## Reporting a Vulnerability
 
@@ -23,10 +23,13 @@ declined, etc. -->
 If a bug is found, please report it in issues, if you want to, you can also email me (though i dont look at my inbox alot)
 If a problem related to compatablity is found, please report it (below is the OS's I/my program supports)
 
+## IMPORTANT
+Make sure you have C# is installed to use this app!
+
 | Operation system  | Supported |
 | ----------------  | --------- |
 |  Windows 10/11    |    🙂✔️  |
-|  Windows 7        |    🙂✔️(If C# is installed)  |
+|  Windows 7        |    🙂✔️  |
 |  Mac OS           |    😞❌  | 
 |  Linux            |    😞❌  |
 |  └─ Ubuntu        |    😞❌  |

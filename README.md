@@ -25,15 +25,19 @@ Here is what you need to know
 ___
 
 
-## Version 2.5
+## Version 2.7
 
-## The Bugfixs arrived
+## The Bugfixs arrived & New stuff
 
+* New stuff;
+	* Custom Libraries!
+		* Making libraries is now possible! documentation will be linked soon
 * Fixed ALL bugs with;
   * print();
   * input();
   * if statements
   * while statements (not fully tested)
+  * other Sh!t
 
 ## Documentation
 
@@ -44,22 +48,6 @@ ___
 ## Known Issues
 
 ### ***None, atleast of now :|***
-
-___
-
-## Fixed Bugs
-
-1) A bug found with variables where adding variables dont really well.. ADD well
-
-### **insert laugh track here 😁🤣😂**
-
-* This also happens with Substraction, Multiplication, Division, Modulo, and Equals operators
-
-```C#
-var myVar = 5;
-myVar = myVar + 2;
-print(myVar);
-```
 
 ___
 
