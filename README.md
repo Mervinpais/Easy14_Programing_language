@@ -30,7 +30,7 @@ ___
 ## The Bugfixs arrived & New stuff
 
 * New stuff;
-	*Custom Libraries!
+	* Custom Libraries!
 		* Making libraries is now possible! documentation will be linked soon
 * Fixed ALL bugs with;
   * print();
