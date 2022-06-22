@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class FileSystem_ReadAllLines
     {
@@ -30,7 +30,7 @@ namespace Easy14_Coding_Language
                 else {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to the ReadAllLines function.");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     return null;
                 }
 

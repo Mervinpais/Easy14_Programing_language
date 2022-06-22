@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class Math_Subtract
     {

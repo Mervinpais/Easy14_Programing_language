@@ -4,7 +4,7 @@ using System.Net;
 using System.Diagnostics;
 using System.IO;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class updateChecker
     {
@@ -27,7 +27,7 @@ namespace Easy14_Coding_Language
             try
             {
                 /* It's getting the current version of the language, and saving it to a variable. */
-                string[] currentVerFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\currentVersion.txt");
+                string[] currentVerFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\currentVersion.txt");
                 currentVer = Convert.ToDouble(currentVerFile[1]);
 
                 /* It's saving the current version to a cache file, so if the currentVersion.txt file
@@ -98,7 +98,7 @@ namespace Easy14_Coding_Language
                     };
                     Console.WriteLine(string.Join(Environment.NewLine, updateText));
                     Console.BackgroundColor = ConsoleColor.Black;
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                 }
             }
             catch

@@ -1,9 +1,7 @@
 using Console;
 using FileSystem;
 
-var wow = 4 + 5;
-print(wow);
-wow = wow + 5;
-//the bug above is gonna make the whole program stop
-//the fix for this is gona be a really bad bop?
-print(wow);
+//Tests (For latest Features)
+
+print(cl"Line1");
+print(cl"Line2");

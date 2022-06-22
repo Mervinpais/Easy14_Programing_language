@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class TimeWait
     {

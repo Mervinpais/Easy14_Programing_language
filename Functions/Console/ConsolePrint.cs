@@ -2,14 +2,14 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class ConsolePrint
     {
         public void interperate(string code_part, string[] textArray = null, string fileloc = null, int lineNumber = -1)
         {
             string endOfStatementCode = ")";
-            string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\options.ini");
+            string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
             foreach (string line in configFile)
             {
                 if (line.StartsWith("needSemicolons"))
@@ -30,7 +30,7 @@ namespace Easy14_Coding_Language
                 else {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to print()");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     return;
                 }
                 
@@ -50,7 +50,7 @@ namespace Easy14_Coding_Language
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'print' without its reference  (Use Console.print(\"*Text To Print*\") to fix this error :)");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     return;
                 }
             }
@@ -79,19 +79,36 @@ namespace Easy14_Coding_Language
             bool isADouble2 = false;
             /*if (foundUsing == true)
             {*/
-            isAString = (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\""));
+            isAString = ((textToPrint.StartsWith("\"") || textToPrint.StartsWith("cl\"")) && textToPrint.EndsWith("\""));
             //Console.WriteLine(textToPrint.Length / 2);
-            var num1_toCheck = textToPrint.Substring(0, (textToPrint.Length /  2 + 1) - 1);
-            var num2_toCheck = textToPrint.Substring((textToPrint.Length / 2 - 1) + 2);
-            num1_toCheck = num1_toCheck.TrimEnd().TrimStart();
-            num2_toCheck = num2_toCheck.TrimEnd().TrimStart();
+            if (textToPrint == "")
+            {
+                /*Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error: No text was provided to print()");
+                Console.ResetColor();*/
+                Console.WriteLine("");
+                return;
+            }
 
-            isAnInt = int.TryParse(num1_toCheck, out textToPrint_int);
-            isAnInt2 = int.TryParse(num2_toCheck, out textToPrint_int);
+            string num1_toCheck = null;
+            string num2_toCheck = null;
+            try
+            {
+                num1_toCheck = textToPrint.Substring(0, (textToPrint.Length / 2 + 1) - 1);
+                num2_toCheck = textToPrint.Substring((textToPrint.Length / 2 - 1) + 2);
+                num1_toCheck = num1_toCheck.TrimEnd().TrimStart();
+                num2_toCheck = num2_toCheck.TrimEnd().TrimStart();
 
-            isADouble = double.TryParse(num1_toCheck, out textToPrint_double);
-            isADouble2 = double.TryParse(num2_toCheck, out textToPrint_double);
+                isAnInt = int.TryParse(num1_toCheck, out textToPrint_int);
+                isAnInt2 = int.TryParse(num2_toCheck, out textToPrint_int);
 
+                isADouble = double.TryParse(num1_toCheck, out textToPrint_double);
+                isADouble2 = double.TryParse(num2_toCheck, out textToPrint_double);
+            }
+            catch
+            {
+                
+            }
 
 
             if (textToPrint == "Time.Now")
@@ -125,7 +142,8 @@ namespace Easy14_Coding_Language
                     return;
                 }
                 string text = textToPrint;
-                text = text.Replace("random.range(", "").Replace(")", "");
+                text = text.Substring(13);
+                text = text.Substring(0, text.Length - 1);
                 int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
                 int number2 = Convert.ToInt32(text.Substring(text.IndexOf(",")).Replace(",", ""));
                 Random rnd = new Random();
@@ -479,13 +497,27 @@ namespace Easy14_Coding_Language
                 var result = comparer == comparee;
                 Console.WriteLine(result);
             }
-            else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\"") && isAString  && !isAnInt)
-            //example; print("Test");, we just detect if it contains Double Quotes " in the parameter
+            else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\"") && isAString && !isAnInt)
             {
                 Console.WriteLine(textToPrint.Substring(0, textToPrint.Length - 1).Substring(1));
             }
+            else if (textToPrint.StartsWith("cl\"") && textToPrint.EndsWith("\"") && isAString && !isAnInt)
+            //example; print(cl"Test");, we just detect if it contains Double Quotes " in the parameter
+            {
+                textToPrint = textToPrint.Substring(2).TrimStart();
+                Console.Write(textToPrint.Substring(0, textToPrint.Length - 1).Substring(1));
+            }
             else if (!isAString && !isAnInt)
             {
+                if (textToPrint.StartsWith("\"") && !textToPrint.EndsWith("\"") || !textToPrint.StartsWith("\"") && textToPrint.EndsWith("\""))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: Mismatching Double Quotes for printing a string");
+                    Console.WriteLine("     Error at line: " + lineNumber);
+                    Console.WriteLine("     The Line with Error: " + code_part_unedited);
+                    Console.ResetColor();
+                    return;
+                }
                 if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP"))
                 {
                     if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP").Length != 0)

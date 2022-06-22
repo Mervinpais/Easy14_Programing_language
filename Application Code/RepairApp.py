@@ -1,7 +1,9 @@
 #COPYRIGHT (C) Mervinpaismakeswindows14
 
 # Importing the modules needed for the program to run.
+import pprint
 import time
+import colorama
 import requests
 import zipfile
 import shutil
@@ -10,6 +12,8 @@ import os
 
 # Making a variable called wait that is equal to the time.sleep function.
 wait = time.sleep
+
+colorama.init()
 
 # Printing out the copyright, the current working directory, and a note.
 print("COPYRIGHT (C) Mervinpaismakeswindows14")
@@ -29,7 +33,12 @@ if a.lower() == "y":
     print("\nReady to repair...")
     wait(1)
     URL = "https://github.com/Mervinpais/Easy14_Programing_language/archive/refs/heads/Latest_version.zip"
-    response = requests.get(URL)
+    try:
+        response = requests.get(URL)
+    except :
+        print(colorama.Back.RED, "ERROR; Could not request update files!, Please check your Internet!")
+        input()
+        exit()
     open("RepairFiles_ZIP.zip", "wb").write(response.content)
     with zipfile.ZipFile("RepairFiles_ZIP.zip", 'r') as zip_ref:
         zip_ref.extractall("RepairFiles_Folder")
