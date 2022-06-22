@@ -1309,7 +1309,7 @@ namespace Easy14_Programming_Language
                             string theClassOfTheLine = line.Split(".")[0];
                             string theFunctionOfTheLine = line.Split(".")[1];
                             theFunctionOfTheLine = theFunctionOfTheLine.Replace("(", "").Replace(");", "");
-                            
+
                             //Older
                             /*Type type_ = Type.GetType(theFunctionOfTheLine);
                             MethodInfo method = type_.GetMethod("run");
