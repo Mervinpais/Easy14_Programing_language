@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "nm+NaBKZCP9OD3GmVuAbluUghWlrxKQaKPtypt4n4mg+wgf58vxhElG4vx1oVzq91l1nJ4IhayJAg+cnMBejjg==",
+  "dgSpecHash": "hxvqgAmg6uijuwfXZMGud7ncQ4DkLiE7BPHiwGhNyWG60Dn9XVXfCZbeihSSFlnHLKj3nfV6xbKP1KxnQ4bjKw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14_Programming_language.csproj",
+  "projectFilePath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14 Programming Language.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\mervi\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.3.3\\microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",
     "C:\\Users\\mervi\\.nuget\\packages\\microsoft.codeanalysis.common\\4.2.0\\microsoft.codeanalysis.common.4.2.0.nupkg.sha512",
@@ -11,7 +11,9 @@
     "C:\\Users\\mervi\\.nuget\\packages\\microsoft.codeanalysis.scripting.common\\4.2.0\\microsoft.codeanalysis.scripting.common.4.2.0.nupkg.sha512",
     "C:\\Users\\mervi\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\mervi\\.nuget\\packages\\sayers.sdl2.core\\1.0.11\\sayers.sdl2.core.1.0.11.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\system.codedom\\6.0.0\\system.codedom.6.0.0.nupkg.sha512",
     "C:\\Users\\mervi\\.nuget\\packages\\system.collections.immutable\\5.0.0\\system.collections.immutable.5.0.0.nupkg.sha512",
+    "C:\\Users\\mervi\\.nuget\\packages\\system.management\\6.0.0\\system.management.6.0.0.nupkg.sha512",
     "C:\\Users\\mervi\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
     "C:\\Users\\mervi\\.nuget\\packages\\system.reflection.metadata\\5.0.0\\system.reflection.metadata.5.0.0.nupkg.sha512",
     "C:\\Users\\mervi\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",

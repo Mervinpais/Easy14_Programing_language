@@ -1,0 +1,5 @@
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net6.0\Easy14 Coding Language.csproj.AssemblyReference.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net6.0\Easy14 Coding Language.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net6.0\Easy14 Coding Language.AssemblyInfoInputs.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net6.0\Easy14 Coding Language.AssemblyInfo.cs
+C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net6.0\Easy14 Coding Language.csproj.CoreCompileInputs.cache

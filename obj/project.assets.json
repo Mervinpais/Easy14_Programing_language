@@ -250,6 +250,18 @@
           "build/Sayers.SDL2.Core.targets": {}
         }
       },
+      "System.CodeDom/6.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/System.CodeDom.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/System.CodeDom.dll": {}
+        },
+        "build": {
+          "buildTransitive/netcoreapp3.1/_._": {}
+        }
+      },
       "System.Collections.Immutable/5.0.0": {
         "type": "package",
         "compile": {
@@ -257,6 +269,27 @@
         },
         "runtime": {
           "lib/netstandard2.0/System.Collections.Immutable.dll": {}
+        }
+      },
+      "System.Management/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.CodeDom": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/System.Management.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/System.Management.dll": {}
+        },
+        "build": {
+          "buildTransitive/netcoreapp3.1/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net6.0/System.Management.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
         }
       },
       "System.Memory/4.5.4": {
@@ -851,6 +884,29 @@
         "sayers.sdl2.core.nuspec"
       ]
     },
+    "System.CodeDom/6.0.0": {
+      "sha512": "CPc6tWO1LAer3IzfZufDBRL+UZQcj5uS207NHALQzP84Vp/z6wF0Aa0YZImOQY8iStY0A2zI/e3ihKNPfUm8XA==",
+      "type": "package",
+      "path": "system.codedom/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/netcoreapp2.0/System.CodeDom.targets",
+        "buildTransitive/netcoreapp3.1/_._",
+        "lib/net461/System.CodeDom.dll",
+        "lib/net461/System.CodeDom.xml",
+        "lib/net6.0/System.CodeDom.dll",
+        "lib/net6.0/System.CodeDom.xml",
+        "lib/netstandard2.0/System.CodeDom.dll",
+        "lib/netstandard2.0/System.CodeDom.xml",
+        "system.codedom.6.0.0.nupkg.sha512",
+        "system.codedom.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
     "System.Collections.Immutable/5.0.0": {
       "sha512": "FXkLXiK0sVVewcso0imKQoOxjoPAj42R8HtjjbSjVPAzwDfzoyoznWxgA3c38LDbN9SJux1xXoXYAhz98j7r2g==",
       "type": "package",
@@ -875,6 +931,34 @@
         "system.collections.immutable.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "System.Management/6.0.0": {
+      "sha512": "sHsESYMmPDhQuOC66h6AEOs/XowzKsbT9srMbX71TCXP58hkpn1BqBjdmKj1+DCA/WlBETX1K5WjQHwmV0Txrg==",
+      "type": "package",
+      "path": "system.management/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/netcoreapp2.0/System.Management.targets",
+        "buildTransitive/netcoreapp3.1/_._",
+        "lib/net461/_._",
+        "lib/net6.0/System.Management.dll",
+        "lib/net6.0/System.Management.xml",
+        "lib/netcoreapp3.1/System.Management.dll",
+        "lib/netcoreapp3.1/System.Management.xml",
+        "lib/netstandard2.0/System.Management.dll",
+        "lib/netstandard2.0/System.Management.xml",
+        "runtimes/win/lib/net6.0/System.Management.dll",
+        "runtimes/win/lib/net6.0/System.Management.xml",
+        "runtimes/win/lib/netcoreapp3.1/System.Management.dll",
+        "runtimes/win/lib/netcoreapp3.1/System.Management.xml",
+        "system.management.6.0.0.nupkg.sha512",
+        "system.management.nuspec",
+        "useSharedDesignerContext.txt"
       ]
     },
     "System.Memory/4.5.4": {
@@ -1029,8 +1113,10 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "Microsoft.CSharp >= 4.7.0",
+      "Microsoft.CodeAnalysis.CSharp >= 4.2.0",
       "Microsoft.CodeAnalysis.CSharp.Scripting >= 4.2.0",
-      "Sayers.SDL2.Core >= 1.0.11"
+      "Sayers.SDL2.Core >= 1.0.11",
+      "System.Management >= 6.0.0"
     ]
   },
   "packageFolders": {
@@ -1039,9 +1125,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14_Programming_language.csproj",
-      "projectName": "Easy14_Programming_language",
-      "projectPath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14_Programming_language.csproj",
+      "projectUniqueName": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14 Programming Language.csproj",
+      "projectName": "Easy14 Programming Language",
+      "projectPath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14 Programming Language.csproj",
       "packagesPath": "C:\\Users\\mervi\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\obj\\",
       "projectStyle": "PackageReference",
@@ -1076,6 +1162,10 @@
             "target": "Package",
             "version": "[4.7.0, )"
           },
+          "Microsoft.CodeAnalysis.CSharp": {
+            "target": "Package",
+            "version": "[4.2.0, )"
+          },
           "Microsoft.CodeAnalysis.CSharp.Scripting": {
             "target": "Package",
             "version": "[4.2.0, )"
@@ -1083,6 +1173,10 @@
           "Sayers.SDL2.Core": {
             "target": "Package",
             "version": "[1.0.11, )"
+          },
+          "System.Management": {
+            "target": "Package",
+            "version": "[6.0.0, )"
           }
         },
         "imports": [
