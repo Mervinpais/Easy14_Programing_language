@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
-using SDL2;
+﻿using SDL2;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +7,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Runtime;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 
 namespace Easy14_Programming_Language
 {
@@ -1293,31 +1294,21 @@ namespace Easy14_Programming_Language
                     else if (!string.IsNullOrEmpty(line) && !string.IsNullOrWhiteSpace(line) && line != "}" && line != "break" && line != "return" && !line.StartsWith("using") && !line.StartsWith("//"))
                     {
                         string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
-                        List<string> allNamespaces_list_fullPaths = new List<string>(allNamespacesAvaiable_array);
-                        List<string> allNamespaces_list = new List<string>();
-
-                        foreach (string item in allNamespaces_list_fullPaths)
+                        List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
+                        List<string> allNamespacesAvaiable_list_main = new List<string>();
+                        foreach (string item in allNamespacesAvaiable_list)
                         {
-                            allNamespaces_list.Add(item.Substring(item.LastIndexOf("\\") + 1));
+                            allNamespacesAvaiable_list_main.Add(item.Substring(item.LastIndexOf("\\") + 1));
                         }
-
-                        allNamespacesAvaiable_array = allNamespaces_list.ToArray();
+                        allNamespacesAvaiable_array = allNamespacesAvaiable_list_main.ToArray();
                         string theNamespaceOfTheLine = line.Split(".")[0];
-                        
                         if (allNamespacesAvaiable_array.Contains(theNamespaceOfTheLine))
                         {
                             int index = Array.IndexOf(allNamespacesAvaiable_array, theNamespaceOfTheLine);
                             string theClassOfTheLine = line.Split(".")[0];
                             string theFunctionOfTheLine = line.Split(".")[1];
-                            string params_str = line.Replace($"{theNamespaceOfTheLine}.{theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("))}(", "");
-                            params_str = params_str.Substring(0, params_str.Length - 2);
-                            string[] params_ = { };
-
-                            try { params_ = params_str.Split(","); }
-                            catch { /* Now we know this is a method without parameters */}
-                            string theFunctionOfTheLine_params = theFunctionOfTheLine;
-                            theFunctionOfTheLine = theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("));
-
+                            theFunctionOfTheLine = theFunctionOfTheLine.Replace("(", "").Replace(");", "");
+                            
                             //Older
                             /*Type type_ = Type.GetType(theFunctionOfTheLine);
                             MethodInfo method = type_.GetMethod("run");
@@ -1325,37 +1316,14 @@ namespace Easy14_Programming_Language
 
                             //Old
                             //Activator.CreateInstance(Convert.ToString(Assembly.GetExecutingAssembly()), Convert.ToString(Type.GetType(theFunctionOfTheLine)));                            
-                            
+
                             string[] code =
                             {
                                 $"Easy14_Programming_Language.{theFunctionOfTheLine} myfunc = new Easy14_Programming_Language.{theFunctionOfTheLine}();",
-                                $"myfunc.interperate({string.Join(",", params_)});"
+                                "myfunc.interperate();"
                             };
                             myFunc myfunc = new myFunc();
-                            try
-                            {
-                                CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
-                            }
-                            catch (Exception e)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("\nFUNCTION EXCEPTION ERROR\n---------------------------------------");
-                                switch (e.HResult)
-                                {
-                                    case -2146233088:
-                                        Console.WriteLine("You gave an incorrect parameter! Check Below");
-                                        Console.WriteLine("---------------------------------------");
-                                        Console.WriteLine("The parameters you gave were:");
-                                        foreach (var item in params_)
-                                        {
-                                            Console.WriteLine(item);
-                                        }
-                                        Console.WriteLine("---------------------------------------");
-                                        Console.WriteLine(e.Message);
-                                        break;
-                                }
-                                Console.ResetColor();
-                            }
+                            CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
                             return;
                         }
                         Console.ForegroundColor = ConsoleColor.Red;

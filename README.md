@@ -1,5 +1,5 @@
 # Easy14_Programing_language
-
+(WARNING, THIS IS A CORRUPT VERSION,DO NOT USE THIS!!!
 ___
 
 ![Easy14 Repository Thumbnail](Images/repo%20github%20thumnail.png)
@@ -30,7 +30,7 @@ ___
 ## The Bugfixs arrived & New stuff
 
 * New stuff;
-	* Custom Libraries!
+	*Custom Libraries!
 		* Making libraries is now possible! documentation will be linked soon
 * Fixed ALL bugs with;
   * print();
