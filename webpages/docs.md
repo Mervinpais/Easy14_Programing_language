@@ -14,6 +14,9 @@
       <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/basicFunctions.html">Basic Functions</a>
    </li>
    <li>
+      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/console.html">Console</a>
+   </li>
+   <li>
       <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/variables.html">Variables</a>
    </li>   
    <li>
@@ -39,6 +42,6 @@
       <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/files.html">Files</a>
    </li>
    <li>
-      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/console.html">Console</a>
+      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/customLibraries.html">Custom Libaraies</a>
    </li>
 </body>
