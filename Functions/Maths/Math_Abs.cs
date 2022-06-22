@@ -1,8 +1,15 @@
 using System;
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class Math_Abs
     {
+        /// <summary>
+        /// This function takes in a string of code, a line number, and a file name, and returns a
+        /// double
+        /// </summary>
+        /// <param name="code_part">The code to be interperated.</param>
+        /// <param name="lineNumber">The line number of the code that is being interperated.</param>
+        /// <param name="fileName">The name of the file that the code is in.</param>
         public double interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;
@@ -19,7 +26,8 @@ namespace Easy14_Coding_Language
             expression = expression.Replace("=", "");
             //Console.WriteLine(expression);
             int theNumber = Convert.ToInt32(expression.Replace("abs(", "").Replace(")", ""));
-            //Console.WriteLine(theNumber);
+            
+            /* Taking the absolute value of the number. */
             var result = Math.Abs(theNumber);
             return result;
         }

@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class FileSystem_ReadFile
     {
@@ -19,6 +19,13 @@ namespace Easy14_Coding_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
+                else {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to the ReadFile function.");
+                    Console.ResetColor();
+                    return;
+                }
+
                 foreach (string x in someLINEs)
                 {
                     if (x.StartsWith("using"))

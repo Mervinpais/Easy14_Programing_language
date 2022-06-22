@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Net.NetworkInformation;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class NetworkPing
     {

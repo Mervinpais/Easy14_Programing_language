@@ -2,19 +2,21 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class ConsoleExec
     {
-        private string endOfStatementCode_;
-        public string endOfStatementCode
-        {
-            get { return endOfStatementCode_; }
-            set { endOfStatementCode_ = value; }
-        }
-
         public void interperate(string code_part, string[] textArray, string fileloc, int lineNumber = -1)
         {
+            string endOfStatementCode = ")";
+            string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
+            foreach (string line in configFile)
+            {
+                if (line.StartsWith("needSemicolons"))
+                    endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ");" : endOfStatementCode = ")");
+                break;
+            }
+
             string code_part_unedited;
             string textToPrint;
 
@@ -26,6 +28,12 @@ namespace Easy14_Coding_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
+                else {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to exec()");
+                    Console.ResetColor();
+                    return;
+                }
                 foreach (string x in someLINEs)
                 {
                     if (x.TrimStart().TrimEnd() == "using Console;")
@@ -42,7 +50,7 @@ namespace Easy14_Coding_Language
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'exec' without its reference  (Use Console.exec(\"*Text To Execute*\") to fix this error :)");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     return;
                 }
             }
@@ -139,11 +147,16 @@ namespace Easy14_Coding_Language
             }
             else
             {
-                ThrowErrorMessage tErM = new ThrowErrorMessage();
-                string unknownLine = "<unknownLineNumber>";
-                var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
-                string[] errorText = {" Your syntax/parameters were incorrect!", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n"};
-                tErM.sendErrMessage(null, errorText, "error");
+                try {
+
+                }
+                catch {
+                    ThrowErrorMessage tErM = new ThrowErrorMessage();
+                    string unknownLine = "<unknownLineNumber>";
+                    var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
+                    string[] errorText = {" An error occurred while executing commands from the exec command", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n"};
+                    tErM.sendErrMessage(null, errorText, "error");
+                }
             }
             //}
         }

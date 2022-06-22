@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class MethodCode
     {
@@ -21,29 +21,31 @@ namespace Easy14_Coding_Language
                 string[] _lines_ = lines;
                 int line_counterr = 1;
                 int end_line_IDX = 0;
-                List<string> while_lines_list = new List<string>(_lines_);
+
+                List<string> method_lines_list = new List<string>(_lines_);
+
                 foreach (string line__ in _lines_)
                 {
                     if (line__ == code_part)
                     {
-                        while_lines_list.RemoveRange(0, line_counterr - 1);
+                        method_lines_list.RemoveRange(0, line_counterr - 1);
                         break;
                     }
                     line_counterr++;
                 }
                 line_counterr = 0;
-                List<string> understuff = new List<string>(while_lines_list);
-                foreach (string line__ in while_lines_list)
+                List<string> understuff = new List<string>(method_lines_list);
+                foreach (string line__ in method_lines_list)
                 {
                     line_counterr++;
                     if (line__ == "}")
                     {
                         end_line_IDX = line_counterr;
-                        if (while_lines_list.Count != end_line_IDX)
+                        if (method_lines_list.Count != end_line_IDX)
                         {
                             try
                             {
-                                while_lines_list.RemoveRange(end_line_IDX, while_lines_list.Count - end_line_IDX);
+                                method_lines_list.RemoveRange(end_line_IDX, method_lines_list.Count - end_line_IDX);
                                 understuff.RemoveRange(0, end_line_IDX);
                             }
                             catch (Exception e)
@@ -68,9 +70,9 @@ namespace Easy14_Coding_Language
                     lin_count++;
                 }
 
-                string[] arr = while_lines_list.ToArray();
+                string[] arr = method_lines_list.ToArray();
                 
-                List<string> code_in_method_code = while_lines_list.GetRange(1, end_line_IDX - 1);
+                List<string> code_in_method_code = method_lines_list.GetRange(1, end_line_IDX - 1);
                 List<string> usings_code = someLINEs.GetRange(0, lin_count);
                 // This \/ is just something i added and it just fixes everything
                 List<string> usings_code_undercode = someLINEs.GetRange(0, lin_count);

@@ -1,44 +1,10 @@
 using System;
 using System.IO;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class FileSystem_DeleteFolder
     {
-        /*void DeleteFolder(string folderPath) {
-            try
-            {
-                if (Directory.GetFiles(folderPath).Length > 0)
-                {
-                    foreach (string File_ in Directory.GetFiles(folderPath))
-                    {
-                        File.Delete(File_);
-                    }
-
-                    foreach (string File_ in Directory.GetDirectories(folderPath))
-                    {
-                        int lengthOfDirInDir = Directory.GetDirectories(File_).Length;
-                        if (lengthOfDirInDir < -1)
-                        {
-                            Directory.Delete(File_);
-                        }
-                        else if (lengthOfDirInDir > -1)
-                        {
-                            DeleteFolder(File_);
-                        }
-                    }
-                }
-                Directory.Delete(folderPath);
-            }
-            catch (DirectoryNotFoundException dirNotFoundEx)
-            {
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }*/
         public void interperate(string code_part, string fileloc, string[] textArray, int line_count)
         {
             string code_part_unedited;
@@ -53,6 +19,14 @@ namespace Easy14_Coding_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to the DeleteFolder function.");
+                    Console.ResetColor();
+                    return;
+                }
+
                 foreach (string x in someLINEs)
                 {
                     if (x.StartsWith("using"))
@@ -88,6 +62,7 @@ namespace Easy14_Coding_Language
             if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
             {
                 var contentInFile = textToPrint.Replace('"'.ToString(), "");
+                /* Checking if the folder exists and if it does it will delete it. */
                 if (Directory.Exists(contentInFile))
                 {
                     Directory.Delete(contentInFile, true);
@@ -97,25 +72,18 @@ namespace Easy14_Coding_Language
                     ExceptionSender ExSend = new ExceptionSender();
                     ExSend.SendException(0xF00002);
                 }
-                /*DeleteFolder(contentInFile);
+            }
+            /* Checking if there are any files in the folder `EASY14_Variables_TEMP` and if there are
+            it will get the variable and delete the folder at the location of the variable. */
+            else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP").Length != 0)
+            {
+                string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP");
                 try
                 {
-                    if (Directory.GetFiles(contentInFile).Length > 0)
-                    {
-                        foreach (string File_ in Directory.GetFiles(contentInFile))
-                        {
-                            try {
-                                if (Directory.GetFiles(File_).Length > -1)
-                                {
-                                    DeleteFolder(File_);
-                                }
-                            }
-                            catch {
-                                File.Delete(File_);
-                            }
-                        }
-                    }
-                    Directory.Delete(contentInFile);
+                    GetVariable getVariable = new GetVariable();
+                    string file = getVariable.findVar(textToPrint);
+                    var contentInFile = file;
+                    Directory.Delete(contentInFile, true);
                 }
                 catch (Exception e)
                 {
@@ -123,37 +91,6 @@ namespace Easy14_Coding_Language
                     Console.WriteLine("\nERROR; Can't Delete A Folder at the specified location");
                     Console.WriteLine("Extra Info is below;\n\n" + e);
                     Console.ForegroundColor = ConsoleColor.White;
-                }*/
-            }
-            else if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
-            {
-                string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
-                foreach (string file in files)
-                {
-                    if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint.Replace(".txt", ""))
-                    {
-                        try
-                        {
-                            var contentInFile = file;
-                            /*
-                            if (Directory.GetFiles(contentInFile).Length > 0)
-                            {
-                                foreach (string File_ in Directory.GetFiles(contentInFile))
-                                {
-                                    File.Delete(File_);
-                                }
-                            }*/
-                            Directory.Delete(contentInFile, true);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("\nERROR; Can't Delete A Folder at the specified location");
-                            Console.WriteLine("Extra Info is below;\n\n" + e);
-                            Console.ForegroundColor = ConsoleColor.White;
-                        }
-                        break;
-                    }
                 }
             }
         }

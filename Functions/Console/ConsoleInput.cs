@@ -2,19 +2,23 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class ConsoleInput
     {
-        private string endOfStatementCode_;
-        public string endOfStatementCode
-        {
-            get { return endOfStatementCode_; }
-            set { endOfStatementCode_ = value; }
-        }
         public void interperate(string code_part, string[] textArray, string fileloc, string varName, int lineNumber = -1)
         {
-            string code_part_unedited;
+            string endOfStatementCode = ")";
+            string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
+            foreach (string line in configFile)
+            {
+                if (line.StartsWith("needSemicolons")) {
+                    endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ");" : endOfStatementCode = ")");
+                }
+                break;
+            }
+
+            string code_part_unedited = code_part;
             string textToPrint;
             
             bool foundUsing = false;
@@ -23,6 +27,12 @@ namespace Easy14_Coding_Language
                 string[] someLines = null;
                 if (textArray == null && fileloc != null) someLines = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLines = textArray;
+                else {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to input()");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    return;
+                }
 
                 foreach (string x in someLines)
                 {
@@ -43,15 +53,16 @@ namespace Easy14_Coding_Language
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'input' without its reference  (Use Console.input(\"*Text*\") to fix this error :)");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     return;
                 }
             }
             else if (code_part.StartsWith($"Console.input(")) { }
 
-            code_part_unedited = code_part;
             if (code_part.IndexOf("=") > 0)
+            {
                 code_part = code_part.Substring(code_part.IndexOf("="));
+            }
             code_part = code_part_unedited.TrimStart();
             code_part = code_part.TrimStart();
             if (code_part.StartsWith("Console."))

@@ -1,10 +1,16 @@
 using System;
 using System.IO;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class Math_Add
     {
+        /// <summary>
+        /// A function that takes in a string and an int and returns an int.
+        /// </summary>
+        /// <param name="code_part">The code to be interperated</param>
+        /// <param name="lineNumber">The line number of the code_part</param>
+        /// <param name="fileName">The name of the file that the code is in.</param>
         public int interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;
@@ -13,6 +19,9 @@ namespace Easy14_Coding_Language
             code_part = code_part_unedited.TrimStart();
 
             string expression = code_part;
+
+            /* Checking if the expression is null and if it doesn't contain a +, if it is null or
+            doesn't contain a + it will return an error. */
             if (expression is null && !expression.Contains("+")) {
                 Console.WriteLine("ERROR; Can't Add, please check your code and fix the error");
                 return 0;
@@ -29,46 +38,28 @@ namespace Easy14_Coding_Language
                 string integer1_str = null;
                 string integer2_str = null;
 
-                if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP").Length != 0)
-                {
-                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP");
-                    foreach (string file in files)
-                    {
-                        string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
-                        if (_file == intergers[0])
-                        {
-                            integer1_str = File.ReadAllText(file);
-                            //Console.WriteLine(contentInFile.ToString());
-                            break;
-                        }
-                    }
-                    foreach (string file in files)
-                    {
-                        string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
-                        if (_file == intergers[1])
-                        {
-                            integer2_str = File.ReadAllText(file);
-                            //Console.WriteLine(contentInFile.ToString());
-                            break;
-                        }
-                    }
-                }
+                GetVariable getVar = new GetVariable();
+                integer1_str = getVar.findVar(intergers[0]);
+                integer2_str = getVar.findVar(intergers[1]);
 
-                if (integer1_str == null)
+                if (integer1_str == "0xF000001")
                     integer1 = Convert.ToInt32(intergers[0]);
-                if (integer2_str == null)
+                if (integer2_str == "0xF000001")
                     integer2 = Convert.ToInt32(intergers[1]);
                 
                 //Seperatated Sections
 
-                if (integer1_str == null && integer2_str == null)
+                /* Checking if the 2 integers are variables or not, if they are variables it will get
+                the value of the variable and add them together, if they are not variables it will
+                add them together. */
+                if (integer1_str != "0xF000001" && integer2_str == "0xF000001")
+                    result = Convert.ToInt32(integer1_str) + Convert.ToInt32(integer2);
+                else if (integer1_str == "0xF000001" && integer2_str != "0xF000001")
+                    result = Convert.ToInt32(integer1) + Convert.ToInt32(integer2_str);
+                else if (integer1_str == "0xF000001" && integer2_str == "0xF000001")
                     result = Convert.ToInt32(integer1) + Convert.ToInt32(integer2);
                 else if (integer1_str != null && integer2_str != null)
                     result = Convert.ToInt32(integer1_str) + Convert.ToInt32(integer2_str);
-                else if (integer1_str == null && integer2_str != null)
-                    result = Convert.ToInt32(integer1) + Convert.ToInt32(integer2_str);
-                else if (integer1_str != null && integer2_str == null)
-                    result = Convert.ToInt32(integer1_str) + Convert.ToInt32(integer2);
             }
             catch
             {
@@ -76,9 +67,11 @@ namespace Easy14_Coding_Language
                 //Console.WriteLine(sum);
                 return 0;
             }
-            //Console.WriteLine(sum);
+            
+            /* Checking if the fileName is not null, if it is not null it will write the result to a
+            file, if it is null it will return the result. */
             if (fileName is not null) {
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{fileName}.txt", result.ToString());
+                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{fileName}.txt", result.ToString());
             }
             else if (fileName is null) {
                 //Console.WriteLine(result);

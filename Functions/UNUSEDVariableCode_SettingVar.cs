@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class UNUSED_VariableCode_SettingVar
     {

@@ -1,8 +1,15 @@
 using System;
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
     class Math_SquareRoot
     {
+        /// <summary>
+        /// This function takes in a string of code, a line number, and a file name, and returns a
+        /// double
+        /// </summary>
+        /// <param name="code_part">The code to be interperated.</param>
+        /// <param name="lineNumber">The line number of the code that is being interperated.</param>
+        /// <param name="fileName">The name of the file that the code is in.</param>
         public double interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;
@@ -20,6 +27,8 @@ namespace Easy14_Coding_Language
             //Console.WriteLine(expression);
             int theNumber = Convert.ToInt32(expression.Replace("sqrt(", "").Replace(")", ""));
             //Console.WriteLine(theNumber);
+            
+            /* Taking the number that the user inputted and then it is taking the square root of it. */
             var result = Math.Sqrt(theNumber);
             return result;
         }

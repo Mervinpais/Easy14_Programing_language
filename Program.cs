@@ -1,19 +1,30 @@
-﻿using System;
+﻿using SDL2;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Management;
-using System.Threading;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Runtime;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 
-namespace Easy14_Coding_Language
+namespace Easy14_Programming_Language
 {
-    class Program
+    public class Program
     {
         public static bool showCommands = false;
         public static bool previewTheFile = false;
-        static string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Application Code\\options.ini");
+
+        //code from https://iq.direct/blog/51-how-to-get-the-current-executable-s-path-in-csharp.html :)
+        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+
+        //static string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
+        static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
+
         static void Main(string[] args)
         {
             if (args.Length != 0)
@@ -32,39 +43,38 @@ namespace Easy14_Coding_Language
             else
                 Console.WriteLine("\n==== Easy14 Console ====\n");
             //============================================================\\
-            //There is a bug where if i entered a random statement and there was the var temp folder, it would think there was a variable and try checking it, then it just continues so we need to delete the variable temp folder, it like initializing variables except we just delete the leftover variables from the last session
+
+            /* Deleting the temporary folder that was created in the previous step. */
             if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
             {
-                foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
-                {
-                    try
-                    {
-                        File.Delete(file);
-                    }
-                    catch
-                    {
-                        foreach (string file2 in Directory.GetFiles(file))
-                        {
-                            File.Delete(file2);
-                        }
-                        Directory.Delete(file);
-                    }
-                }
-                Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP");
+                Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP", true);
             }
 
             //==================The Update Checker====================\\
 
+            /* Checking if the user has disabled updates in the config file. If they have not, it will
+            check for updates. */
+
             bool UpdatesDisabled = false;
             bool UpdatesWarningsDisabled = false;
-            foreach (string line in configFile)
+            foreach (string item in configFile)
             {
-                if (line.StartsWith("UpdatesDisabled"))
-                    UpdatesDisabled.Equals(line.EndsWith("true") ? UpdatesDisabled = true : UpdatesDisabled = false);
-
-                if (line.StartsWith("UpdateErrorWarningsDisabled"))
-                    UpdatesWarningsDisabled.Equals(line.EndsWith("true") ? UpdatesWarningsDisabled = true : UpdatesWarningsDisabled = false);
+                if (item.StartsWith("UpdatesDisabled"))
+                {
+                    if (item.EndsWith("true"))
+                    {
+                        UpdatesDisabled = true;
+                    }
+                }
+                if (item.StartsWith("UpdatesWarningsDisabled"))
+                {
+                    if (item.EndsWith("true"))
+                    {
+                        UpdatesWarningsDisabled = true;
+                    }
+                }
             }
+
             if (!UpdatesDisabled)
             {
                 updateChecker uc = new updateChecker();
@@ -72,6 +82,8 @@ namespace Easy14_Coding_Language
             }
 
             //=========================================================\\
+
+            /* Reading the config file and getting the delay value. */
             foreach (string line in configFile)
             {
                 if (line.StartsWith("delay"))
@@ -82,6 +94,8 @@ namespace Easy14_Coding_Language
                 }
             }
 
+            /* The below code is the code that runs when the app is ran, it checks for arguments
+            and runs the code accordingly */
             if (args.Length != 0)
             {
                 if (args[0] == "-run" || args[0] == "/run")
@@ -91,7 +105,7 @@ namespace Easy14_Coding_Language
                     foreach (var item in args)
                     {
                         if (item.EndsWith(".e14") || item.EndsWith(".ese14"))
-                        { //Still deciding on a file extention :/
+                        {
                             filePath = args[1..itemCount];
                         }
                         itemCount = itemCount + 1;
@@ -116,7 +130,6 @@ namespace Easy14_Coding_Language
                                 previewTheFile = true;
                             }
                         }
-
                         if (!previewTheFile)
                         {
                             compileCode(String.Join(" ", filePath));
@@ -142,12 +155,12 @@ namespace Easy14_Coding_Language
                 if (args[0] == "-help" || args[0] == "/help")
                 {
                     Console.WriteLine("Hello! Welcome to the help section of Easy14!");
-                    Console.WriteLine("\n   -help | /help = Show the list of arguments you can run with the Easy14 Language");
-                    Console.WriteLine("\n   -run | /run = Runs an easy14 file, the file extention must be .ese14 (ex; *easy14 app path* run *file.s14c*)");
+                    Console.WriteLine("\n   -help || /help = Show the list of arguments you can run with the Easy14 Language");
+                    Console.WriteLine("\n   -run || /run = Runs an easy14 file, the file extention must be .ese14 (ex; *easy14 app path* run *file.s14c*)");
                     Console.WriteLine("    |");
-                    Console.WriteLine("     -show_cmds | /show_cmds = shows what command runs while running a file");
-                    Console.WriteLine("\n   -keywords | /keywords = Shows all keywords that are statements in Easy14");
-                    Console.WriteLine("\n   -intro | /intro = Introduction/Tutorial of Easy14");
+                    Console.WriteLine("     -show_cmds || /show_cmds = shows what command runs while running a file");
+                    Console.WriteLine("\n   -keywords || /keywords = Shows all keywords that are statements in Easy14");
+                    Console.WriteLine("\n   -intro || /intro = Introduction/Tutorial of Easy14");
                     Console.WriteLine("\n");
                     Console.WriteLine("     |More Commands Comming Soon|");
                 }
@@ -180,26 +193,64 @@ namespace Easy14_Coding_Language
                 {
                     Console.Write("\n>>>");
                     string command = Console.ReadLine();
+
                     if (command.ToLower() == "exit()" || command.ToLower() == "exit();")
                     {
+                        /* Deleting the temporary folder that was created in the previous step. */
+                        Console.WriteLine("\n Clearing Variables... \n");
+                        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
+                        {
+                            Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP", true);
+                        }
+                        Console.WriteLine("\n Resetting Terminal Colors... \n");
+                        Console.ResetColor();
+                        Thread.Sleep(75);
+                        Console.WriteLine("\n Exiting Easy14 Interactive... \n");
                         return;
                     }
                     else if (command.ToLower() == "exit")
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("\nPlease use \"exit()\" or \"exit();\" or Ctrl+C to close the interative console");
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ResetColor();
                         continue;
+                    }
+                    if (command.StartsWith("send_exception("))
+                    {
+                        foreach (string line in configFile)
+                        {
+                            if (line.StartsWith("turnOnDeveloperOptions"))
+                            {
+                                if (line.EndsWith("true"))
+                                {
+                                    string exceptionToSend_str = command.Replace("send_exception(", "");
+                                    exceptionToSend_str = exceptionToSend_str.Substring(0, exceptionToSend_str.Length - 1);
+                                    int exceptionToSend_int = Convert.ToInt32(exceptionToSend_str, 16);
+                                    ExceptionSender es = new ExceptionSender();
+                                    es.SendException(exceptionToSend_int);
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("\nDev mode has not been turned on!\n");
+                                }
+                            }
+                        }
+                    }
+                    else if (command.ToLower().StartsWith("/run") || command.ToLower().StartsWith("-run"))
+                    {
+                        Program prog = new Program();
+                        prog.compileCode_fromOtherFiles(command.Replace("/run", "").Replace("-run", "").TrimStart());
                     }
                     else if (command.ToLower() == "/help" || command.ToLower() == "-help")
                     {
                         Console.WriteLine("Hello! Welcome to the help section of Easy14!");
-                        Console.WriteLine("\n   -help | /help = Show the list of arguments you can run with the Easy14 Language");
-                        Console.WriteLine("\n   -run | /run = Runs an easy14 file, the file extention must be .ese14 (ex; *easy14 app path* run *file.s14c*)");
+                        Console.WriteLine("\n   -help || /help = Show the list of arguments you can run with the Easy14 Language");
+                        Console.WriteLine("\n   -run || /run = Runs an easy14 file, the file extention must be .ese14 (ex; *easy14 app path* run *file.s14c*)");
                         Console.WriteLine("    |");
-                        Console.WriteLine("     -show_cmds | /show_cmds = shows what command runs while running a file");
-                        Console.WriteLine("\n   -keywords | /keywords = Shows all keywords that are statements in Easy14");
-                        Console.WriteLine("\n   -intro | /intro = Introduction/Tutorial of Easy14");
+                        Console.WriteLine("     -show_cmds || /show_cmds = shows what command runs while running a file");
+                        Console.WriteLine("\n   -keywords || /keywords = Shows all keywords that are statements in Easy14");
+                        Console.WriteLine("\n   -intro || /intro = Introduction/Tutorial of Easy14");
                         Console.WriteLine("\n");
                         Console.WriteLine("     |More Commands Comming Soon|");
                     }
@@ -225,14 +276,14 @@ namespace Easy14_Coding_Language
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("ERROR; Easy14 Interactive Cannot run multiline code \n");
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ResetColor();
                         continue;
                     }
                     else
                     {
                         if (!command.StartsWith("-") && !command.StartsWith("/"))
                         {
-                            string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Functions");
+                            string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
                             List<string> allNamespacesAvaiable_list = new List<string>();
                             foreach (string namespace_ in allNamespacesAvaiable_array)
                             {
@@ -255,14 +306,35 @@ namespace Easy14_Coding_Language
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("ERROR; Easy14 Interactive can't understand what the args you specified \n");
-                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.ResetColor();
                             continue;
                         }
                     }
                 }
             }
-            Thread.Sleep(500);
+
+            //Thread.Sleep(500);
             Console.WriteLine("\n===== Easy14 Interactive Console =====\n");
+            foreach (string line in configFile)
+            {
+                if (line.StartsWith("turnOnDeveloperOptions"))
+                {
+                    if (line.EndsWith("true"))
+                    {
+                        Console.WriteLine("\nDeveloper Options Enabled\n");
+                        Console.WriteLine("\n========================\n\n");
+                        Console.WriteLine("\nIf you want to turn off developer options, type 'turnOffDeveloperOptions', and press enter.\n");
+                        Console.WriteLine($"Current Buffer Height; {Console.BufferHeight}");
+                        Console.WriteLine($"Current Buffer Width; {Console.BufferWidth}");
+                        Console.WriteLine($"Capslock Status; {Console.CapsLock}");
+                        Console.WriteLine($"Foreground Color; {Console.ForegroundColor}");
+                        Console.WriteLine($"Background Color; {Console.BackgroundColor}");
+                        Console.WriteLine($"Current Window title; {Console.Title}");
+                        Console.WriteLine("\n========================\n\n");
+                    }
+                    break;
+                }
+            }
             while (true)
             {
                 Console.Write("\n>>>");
@@ -275,8 +347,13 @@ namespace Easy14_Coding_Language
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("\nPlease use \"exit()\" or \"exit();\" or Ctrl+C to close the interative console");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     continue;
+                }
+                else if (command.ToLower().StartsWith("/run") || command.ToLower().StartsWith("-run"))
+                {
+                    Program prog = new Program();
+                    prog.compileCode_fromOtherFiles(command.Replace("/run", "").Replace("-run", "").TrimStart());
                 }
                 else if (command.ToLower() == "/help" || command.ToLower() == "-help")
                 {
@@ -290,6 +367,11 @@ namespace Easy14_Coding_Language
                     Console.WriteLine("\n");
                     Console.WriteLine("     |More Commands Comming Soon|");
                 }
+
+                /// <summary>
+                /// It prints out the keywords of the language.
+                /// </summary>
+                /// <param name="keywords">Prints out the keywords of the language.</param>
                 else if (command.ToLower() == "/keywords" || command.ToLower() == "-keywords")
                 {
                     Console.WriteLine("\n===== KEYWORDS =====");
@@ -298,28 +380,45 @@ namespace Easy14_Coding_Language
                     Console.WriteLine("\n   ================");
                     Console.WriteLine("\n====================");
                 }
+                /// <summary>
+                /// It's a function that checks if the user has typed in the command "/intro" or
+                /// "-intro" and if they have, it will run the IntroductionCode class
+                /// </summary>
+                /// <param name="intro">This is the command that the user will type in to run the
+                /// code.</param>
                 else if (command.ToLower() == "/intro" || command.ToLower() == "-intro")
                 {
                     IntroductionCode introCode = new IntroductionCode();
                     introCode.IntroCode();
                 }
+                /// <summary>
+                /// It's a function that shows the information about the application.
+                /// </summary>
+                /// <param name="appinfo">Shows the application information</param>
                 else if (command.ToLower() == "/appinfo" || command.ToLower() == "-appinfo")
                 {
                     AppInformation appInfo = new AppInformation();
                     appInfo.ShowInfo();
                 }
-                else if (command.Contains("\n")) //This is impossible since pasting a multiline will just paste one lines, then will automatically hit enter and continue on
+
+                /// <summary>
+                /// If the command is a single line, then it will run it. If it's a multiline, then it
+                /// will not run it
+                /// </summary>
+                else if (command.Contains("\n"))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("ERROR; Easy14 Interactive Cannot run multiline code \n");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     continue;
                 }
                 else
                 {
                     if (!command.StartsWith("-") && !command.StartsWith("/"))
                     {
-                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Functions");
+                        /* Getting all the namespaces in the Functions folder and adding them to a
+                        list. */
+                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
                         List<string> allNamespacesAvaiable_list = new List<string>();
                         foreach (string namespace_ in allNamespacesAvaiable_array)
                         {
@@ -342,7 +441,7 @@ namespace Easy14_Coding_Language
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("ERROR; Easy14 Interactive can't understand what the args you specified \n");
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ResetColor();
                         continue;
                     }
                 }
@@ -365,6 +464,14 @@ namespace Easy14_Coding_Language
             Environment.Exit(-1);*/
         }
 
+        /// <summary>
+        /// This function is used to compile code from other files
+        /// </summary>
+        /// <param name="fileLoc">The location of the file that is being compiled.</param>
+        /// <param name="textArray">The array of strings that contains the code.</param>
+        /// <param name="lineIDX">The line number of the code that is being compiled.</param>
+        /// <param name="isInAMethod">If the code is in a method, this will be true.</param>
+        /// <param name="methodName">The name of the method that is being called.</param>
         public void compileCode_fromOtherFiles(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
             compileCode(fileLoc, textArray, lineIDX, isInAMethod, methodName);
@@ -376,33 +483,78 @@ namespace Easy14_Coding_Language
             /*
                 SETUP
             */
+
+            /* Reading the Options.ini file and setting the variables based on the Options.ini file. */
+
             /* Options.ini vars code */
             string endOfStatementCode = ");";
             bool disableLibraries = false;
             int windowHeight = Console.WindowHeight;
             int windowWidth = Console.WindowWidth;
             string windowState = "normal";
+            string windowTitle = "Easy14 Interactive";
 
             foreach (string line in configFile)
             {
                 if (line.StartsWith("needSemicolons"))
-                    if (line.EndsWith("true")) endOfStatementCode = ");";
-                    else endOfStatementCode = ")";
+                {
+                    if (line.EndsWith("true"))
+                    {
+                        endOfStatementCode = ");";
+                    }
+                    else
+                    {
+                        endOfStatementCode = ")";
+                    }
+                }
                 if (line.StartsWith("disableLibraries"))
-                    if (line.EndsWith("true")) disableLibraries = true;
-                    else disableLibraries = false;
+                {
+                    if (line.EndsWith("true"))
+                    {
+                        disableLibraries = true;
+                    }
+                    else
+                    {
+                        disableLibraries = false;
+                    }
+                }
                 if (line.StartsWith("windowHeight"))
+                {
                     if (!line.EndsWith("false"))
+                    {
                         windowHeight = Convert.ToInt32(line.Replace("windowHeight = ", ""));
+                    }
+                }
                 if (line.StartsWith("windowWidth"))
+                {
                     if (!line.EndsWith("false"))
+                    {
                         windowWidth = Convert.ToInt32(line.Replace("windowWidth = ", ""));
+                    }
+                }
                 if (line.StartsWith("windowState"))
-                    if (line.EndsWith("max")) windowState = "maximized";
-                    else if (line.EndsWith("min")) windowState = "minimized";
-                    else if (line.EndsWith("hide")) windowState = "hidden";
-                    else if (line.EndsWith("normal")) windowState = "normal";
-                    else windowState = "normal";
+                {
+                    if (line.EndsWith("max"))
+                    {
+                        windowState = "maximized";
+                    }
+                    else if (line.EndsWith("min"))
+                    {
+                        windowState = "minimized";
+                    }
+                    else if (line.EndsWith("hide"))
+                    {
+                        windowState = "hidden";
+                    }
+                    else if (line.EndsWith("normal"))
+                    {
+                        windowState = "normal";
+                    }
+                    else
+                    {
+                        windowState = "normal";
+                    }
+                }
                 if (line.StartsWith("showOptionsINI_DataWhenE14_Loads"))
                 {
                     if (line.EndsWith("true"))
@@ -421,10 +573,15 @@ namespace Easy14_Coding_Language
                         Console.WriteLine("\n========================\n\n");
                     }
                 }
+
             }
 
             //========== Only thing using System.Runtime.InteropServices =========//
 
+            /// <summary>
+            /// It's a function that takes a string as an argument and then changes the state of the
+            /// console window to either maximized, minimized, hidden, or restored
+            /// </summary>
             [DllImport("kernel32.dll", ExactSpelling = true)]
 
             static extern IntPtr GetConsoleWindow();
@@ -439,14 +596,26 @@ namespace Easy14_Coding_Language
             const int RESTORE = 9;
 
             if (windowState == "maximized")
+            {
                 ShowWindow(ThisConsole, MAXIMIZE);
-            if (windowState == "minimized")
+            }
+            else if (windowState == "minimized")
+            {
                 ShowWindow(ThisConsole, MINIMIZE);
-            if (windowState == "hidden")
+            }
+            else if (windowState == "hidden")
+            {
                 ShowWindow(ThisConsole, HIDE);
-            if (windowState == "restore")
+            }
+            else if (windowState == "restore")
+            {
                 ShowWindow(ThisConsole, RESTORE);
+            }
             // ============================================================ //
+
+            /* Checking if the console window height is not equal to the windowHeight variable. If it
+            is not equal, it will try to set the console window height to the windowHeight variable.
+            If it can't, it will throw an error message. */
             if (Console.WindowHeight != windowHeight)
             {
                 try
@@ -462,6 +631,9 @@ namespace Easy14_Coding_Language
                 }
             }
 
+            /* Checking if the console window width is not equal to the window width specified in the
+            options.ini file. If it is not, it will try to set the console window width to the value
+            specified in the options.ini file. If it can't, it will throw an error message. */
             if (Console.WindowWidth != windowWidth)
             {
                 try
@@ -475,9 +647,11 @@ namespace Easy14_Coding_Language
                     tErM.sendErrMessage("Couldn't Change Window Width using the value in options.ini, using Default window width", null, "warning");
                 }
             }
-            /*
-            */
 
+            /*
+
+            /* Checking the free memory of the system and if it is less than 25 MB it will send an
+            exception to the user.
             ObjectQuery wql = null;
             ManagementObjectSearcher searcher = null;
             ManagementObjectCollection results = null;
@@ -491,10 +665,11 @@ namespace Easy14_Coding_Language
                 {
                     int freeMemory = Convert.ToInt32(result["FreePhysicalMemory"]) / 1024;
                     //Console.WriteLine("Free Memory {0} MB", freeMemory);
-                    if (freeMemory < 25)
+                    if (freeMemory < 10)
                     {
                         ExceptionSender ex_sender = new ExceptionSender();
-                        ex_sender.SendException(0x0003);
+                        //ex_sender.SendException(0x0003); Wrong/Unavaliable Exception Code
+                        ex_sender.SendException(0x0000A1);
                     }
                 }
             }
@@ -503,6 +678,7 @@ namespace Easy14_Coding_Language
                 Debug.Write("ERROR: System is not a NT-SYSTEM/Windows-OS, Can't Retrive Memory :(");
             }
 
+            /* Reading the file and storing it in a string array. */
             int lineCount = 1;
             string[] lines = null;
             try
@@ -522,12 +698,14 @@ namespace Easy14_Coding_Language
                 ex_sender.SendException(0x0003);
             }
 
+            /* Removing the first lineIDX lines from the list. */
             List<string> lines_list = new List<string>(lines);
             if (lineIDX != 0)
             {
                 lines_list.RemoveRange(0, lineIDX);
             }
 
+            /* Removing the leading whitespace from each line in the list. */
             List<string> lines_list_mod = new List<string>();
             foreach (string item_ in lines_list)
             {
@@ -535,13 +713,22 @@ namespace Easy14_Coding_Language
             }
 
             lines = lines_list_mod.ToArray();
+
+            //Now below is where the magic happens!
+
             foreach (string line in lines)
             {
+
                 char[] line_chrArr = line.ToCharArray();
-                if (showCommands == true)
-                {
-                    Console.WriteLine(">>>" + line);
-                }
+
+                if (showCommands == true) Console.WriteLine(">>>" + line);
+
+                /* Checking if the line starts with "using" and ends with ";" and if it does, it checks
+                if the user has disabled libraries in the options.ini file. If the user has disabled
+                libraries, it will throw an error message. If the user has not disabled libraries,
+                it will check if the line is "using this;". If it is, it will print out a message.
+                If it is not, it will check if the using exists. If it does, it will continue. If it
+                does not, it will throw an error message. */
 
                 if (line.StartsWith($"using") && line.EndsWith($";"))
                 {
@@ -553,40 +740,17 @@ namespace Easy14_Coding_Language
                     }
                     if (line == "using this;")
                     {
-                        Console.WriteLine("The(Mervin's) Way of C# Programming by Mervinpais");
+                        Console.WriteLine("Did you expect \"The Zen of {programmingLanguageName}\" ?");
                         Console.WriteLine("=========================================\n");
-                        Console.WriteLine("- No need for big functions for basic stuff (need to use a for loop?, just use a while loop if you can)");
-                        Console.WriteLine("- Implicit code is better than Explicit code");
-                        Console.WriteLine("- If its hard to make, it will probably be hard to explain");
-                        Console.WriteLine("- Similarly, If its easy to make, it will probably be easier to explain");
-                        //Console.WriteLine("- Its your opinion to use an if statement like this\n\n  if (condition) {\n\n  }\n\n   or\n\n  if (condition)\n  {\n\n  }\n\n it doesnt matter, all that matters is that it looks readable");
-                        Console.WriteLine("=========================================\n");
-                        Console.WriteLine("Last Edited - 24/5/2022 9:25 PM");
-                        Console.WriteLine("=======");
-                        /*Console.WriteLine("- No use of using old libraries that haven't been supported for a few years as they may be broken (Espicially NuGet Packages, dont use the older/unsupported version of NuGet packages that dont support the latest version of your version of C#");
-                        Console.WriteLine("- Make your code simple for others");
-                        Console.WriteLine("- Dont use ");
-                        Console.WriteLine("* Other Stuff *");
-                        Console.WriteLine("- Did you really think making fake commits that are only 1 or 2 changes will get a job? you do know they will research what the changes were in your repo.");
-                        Console.WriteLine("- Don't try for hard concepts, they will make your brain go brrr (in a bad way)");
-                        Console.WriteLine("- Don't Copy someone's code that is not under any license allows the code to be open sourced (example; Windows OS's code since microsoft has it closed source");*/
-                        break;
-                    }
-                    if (line == "using memes;")
-                    {
-                        Console.WriteLine("\nMe when E14 is similer to python and c#;");
-                        string[] hmmm = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Images\\futuramaHmmGuy.txt");
-                        Console.WriteLine(string.Join(Environment.NewLine, hmmm));
-                        Console.WriteLine("\nHuh its almost like");
-                        Console.WriteLine("\nit was made that way");
+                        Console.WriteLine("\nIm sorry but i don't care about making my own \"Zen of Easy14\"");
                         break;
                     }
 
                     string currentDir = Directory.GetCurrentDirectory();
-                    string theSupposedNamspace = Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net5.0", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
+                    string theSupposedNamspace = Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
+
+                    /* Checking if the using exists. */
                     bool doesUsingExist = Directory.Exists(theSupposedNamspace);
-                    //Console.WriteLine(theSupposedNamspace);
-                    //Console.WriteLine(doesUsingExist);
                     if (doesUsingExist)
                     {
                         /* just */
@@ -594,9 +758,9 @@ namespace Easy14_Coding_Language
                     }
                     else
                     {
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ResetColor();
                         Console.WriteLine($"ERROR; The Using {line.Replace("using ", "").Replace(";", "")} Mentioned on line {lineCount} is not found!");
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ResetColor();
                         break;
                     }
                 }
@@ -847,56 +1011,44 @@ namespace Easy14_Coding_Language
                         }
                     }
                 }
+
+                /* Checking if the user has entered "exit()" or "exit();" and if they have, it will
+                exit the program. */
                 else if (line.ToLower() == "exit()" || line.ToLower() == "exit();")
                 {
                     return;
                 }
+
+                /// <summary>
+                /// If the user types "exit" then the console will print a message telling the user to
+                /// use "exit()" or "exit();" or Ctrl+C to close the console.
+                /// </summary>
+                /// <param name="exit">The command to exit the console</param>
                 else if (line.ToLower() == "exit")
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("\nPlease use \"exit()\" or \"exit();\" or Ctrl+C to close the interative console");
-                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ResetColor();
                     continue;
                 }
                 else if (line.StartsWith($"Console.print(") || line.StartsWith($"print(") && line.EndsWith($"{endOfStatementCode}"))
                 {
-                    /*
-                    string[] hehehe = null;
-                    if (line.Contains(";:")) {
-                        hehehe = line.Split(':');
-                    }
-                    string statement = "";
-                    foreach (char c in hehehe[1].ToCharArray())
-                    {
-                        if (c == ':')
-                        {
-                            break;
-                        }
-                        statement = statement + c;
-                    }
-                    */
                     ConsolePrint conPrint = new ConsolePrint();
-                    conPrint.endOfStatementCode = endOfStatementCode;
                     conPrint.interperate(line, textArray, fileLoc);
-
                 }
                 else if (line.StartsWith($"Console.input(") || line.StartsWith($"input(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsoleInput conInput = new ConsoleInput();
-                    conInput.endOfStatementCode = endOfStatementCode;
                     conInput.interperate(line, textArray, fileLoc, null);
-
                 }
                 else if (line.StartsWith($"Console.clear(") || line.StartsWith($"clear(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsoleClear conClear = new ConsoleClear();
-                    conClear.endOfStatementCode = endOfStatementCode;
                     conClear.interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"Console.exec(") || line.StartsWith($"exec(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsoleExec conExec = new ConsoleExec();
-                    conExec.endOfStatementCode = endOfStatementCode;
                     conExec.interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"wait(") && line.EndsWith($"{endOfStatementCode}"))
@@ -907,7 +1059,6 @@ namespace Easy14_Coding_Language
                 else if (line.StartsWith($"var") && line.EndsWith(endOfStatementCode == ")" ? "" : ";"))
                 {
                     VariableCode varCode = new VariableCode();
-                    varCode.endOfStatementCode = endOfStatementCode;
                     varCode.interperate(line, lines, lineCount);
                 }
                 else if (line == "true")
@@ -921,7 +1072,7 @@ namespace Easy14_Coding_Language
                 else if (line.StartsWith($"if") && line.EndsWith("{"))
                 {
                     If_Loop if_Loop = new If_Loop();
-                    if_Loop.interperate(line, lines, textArray, fileLoc, lineCount, isInAMethod, methodName);
+                    if_Loop.interperate(line, lines, textArray, fileLoc, isInAMethod, methodName);
                     return;
                 }
                 else if (line.StartsWith($"while") && line.EndsWith("{")) // || (lines[lineCount + 1] == "{")
@@ -980,23 +1131,77 @@ namespace Easy14_Coding_Language
                 else if (line.StartsWith($"Time.CurrentTime(") || line.StartsWith($"CurrentTime(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     Time_CurrentTime currentTime = new Time_CurrentTime();
-                    currentTime.endOfStatementCode = endOfStatementCode;
                     string time = currentTime.interperate(line, textArray, fileLoc);
                     Console.WriteLine(time);
                 }
                 else if (line.StartsWith($"Time.IsLeapYear(") || line.StartsWith($"IsLeapYear(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     Time_IsLeapYear isLeapYear = new Time_IsLeapYear();
-                    isLeapYear.endOfStatementCode = endOfStatementCode;
                     string isLeapYear_str = isLeapYear.interperate(line, textArray, fileLoc);
                     Console.WriteLine(Convert.ToBoolean(isLeapYear_str));
                 }
                 else if (line.StartsWith($"Random.RandomRange(") || line.StartsWith($"RandomRange(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     Random_RandomRange randomRange = new Random_RandomRange();
-                    randomRange.endOfStatementCode = endOfStatementCode;
                     string randomRange_str = randomRange.interperate(line, textArray, fileLoc);
                     Console.WriteLine(randomRange_str);
+                }
+                else if (line.StartsWith($"sdl2.makeWindow(") || line.StartsWith($"makeWindow(") && line.EndsWith($"{endOfStatementCode}"))
+                {
+                    SDL2_makeWindow makeWindow = new SDL2_makeWindow();
+                    string code_line = line.Replace("sdl2.", "").Replace("makeWindow(", "");
+                    code_line = code_line.Substring(0, code_line.Length - endOfStatementCode.Length);
+                    string[] values = code_line.Split(",");
+                    int sizeX = 200;
+                    int sizeY = 200;
+                    int posX = SDL.SDL_WINDOWPOS_UNDEFINED;
+                    int posY = SDL.SDL_WINDOWPOS_UNDEFINED;
+                    string title = "myWindowTitle";
+
+                    try { sizeX = Convert.ToInt32(values[0]); } catch { }
+                    try { sizeY = Convert.ToInt32(values[1]); } catch { }
+                    try { posX = Convert.ToInt32(values[2]); } catch { }
+                    try { posY = Convert.ToInt32(values[3]); } catch { }
+                    try { title = values[4]; } catch { }
+                    IntPtr window = (IntPtr)0;
+                    long window_int = -1;
+                    new Task(() => { window_int = makeWindow.interperate(sizeX, sizeY, posX, posY, title); }).Start();
+                    //window_int = makeWindow.interperate(sizeX, sizeY, posX, posY, title);
+                    window = (IntPtr)window_int;
+                    Thread.Sleep(100);
+                    continue;
+                }
+                else if (line.StartsWith($"sdl2.createShape(") || line.StartsWith($"createShape(") && line.EndsWith($"{endOfStatementCode}"))
+                {
+                    SDL2_createShape createShape = new SDL2_createShape();
+                    string code_line = line.Replace("sdl2.", "").Replace("createShape(", "");
+                    code_line = code_line.Substring(0, code_line.Length - endOfStatementCode.Length);
+                    string[] values = code_line.Split(",");
+                    long window = 0;
+                    int x = 0;
+                    int y = 0;
+                    int w = 0;
+                    int h = 0;
+
+                    try { window = Convert.ToInt64(values[0]); } catch { }
+                    try { x = Convert.ToInt32(values[1]); } catch { }
+                    try { y = Convert.ToInt32(values[2]); } catch { }
+                    try { w = Convert.ToInt32(values[3]); } catch { }
+                    try { h = Convert.ToInt32(values[4]); } catch { }
+
+                    new Task(() => { createShape.interperate(window, x, y, w, h); }).Start();
+                }
+                else if (line.StartsWith($"sdl2.clearScreen(") || line.StartsWith($"clearScreen(") && line.EndsWith($"{endOfStatementCode}"))
+                {
+                    SDL2_clearScreen clearScreen = new SDL2_clearScreen();
+                    string code_line = line.Replace("sdl2.", "").Replace("clearScreen(", "");
+                    code_line = code_line.Substring(0, code_line.Length - endOfStatementCode.Length);
+                    long window = 0;
+                    string color = null;
+                    string[] values = code_line.Split(",");
+                    window = Convert.ToInt64(values[0]);
+                    color = values[1];
+                    clearScreen.interperate(window, color);
                 }
                 else
                 {
@@ -1016,22 +1221,32 @@ namespace Easy14_Coding_Language
                                 string supposedVar = file.Substring(file.LastIndexOf("\\")).Replace(".txt", "").Substring(1);
                                 if (line.StartsWith(supposedVar))
                                 {
+                                    /* Checking if the line contains an equal sign, and if it does, it
+                                    will check if the line contains a plus sign, and if it does, it
+                                    will check if the line contains more than one equal sign. If it
+                                    does, it will check if the plus sign is not before the equal
+                                    sign. If it is not, it will check if the line contains more than
+                                    one equal sign. If it does, it will check if the plus sign is
+                                    before the equal sign. If it is, it will check if the line
+                                    contains more than one equal sign. If it does, it */
                                     if (line.Contains("=") && (line.IndexOf("+") + 1) != line.IndexOf("=") && line.Count(f => (f == '=')) == 1)
                                     {
                                         string filePath = file;
                                         string partToReplace = file.Substring(file.LastIndexOf("\\") + 1).Replace(".txt", "") + " = ";
                                         string content = line.Replace(partToReplace, "");
-                                        content = content.Substring(1).Substring(0, content.Length - 2);
+                                        //content = content.Substring(1).Substring(0, content.Length - 2);
                                         if (content.Contains("+") && content.Count(f => (f == '+')) == 1)
                                         {
                                             Math_Add math_Add = new Math_Add();
-                                            math_Add.interperate(content, 0);
+                                            int result = math_Add.interperate(content, 0, supposedVar);
                                         }
-                                        else {
+                                        else
+                                        {
                                             File.WriteAllText(filePath, content);
                                         }
                                         break;
                                     }
+                                    /* Adding a line to a var. */
                                     if (line.Contains("+=") && line.Count(f => (f == '=')) == 1 && line.Count(f => (f == '+')) == 1 && line.IndexOf("=") == (line.IndexOf("+") + 1))
                                     {
                                         string filePath = file;
@@ -1046,6 +1261,7 @@ namespace Easy14_Coding_Language
                                         File.WriteAllText(filePath, string.Join(Environment.NewLine, FileContents_list.ToArray()));
                                         break;
                                     }
+                                    /* Removing a line from a var. */
                                     if (line.Contains("-=") && line.Count(f => (f == '-')) == 1 && line.Count(f => (f == '-')) == 1 && line.IndexOf("-") == (line.IndexOf("-") + 1))
                                     {
                                         string filePath = file;
@@ -1071,11 +1287,48 @@ namespace Easy14_Coding_Language
                             }
                         }
                     }
+                    /* The below code is checking to see if the line is not empty, not whitespace, not
+                    a closing bracket, not a break, not a return, not a using statement, and not a
+                    comment. If the line is not any of those things, then it will print out an error
+                    message. */
                     else if (!string.IsNullOrEmpty(line) && !string.IsNullOrWhiteSpace(line) && line != "}" && line != "break" && line != "return" && !line.StartsWith("using") && !line.StartsWith("//"))
                     {
+                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
+                        List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
+                        List<string> allNamespacesAvaiable_list_main = new List<string>();
+                        foreach (string item in allNamespacesAvaiable_list)
+                        {
+                            allNamespacesAvaiable_list_main.Add(item.Substring(item.LastIndexOf("\\") + 1));
+                        }
+                        allNamespacesAvaiable_array = allNamespacesAvaiable_list_main.ToArray();
+                        string theNamespaceOfTheLine = line.Split(".")[0];
+                        if (allNamespacesAvaiable_array.Contains(theNamespaceOfTheLine))
+                        {
+                            int index = Array.IndexOf(allNamespacesAvaiable_array, theNamespaceOfTheLine);
+                            string theClassOfTheLine = line.Split(".")[0];
+                            string theFunctionOfTheLine = line.Split(".")[1];
+                            theFunctionOfTheLine = theFunctionOfTheLine.Replace("(", "").Replace(");", "");
+                            
+                            //Older
+                            /*Type type_ = Type.GetType(theFunctionOfTheLine);
+                            MethodInfo method = type_.GetMethod("run");
+                            method.Invoke(null, null);*/
+
+                            //Old
+                            //Activator.CreateInstance(Convert.ToString(Assembly.GetExecutingAssembly()), Convert.ToString(Type.GetType(theFunctionOfTheLine)));                            
+
+                            string[] code =
+                            {
+                                $"Easy14_Programming_Language.{theFunctionOfTheLine} myfunc = new Easy14_Programming_Language.{theFunctionOfTheLine}();",
+                                "myfunc.interperate();"
+                            };
+                            myFunc myfunc = new myFunc();
+                            CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                            return;
+                        }
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"ERROR; '{line}' is not a vaild code statement\n  Error was located on Line {lineCount}");
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.ResetColor();
                         break;
                     }
                 }
