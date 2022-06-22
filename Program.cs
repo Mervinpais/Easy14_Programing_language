@@ -283,7 +283,10 @@ namespace Easy14_Programming_Language
                     {
                         if (!command.StartsWith("-") && !command.StartsWith("/"))
                         {
-                            string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
+                            //static string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
+                            //Console.WriteLine(string.Join(Environment.NewLine, Directory.GetDirectories(strWorkPath + "\\..\\..\\..\\Functions")));
+                            string[] allNamespacesAvaiable_array = Directory.GetDirectories(strWorkPath + "\\..\\..\\..\\Functions");
+
                             List<string> allNamespacesAvaiable_list = new List<string>();
                             foreach (string namespace_ in allNamespacesAvaiable_array)
                             {
@@ -747,7 +750,10 @@ namespace Easy14_Programming_Language
                     }
 
                     string currentDir = Directory.GetCurrentDirectory();
-                    string theSupposedNamspace = Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
+                    /*Console.WriteLine(strWorkPath);
+                    Console.WriteLine(strWorkPath.Replace("\\bin\\Debug\\net6.0", ""));
+                    Console.WriteLine(strWorkPath.Replace("\\bin\\Debug\\net6.0", "") + "\\Functions\\");*/
+                    string theSupposedNamspace = strWorkPath.Replace("\\bin\\Debug\\net6.0", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
 
                     /* Checking if the using exists. */
                     bool doesUsingExist = Directory.Exists(theSupposedNamspace);
