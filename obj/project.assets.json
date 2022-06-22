@@ -1039,15 +1039,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
-      "projectUniqueName": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14 Coding Language.csproj",
-      "projectName": "Easy14 Coding Language",
-      "projectPath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14 Coding Language.csproj",
-=======
       "projectUniqueName": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14_Programming_language.csproj",
       "projectName": "Easy14_Programming_language",
       "projectPath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14_Programming_language.csproj",
->>>>>>> 3e010755b1f4331b906426706e3b1ba90f1ae808
       "packagesPath": "C:\\Users\\mervi\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\obj\\",
       "projectStyle": "PackageReference",
