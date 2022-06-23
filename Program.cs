@@ -1,4 +1,6 @@
-﻿using SDL2;
+﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
+using SDL2;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,15 +9,21 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
 
 namespace Easy14_Programming_Language
 {
+    /// <summary>
+    /// This class is the main class of the whole app
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// showCommands is a variable that shows all the commands that are executed by the user (only when running files, not with the intractive interperater)
+        /// </summary>
         public static bool showCommands = false;
+        /// <summary>
+        /// previewTheFile is a variable that instead of running the code, lets you preview what the file looks like
+        /// </summary>
         public static bool previewTheFile = false;
 
         //code from https://iq.direct/blog/51-how-to-get-the-current-executable-s-path-in-csharp.html :)
@@ -219,22 +227,12 @@ namespace Easy14_Programming_Language
                     {
                         foreach (string line in configFile)
                         {
-                            if (line.StartsWith("turnOnDeveloperOptions"))
-                            {
-                                if (line.EndsWith("true"))
-                                {
-                                    string exceptionToSend_str = command.Replace("send_exception(", "");
-                                    exceptionToSend_str = exceptionToSend_str.Substring(0, exceptionToSend_str.Length - 1);
-                                    int exceptionToSend_int = Convert.ToInt32(exceptionToSend_str, 16);
-                                    ExceptionSender es = new ExceptionSender();
-                                    es.SendException(exceptionToSend_int);
-                                    break;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("\nDev mode has not been turned on!\n");
-                                }
-                            }
+                            string exceptionToSend_str = command.Replace("send_exception(", "");
+                            exceptionToSend_str = exceptionToSend_str.Substring(0, exceptionToSend_str.Length - 2);
+                            int exceptionToSend_int = Convert.ToInt32(exceptionToSend_str, 16);
+                            ExceptionSender es = new ExceptionSender();
+                            es.SendException(exceptionToSend_str);
+                            break;
                         }
                     }
                     else if (command.ToLower().StartsWith("/run") || command.ToLower().StartsWith("-run"))
@@ -370,11 +368,6 @@ namespace Easy14_Programming_Language
                     Console.WriteLine("\n");
                     Console.WriteLine("     |More Commands Comming Soon|");
                 }
-
-                /// <summary>
-                /// It prints out the keywords of the language.
-                /// </summary>
-                /// <param name="keywords">Prints out the keywords of the language.</param>
                 else if (command.ToLower() == "/keywords" || command.ToLower() == "-keywords")
                 {
                     Console.WriteLine("\n===== KEYWORDS =====");
@@ -383,31 +376,16 @@ namespace Easy14_Programming_Language
                     Console.WriteLine("\n   ================");
                     Console.WriteLine("\n====================");
                 }
-                /// <summary>
-                /// It's a function that checks if the user has typed in the command "/intro" or
-                /// "-intro" and if they have, it will run the IntroductionCode class
-                /// </summary>
-                /// <param name="intro">This is the command that the user will type in to run the
-                /// code.</param>
                 else if (command.ToLower() == "/intro" || command.ToLower() == "-intro")
                 {
                     IntroductionCode introCode = new IntroductionCode();
                     introCode.IntroCode();
                 }
-                /// <summary>
-                /// It's a function that shows the information about the application.
-                /// </summary>
-                /// <param name="appinfo">Shows the application information</param>
                 else if (command.ToLower() == "/appinfo" || command.ToLower() == "-appinfo")
                 {
                     AppInformation appInfo = new AppInformation();
                     appInfo.ShowInfo();
                 }
-
-                /// <summary>
-                /// If the command is a single line, then it will run it. If it's a multiline, then it
-                /// will not run it
-                /// </summary>
                 else if (command.Contains("\n"))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -479,7 +457,7 @@ namespace Easy14_Programming_Language
         {
             compileCode(fileLoc, textArray, lineIDX, isInAMethod, methodName);
         }
-
+        
         public static void compileCode(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
 
@@ -510,7 +488,7 @@ namespace Easy14_Programming_Language
                         endOfStatementCode = ")";
                     }
                 }
-                if (line.StartsWith("disableLibraries"))
+                else if (line.StartsWith("disableLibraries"))
                 {
                     if (line.EndsWith("true"))
                     {
@@ -521,21 +499,21 @@ namespace Easy14_Programming_Language
                         disableLibraries = false;
                     }
                 }
-                if (line.StartsWith("windowHeight"))
+                else if (line.StartsWith("windowHeight"))
                 {
                     if (!line.EndsWith("false"))
                     {
                         windowHeight = Convert.ToInt32(line.Replace("windowHeight = ", ""));
                     }
                 }
-                if (line.StartsWith("windowWidth"))
+                else if (line.StartsWith("windowWidth"))
                 {
                     if (!line.EndsWith("false"))
                     {
                         windowWidth = Convert.ToInt32(line.Replace("windowWidth = ", ""));
                     }
                 }
-                if (line.StartsWith("windowState"))
+                else if (line.StartsWith("windowState"))
                 {
                     if (line.EndsWith("max"))
                     {
@@ -558,7 +536,7 @@ namespace Easy14_Programming_Language
                         windowState = "normal";
                     }
                 }
-                if (line.StartsWith("showOptionsINI_DataWhenE14_Loads"))
+                else if (line.StartsWith("showOptionsINI_DataWhenE14_Loads"))
                 {
                     if (line.EndsWith("true"))
                     {
@@ -581,10 +559,6 @@ namespace Easy14_Programming_Language
 
             //========== Only thing using System.Runtime.InteropServices =========//
 
-            /// <summary>
-            /// It's a function that takes a string as an argument and then changes the state of the
-            /// console window to either maximized, minimized, hidden, or restored
-            /// </summary>
             [DllImport("kernel32.dll", ExactSpelling = true)]
 
             static extern IntPtr GetConsoleWindow();
@@ -698,7 +672,7 @@ namespace Easy14_Programming_Language
             catch
             {
                 ExceptionSender ex_sender = new ExceptionSender();
-                ex_sender.SendException(0x0003);
+                ex_sender.SendException("0x000003");
             }
 
             /* Removing the first lineIDX lines from the list. */
@@ -793,7 +767,7 @@ namespace Easy14_Programming_Language
                                     $"(C# Error) Integer Convertion Error!; {var1} is not a valid double"
                                 };
                             //tErM.sendErrMessage(null, errText, 0x0000B1);
-                            exceptionSend.SendException(0x0000B1, errText); //String in int/decimal function exception
+                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
                         try
@@ -810,7 +784,7 @@ namespace Easy14_Programming_Language
                                     $"(C# Error) Integer Convertion Error!; {var2} is not a valid double"
                                 };
                             //tErM.sendErrMessage(null, errText, 0x0000B1);
-                            exceptionSend.SendException(0x0000B1, errText); //String in int/decimal function exception
+                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
                         double answer = 0;
@@ -828,7 +802,7 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) {e.Message}"
                                 };
-                            exceptionSend.SendException(0x0000B7, errText);
+                            exceptionSend.SendException("0x0000B7", errText);
                         }
                     }
                     if (statement.Contains("-"))
@@ -851,7 +825,7 @@ namespace Easy14_Programming_Language
                                     $"(C# Error) Integer Convertion Error!; {var1} is not a valid double"
                                 };
                             //tErM.sendErrMessage(null, errText, 0x0000B1);
-                            exceptionSend.SendException(0x0000B1, errText); //String in int/decimal function exception
+                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
                         try
@@ -868,7 +842,7 @@ namespace Easy14_Programming_Language
                                     $"(C# Error) Integer Convertion Error!; {var2} is not a valid double"
                                 };
                             //tErM.sendErrMessage(null, errText, 0x0000B1);
-                            exceptionSend.SendException(0x0000B1, errText); //String in int/decimal function exception
+                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
                         double answer = 0;
@@ -886,7 +860,7 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) {e.Message}"
                                 };
-                            exceptionSend.SendException(0x0000B8, errText);
+                            exceptionSend.SendException("0x0000B8", errText);
                         }
                     }
                     if (statement.Contains("*"))
@@ -909,7 +883,7 @@ namespace Easy14_Programming_Language
                                     $"(C# Error) Integer Convertion Error!; {var1} is not a valid double"
                                 };
                             //tErM.sendErrMessage(null, errText, 0x0000B1);
-                            exceptionSend.SendException(0x0000B1, errText); //String in int/decimal function exception
+                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
                         try
@@ -926,7 +900,7 @@ namespace Easy14_Programming_Language
                                     $"(C# Error) Integer Convertion Error!; {var2} is not a valid double"
                                 };
                             //tErM.sendErrMessage(null, errText, 0x0000B1);
-                            exceptionSend.SendException(0x0000B1, errText); //String in int/decimal function exception
+                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
                         double answer = 0;
@@ -944,7 +918,7 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) {e.Message}"
                                 };
-                            exceptionSend.SendException(0x0000B9, errText);
+                            exceptionSend.SendException("0x0000B9", errText);
                         }
                     }
                     if (statement.Contains("/"))
@@ -967,7 +941,7 @@ namespace Easy14_Programming_Language
                                     $"(C# Error) Integer Convertion Error!; {var1} is not a valid double"
                                 };
                             //tErM.sendErrMessage(null, errText, 0x0000B1);
-                            exceptionSend.SendException(0x0000B1, errText); //String in int/decimal function exception
+                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
                         try
@@ -984,7 +958,7 @@ namespace Easy14_Programming_Language
                                     $"(C# Error) Integer Convertion Error!; {var2} is not a valid double"
                                 };
                             //tErM.sendErrMessage(null, errText, 0x0000B1);
-                            exceptionSend.SendException(0x0000B1, errText); //String in int/decimal function exception
+                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
                         double answer = 0;
@@ -1002,7 +976,7 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) You tried to Divide by 0, here is the rest of the Error Message\n{divBy0.Message}"
                                 };
-                            exceptionSend.SendException(0x0000B11, errText);
+                            exceptionSend.SendException("0x0000B11", errText);
                         }
                         catch (Exception e)
                         {
@@ -1013,7 +987,7 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) {e.Message}"
                                 };
-                            exceptionSend.SendException(0x0000B10, errText);
+                            exceptionSend.SendException("0x0000B10", errText);
                         }
                     }
                 }
@@ -1314,7 +1288,7 @@ namespace Easy14_Programming_Language
                             string theClassOfTheLine = line.Split(".")[0];
                             string theFunctionOfTheLine = line.Split(".")[1];
                             theFunctionOfTheLine = theFunctionOfTheLine.Replace("(", "").Replace(");", "");
-                            
+
                             //Older
                             /*Type type_ = Type.GetType(theFunctionOfTheLine);
                             MethodInfo method = type_.GetMethod("run");

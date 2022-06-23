@@ -74,7 +74,7 @@ namespace Easy14_Programming_Language
                 else
                 {
                     ExceptionSender ExSend = new ExceptionSender();
-                    ExSend.SendException(0xF00002);
+                    ExSend.SendException("0xF00002");
                 }
             }
             /* Checking if there are any files in the folder `EASY14_Variables_TEMP` and if there are

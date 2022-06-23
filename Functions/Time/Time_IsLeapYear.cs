@@ -68,7 +68,7 @@ namespace Easy14_Programming_Language
             if (codePartInt.ToString().Length > 4)
             {
                 ExceptionSender exceptionSender = new ExceptionSender();
-                exceptionSender.SendException(0x000B13);
+                exceptionSender.SendException("0x000B13");
                 return "An Unhandled Exception Occured\n";
             }
             else {

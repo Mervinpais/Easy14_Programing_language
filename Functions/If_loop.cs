@@ -7,10 +7,6 @@ namespace Easy14_Programming_Language
     class If_Loop
     {
         Program prog = new Program();
-        //Above needed as functions like 'compileCode' in Program.cs cant be accessed here and instead of copying it to other functions, just make an object of it 
-        //and use it's 'compileCode_forOtherFiles' function to get 'compileCode' (because 'compileCode' is static, we need another function that is not static to access
-        //the static function, kinda smart in my opinion), its kind of a bad way of doing it but it the easy way and has no error with it :|
-
 
         /// <summary>
         /// This function takes in a string, an array of strings, an array of strings, a string, a
@@ -25,12 +21,10 @@ namespace Easy14_Programming_Language
         public void interperate(string code_part, string[] lines, string[] textArray, string fileloc, bool isInAMethod = false, string methodName = "}")
         {
             string code_part_unedited = code_part;
-
             string[] if_lines = lines;
             int end_line_IDX = 0;
             int line_counterr = 1;
 
-            //Take all lines and convert them to a list
             List<string> if_lines_list = new List<string>(if_lines);
             List<string> usings_lines_list = new List<string>(if_lines_list);
 
@@ -46,6 +40,7 @@ namespace Easy14_Programming_Language
             }
 
             line_counterr = 1;
+            
             //Below is a method to find the code under the if statement
             foreach (string line_ifStatement in if_lines)
             {
@@ -59,7 +54,6 @@ namespace Easy14_Programming_Language
 
             line_counterr = 0;
 
-            /* Removing the lines after the closing bracket of the if statement. */
             List<string> understuff = new List<string>(if_lines_list);
             foreach (string line__ in if_lines_list)
             {
@@ -186,14 +180,12 @@ namespace Easy14_Programming_Language
                 if (false)
                 {
                     //Yes C#, i wnat this code to be unreachable ok? :)
+                    #pragma warning disable CS0162 // Unreachable code detected
                     prog.compileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
+                    #pragma warning restore CS0162 // Unreachable code detected
                     System.Threading.Thread.Sleep(100);
                 }
             }
-
-             
-
-
             
             else if (if_Line.Contains("=="))
             {
@@ -206,7 +198,7 @@ namespace Easy14_Programming_Language
                     Console.ResetColor();
                     return;
                 }
-                /* Checking if the string contains a double quote. */
+                
                 GetVariable getVar = new GetVariable();
                 string var1_fileLoc = getVar.findVar(obj1);
                 string var2_fileLoc = getVar.findVar(obj2);
@@ -214,37 +206,12 @@ namespace Easy14_Programming_Language
                 if (var1_fileLoc != "0xF00001") obj1_variable = true;
                 if (var2_fileLoc != "0xF00001") obj2_variable = true;
 
-                //Old Way \/
-                /*
-                if (!obj1.Contains("\""))
-                {
-                    obj1_variable = true;
-                }
-                if (!obj2.Contains("\""))
-                {
-                    obj2_variable = true;
-                }*/
-
-                //OLD OLD Way \/
-                /*
-                foreach (string ffile in Directory.GetFiles(dir))
-                {
-                    if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj1)
-                    { obj1_variable = true; }
-                }
-                foreach (string ffile in Directory.GetFiles(dir))
-                {
-                    if (ffile.Substring(ffile.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == obj2)
-                    { obj2_variable = true; }
-                }*/
-
                 /* Reading the file and storing it in a list. */
                 List<string> someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
                 else if (textArray != null && fileloc == null) someLINEs = new List<string>(textArray);
                 int lin_count = 1;
 
-                /* Counting the number of lines in a file that start with "using" */
                 foreach (string x in someLINEs)
                 {
                     lin_count++;
@@ -256,7 +223,6 @@ namespace Easy14_Programming_Language
 
                 lin_count = lin_count - 2;
 
-                /* Reading the file content of the two objects. */
                 string obj1_fileContent = null;
                 string obj2_fileContent = null;
                 if (obj1_variable)
@@ -264,9 +230,6 @@ namespace Easy14_Programming_Language
                 if (obj2_variable)
                     obj2_fileContent = File.ReadAllText(dir + @$"\\{obj2}.txt");
 
-                /* Checking if the variable is true and the other variable is false. If it is, it will
-                check if the file content is equal to the other variable. If it is, it will add the
-                lines to the list. */
 
                 if (obj1_variable && !obj2_variable)
                 {
@@ -295,15 +258,6 @@ namespace Easy14_Programming_Language
                         prog.compileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
                     }
                 }
-
-                /// <summary>
-                /// It takes a list of strings, and if the first string is a file path, it will compile
-                /// the file, and if the second string is a file path, it will compile the file, and if
-                /// the two files are the same, it will compile the rest of the strings in the list
-                /// </summary>
-                /// <param name="obj1_variable">is a string that contains the name of the variable that
-                /// is being compared.</param>
-
                 else if (obj1_variable && obj2_variable)
                 {
                     if (obj1_fileContent == obj2_fileContent)

@@ -127,7 +127,7 @@ namespace Easy14_Programming_Language
                         string[] errorText = {
                         $"ERROR; Trying to convert \"{textToPrint}\" to a boolean failed!\n"
                     };
-                        ExSend.SendException(0x000BC3, errorText);
+                        ExSend.SendException("0x000BC3", errorText);
                     }
                 }
                 else if (textToPrint.StartsWith("random.range("))
