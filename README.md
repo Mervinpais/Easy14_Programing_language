@@ -1,56 +1,69 @@
-# Easy14_Programing_language
-(WARNING, THIS IS A CORRUPT VERSION,DO NOT USE THIS!!!
-___
+<head>
+	<link rel="stylesheet" href="README_style.css">
+</head>
 
-![Easy14 Repository Thumbnail](Images/repo%20github%20thumnail.png)
+<h1>Easy14 Programing Language</h1>
+
+<hr>
+
+<!--![Easy14 Repository Thumbnail](Images/repo%20github%20thumnail.png)-->
+<img src="Images/repo%20github%20thumnail.png" alt="Easy14 Repository Thumbnail"></img>
+
+<p>
 Finally an *ok* language for beginners
 Basically a mashup of Python + C#
+</p>
 
-<img width="75" src="https://www.svgrepo.com/show/86407/donate.svg"></img>
+<img width="75" src="https://www.svgrepo.com/show/86407/donate.svg" alt="Donate Symbol"></img>
 
-Donations can help me improve this language :)
+<h2>Donations can help me improve this language :)</h2>
 
-*Note that this is not finished so you can't donate yet
-___
+<ul>
+	<li> Note; Can't donate yet </li>
+</ul>
 
-## Main Stuff
+<hr>
 
-Here is what you need to know
+<h2>Main Stuff</h2>
 
-* This is just like any other high level language
-* Runs on C#
-* Python for MISC stuff
-* Buggy
+<h3>Here is what you need to know (Summaray)</h3>
 
-___
+<ol>
+	<li>Not General purpose</li>
+	<li>Runs on C# (+ Roslyn for C#)</li>
+	<li>Python for other stuff</li>
+	<li>Buggy :sweat_smile:</li>
+</ol>
 
+<hr>
 
-## Version 2.7
+<h1> Version 2.8 </h1>
 
-## The Bugfixs arrived & New stuff
+<h2> The Bugfixs arrived & New stuff </h2>
 
-* New stuff;
-	*Custom Libraries!
-		* Making libraries is now possible! documentation will be linked soon
-* Fixed ALL bugs with;
-  * print();
-  * input();
-  * if statements
-  * while statements (not fully tested)
-  * other Sh!t
+<h3>New stuff;</h3>
 
-## Documentation
+<ul>
+    <li>Added isString(), isInt() etc. are now there :smile:</li>
+</ul>
 
-  Thanks to <https://www.mintlify.com/writer> i can generate documentation any time and i think its a good tool for people who are lazy to write documentation, like me :)
+<h3>Fixed bugs with;</h3>
 
-  Love the mintlify team and their ai documentation writer!
+<ul>
+	<li>print(); :heavy_check_mark:</li>
+	<li>input(); :heavy_check_mark:</li>
+	<li>if statements :heavy_check_mark:</li>
+	<li>while statements (not fully tested) :question:</li>
+    <li>other Sh!t</li>
 
-## Known Issues
+</ul>
 
-### ***None, atleast of now :|***
+<h2> Known Issues </h2>
 
-___
+<h4> None, atleast of now :| </h4>
 
-## Thanks for reading :)
+<hr>
 
-i seriously need to be doing more tests on my code for bugs
+<h2> Thanks for reading :) </h2>
+
+<h4>i seriously need to be doing more tests on my code for bugs</h4>
