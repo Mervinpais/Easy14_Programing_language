@@ -1,14 +1,14 @@
 using System;
+using System.IO;
+
 namespace Easy14_Programming_Language
 {
     class Math_Square
     {
-        /// <summary>
-        /// This function takes a string, an integer, and an optional string, and returns a double.
-        /// </summary>
-        /// <param name="code_part">The code to be interperated</param>
-        /// <param name="lineNumber">The line number of the code that is being interperated.</param>
-        /// <param name="fileName">The name of the file that the code is in.</param>
+        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+        static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
+
         public double interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;

@@ -1328,7 +1328,6 @@ namespace Easy14_Programming_Language
                                 $"Easy14_Programming_Language.{theFunctionOfTheLine} myfunc = new Easy14_Programming_Language.{theFunctionOfTheLine}();",
                                 "myfunc.interperate();"
                             };
-                            myFunc myfunc = new myFunc();
                             CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
                             return;
                         }

@@ -5,13 +5,10 @@ namespace Easy14_Programming_Language
 {
     class FileSystem_DeleteFile
     {
-        /// <summary>
-        /// It takes a string, a string, a string array, and an int, and returns nothing.
-        /// </summary>
-        /// <param name="code_part">The part of the code that is being interperated</param>
-        /// <param name="fileloc">The location of the file</param>
-        /// <param name="textArray">The array of strings that contains the code.</param>
-        /// <param name="line_count">The line number of the code_part</param>
+        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+        static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
+
         public void interperate(string code_part, string fileloc, string[] textArray, int line_count)
         {
             string code_part_unedited;

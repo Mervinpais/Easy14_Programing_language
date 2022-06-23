@@ -5,13 +5,10 @@ namespace Easy14_Programming_Language
 {
     class Math_Equals
     {
-        /// <summary>
-        /// It takes in a string, an int, and a string. It returns a bool.
-        /// </summary>
-        /// <param name="code_part">The code to be interperated.</param>
-        /// <param name="lineNumber">The line number of the code that is being interperated.</param>
-        /// <param name="fileName">The name of the file that the code is being interperated
-        /// from.</param>
+        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+        static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
+
         public bool? interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;
