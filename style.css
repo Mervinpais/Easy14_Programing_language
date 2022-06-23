@@ -1,3 +1,12 @@
+
+@font-face {
+    font-family: 'vtf_gulaxregular';
+    src: url('gulax-webfont.eot');
+    src: url('gulax-webfont.eot?#iefix') format('embedded-opentype'), url('gulax-webfont.woff') format('woff'), url('gulax-webfont.ttf') format('truetype'), url('gulax-webfont.svg#vtf_gulaxregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .dark_body {
     background-color: #202020;
     color: #ffffff;
@@ -20,7 +29,7 @@ head4,
 head5,
 head6,
 para {
-    font-family: monospace;
+    font-family: vtf_gulaxregular;
 }
 
 head1 {
