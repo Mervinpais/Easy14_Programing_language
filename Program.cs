@@ -30,7 +30,6 @@ namespace Easy14_Programming_Language
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
 
-        //static string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
         static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
 
         static void Main(string[] args)
@@ -281,8 +280,6 @@ namespace Easy14_Programming_Language
                     {
                         if (!command.StartsWith("-") && !command.StartsWith("/"))
                         {
-                            //static string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
-                            //Console.WriteLine(string.Join(Environment.NewLine, Directory.GetDirectories(strWorkPath + "\\..\\..\\..\\Functions")));
                             string[] allNamespacesAvaiable_array = Directory.GetDirectories(strWorkPath + "\\..\\..\\..\\Functions");
 
                             List<string> allNamespacesAvaiable_list = new List<string>();
@@ -294,8 +291,6 @@ namespace Easy14_Programming_Language
                             //thanks to the question https://stackoverflow.com/questions/59217/merging-two-arrays-in-net i managed to merge 2 arrays
                             string[] allNamespacesAvaiable = allNamespacesAvaiable_list.ToArray();
                             string[] command_array = { command };
-                            //allNamespacesAvaiable = allNamespacesAvaiable.Replace("\r\n", Environment.NewLine);
-                            //string[] commandAsArray = {string.Join("\r\n", allNamespacesAvaiable), command};
                             string[] commandAsArray = new string[allNamespacesAvaiable.Length + command_array.Length];
                             Array.Copy(allNamespacesAvaiable, commandAsArray, allNamespacesAvaiable.Length);
                             Array.Copy(command_array, 0, commandAsArray, allNamespacesAvaiable.Length, command_array.Length);
@@ -409,8 +404,6 @@ namespace Easy14_Programming_Language
                         //thanks to the question https://stackoverflow.com/questions/59217/merging-two-arrays-in-net i managed to merge 2 arrays
                         string[] allNamespacesAvaiable = allNamespacesAvaiable_list.ToArray();
                         string[] command_array = { command };
-                        //allNamespacesAvaiable = allNamespacesAvaiable.Replace("\r\n", Environment.NewLine);
-                        //string[] commandAsArray = {string.Join("\r\n", allNamespacesAvaiable), command};
                         string[] commandAsArray = new string[allNamespacesAvaiable.Length + command_array.Length];
                         Array.Copy(allNamespacesAvaiable, commandAsArray, allNamespacesAvaiable.Length);
                         Array.Copy(command_array, 0, commandAsArray, allNamespacesAvaiable.Length, command_array.Length);
@@ -427,22 +420,6 @@ namespace Easy14_Programming_Language
                     }
                 }
             }
-            /*Console.WriteLine("\nPress Any Key to exit");
-            Console.Read();
-            if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
-            {
-                Console.WriteLine("\nDeleting current project variables folder...");
-                string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP");
-                foreach (string file in files)
-                {
-                    File.Delete(file);
-                }
-                string var_MethodPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
-
-                Directory.Delete(var_MethodPath, true);
-            }
-            Console.WriteLine("\n Exiting Console...");
-            Environment.Exit(-1);*/
         }
 
         /// <summary>
@@ -625,36 +602,6 @@ namespace Easy14_Programming_Language
                 }
             }
 
-            /*
-
-            /* Checking the free memory of the system and if it is less than 25 MB it will send an
-            exception to the user.
-            ObjectQuery wql = null;
-            ManagementObjectSearcher searcher = null;
-            ManagementObjectCollection results = null;
-            //Checks Variables /\  and Setting those values in a try/catch statement \/
-            try
-            {
-                wql = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-                searcher = new ManagementObjectSearcher(wql);
-                results = searcher.Get();
-                foreach (ManagementObject result in results)
-                {
-                    int freeMemory = Convert.ToInt32(result["FreePhysicalMemory"]) / 1024;
-                    //Console.WriteLine("Free Memory {0} MB", freeMemory);
-                    if (freeMemory < 10)
-                    {
-                        ExceptionSender ex_sender = new ExceptionSender();
-                        //ex_sender.SendException(0x0003); Wrong/Unavaliable Exception Code
-                        ex_sender.SendException(0x0000A1);
-                    }
-                }
-            }
-            catch
-            {
-                Debug.Write("ERROR: System is not a NT-SYSTEM/Windows-OS, Can't Retrive Memory :(");
-            }
-
             /* Reading the file and storing it in a string array. */
             int lineCount = 1;
             string[] lines = null;
@@ -672,7 +619,7 @@ namespace Easy14_Programming_Language
             catch
             {
                 ExceptionSender ex_sender = new ExceptionSender();
-                ex_sender.SendException("0x000003");
+                ex_sender.SendException("0xF000M1");
             }
 
             /* Removing the first lineIDX lines from the list. */
@@ -724,9 +671,7 @@ namespace Easy14_Programming_Language
                     }
 
                     string currentDir = Directory.GetCurrentDirectory();
-                    /*Console.WriteLine(strWorkPath);
-                    Console.WriteLine(strWorkPath.Replace("\\bin\\Debug\\net6.0", ""));
-                    Console.WriteLine(strWorkPath.Replace("\\bin\\Debug\\net6.0", "") + "\\Functions\\");*/
+                    
                     string theSupposedNamspace = strWorkPath.Replace("\\bin\\Debug\\net6.0", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
 
                     /* Checking if the using exists. */
@@ -766,7 +711,6 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) Integer Convertion Error!; {var1} is not a valid double"
                                 };
-                            //tErM.sendErrMessage(null, errText, 0x0000B1);
                             exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
@@ -783,7 +727,6 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) Integer Convertion Error!; {var2} is not a valid double"
                                 };
-                            //tErM.sendErrMessage(null, errText, 0x0000B1);
                             exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
@@ -824,7 +767,6 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) Integer Convertion Error!; {var1} is not a valid double"
                                 };
-                            //tErM.sendErrMessage(null, errText, 0x0000B1);
                             exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
@@ -841,7 +783,6 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) Integer Convertion Error!; {var2} is not a valid double"
                                 };
-                            //tErM.sendErrMessage(null, errText, 0x0000B1);
                             exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
@@ -882,7 +823,6 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) Integer Convertion Error!; {var1} is not a valid double"
                                 };
-                            //tErM.sendErrMessage(null, errText, 0x0000B1);
                             exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
@@ -899,7 +839,6 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) Integer Convertion Error!; {var2} is not a valid double"
                                 };
-                            //tErM.sendErrMessage(null, errText, 0x0000B1);
                             exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
@@ -940,7 +879,6 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) Integer Convertion Error!; {var1} is not a valid double"
                                 };
-                            //tErM.sendErrMessage(null, errText, 0x0000B1);
                             exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
@@ -957,7 +895,6 @@ namespace Easy14_Programming_Language
                                     $"   at Line {line}",
                                     $"(C# Error) Integer Convertion Error!; {var2} is not a valid double"
                                 };
-                            //tErM.sendErrMessage(null, errText, 0x0000B1);
                             exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
                             break;
                         }
@@ -1201,20 +1138,11 @@ namespace Easy14_Programming_Language
                                 string supposedVar = file.Substring(file.LastIndexOf("\\")).Replace(".txt", "").Substring(1);
                                 if (line.StartsWith(supposedVar))
                                 {
-                                    /* Checking if the line contains an equal sign, and if it does, it
-                                    will check if the line contains a plus sign, and if it does, it
-                                    will check if the line contains more than one equal sign. If it
-                                    does, it will check if the plus sign is not before the equal
-                                    sign. If it is not, it will check if the line contains more than
-                                    one equal sign. If it does, it will check if the plus sign is
-                                    before the equal sign. If it is, it will check if the line
-                                    contains more than one equal sign. If it does, it */
                                     if (line.Contains("=") && (line.IndexOf("+") + 1) != line.IndexOf("=") && line.Count(f => (f == '=')) == 1)
                                     {
                                         string filePath = file;
                                         string partToReplace = file.Substring(file.LastIndexOf("\\") + 1).Replace(".txt", "") + " = ";
                                         string content = line.Replace(partToReplace, "");
-                                        //content = content.Substring(1).Substring(0, content.Length - 2);
                                         if (content.Contains("+") && content.Count(f => (f == '+')) == 1)
                                         {
                                             Math_Add math_Add = new Math_Add();

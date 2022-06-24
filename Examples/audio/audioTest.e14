@@ -1,0 +1,6 @@
+﻿using Console;
+using Audio;
+
+playAudio("tobu_candyland_NCS.mp3");
+wait(5);
+stopAudio("tobu_candyland_NCS.mp3");

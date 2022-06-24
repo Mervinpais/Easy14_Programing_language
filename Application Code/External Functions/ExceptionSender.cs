@@ -123,6 +123,12 @@ public class ExceptionSender
             case "0xF00004":
                 Message = $"{typeOfException_str}; Folder is UnReadable!";
                 break;
+            case "0xF000M1":
+                Message = $"{typeOfException_str}; Method is not Found!";
+                break;
+            case "0xF000V1":
+                Message = $"{typeOfException_str}; Variable is not Found!";
+                break;
 
             //Code Errors (App Errors)
             case "0x0000C0":
@@ -133,22 +139,6 @@ public class ExceptionSender
                 break;
             case "0x0000C2":
                 Message = $"{typeOfException_str}; Application Code Error - Missing Code";
-                break;
-            //File Errors
-            case "0x0000F0":
-                Message = $"{typeOfException_str}; Failed to interperate - Unknown File Error";
-                break;
-            case "0x0000F1":
-                Message = $"{typeOfException_str}; Failed to interperate - Can't Access Code File";
-                break;
-            case "0x0000F2":
-                Message = $"{typeOfException_str}; Failed to interperate - File Not Found";
-                break;
-            case "0x0000F3":
-                Message = $"{typeOfException_str}; Failed to interperate - Method Not Found";
-                break;
-            case "0x0000F4":
-                Message = $"{typeOfException_str}; Failed to interperate - Variable Not Found";
                 break;
             //Funni/Not Real Errors (or you could say a 0% Chance Error since you can't get it ever)
             case "0x000404":

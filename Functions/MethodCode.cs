@@ -6,12 +6,9 @@ namespace Easy14_Programming_Language
 {
     class MethodCode
     {
-        //we will take the code of while loop and convert to a method
         Program prog = new Program();
         public void interperate(string code_part, string[] textArray, string[] lines, string fileloc, bool Making_A_Method)
         {
-            //Making_A_Method variable just tells us if we want to create a method, or run a method
-
             string code_part_unedited;
             //string textToPrint;
             code_part_unedited = code_part;
@@ -79,23 +76,16 @@ namespace Easy14_Programming_Language
                 usings_code.AddRange(code_in_method_code);
                 usings_code_undercode.AddRange(understuff);
                 code_in_method_code = usings_code;
-                understuff = usings_code_undercode;
-                //anyway we will make a folder as a method and a file inside will be it's instructions, though long instructions will take some space
-                /*
-                Console.WriteLine("===TEST1===");
-                Console.WriteLine(string.Join(Environment.NewLine, arr));
-                Console.WriteLine("===TEST2===");
-                Console.WriteLine(string.Join(Environment.NewLine, code_in_method_code));
-                Console.WriteLine("===TESTS ENDED===");
-                */
+                
                 string methodName = code_part_unedited;
                 methodName = methodName.Replace("func", "").TrimStart();
                 methodName = methodName.Substring(0, methodName.IndexOf("("));
-                //Console.WriteLine(methodName);
 
+                code_in_method_code.RemoveAt(0);
+                code_in_method_code.RemoveAt(code_in_method_code.Count - 1);
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}");
                 File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", string.Join(Environment.NewLine, code_in_method_code.ToArray()));
-                //prog.compileCode_fromOtherFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}\INSTRUCTIONS.txt");
+
                 prog.compileCode_fromOtherFiles(null, understuff.ToArray(), 0, true, methodName);
             }
             else
@@ -103,14 +93,14 @@ namespace Easy14_Programming_Language
                 string methodName = code_part_unedited;
                 methodName = methodName.Replace("func", "").TrimStart();
                 methodName = methodName.Substring(0, methodName.IndexOf("("));
-                //Console.WriteLine(methodName);
+                
                 if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}") == false)
                 {
                     Console.WriteLine("ERROR; Can't Find method, make sure you made the method in your code");
                     return;
                 }
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}");
-                //File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{methodName}\INSTRUCTIONS.txt", string.Join(Environment.NewLine, e_code.ToArray()));
+                
                 try {
                     prog.compileCode_fromOtherFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", null, 0, true, methodName);
                 }
@@ -122,22 +112,7 @@ namespace Easy14_Programming_Language
                 List<string> understuff = new List<string>(lines);
                 understuff.RemoveRange(understuff.IndexOf(code_part) , 1);
                 // The Reason why the Above /\ needs to have a "+ 1" at the end is because it will get stuck in a loop, example (CHECK LINE 126);
-                prog.compileCode_fromOtherFiles(null, understuff.ToArray(), 0, true, methodName);
             }
         }
     }
 }
-
-//THE ISSUE FOUND (AND FIXED)
-/* Lets say we have a statement as;
-methodName();
-print("lol");
-print("done");
-
-Then it would get understuff as
-methodName();
-print("lol");
-print("done");
-
-and then it repeats and repeats forever
-*/

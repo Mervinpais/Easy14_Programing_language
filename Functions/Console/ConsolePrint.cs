@@ -69,7 +69,6 @@ namespace Easy14_Programming_Language
             else
                 code_part = code_part.Substring(0, code_part.Length - 1);
 
-            //code_part = code_part.Substring(0, code_part.Length - 1);
             textToPrint = code_part;
             bool isAString = false;
             
@@ -80,15 +79,10 @@ namespace Easy14_Programming_Language
             double textToPrint_double;
             bool isADouble = false;
             bool isADouble2 = false;
-            /*if (foundUsing == true)
-            {*/
+            
             isAString = ((textToPrint.StartsWith("\"") || textToPrint.StartsWith("cl\"")) && textToPrint.EndsWith("\""));
-            //Console.WriteLine(textToPrint.Length / 2);
             if (textToPrint == "")
             {
-                /*Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error: No text was provided to print()");
-                Console.ResetColor();*/
                 Console.WriteLine("");
                 return;
             }
@@ -154,7 +148,7 @@ namespace Easy14_Programming_Language
             }
             
             //=======================START OF MATH FUNCTIONS==========================\\
-            else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString /*&& ((isAnInt || isAnInt2) && (isADouble || isADouble2))*/)
+            else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString)
             {
                 var num1 = textToPrint.Substring(0, (textToPrint.Length / 2 + 1) - 1);
                 var num2 = textToPrint.Substring((textToPrint.Length / 2 - 1) + 2);
@@ -505,7 +499,6 @@ namespace Easy14_Programming_Language
                 Console.WriteLine(textToPrint.Substring(0, textToPrint.Length - 1).Substring(1));
             }
             else if (textToPrint.StartsWith("cl\"") && textToPrint.EndsWith("\"") && isAString && !isAnInt)
-            //example; print(cl"Test");, we just detect if it contains Double Quotes " in the parameter
             {
                 textToPrint = textToPrint.Substring(2).TrimStart();
                 Console.Write(textToPrint.Substring(0, textToPrint.Length - 1).Substring(1));
