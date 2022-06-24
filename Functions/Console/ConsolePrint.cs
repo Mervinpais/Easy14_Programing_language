@@ -13,19 +13,22 @@ namespace Easy14_Programming_Language
         public void interperate(string code_part, string[] textArray = null, string fileloc = null, int lineNumber = -1)
         {
             string endOfStatementCode = ")";
+            
             foreach (string line in configFile)
             {
                 if (line.StartsWith("needSemicolons"))
+                {
                     endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ");" : endOfStatementCode = ")");
-                break;
+                    break;
+                }
             }
-            string code_part_unedited;
+            string code_part_unedited = code_part;
             string textToPrint;
 
-            code_part_unedited = code_part;
-            code_part = code_part_unedited.TrimStart();
+            code_part = code_part.TrimStart();
             bool foundUsing = false;
-            if (code_part.StartsWith($"print("))
+            
+            if (code_part.StartsWith("print("))
             {
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
@@ -514,9 +517,9 @@ namespace Easy14_Programming_Language
                     Console.ResetColor();
                     return;
                 }
-                if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP"))
+                if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\\EASY14_Variables_TEMP"))
                 {
-                    if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP").Length != 0)
+                    if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\\EASY14_Variables_TEMP").Length != 0)
                     {
                         string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP");
                         foreach (string file in files)

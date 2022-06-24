@@ -1,5 +1,5 @@
 ﻿func m() {
-	Console.print("m");
+	Console.print("me");
 }
 
-();
+m();

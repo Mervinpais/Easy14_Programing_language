@@ -30,10 +30,6 @@ public class ExceptionSender
         string typeOfException_str = typeOfException.ToString();
         switch (typeOfException_str)
         {
-            //! NOTE: These codes below are not error codes that meantions a part in memory where the error happened, these erorr codes are for like example;
-            //! - Uh oh, file Math_function1().cs is not found, ERROR CODE: 0x2431 (Not real error code)
-            //* Also The Error codes are in Hexa-Decimal
-
             case "0x000000":
                 Message = $"{typeOfException_str}; No-Error Exception";
                 break;
@@ -123,10 +119,10 @@ public class ExceptionSender
             case "0xF00004":
                 Message = $"{typeOfException_str}; Folder is UnReadable!";
                 break;
-            case "0xF000M1":
+            case "0xF000C1":
                 Message = $"{typeOfException_str}; Method is not Found!";
                 break;
-            case "0xF000V1":
+            case "0xF000C2":
                 Message = $"{typeOfException_str}; Variable is not Found!";
                 break;
 

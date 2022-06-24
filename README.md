@@ -65,6 +65,7 @@
 	<li>input(); ✔️</li>
 	<li>if statements ✔️</li>
 	<li>while statements (not fully tested) ❔</li>
+	<li>method statements</li>
     <li>other Sh!t</li>
 
 </ul>

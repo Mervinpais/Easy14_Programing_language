@@ -619,7 +619,7 @@ namespace Easy14_Programming_Language
             catch
             {
                 ExceptionSender ex_sender = new ExceptionSender();
-                ex_sender.SendException("0xF000M1");
+                ex_sender.SendException("0xF000C1");
             }
 
             /* Removing the first lineIDX lines from the list. */
