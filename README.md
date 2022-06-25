@@ -8,7 +8,6 @@
 
 <hr>
 
-<!--![Easy14 Repository Thumbnail](Images/repo%20github%20thumnail.png)-->
 <img src="Images/repo%20github%20thumnail.png" alt="Easy14 Repository Thumbnail" width="800"></img>
 
 <div class="modern info">
@@ -27,6 +26,12 @@
 <h4> Note; Can't donate yet </h4>
 </div>
 
+<br><br>
+
+<div class="modern important">
+	<h1 class="modern_title">Most bugs have been fixed</h1>
+	<h3>After me deciding to <b>ACTUALLY</b> fix bugs, the languge now is much better with alot of bug fixes!</h3>
+</div>
 <br><br>
 
 <div class="modern info2">

@@ -73,7 +73,6 @@
 
   <ItemGroup>
     <Folder Include="Functions\Audio\" />
-    <Folder Include="Functions\NewFolder\" />
   </ItemGroup>
 
 </Project>

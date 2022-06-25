@@ -32,27 +32,30 @@ namespace Easy14_Programming_Language
                 string integer1_str = null;
                 string integer2_str = null;
 
-                if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP").Length != 0)
+                if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
                 {
-                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP");
-                    foreach (string file in files)
+                    if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP").Length != 0)
                     {
-                        string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
-                        if (_file == intergers[0])
+                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP");
+                        foreach (string file in files)
                         {
-                            integer1_str = File.ReadAllText(file);
-                            //Console.WriteLine(contentInFile.ToString());
-                            break;
+                            string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
+                            if (_file == intergers[0])
+                            {
+                                integer1_str = File.ReadAllText(file);
+                                //Console.WriteLine(contentInFile.ToString());
+                                break;
+                            }
                         }
-                    }
-                    foreach (string file in files)
-                    {
-                        string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
-                        if (_file == intergers[1])
+                        foreach (string file in files)
                         {
-                            integer2_str = File.ReadAllText(file);
-                            //Console.WriteLine(contentInFile.ToString());
-                            break;
+                            string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
+                            if (_file == intergers[1])
+                            {
+                                integer2_str = File.ReadAllText(file);
+                                //Console.WriteLine(contentInFile.ToString());
+                                break;
+                            }
                         }
                     }
                 }

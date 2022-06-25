@@ -948,6 +948,7 @@ namespace Easy14_Programming_Language
                     Console.ResetColor();
                     continue;
                 }
+                
                 else if (line.StartsWith($"Console.print(") || line.StartsWith($"print(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsolePrint conPrint = new ConsolePrint();
@@ -967,6 +968,11 @@ namespace Easy14_Programming_Language
                 {
                     ConsoleExec conExec = new ConsoleExec();
                     conExec.interperate(line, textArray, fileLoc);
+                }
+                else if (line.StartsWith($"Console.beep(") || line.StartsWith($"beep(") && line.EndsWith($"{endOfStatementCode}"))
+                {
+                    ConsoleBeep conBeep = new ConsoleBeep();
+                    conBeep.interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"wait(") && line.EndsWith($"{endOfStatementCode}"))
                 {
@@ -1210,6 +1216,29 @@ namespace Easy14_Programming_Language
                         }
                         allNamespacesAvaiable_array = allNamespacesAvaiable_list_main.ToArray();
                         string theNamespaceOfTheLine = line.Split(".")[0];
+                        if (allNamespacesAvaiable_array.Contains(theNamespaceOfTheLine))
+                        {
+                            int index = Array.IndexOf(allNamespacesAvaiable_array, theNamespaceOfTheLine);
+                            string theClassOfTheLine = line.Split(".")[0];
+                            string theFunctionOfTheLine = line.Split(".")[1];
+                            theFunctionOfTheLine = theFunctionOfTheLine.Replace("(", "").Replace(");", "");
+
+                            //Older
+                            /*Type type_ = Type.GetType(theFunctionOfTheLine);
+                            MethodInfo method = type_.GetMethod("run");
+                            method.Invoke(null, null);*/
+
+                            //Old
+                            //Activator.CreateInstance(Convert.ToString(Assembly.GetExecutingAssembly()), Convert.ToString(Type.GetType(theFunctionOfTheLine)));                            
+
+                            string[] code =
+                            {
+                                $"Easy14_Programming_Language.{theFunctionOfTheLine} myfunc = new Easy14_Programming_Language.{theFunctionOfTheLine}();",
+                                "myfunc.interperate();"
+                            };
+                            CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                            return;
+                        }
                         if (allNamespacesAvaiable_array.Contains(theNamespaceOfTheLine))
                         {
                             int index = Array.IndexOf(allNamespacesAvaiable_array, theNamespaceOfTheLine);

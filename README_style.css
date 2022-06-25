@@ -8,7 +8,7 @@
 {
     border-radius: 10px;
     width: 300px;
-    padding: 2px 50px 10px 50px;
+    padding: 2px 65px 10px 65px;
 }
 
 .modern_title
@@ -31,6 +31,9 @@
 
 .warning {
     background-color: #440000;
+}
+.important {
+    background-color: #9f7200;
 }
 
 li {

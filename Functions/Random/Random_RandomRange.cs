@@ -69,11 +69,12 @@ namespace Easy14_Programming_Language
                 code_part = code_part.Substring(12);
 
             /* Removing the `);` or `)` from the code. */
-            if (endOfStatementCode == ");")
-                code_part = code_part.Substring(0, code_part.Length - 2);
-            else
+            code_part = code_part.Substring(0, code_part.Length - 1);
+            if (code_part.EndsWith(")"))
+            {
                 code_part = code_part.Substring(0, code_part.Length - 1);
-            
+            }
+
             string[] codePart_Array = code_part.Split(',');
             int codePartInt = Convert.ToInt32(codePart_Array[0]);
             int codePartInt2 = Convert.ToInt32(codePart_Array[1]);

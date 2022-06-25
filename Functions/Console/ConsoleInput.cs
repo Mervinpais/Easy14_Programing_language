@@ -73,10 +73,11 @@ namespace Easy14_Programming_Language
             else
                 code_part = code_part.Substring(6);
 
-            if (endOfStatementCode == ");")
-                code_part = code_part.Substring(0, code_part.Length - 2);
-            else
+            code_part = code_part.Substring(0, code_part.Length - 1);
+            if (code_part.EndsWith(")"))
+            {
                 code_part = code_part.Substring(0, code_part.Length - 1);
+            }
 
             textToPrint = code_part;
             bool isAString = false;
@@ -146,363 +147,53 @@ namespace Easy14_Programming_Language
                 }
                 else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString /*&& ((isAnInt || isAnInt2) && (isADouble || isADouble2))*/)
                 {
-                    var num1 = textToPrint.Substring(0, (textToPrint.Length / 2 + 1) - 1);
-                    var num2 = textToPrint.Substring((textToPrint.Length / 2 - 1) + 2);
-                    num1 = num1.TrimEnd().TrimStart();
-                    num2 = num2.TrimEnd().TrimStart();
-                    var number1 = 0.0;
-                    var number2 = 0.0;
-
-                    var contentInFile = "<null>";
-                    var contentInFile2 = "<null>";
-
-                    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
-                    {
-                        if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
-                        {
-                            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
-                            foreach (string file in files)
-                            {
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == num1)
-                                {
-                                    contentInFile = File.ReadAllText(file);
-                                }
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == num2)
-                                {
-                                    contentInFile2 = File.ReadAllText(file);
-                                }
-                            }
-                        }
-                    }
-
-                    if (!isAnInt && !isADouble && !isAString)
-                    {
-                        isAnInt = int.TryParse(contentInFile, out textToPrint_int);
-                        isADouble = double.TryParse(contentInFile, out textToPrint_double);
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number1 = Convert.ToInt32(contentInFile);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number1 = Convert.ToDouble(contentInFile);
-                    }
-                    else
-                    {
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number1 = Convert.ToInt32(num1);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number1 = Convert.ToDouble(num1);
-                    }
-                    if (!isAnInt2 && !isADouble2 && !isAString)
-                    {
-                        isAnInt = int.TryParse(contentInFile2, out textToPrint_int);
-                        isADouble = double.TryParse(contentInFile2, out textToPrint_double);
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number2 = Convert.ToInt32(contentInFile2);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number2 = Convert.ToDouble(contentInFile2);
-                    }
-                    else
-                    {
-                        if (isAnInt2 && !isADouble2) //if the 2nd integer is an Integer and not a decimal
-                            number2 = Convert.ToInt32(num2);
-                        else if ((!isAnInt2 || isAnInt2) && isADouble2)//if the Second number is a decimal regardless of if it is an int/not
-                            number2 = Convert.ToDouble(num2);
-                    }
-
-                    var result = number1 + number2;
+                    Math_Add math_Add = new Math_Add();
+                    var result = math_Add.interperate(textToPrint, -1);
                     Console.WriteLine(result);
                     Console.Write(">");
                     string textFromUser = Console.ReadLine();
                 }
                 else if (textToPrint.Contains("-") && textToPrint.Count(f => (f == '-')) == 1 && !isAString && (isAnInt && isADouble))
                 {
-                    var num1 = textToPrint.Substring(0, (textToPrint.Length / 2 + 1) - 1);
-                    var num2 = textToPrint.Substring((textToPrint.Length / 2 - 1) + 2);
-                    num1 = num1.TrimEnd().TrimStart();
-                    num2 = num2.TrimEnd().TrimStart();
-                    var number1 = 0.0;
-                    var number2 = 0.0;
-
-                    var contentInFile = "<null>";
-                    var contentInFile2 = "<null>";
-
-                    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
-                    {
-                        if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
-                        {
-                            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
-                            foreach (string file in files)
-                            {
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == num1)
-                                {
-                                    contentInFile = File.ReadAllText(file);
-                                }
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == num2)
-                                {
-                                    contentInFile2 = File.ReadAllText(file);
-                                }
-                            }
-                        }
-                    }
-
-                    if (!isAnInt && !isADouble && !isAString)
-                    {
-                        isAnInt = int.TryParse(contentInFile, out textToPrint_int);
-                        isADouble = double.TryParse(contentInFile, out textToPrint_double);
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number1 = Convert.ToInt32(contentInFile);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number1 = Convert.ToDouble(contentInFile);
-                    }
-                    else
-                    {
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number1 = Convert.ToInt32(num1);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number1 = Convert.ToDouble(num1);
-                    }
-                    if (!isAnInt2 && !isADouble2 && !isAString)
-                    {
-                        isAnInt = int.TryParse(contentInFile2, out textToPrint_int);
-                        isADouble = double.TryParse(contentInFile2, out textToPrint_double);
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number2 = Convert.ToInt32(contentInFile2);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number2 = Convert.ToDouble(contentInFile2);
-                    }
-                    else
-                    {
-                        if (isAnInt2 && !isADouble2) //if the 2nd integer is an Integer and not a decimal
-                            number2 = Convert.ToInt32(num2);
-                        else if ((!isAnInt2 || isAnInt2) && isADouble2)//if the Second number is a decimal regardless of if it is an int/not
-                            number2 = Convert.ToDouble(num2);
-                    }
-
-                    var result = number1 - number2;
+                    Math_Subtract math_Subtract = new Math_Subtract();
+                    var result = math_Subtract.interperate(textToPrint, -1);
                     Console.WriteLine(result);
                     Console.Write(">");
                     string textFromUser = Console.ReadLine();
                 }
                 else if (textToPrint.Contains("*") && textToPrint.Count(f => (f == '*')) == 1 && !isAString && (isAnInt && isADouble))
                 {
-                    var num1 = textToPrint.Substring(0, (textToPrint.Length / 2 + 1) - 1);
-                    var num2 = textToPrint.Substring((textToPrint.Length / 2 - 1) + 2);
-                    num1 = num1.TrimEnd().TrimStart();
-                    num2 = num2.TrimEnd().TrimStart();
-                    var number1 = 0.0;
-                    var number2 = 0.0;
-
-                    var contentInFile = "<null>";
-                    var contentInFile2 = "<null>";
-
-                    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
-                    {
-                        if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
-                        {
-                            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
-                            foreach (string file in files)
-                            {
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == num1)
-                                {
-                                    contentInFile = File.ReadAllText(file);
-                                }
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == num2)
-                                {
-                                    contentInFile2 = File.ReadAllText(file);
-                                }
-                            }
-                        }
-                    }
-
-                    if (!isAnInt && !isADouble && !isAString)
-                    {
-                        isAnInt = int.TryParse(contentInFile, out textToPrint_int);
-                        isADouble = double.TryParse(contentInFile, out textToPrint_double);
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number1 = Convert.ToInt32(contentInFile);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number1 = Convert.ToDouble(contentInFile);
-                    }
-                    else
-                    {
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number1 = Convert.ToInt32(num1);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number1 = Convert.ToDouble(num1);
-                    }
-                    if (!isAnInt2 && !isADouble2 && !isAString)
-                    {
-                        isAnInt = int.TryParse(contentInFile2, out textToPrint_int);
-                        isADouble = double.TryParse(contentInFile2, out textToPrint_double);
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number2 = Convert.ToInt32(contentInFile2);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number2 = Convert.ToDouble(contentInFile2);
-                    }
-                    else
-                    {
-                        if (isAnInt2 && !isADouble2) //if the 2nd integer is an Integer and not a decimal
-                            number2 = Convert.ToInt32(num2);
-                        else if ((!isAnInt2 || isAnInt2) && isADouble2)//if the Second number is a decimal regardless of if it is an int/not
-                            number2 = Convert.ToDouble(num2);
-                    }
-
-                    var result = number1 * number2;
+                    Math_Multiply math_Multiply = new Math_Multiply();
+                    var result = math_Multiply.interperate(textToPrint, -1);
                     Console.WriteLine(result);
                     Console.Write(">");
                     string textFromUser = Console.ReadLine();
                 }
                 else if (textToPrint.Contains("/") && textToPrint.Count(f => (f == '/')) == 1 && !isAString && (isAnInt && isADouble))
                 {
-                    var num1 = textToPrint.Substring(0, (textToPrint.Length / 2 + 1) - 1);
-                    var num2 = textToPrint.Substring((textToPrint.Length / 2 - 1) + 2);
-                    num1 = num1.TrimEnd().TrimStart();
-                    num2 = num2.TrimEnd().TrimStart();
-                    var number1 = 0.0;
-                    var number2 = 0.0;
-
-                    var contentInFile = "<null>";
-                    var contentInFile2 = "<null>";
-
-                    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
-                    {
-                        if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
-                        {
-                            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
-                            foreach (string file in files)
-                            {
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == num1)
-                                {
-                                    contentInFile = File.ReadAllText(file);
-                                }
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == num2)
-                                {
-                                    contentInFile2 = File.ReadAllText(file);
-                                }
-                            }
-                        }
-                    }
-
-                    if (!isAnInt && !isADouble && !isAString)
-                    {
-                        isAnInt = int.TryParse(contentInFile, out textToPrint_int);
-                        isADouble = double.TryParse(contentInFile, out textToPrint_double);
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number1 = Convert.ToInt32(contentInFile);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number1 = Convert.ToDouble(contentInFile);
-                    }
-                    else
-                    {
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number1 = Convert.ToInt32(num1);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number1 = Convert.ToDouble(num1);
-                    }
-                    if (!isAnInt2 && !isADouble2 && !isAString)
-                    {
-                        isAnInt = int.TryParse(contentInFile2, out textToPrint_int);
-                        isADouble = double.TryParse(contentInFile2, out textToPrint_double);
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number2 = Convert.ToInt32(contentInFile2);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number2 = Convert.ToDouble(contentInFile2);
-                    }
-                    else
-                    {
-                        if (isAnInt2 && !isADouble2) //if the 2nd integer is an Integer and not a decimal
-                            number2 = Convert.ToInt32(num2);
-                        else if ((!isAnInt2 || isAnInt2) && isADouble2)//if the Second number is a decimal regardless of if it is an int/not
-                            number2 = Convert.ToDouble(num2);
-                    }
-
-                    var result = number1 / number2;
+                    Math_Divide math_Divide = new Math_Divide();
+                    var result = math_Divide.interperate(textToPrint, -1);
                     Console.WriteLine(result);
                     Console.Write(">");
                     string textFromUser = Console.ReadLine();
                 }
                 else if (textToPrint.Contains("%") && textToPrint.Count(f => (f == '%')) == 1 && !isAString && (isAnInt && isADouble))
                 {
-                    var num1 = textToPrint.Substring(0, (textToPrint.Length / 2 + 1) - 1);
-                    var num2 = textToPrint.Substring((textToPrint.Length / 2 - 1) + 2);
-                    num1 = num1.TrimEnd().TrimStart();
-                    num2 = num2.TrimEnd().TrimStart();
-                    var number1 = 0.0;
-                    var number2 = 0.0;
-
-                    var contentInFile = "<null>";
-                    var contentInFile2 = "<null>";
-
-                    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
-                    {
-                        if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
-                        {
-                            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
-                            foreach (string file in files)
-                            {
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == num1)
-                                {
-                                    contentInFile = File.ReadAllText(file);
-                                }
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == num2)
-                                {
-                                    contentInFile2 = File.ReadAllText(file);
-                                }
-                            }
-                        }
-                    }
-
-                    if (!isAnInt && !isADouble && !isAString)
-                    {
-                        isAnInt = int.TryParse(contentInFile, out textToPrint_int);
-                        isADouble = double.TryParse(contentInFile, out textToPrint_double);
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number1 = Convert.ToInt32(contentInFile);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number1 = Convert.ToDouble(contentInFile);
-                    }
-                    else
-                    {
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number1 = Convert.ToInt32(num1);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number1 = Convert.ToDouble(num1);
-                    }
-                    if (!isAnInt2 && !isADouble2 && !isAString)
-                    {
-                        isAnInt = int.TryParse(contentInFile2, out textToPrint_int);
-                        isADouble = double.TryParse(contentInFile2, out textToPrint_double);
-                        if (isAnInt && !isADouble) //if is an Integer but not a decimal
-                            number2 = Convert.ToInt32(contentInFile2);
-                        else if ((!isAnInt || isAnInt) && isADouble) //if is a decimal regardless of if it is an int/not
-                            number2 = Convert.ToDouble(contentInFile2);
-                    }
-                    else
-                    {
-                        if (isAnInt2 && !isADouble2) //if the 2nd integer is an Integer and not a decimal
-                            number2 = Convert.ToInt32(num2);
-                        else if ((!isAnInt2 || isAnInt2) && isADouble2)//if the Second number is a decimal regardless of if it is an int/not
-                            number2 = Convert.ToDouble(num2);
-                    }
-
-                    var result = number1 % number2;
+                    Math_Module math_Module = new Math_Module();
+                    var result = math_Module.interperate(textToPrint, -1);
                     Console.WriteLine(result);
                     Console.Write(">");
                     string textFromUser = Console.ReadLine();
                 }
                 else if (textToPrint.Contains("==") && textToPrint.Count(f => (f == '=')) == 2)
                 {
-                    //basically an if statement in a print statement and the result is either true or false, nothing in between or there will be an error
-                    var comparer = textToPrint.Substring(0, textToPrint.IndexOf("==") - 1);
-                    var comparee = textToPrint.Substring(textToPrint.IndexOf("==") + 2);
-                    comparer = comparer.TrimEnd().TrimStart();
-                    comparee = comparee.TrimEnd().TrimStart();
-                    var result = comparer == comparee;
+                    Math_Equals math_Equals = new Math_Equals();
+                    var result = math_Equals.interperate(textToPrint, -1);
                     Console.WriteLine(result);
                     Console.Write(">");
                     string textFromUser = Console.ReadLine();
                 }
                 else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\"") && isAString && !isAnInt)
-                //example; print("Test");, we just detect if it contains Double Quotes " in the parameter
                 {
                     Console.WriteLine(textToPrint.Substring(0, textToPrint.Length - 1).Substring(1));
                     Console.Write(">");

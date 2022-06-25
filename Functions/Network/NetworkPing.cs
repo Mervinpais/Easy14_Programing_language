@@ -50,7 +50,12 @@ namespace Easy14_Programming_Language
             else if (code_part.StartsWith($"Ping("))
                 line_ = line_.Substring(5);
 
-            line_ = line_.Substring(0, line_.Length - 2);
+            code_part = code_part.Substring(0, code_part.Length - 1);
+            if (code_part.EndsWith(")"))
+            {
+                code_part = code_part.Substring(0, code_part.Length - 1);
+            }
+            
             textToPrint = line_;
             if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
             {

@@ -59,11 +59,12 @@ namespace Easy14_Programming_Language
             else if (code_part_unedited.StartsWith($"IsLeapYear("))
                 code_part = code_part.Substring(11);
 
-            if (endOfStatementCode == ");")
-                code_part = code_part.Substring(0, code_part.Length - 2);
-            else
+            code_part = code_part.Substring(0, code_part.Length - 1);
+            if (code_part.EndsWith(")"))
+            {
                 code_part = code_part.Substring(0, code_part.Length - 1);
-            
+            }
+
             int codePartInt = Convert.ToInt32(code_part);
             if (codePartInt.ToString().Length > 4)
             {
