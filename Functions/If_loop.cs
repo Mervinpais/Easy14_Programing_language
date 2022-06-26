@@ -12,13 +12,13 @@ namespace Easy14_Programming_Language
         /// This function takes in a string, an array of strings, an array of strings, a string, a
         /// boolean, and a string.
         /// </summary>
-        /// <param name="code_part">The code part that is being interperated.</param>
+        /// <param name="code_part">The code part that is being Interperated.</param>
         /// <param name="lines">The lines of the code</param>
         /// <param name="textArray">The array of strings that contains the code.</param>
         /// <param name="fileloc">The location of the file</param>
         /// <param name="isInAMethod">If the code is in a method, this is true.</param>
         /// <param name="methodName">The name of the method that the code is in.</param>
-        public void interperate(string code_part, string[] lines, string[] textArray, string fileloc, bool isInAMethod = false, string methodName = "}")
+        public void Interperate(string code_part, string[] lines, string[] textArray, string fileloc, bool isInAMethod = false, string methodName = "}")
         {
             string code_part_unedited = code_part;
             int end_line_IDX = 0;
@@ -128,7 +128,7 @@ namespace Easy14_Programming_Language
 
                 if (true)
                 {
-                    prog.compileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
+                    prog.CompileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
                     System.Threading.Thread.Sleep(100);
                 }
             }
@@ -169,7 +169,7 @@ namespace Easy14_Programming_Language
                 {
                     //Yes C#, i wnat this code to be unreachable ok? :)
                     #pragma warning disable CS0162 // Unreachable code detected
-                    prog.compileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
+                    prog.CompileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
                     #pragma warning restore CS0162 // Unreachable code detected
                     System.Threading.Thread.Sleep(100);
                 }
@@ -224,7 +224,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
                     }
                 }
 
@@ -236,7 +236,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable && obj2_variable)
@@ -247,7 +247,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
                     }
                 }
 
@@ -259,7 +259,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(fileloc, Code_in_if_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(fileloc, Code_in_if_statement_List.ToArray());
                     }
                 }
 
@@ -269,7 +269,7 @@ namespace Easy14_Programming_Language
 
                 if (isInAMethod != true)
                 {
-                    prog.compileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
+                    prog.CompileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
                 }
             }
 
@@ -325,7 +325,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == false && obj2_variable == true)
@@ -336,7 +336,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == true && obj2_variable == true)
@@ -347,7 +347,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == false && obj2_variable == false)
@@ -360,7 +360,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(fileloc, Code_in_if_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(fileloc, Code_in_if_statement_List.ToArray());
                     }
                 }
 
@@ -379,7 +379,7 @@ namespace Easy14_Programming_Language
 
                 if (isInAMethod != true)
                 {
-                    prog.compileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
+                    prog.CompileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
                 }
             }
         }

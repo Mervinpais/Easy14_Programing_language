@@ -4,9 +4,9 @@ namespace Easy14_Programming_Language
 {
     public class myFunc
     {
-        public void interperate()
+        public void Interperate()
         {
-            Console.WriteLine("Ears are cute!");
+            Console.WriteLine("This Custom function works!");
         }
 
     }

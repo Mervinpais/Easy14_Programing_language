@@ -27,7 +27,7 @@ namespace Easy14_Programming_Language
             set { endOfStatementCode_ = value; }
         }
 
-        public void interperate(string code_part, string[] lines, string varName)
+        public void Interperate(string code_part, string[] lines, string varName)
         {
             string code_part_unedited = code_part;
             code_part = code_part.TrimStart();

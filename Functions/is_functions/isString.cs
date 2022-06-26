@@ -4,7 +4,7 @@ namespace Easy14_Programming_Language
 {
     class isString
     {
-        public bool interperate(string str)
+        public bool Interperate(string str)
         {
             if (str is string)
             {

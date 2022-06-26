@@ -10,7 +10,7 @@ namespace Easy14_Programming_Language
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
         
-        public void interperate(string code_part, string[] textArray, string fileloc, int lineNumber = -1)
+        public void Interperate(string code_part, string[] textArray, string fileloc, int lineNumber = -1)
         {
             string endOfStatementCode = ")";
             foreach (string line in configFile)
@@ -81,7 +81,7 @@ namespace Easy14_Programming_Language
             try
             {
                 //Console.WriteLine(DateTime.Now);
-                prog.compileCode_fromOtherFiles(null, execArray);
+                prog.CompileCode_fromOtherFiles(null, execArray);
             }
             catch
             {

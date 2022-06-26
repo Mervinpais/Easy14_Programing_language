@@ -4,7 +4,7 @@ namespace Easy14_Programming_Language
 {
     class isInt
     {
-        public bool interperate(int? integer)
+        public bool Interperate(int? integer)
         {
             if (integer is int)
             {

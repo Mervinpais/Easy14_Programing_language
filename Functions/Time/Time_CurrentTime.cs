@@ -6,7 +6,7 @@ namespace Easy14_Programming_Language
 {
     class Time_CurrentTime
     {
-        public string interperate(string code_part, string[] textArray, string fileloc)
+        public string Interperate(string code_part, string[] textArray, string fileloc)
         {
             string endOfStatementCode = ")";
             string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");

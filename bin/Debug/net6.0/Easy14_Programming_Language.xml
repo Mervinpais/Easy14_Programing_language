@@ -26,23 +26,32 @@
             the text string.</param>
             <param name="typeOfError"></param>
         </member>
-        <member name="M:Easy14_Programming_Language.If_Loop.interperate(System.String,System.String[],System.String[],System.String,System.Boolean,System.String)">
+        <member name="M:Easy14_Programming_Language.ConsolePrint.Interperate(System.String,System.String[],System.String,System.Int32)">
+            <summary>
+            Interperates whatever input is given
+            </summary>
+            <param name="code_part"></param>
+            <param name="textArray"></param>
+            <param name="fileloc"></param>
+            <param name="lineNumber"></param>
+        </member>
+        <member name="M:Easy14_Programming_Language.If_Loop.Interperate(System.String,System.String[],System.String[],System.String,System.Boolean,System.String)">
             <summary>
             This function takes in a string, an array of strings, an array of strings, a string, a
             boolean, and a string.
             </summary>
-            <param name="code_part">The code part that is being interperated.</param>
+            <param name="code_part">The code part that is being Interperated.</param>
             <param name="lines">The lines of the code</param>
             <param name="textArray">The array of strings that contains the code.</param>
             <param name="fileloc">The location of the file</param>
             <param name="isInAMethod">If the code is in a method, this is true.</param>
             <param name="methodName">The name of the method that the code is in.</param>
         </member>
-        <member name="M:Easy14_Programming_Language.Random_RandomRange.interperate(System.String,System.String[],System.String)">
+        <member name="M:Easy14_Programming_Language.Random_RandomRange.Interperate(System.String,System.String[],System.String)">
             <summary>
             It takes a string, an array of strings, and a string, and returns a string.
             </summary>
-            <param name="code_part">The code that is being interperated</param>
+            <param name="code_part">The code that is being Interperated</param>
             <param name="textArray">The array of strings that contains the code.</param>
             <param name="fileloc">The location of the file</param>
         </member>
@@ -66,11 +75,11 @@
             Clean up the resources that were created.
             </summary>
         </member>
-        <member name="M:Easy14_Programming_Language.VariableCode.interperate(System.String,System.String[],System.Int32)">
+        <member name="M:Easy14_Programming_Language.VariableCode.Interperate(System.String,System.String[],System.Int32)">
             <summary>
             It takes a string, an array of strings, and an integer, and does something with them.
             </summary>
-            <param name="code_part">The part of the code that is being interperated.</param>
+            <param name="code_part">The part of the code that is being Interperated.</param>
             <param name="lines">The lines of code</param>
             <param name="line_count">The line number of the code_part</param>
         </member>
@@ -81,7 +90,7 @@
         </member>
         <member name="F:Easy14_Programming_Language.Program.showCommands">
             <summary>
-            showCommands is a variable that shows all the commands that are executed by the user (only when running files, not with the intractive interperater)
+            showCommands is a variable that shows all the commands that are executed by the user (only when running files, not with the intractive Interperater)
             </summary>
         </member>
         <member name="F:Easy14_Programming_Language.Program.previewTheFile">
@@ -89,7 +98,7 @@
             previewTheFile is a variable that instead of running the code, lets you preview what the file looks like
             </summary>
         </member>
-        <member name="M:Easy14_Programming_Language.Program.compileCode_fromOtherFiles(System.String,System.String[],System.Int32,System.Boolean,System.String)">
+        <member name="M:Easy14_Programming_Language.Program.CompileCode_fromOtherFiles(System.String,System.String[],System.Int32,System.Boolean,System.String)">
             <summary>
             This function is used to compile code from other files
             </summary>

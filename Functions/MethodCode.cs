@@ -10,8 +10,9 @@ namespace Easy14_Programming_Language
          * CHANGLE LOG 24/6/2022;
          * Code will/has  be/been refactored for better readablilty and easier to understand
          */
-        Program prog = new Program();
-        public void interperate(string code_part, string[] textArray, string[] lines, string fileloc, bool Making_A_Method)
+        
+        readonly Program prog = new Program();
+        public void Interperate(string code_part, string[] textArray, string[] lines, string fileloc, bool Making_A_Method)
         {
             string code_part_unedited = code_part;
 
@@ -34,7 +35,9 @@ namespace Easy14_Programming_Language
                 }
                 
                 int underStuff_lineCounterr = 0;
+                #pragma warning disable IDE0090 // Use 'new(...)'
                 List<string> understuff = new List<string>(method_lines_list);
+                #pragma warning restore IDE0090 // Use 'new(...)'
                 foreach (string line__ in understuff)
                 {
                     underStuff_lineCounterr++;
@@ -69,8 +72,6 @@ namespace Easy14_Programming_Language
                     }
                     usingsCodeList_lineCount++;
                 }
-
-                string[] arr = method_lines_list.ToArray();
                 
                 List<string> code_in_method_code = method_lines_list.GetRange(1, last_line_Index - 1);
                 List<string> usings_code = usingsCode_list.GetRange(0, usingsCodeList_lineCount);
@@ -83,21 +84,21 @@ namespace Easy14_Programming_Language
                 string methodName = code_part_unedited;
                 methodName = methodName.Replace("func", "");
                 methodName = methodName.TrimStart();
-                methodName = methodName.Substring(0, methodName.IndexOf("("));
+                methodName = methodName[..methodName.IndexOf("(")];
 
                 code_in_method_code.RemoveAt(0);
                 code_in_method_code.RemoveAt(code_in_method_code.Count - 1);
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}");
                 File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", string.Join(Environment.NewLine, code_in_method_code.ToArray()));
 
-                prog.compileCode_fromOtherFiles(null, understuff.ToArray(), 0, true, methodName);
+                prog.CompileCode_fromOtherFiles(null, understuff.ToArray(), 0, true, methodName);
             }
             else
             {
                 string methodName = code_part_unedited;
                 methodName = methodName.Replace("func", "");
                 methodName = methodName.TrimStart();
-                methodName = methodName.Substring(0, methodName.IndexOf("("));
+                methodName = methodName[..methodName.IndexOf("(")];
                 
                 if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}"))
                 {
@@ -107,7 +108,7 @@ namespace Easy14_Programming_Language
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}");
                 
                 try {
-                    prog.compileCode_fromOtherFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", null, 0, true, methodName);
+                    prog.CompileCode_fromOtherFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", null, 0, true, methodName);
                 }
                 catch
                 {

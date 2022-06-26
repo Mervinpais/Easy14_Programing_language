@@ -8,9 +8,9 @@ namespace Easy14_Programming_Language
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
-        static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
+        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
         
-        public void interperate(string code_part, string[] textArray, string fileloc, string varName, int lineNumber = -1)
+        public void Interperate(string code_part, string[] textArray, string fileloc, string varName, int lineNumber = -1)
         {
             string endOfStatementCode = ")";
             foreach (string line in configFile)
@@ -148,7 +148,7 @@ namespace Easy14_Programming_Language
                 else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString /*&& ((isAnInt || isAnInt2) && (isADouble || isADouble2))*/)
                 {
                     Math_Add math_Add = new Math_Add();
-                    var result = math_Add.interperate(textToPrint, -1);
+                    var result = math_Add.Interperate(textToPrint, -1);
                     Console.WriteLine(result);
                     Console.Write(">");
                     string textFromUser = Console.ReadLine();
@@ -156,7 +156,7 @@ namespace Easy14_Programming_Language
                 else if (textToPrint.Contains("-") && textToPrint.Count(f => (f == '-')) == 1 && !isAString && (isAnInt && isADouble))
                 {
                     Math_Subtract math_Subtract = new Math_Subtract();
-                    var result = math_Subtract.interperate(textToPrint, -1);
+                    var result = math_Subtract.Interperate(textToPrint, -1);
                     Console.WriteLine(result);
                     Console.Write(">");
                     string textFromUser = Console.ReadLine();
@@ -164,7 +164,7 @@ namespace Easy14_Programming_Language
                 else if (textToPrint.Contains("*") && textToPrint.Count(f => (f == '*')) == 1 && !isAString && (isAnInt && isADouble))
                 {
                     Math_Multiply math_Multiply = new Math_Multiply();
-                    var result = math_Multiply.interperate(textToPrint, -1);
+                    var result = math_Multiply.Interperate(textToPrint, -1);
                     Console.WriteLine(result);
                     Console.Write(">");
                     string textFromUser = Console.ReadLine();
@@ -172,7 +172,7 @@ namespace Easy14_Programming_Language
                 else if (textToPrint.Contains("/") && textToPrint.Count(f => (f == '/')) == 1 && !isAString && (isAnInt && isADouble))
                 {
                     Math_Divide math_Divide = new Math_Divide();
-                    var result = math_Divide.interperate(textToPrint, -1);
+                    var result = math_Divide.Interperate(textToPrint, -1);
                     Console.WriteLine(result);
                     Console.Write(">");
                     string textFromUser = Console.ReadLine();
@@ -180,7 +180,7 @@ namespace Easy14_Programming_Language
                 else if (textToPrint.Contains("%") && textToPrint.Count(f => (f == '%')) == 1 && !isAString && (isAnInt && isADouble))
                 {
                     Math_Module math_Module = new Math_Module();
-                    var result = math_Module.interperate(textToPrint, -1);
+                    var result = math_Module.Interperate(textToPrint, -1);
                     Console.WriteLine(result);
                     Console.Write(">");
                     string textFromUser = Console.ReadLine();
@@ -188,7 +188,7 @@ namespace Easy14_Programming_Language
                 else if (textToPrint.Contains("==") && textToPrint.Count(f => (f == '=')) == 2)
                 {
                     Math_Equals math_Equals = new Math_Equals();
-                    var result = math_Equals.interperate(textToPrint, -1);
+                    var result = math_Equals.Interperate(textToPrint, -1);
                     Console.WriteLine(result);
                     Console.Write(">");
                     string textFromUser = Console.ReadLine();

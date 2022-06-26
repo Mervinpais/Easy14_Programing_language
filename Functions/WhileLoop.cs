@@ -7,7 +7,7 @@ namespace Easy14_Programming_Language
     class WhileLoop
     {
         Program prog = new Program();
-        public void interperate(string code_part, string[] textArray, string[] lines, string fileloc)
+        public void Interperate(string code_part, string[] textArray, string[] lines, string fileloc)
         {
             string code_part_unedited;
             //string textToPrint;
@@ -129,7 +129,7 @@ namespace Easy14_Programming_Language
 
                 while (true)
                 {
-                    prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
+                    prog.CompileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     System.Threading.Thread.Sleep(100); //Just to not cause a stackoverflow/lag the computer
                 }
             }
@@ -193,7 +193,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_while_statement_List);
                         Code_in_while_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == false && obj2_variable == true)
@@ -205,7 +205,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_while_statement_List);
                         Code_in_while_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == true && obj2_variable == true)
@@ -216,7 +216,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_while_statement_List);
                         Code_in_while_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                         obj1_fileContent = File.ReadAllText(dir + $"\\{obj1}.txt");
                         obj2_fileContent = File.ReadAllText(dir + $"\\{obj2}.txt");
                     }
@@ -231,7 +231,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_while_statement_List);
                         Code_in_while_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 //understuff.RemoveRange(0, end_line_IDX);
@@ -239,7 +239,7 @@ namespace Easy14_Programming_Language
                 code_toContinueExceuting.AddRange(usings_lines_list);
                 code_toContinueExceuting.AddRange(understuff);
 
-                prog.compileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
+                prog.CompileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
             }
             else if (while_Line.Contains("!="))
             {
@@ -300,7 +300,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_while_statement_List);
                         Code_in_while_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == false && obj2_variable == true)
@@ -311,7 +311,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_while_statement_List);
                         Code_in_while_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == true && obj2_variable == true)
@@ -322,7 +322,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_while_statement_List);
                         Code_in_while_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 else if (obj1_variable == false && obj2_variable == false)
@@ -333,7 +333,7 @@ namespace Easy14_Programming_Language
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_while_statement_List);
                         Code_in_while_statement_List = usings_code;
-                        prog.compileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
+                        prog.CompileCode_fromOtherFiles(null, Code_in_while_statement_List.ToArray());
                     }
                 }
                 //understuff.RemoveRange(0, end_line_IDX);
@@ -341,7 +341,7 @@ namespace Easy14_Programming_Language
                 code_toContinueExceuting.AddRange(usings_lines_list);
                 code_toContinueExceuting.AddRange(understuff);
 
-                prog.compileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
+                prog.CompileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
             }
         }
     }

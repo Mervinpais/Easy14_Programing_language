@@ -1,5 +1,5 @@
 [CURRENT VERSION]
-2.7
+2.8
 
 //By date of version install, i mean when the last time this version was updated (not when you installed the update, when i released the current version update)
 [DATE OF VERSION INSTALLED]

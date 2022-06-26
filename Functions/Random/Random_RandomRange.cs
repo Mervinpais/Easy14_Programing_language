@@ -9,10 +9,10 @@ namespace Easy14_Programming_Language
         /// <summary>
         /// It takes a string, an array of strings, and a string, and returns a string.
         /// </summary>
-        /// <param name="code_part">The code that is being interperated</param>
+        /// <param name="code_part">The code that is being Interperated</param>
         /// <param name="textArray">The array of strings that contains the code.</param>
         /// <param name="fileloc">The location of the file</param>
-        public string interperate(string code_part, string[] textArray, string fileloc)
+        public string Interperate(string code_part, string[] textArray, string fileloc)
         {
             string endOfStatementCode = ")";
             string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");

@@ -4,7 +4,7 @@ namespace Easy14_Programming_Language
 {
     class isBool
     {
-        public bool interperate(bool? boolean)
+        public bool Interperate(bool? boolean)
         {
             if (boolean is bool)
             {

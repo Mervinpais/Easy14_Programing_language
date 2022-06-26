@@ -6,7 +6,7 @@ namespace Easy14_Programming_Language
 {
     class NetworkPing
     {
-        public void interperate(string code_part, string fileloc, string[] textArray, int line_count)
+        public void Interperate(string code_part, string fileloc, string[] textArray, int line_count)
         {
             string code_part_unedited;
             string textToPrint;

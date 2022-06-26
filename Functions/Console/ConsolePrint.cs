@@ -8,9 +8,16 @@ namespace Easy14_Programming_Language
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
-        static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
+        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
-        public void interperate(string code_part, string[] textArray = null, string fileloc = null, int lineNumber = -1)
+        /// <summary>
+        /// Interperates whatever input is given
+        /// </summary>
+        /// <param name="code_part"></param>
+        /// <param name="textArray"></param>
+        /// <param name="fileloc"></param>
+        /// <param name="lineNumber"></param>
+        public static void Interperate(string code_part, string[] textArray = null, string fileloc = null, int lineNumber = -1)
         {
             string endOfStatementCode = ")";
             
@@ -153,38 +160,38 @@ namespace Easy14_Programming_Language
             else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString)
             {
                 Math_Add math_Add = new Math_Add();
-                var result = math_Add.interperate(textToPrint, -1);
+                var result = math_Add.Interperate(textToPrint, -1);
                 Console.WriteLine(result);
             }
             else if (textToPrint.Contains("-") && textToPrint.Count(f => (f == '-')) == 1 && !isAString && (isAnInt && isADouble))
             {
                 Math_Subtract math_Subtract = new Math_Subtract();
-                var result = math_Subtract.interperate(textToPrint, -1);
+                var result = math_Subtract.Interperate(textToPrint, -1);
                 Console.WriteLine(result);
             }
             else if (textToPrint.Contains("*") && textToPrint.Count(f => (f == '*')) == 1 && !isAString && (isAnInt && isADouble))
             {
                 Math_Multiply math_Multiply = new Math_Multiply();
-                var result = math_Multiply.interperate(textToPrint, -1);
+                var result = math_Multiply.Interperate(textToPrint, -1);
                 Console.WriteLine(result);
             }
             else if (textToPrint.Contains("/") && textToPrint.Count(f => (f == '/')) == 1 && !isAString && (isAnInt && isADouble))
             {
                 Math_Divide math_Divide = new Math_Divide();
-                var result = math_Divide.interperate(textToPrint, -1);
+                var result = math_Divide.Interperate(textToPrint, -1);
                 Console.WriteLine(result);
             }
             else if (textToPrint.Contains("%") && textToPrint.Count(f => (f == '%')) == 1 && !isAString && (isAnInt && isADouble))
             {
                 Math_Module math_Modulo = new Math_Module();
-                var result = math_Modulo.interperate(textToPrint, -1);
+                var result = math_Modulo.Interperate(textToPrint, -1);
                 Console.WriteLine(result);
             }
             //=======================END OF MATH FUNCTIONS==========================\\
             else if (textToPrint.Contains("==") && textToPrint.Count(f => (f == '=')) == 2)
             {
                 Math_Equals math_Equals = new Math_Equals();
-                var result = math_Equals.interperate(textToPrint, -1);
+                var result = math_Equals.Interperate(textToPrint, -1);
                 Console.WriteLine(result);
             }
             else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\"") && isAString && !isAnInt)

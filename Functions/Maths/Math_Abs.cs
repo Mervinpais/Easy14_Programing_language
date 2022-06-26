@@ -7,9 +7,9 @@ namespace Easy14_Programming_Language
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
-        static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
+        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
         
-        public double interperate(string code_part, int lineNumber, string fileName = null)
+        public double Interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;
 

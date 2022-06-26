@@ -18,7 +18,7 @@ namespace Easy14_Programming_Language
     public class Program
     {
         /// <summary>
-        /// showCommands is a variable that shows all the commands that are executed by the user (only when running files, not with the intractive interperater)
+        /// showCommands is a variable that shows all the commands that are executed by the user (only when running files, not with the intractive Interperater)
         /// </summary>
         public static bool showCommands = false;
         /// <summary>
@@ -30,7 +30,7 @@ namespace Easy14_Programming_Language
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
 
-        static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
+        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
         static void Main(string[] args)
         {
@@ -115,7 +115,7 @@ namespace Easy14_Programming_Language
                         {
                             filePath = args[1..itemCount];
                         }
-                        itemCount = itemCount + 1;
+                        itemCount++;
                     }
                     Console.WriteLine($"==== {DateTime.Now} | {filePath[filePath.Length - 1]} ====\n");
 
@@ -139,7 +139,7 @@ namespace Easy14_Programming_Language
                         }
                         if (!previewTheFile)
                         {
-                            compileCode(String.Join(" ", filePath));
+                            CompileCode(String.Join(" ", filePath));
                         }
                         else
                         {
@@ -224,20 +224,16 @@ namespace Easy14_Programming_Language
                     }
                     if (command.StartsWith("send_exception("))
                     {
-                        foreach (string line in configFile)
-                        {
-                            string exceptionToSend_str = command.Replace("send_exception(", "");
-                            exceptionToSend_str = exceptionToSend_str.Substring(0, exceptionToSend_str.Length - 2);
-                            int exceptionToSend_int = Convert.ToInt32(exceptionToSend_str, 16);
-                            ExceptionSender es = new ExceptionSender();
-                            es.SendException(exceptionToSend_str);
-                            break;
-                        }
+                        string exceptionToSend_str = command.Replace("send_exception(", "");
+                        exceptionToSend_str = exceptionToSend_str[..^2];
+                        ExceptionSender es = new ExceptionSender();
+                        es.SendException(exceptionToSend_str);
+                        break;
                     }
                     else if (command.ToLower().StartsWith("/run") || command.ToLower().StartsWith("-run"))
                     {
                         Program prog = new Program();
-                        prog.compileCode_fromOtherFiles(command.Replace("/run", "").Replace("-run", "").TrimStart());
+                        prog.CompileCode_fromOtherFiles(command.Replace("/run", "").Replace("-run", "").TrimStart());
                     }
                     else if (command.ToLower() == "/help" || command.ToLower() == "-help")
                     {
@@ -269,7 +265,7 @@ namespace Easy14_Programming_Language
                         AppInformation appInfo = new AppInformation();
                         appInfo.ShowInfo();
                     }
-                    else if (command.Contains("\n")) //This is impossible since pasting a multiline will just paste one lines, then will automatically hit enter and continue on
+                    else if (command.Contains('\n')) //This is impossible since pasting a multiline will just paste one lines, then will automatically hit enter and continue on
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("ERROR; Easy14 Interactive Cannot run multiline code \n");
@@ -285,7 +281,7 @@ namespace Easy14_Programming_Language
                             List<string> allNamespacesAvaiable_list = new List<string>();
                             foreach (string namespace_ in allNamespacesAvaiable_array)
                             {
-                                allNamespacesAvaiable_list.Add("using " + namespace_.Substring(namespace_.LastIndexOf("\\") + 1) + ";");
+                                allNamespacesAvaiable_list.Add(string.Concat("using ", namespace_.AsSpan(namespace_.LastIndexOf("\\") + 1), ";"));
                             }
 
                             //thanks to the question https://stackoverflow.com/questions/59217/merging-two-arrays-in-net i managed to merge 2 arrays
@@ -296,7 +292,7 @@ namespace Easy14_Programming_Language
                             Array.Copy(command_array, 0, commandAsArray, allNamespacesAvaiable.Length, command_array.Length);
 
                             Program prog = new Program();
-                            prog.compileCode_fromOtherFiles(null, commandAsArray, 0, false, "}");
+                            prog.CompileCode_fromOtherFiles(null, commandAsArray, 0, false, "}");
                         }
                         else
                         {
@@ -322,10 +318,9 @@ namespace Easy14_Programming_Language
                         Console.WriteLine("\nIf you want to turn off developer options, type 'turnOffDeveloperOptions', and press enter.\n");
                         Console.WriteLine($"Current Buffer Height; {Console.BufferHeight}");
                         Console.WriteLine($"Current Buffer Width; {Console.BufferWidth}");
-                        Console.WriteLine($"Capslock Status; {Console.CapsLock}");
+                        try { Console.WriteLine($"Capslock Status; {Console.CapsLock}"); } catch { }
                         Console.WriteLine($"Foreground Color; {Console.ForegroundColor}");
                         Console.WriteLine($"Background Color; {Console.BackgroundColor}");
-                        Console.WriteLine($"Current Window title; {Console.Title}");
                         Console.WriteLine("\n========================\n\n");
                     }
                     break;
@@ -349,7 +344,7 @@ namespace Easy14_Programming_Language
                 else if (command.ToLower().StartsWith("/run") || command.ToLower().StartsWith("-run"))
                 {
                     Program prog = new Program();
-                    prog.compileCode_fromOtherFiles(command.Replace("/run", "").Replace("-run", "").TrimStart());
+                    prog.CompileCode_fromOtherFiles(command.Replace("/run", "").Replace("-run", "").TrimStart());
                 }
                 else if (command.ToLower() == "/help" || command.ToLower() == "-help")
                 {
@@ -363,14 +358,6 @@ namespace Easy14_Programming_Language
                     Console.WriteLine("\n");
                     Console.WriteLine("     |More Commands Comming Soon|");
                 }
-                else if (command.ToLower() == "/keywords" || command.ToLower() == "-keywords")
-                {
-                    Console.WriteLine("\n===== KEYWORDS =====");
-                    Console.WriteLine("\n   === Main (6) ===");
-                    Console.WriteLine("\n   print, if, while, func, wait, var");
-                    Console.WriteLine("\n   ================");
-                    Console.WriteLine("\n====================");
-                }
                 else if (command.ToLower() == "/intro" || command.ToLower() == "-intro")
                 {
                     IntroductionCode introCode = new IntroductionCode();
@@ -381,7 +368,7 @@ namespace Easy14_Programming_Language
                     AppInformation appInfo = new AppInformation();
                     appInfo.ShowInfo();
                 }
-                else if (command.Contains("\n"))
+                else if (command.Contains('\n'))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("ERROR; Easy14 Interactive Cannot run multiline code \n");
@@ -398,7 +385,7 @@ namespace Easy14_Programming_Language
                         List<string> allNamespacesAvaiable_list = new List<string>();
                         foreach (string namespace_ in allNamespacesAvaiable_array)
                         {
-                            allNamespacesAvaiable_list.Add("using " + namespace_.Substring(namespace_.LastIndexOf("\\") + 1) + ";");
+                            allNamespacesAvaiable_list.Add(string.Concat("using ", namespace_.AsSpan(namespace_.LastIndexOf("\\") + 1), ";"));
                         }
 
                         //thanks to the question https://stackoverflow.com/questions/59217/merging-two-arrays-in-net i managed to merge 2 arrays
@@ -409,7 +396,7 @@ namespace Easy14_Programming_Language
                         Array.Copy(command_array, 0, commandAsArray, allNamespacesAvaiable.Length, command_array.Length);
 
                         Program prog = new Program();
-                        prog.compileCode_fromOtherFiles(null, commandAsArray, 0, false, "}");
+                        prog.CompileCode_fromOtherFiles(null, commandAsArray, 0, false, "}");
                     }
                     else
                     {
@@ -430,12 +417,12 @@ namespace Easy14_Programming_Language
         /// <param name="lineIDX">The line number of the code that is being compiled.</param>
         /// <param name="isInAMethod">If the code is in a method, this will be true.</param>
         /// <param name="methodName">The name of the method that is being called.</param>
-        public void compileCode_fromOtherFiles(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
+        public void CompileCode_fromOtherFiles(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
-            compileCode(fileLoc, textArray, lineIDX, isInAMethod, methodName);
+            CompileCode(fileLoc, textArray, lineIDX, isInAMethod, methodName);
         }
-        
-        public static void compileCode(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
+
+        public static void CompileCode(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
 
             /*
@@ -450,7 +437,6 @@ namespace Easy14_Programming_Language
             int windowHeight = Console.WindowHeight;
             int windowWidth = Console.WindowWidth;
             string windowState = "normal";
-            string windowTitle = "Easy14 Interactive";
 
             foreach (string line in configFile)
             {
@@ -671,7 +657,7 @@ namespace Easy14_Programming_Language
                     }
 
                     string currentDir = Directory.GetCurrentDirectory();
-                    
+
                     string theSupposedNamspace = strWorkPath.Replace("\\bin\\Debug\\net6.0", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
 
                     /* Checking if the using exists. */
@@ -689,243 +675,32 @@ namespace Easy14_Programming_Language
                         break;
                     }
                 }
-                else if (string.Join("", line_chrArr) != "" && char.IsDigit(line_chrArr[0]))
+                else if (string.Join("", line_chrArr) != "" && char.IsDigit(line_chrArr[0])) //Example if you typed in 4 + 4 in the interactive interperator it would return 8 and same for -, *, / etc.
                 {
                     string statement = string.Join("", line_chrArr);
-                    if (statement.Contains("+"))
+                    if (statement.Contains('+'))
                     {
-                        var var1 = statement.Split('+')[0];
-                        var var2 = statement.Split('+')[1];
-                        double? double1 = null;
-                        double? double2 = null;
-                        try
-                        {
-                            double1 = Convert.ToDouble(var1.TrimStart().TrimEnd());
-                        }
-                        catch
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to add {var1} which can't be done!",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) Integer Convertion Error!; {var1} is not a valid double"
-                                };
-                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
-                            break;
-                        }
-                        try
-                        {
-                            double2 = Convert.ToDouble(var2.TrimStart().TrimEnd());
-                        }
-                        catch
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to add {var2} which can't be done!",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) Integer Convertion Error!; {var2} is not a valid double"
-                                };
-                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
-                            break;
-                        }
-                        double answer = 0;
-                        try
-                        {
-                            answer = Convert.ToDouble(double1 + double2);
-                            Console.WriteLine(answer);
-                        }
-                        catch (Exception e)
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to add {double1} and {double2} which can't be added due to an error with C#",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) {e.Message}"
-                                };
-                            exceptionSend.SendException("0x0000B7", errText);
-                        }
+                        Math_Add math_Add = new Math_Add();
+                        var result = math_Add.Interperate(statement, -1);
+                        Console.WriteLine(result);
                     }
-                    if (statement.Contains("-"))
+                    if (statement.Contains('-'))
                     {
-                        var var1 = statement.Split('-')[0];
-                        var var2 = statement.Split('-')[1];
-                        double? double1 = null;
-                        double? double2 = null;
-                        try
-                        {
-                            double1 = Convert.ToDouble(var1.TrimStart().TrimEnd());
-                        }
-                        catch
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to subtract {var1} which can't be done!",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) Integer Convertion Error!; {var1} is not a valid double"
-                                };
-                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
-                            break;
-                        }
-                        try
-                        {
-                            double2 = Convert.ToDouble(var2.TrimStart().TrimEnd());
-                        }
-                        catch
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to subtract {var2} which can't be done!",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) Integer Convertion Error!; {var2} is not a valid double"
-                                };
-                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
-                            break;
-                        }
-                        double answer = 0;
-                        try
-                        {
-                            answer = Convert.ToDouble(double1 - double2);
-                            Console.WriteLine(answer);
-                        }
-                        catch (Exception e)
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to subtract {double1} and {double2} which can't be added due to an error with C#",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) {e.Message}"
-                                };
-                            exceptionSend.SendException("0x0000B8", errText);
-                        }
+                        Math_Subtract math_Subtract = new Math_Subtract();
+                        var result = math_Subtract.Interperate(statement, -1);
+                        Console.WriteLine(result);
                     }
-                    if (statement.Contains("*"))
+                    if (statement.Contains('*'))
                     {
-                        var var1 = statement.Split('*')[0];
-                        var var2 = statement.Split('*')[1];
-                        double? double1 = null;
-                        double? double2 = null;
-                        try
-                        {
-                            double1 = Convert.ToDouble(var1.TrimStart().TrimEnd());
-                        }
-                        catch
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to multiply {var1} which can't be done!",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) Integer Convertion Error!; {var1} is not a valid double"
-                                };
-                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
-                            break;
-                        }
-                        try
-                        {
-                            double2 = Convert.ToDouble(var2.TrimStart().TrimEnd());
-                        }
-                        catch
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to multiply {var2} which can't be done!",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) Integer Convertion Error!; {var2} is not a valid double"
-                                };
-                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
-                            break;
-                        }
-                        double answer = 0;
-                        try
-                        {
-                            answer = Convert.ToDouble(double1 * double2);
-                            Console.WriteLine(answer);
-                        }
-                        catch (Exception e)
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to multiply {double1} and {double2} which can't be added due to an error with C#",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) {e.Message}"
-                                };
-                            exceptionSend.SendException("0x0000B9", errText);
-                        }
+                        Math_Multiply math_Multiply = new Math_Multiply();
+                        var result = math_Multiply.Interperate(statement, -1);
+                        Console.WriteLine(result);
                     }
-                    if (statement.Contains("/"))
+                    if (statement.Contains('/'))
                     {
-                        var var1 = statement.Split('/')[0];
-                        var var2 = statement.Split('/')[1];
-                        double? double1 = null;
-                        double? double2 = null;
-                        try
-                        {
-                            double1 = Convert.ToDouble(var1.TrimStart().TrimEnd());
-                        }
-                        catch
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to divide {var1} which can't be done!",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) Integer Convertion Error!; {var1} is not a valid double"
-                                };
-                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
-                            break;
-                        }
-                        try
-                        {
-                            double2 = Convert.ToDouble(var2.TrimStart().TrimEnd());
-                        }
-                        catch
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to divide {var2} which can't be done!",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) Integer Convertion Error!; {var2} is not a valid double"
-                                };
-                            exceptionSend.SendException("0x0000B1", errText); //String in int/decimal function exception
-                            break;
-                        }
-                        double answer = 0;
-                        try
-                        {
-                            answer = Convert.ToDouble(double1 / double2);
-                            Console.WriteLine(answer);
-                        }
-                        catch (DivideByZeroException divBy0)
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to divide {double1} and {double2} which can't be added due to {(double1 == 0 ? double1 : double2)} being 0 and you can't Divide by Zero!",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) You tried to Divide by 0, here is the rest of the Error Message\n{divBy0.Message}"
-                                };
-                            exceptionSend.SendException("0x0000B11", errText);
-                        }
-                        catch (Exception e)
-                        {
-                            ExceptionSender exceptionSend = new ExceptionSender();
-                            string[] errText = {
-                                    $"Error; You tried to divide {double1} and {double2} which can't be added due to an error with C#",
-                                    $"   at Line {lineCount}",
-                                    $"   at Line {line}",
-                                    $"(C# Error) {e.Message}"
-                                };
-                            exceptionSend.SendException("0x0000B10", errText);
-                        }
+                        Math_Divide math_Divide = new Math_Divide();
+                        var result = math_Divide.Interperate(statement, -1);
+                        Console.WriteLine(result);
                     }
                 }
 
@@ -948,41 +723,41 @@ namespace Easy14_Programming_Language
                     Console.ResetColor();
                     continue;
                 }
-                
+
                 else if (line.StartsWith($"Console.print(") || line.StartsWith($"print(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsolePrint conPrint = new ConsolePrint();
-                    conPrint.interperate(line, textArray, fileLoc);
+                    ConsolePrint.Interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"Console.input(") || line.StartsWith($"input(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsoleInput conInput = new ConsoleInput();
-                    conInput.interperate(line, textArray, fileLoc, null);
+                    conInput.Interperate(line, textArray, fileLoc, null);
                 }
                 else if (line.StartsWith($"Console.clear(") || line.StartsWith($"clear(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsoleClear conClear = new ConsoleClear();
-                    conClear.interperate(line, textArray, fileLoc);
+                    conClear.Interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"Console.exec(") || line.StartsWith($"exec(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsoleExec conExec = new ConsoleExec();
-                    conExec.interperate(line, textArray, fileLoc);
+                    conExec.Interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"Console.beep(") || line.StartsWith($"beep(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     ConsoleBeep conBeep = new ConsoleBeep();
-                    conBeep.interperate(line, textArray, fileLoc);
+                    conBeep.Interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"wait(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     TimeWait wait = new TimeWait();
-                    wait.interperate(line, lineCount);
+                    wait.Interperate(line, lineCount);
                 }
                 else if (line.StartsWith($"var") && line.EndsWith(endOfStatementCode == ")" ? "" : ";"))
                 {
                     VariableCode varCode = new VariableCode();
-                    varCode.interperate(line, lines, lineCount);
+                    varCode.Interperate(line, lines, lineCount);
                 }
                 else if (line == "true")
                 {
@@ -995,78 +770,78 @@ namespace Easy14_Programming_Language
                 else if (line.StartsWith($"if") && line.EndsWith("{"))
                 {
                     If_Loop if_Loop = new If_Loop();
-                    if_Loop.interperate(line, lines, textArray, fileLoc, isInAMethod, methodName);
+                    if_Loop.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName);
                     return;
                 }
                 else if (line.StartsWith($"while") && line.EndsWith("{")) // || (lines[lineCount + 1] == "{")
                 {
                     //since we need the part that we need to loop until x == true, we first get and save the lines of the file/textArray
                     WhileLoop whileLoop = new WhileLoop();
-                    whileLoop.interperate(line, textArray, lines, fileLoc);
+                    whileLoop.Interperate(line, textArray, lines, fileLoc);
                     return;
                 }
                 else if (line.StartsWith("func ") && line.EndsWith(") {")) // || line.EndsWith("()" + (lines[lineCount + 1] == "{")
                 {
                     MethodCode methodCode = new MethodCode();
-                    methodCode.interperate(line, textArray, lines, fileLoc, true);
+                    methodCode.Interperate(line, textArray, lines, fileLoc, true);
                     return;
                 }
                 else if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"MakeFile(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     FileSystem_MakeFile fs_mkFile = new FileSystem_MakeFile();
-                    fs_mkFile.interperate(line, fileLoc, textArray, lineCount);
+                    fs_mkFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"FileSystem.MakeFolder(") || line.StartsWith($"MakeFolder(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     FileSystem_MakeFolder fs_mkFolder = new FileSystem_MakeFolder();
-                    fs_mkFolder.interperate(line, fileLoc, textArray, lineCount);
+                    fs_mkFolder.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"FileSystem.DeleteFile(") || line.StartsWith($"DeleteFile(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     FileSystem_DeleteFile fs_delFile = new FileSystem_DeleteFile();
-                    fs_delFile.interperate(line, fileLoc, textArray, lineCount);
+                    fs_delFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"FileSystem.DeleteFolder(") || line.StartsWith($"DeleteFolder(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     FileSystem_DeleteFolder fs_delFolder = new FileSystem_DeleteFolder();
-                    fs_delFolder.interperate(line, fileLoc, textArray, lineCount);
+                    fs_delFolder.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"FileSystem.ReadFile(") || line.StartsWith($"ReadFile(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     FileSystem_ReadFile fs_readFile = new FileSystem_ReadFile();
-                    fs_readFile.interperate(line, fileLoc, textArray, lineCount);
+                    fs_readFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"FileSystem.RenameFile(") || line.StartsWith($"RenameFile(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     FileSystem_RenameFile fs_renameFile = new FileSystem_RenameFile();
-                    fs_renameFile.interperate(line, fileLoc, textArray, lineCount);
+                    fs_renameFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"FileSystem.WriteFile(") || line.StartsWith($"WriteFile(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     FileSystem_WriteFile fs_writeFile = new FileSystem_WriteFile();
-                    fs_writeFile.interperate(line, fileLoc, textArray, lineCount);
+                    fs_writeFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"Network.Ping(") || line.StartsWith($"Ping(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     NetworkPing netPing = new NetworkPing();
-                    netPing.interperate(line, fileLoc, textArray, lineCount);
+                    netPing.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"Time.CurrentTime(") || line.StartsWith($"CurrentTime(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     Time_CurrentTime currentTime = new Time_CurrentTime();
-                    string time = currentTime.interperate(line, textArray, fileLoc);
+                    string time = currentTime.Interperate(line, textArray, fileLoc);
                     Console.WriteLine(time);
                 }
                 else if (line.StartsWith($"Time.IsLeapYear(") || line.StartsWith($"IsLeapYear(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     Time_IsLeapYear isLeapYear = new Time_IsLeapYear();
-                    string isLeapYear_str = isLeapYear.interperate(line, textArray, fileLoc);
+                    string isLeapYear_str = isLeapYear.Interperate(line, textArray, fileLoc);
                     Console.WriteLine(Convert.ToBoolean(isLeapYear_str));
                 }
                 else if (line.StartsWith($"Random.RandomRange(") || line.StartsWith($"RandomRange(") && line.EndsWith($"{endOfStatementCode}"))
                 {
                     Random_RandomRange randomRange = new Random_RandomRange();
-                    string randomRange_str = randomRange.interperate(line, textArray, fileLoc);
+                    string randomRange_str = randomRange.Interperate(line, textArray, fileLoc);
                     Console.WriteLine(randomRange_str);
                 }
                 else if (line.StartsWith($"sdl2.makeWindow(") || line.StartsWith($"makeWindow(") && line.EndsWith($"{endOfStatementCode}"))
@@ -1088,8 +863,8 @@ namespace Easy14_Programming_Language
                     try { title = values[4]; } catch { }
                     IntPtr window = (IntPtr)0;
                     long window_int = -1;
-                    new Task(() => { window_int = makeWindow.interperate(sizeX, sizeY, posX, posY, title); }).Start();
-                    //window_int = makeWindow.interperate(sizeX, sizeY, posX, posY, title);
+                    new Task(() => { window_int = makeWindow.Interperate(sizeX, sizeY, posX, posY, title); }).Start();
+                    //window_int = makeWindow.Interperate(sizeX, sizeY, posX, posY, title);
                     window = (IntPtr)window_int;
                     Thread.Sleep(100);
                     continue;
@@ -1112,7 +887,7 @@ namespace Easy14_Programming_Language
                     try { w = Convert.ToInt32(values[3]); } catch { }
                     try { h = Convert.ToInt32(values[4]); } catch { }
 
-                    new Task(() => { createShape.interperate(window, x, y, w, h); }).Start();
+                    new Task(() => { createShape.Interperate(window, x, y, w, h); }).Start();
                 }
                 else if (line.StartsWith($"sdl2.clearScreen(") || line.StartsWith($"clearScreen(") && line.EndsWith($"{endOfStatementCode}"))
                 {
@@ -1124,7 +899,7 @@ namespace Easy14_Programming_Language
                     string[] values = code_line.Split(",");
                     window = Convert.ToInt64(values[0]);
                     color = values[1];
-                    clearScreen.interperate(window, color);
+                    clearScreen.Interperate(window, color);
                 }
                 else
                 {
@@ -1136,23 +911,23 @@ namespace Easy14_Programming_Language
                             if (line.EndsWith("();")) //Means its probably a function
                             {
                                 MethodCode methodCode = new MethodCode();
-                                methodCode.interperate(line, textArray, lines, fileLoc, false);
+                                methodCode.Interperate(line, textArray, lines, fileLoc, false);
                                 return;
                             }
                             foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
                             {
-                                string supposedVar = file.Substring(file.LastIndexOf("\\")).Replace(".txt", "").Substring(1);
+                                string supposedVar = file[file.LastIndexOf("\\")..].Replace(".txt", "").Substring(1);
                                 if (line.StartsWith(supposedVar))
                                 {
-                                    if (line.Contains("=") && (line.IndexOf("+") + 1) != line.IndexOf("=") && line.Count(f => (f == '=')) == 1)
+                                    if (line.Contains('=') && (line.IndexOf("+") + 1) != line.IndexOf("=") && line.Count(f => (f == '=')) == 1)
                                     {
                                         string filePath = file;
                                         string partToReplace = file.Substring(file.LastIndexOf("\\") + 1).Replace(".txt", "") + " = ";
                                         string content = line.Replace(partToReplace, "");
-                                        if (content.Contains("+") && content.Count(f => (f == '+')) == 1)
+                                        if (content.Contains('+') && content.Count(f => (f == '+')) == 1)
                                         {
                                             Math_Add math_Add = new Math_Add();
-                                            int result = math_Add.interperate(content, 0, supposedVar);
+                                            int result = math_Add.Interperate(content, 0, supposedVar);
                                         }
                                         else
                                         {
@@ -1167,9 +942,9 @@ namespace Easy14_Programming_Language
                                         string partToReplace = file.Substring(file.LastIndexOf("\\") + 1).Replace(".txt", "") + " = ";
                                         string[] FileContents = File.ReadAllLines(filePath);
                                         string content = line.Replace(partToReplace, "");
-                                        content = content.Substring(1).Substring(0, content.Length - 2);
-                                        content = content.Substring(5);
-                                        content = content.Substring(0, content.Length - 1);
+                                        content = content[1..][..(content.Length - 2)];
+                                        content = content[5..];
+                                        content = content[..^1];
                                         List<string> FileContents_list = new List<string>(FileContents);
                                         FileContents_list.Add(content);
                                         File.WriteAllText(filePath, string.Join(Environment.NewLine, FileContents_list.ToArray()));
@@ -1182,9 +957,9 @@ namespace Easy14_Programming_Language
                                         string partToReplace = file.Substring(file.LastIndexOf("\\") + 1).Replace(".txt", "") + " = ";
                                         string[] FileContents = File.ReadAllLines(filePath);
                                         string content = line.Replace(partToReplace, "");
-                                        content = content.Substring(1).Substring(0, content.Length - 2);
-                                        content = content.Substring(5);
-                                        content = content.Substring(0, content.Length - 1);
+                                        content = content[1..][..(content.Length - 2)];
+                                        content = content[5..];
+                                        content = content[..^1];
                                         List<string> FileContents_list = new List<string>(FileContents);
                                         try
                                         {
@@ -1212,7 +987,7 @@ namespace Easy14_Programming_Language
                         List<string> allNamespacesAvaiable_list_main = new List<string>();
                         foreach (string item in allNamespacesAvaiable_list)
                         {
-                            allNamespacesAvaiable_list_main.Add(item.Substring(item.LastIndexOf("\\") + 1));
+                            allNamespacesAvaiable_list_main.Add(item[(item.LastIndexOf("\\") + 1)..]);
                         }
                         allNamespacesAvaiable_array = allNamespacesAvaiable_list_main.ToArray();
                         string theNamespaceOfTheLine = line.Split(".")[0];
@@ -1234,32 +1009,16 @@ namespace Easy14_Programming_Language
                             string[] code =
                             {
                                 $"Easy14_Programming_Language.{theFunctionOfTheLine} myfunc = new Easy14_Programming_Language.{theFunctionOfTheLine}();",
-                                "myfunc.interperate();"
+                                "myfunc.Interperate();"
                             };
-                            CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
-                            return;
-                        }
-                        if (allNamespacesAvaiable_array.Contains(theNamespaceOfTheLine))
-                        {
-                            int index = Array.IndexOf(allNamespacesAvaiable_array, theNamespaceOfTheLine);
-                            string theClassOfTheLine = line.Split(".")[0];
-                            string theFunctionOfTheLine = line.Split(".")[1];
-                            theFunctionOfTheLine = theFunctionOfTheLine.Replace("(", "").Replace(");", "");
-
-                            //Older
-                            /*Type type_ = Type.GetType(theFunctionOfTheLine);
-                            MethodInfo method = type_.GetMethod("run");
-                            method.Invoke(null, null);*/
-
-                            //Old
-                            //Activator.CreateInstance(Convert.ToString(Assembly.GetExecutingAssembly()), Convert.ToString(Type.GetType(theFunctionOfTheLine)));                            
-
-                            string[] code =
+                            try
                             {
-                                $"Easy14_Programming_Language.{theFunctionOfTheLine} myfunc = new Easy14_Programming_Language.{theFunctionOfTheLine}();",
-                                "myfunc.interperate();"
-                            };
-                            CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                                CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Error: The function you are trying to use is not defined.");
+                            }
                             return;
                         }
                         Console.ForegroundColor = ConsoleColor.Red;

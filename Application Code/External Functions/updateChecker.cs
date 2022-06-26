@@ -3,6 +3,7 @@ using System;
 using System.Net;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
 
 namespace Easy14_Programming_Language
 {
@@ -73,18 +74,16 @@ namespace Easy14_Programming_Language
                         /* It's sending an error message to the user, telling them that we can't find
                         out what version this language is, and telling them to install the latest
                         version for their safety. */
-                        tErM.sendErrMessage("AN ERROR OCCURED! WE CAN'T FIND OUT WHAT VERSION THIS LANGUAGE IS, INSTALL THE LATEST VERSION FOR YOUR SAFETY", null, "error");
+                        tErM.sendErrMessage("An error occured! we can't find out what version this language is", null, "error");
                 }
             }
 
             /* It's checking if there is an update available, and if there is, it will tell you. */
             try
             {
-                /* It's getting the latest version of the language, and saving it to a variable. */
-                WebClient wc = new WebClient();
-                wot = wc.DownloadString("https://pastebin.com/raw/nETTM1ih");
+                HttpClient hc = new HttpClient();
+                wot = hc.GetStringAsync("https://pastebin.com/raw/nETTM1ih").Result;
                 string[] upd = wot.Split(',');
-
                 if (Convert.ToDouble(upd[0]) > currentVer)
                 {
                     //if true, means we got an update
