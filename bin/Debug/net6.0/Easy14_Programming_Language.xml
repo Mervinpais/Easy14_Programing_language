@@ -26,6 +26,11 @@
             the text string.</param>
             <param name="typeOfError"></param>
         </member>
+        <member name="T:Easy14_Programming_Language.ConsolePrint">
+            <summary>
+            ConsolePrint is a class to print stuff to the console
+            </summary>
+        </member>
         <member name="M:Easy14_Programming_Language.ConsolePrint.Interperate(System.String,System.String[],System.String,System.Int32)">
             <summary>
             Interperates whatever input is given
@@ -46,6 +51,16 @@
             <param name="fileloc">The location of the file</param>
             <param name="isInAMethod">If the code is in a method, this is true.</param>
             <param name="methodName">The name of the method that the code is in.</param>
+        </member>
+        <member name="T:Easy14_Programming_Language.myFunc">
+            <summary>
+            myFunc is a placeholder name for the class
+            </summary>
+        </member>
+        <member name="M:Easy14_Programming_Language.myFunc.Interperate">
+            <summary>
+            Interperate function just runs code
+            </summary>
         </member>
         <member name="M:Easy14_Programming_Language.Random_RandomRange.Interperate(System.String,System.String[],System.String)">
             <summary>
@@ -102,9 +117,19 @@
             <summary>
             This function is used to compile code from other files
             </summary>
-            <param name="fileLoc">The location of the file that is being compiled.</param>
+            <param name="fileLoc">The location of file than has the code</param>
             <param name="textArray">The array of strings that contains the code.</param>
-            <param name="lineIDX">The line number of the code that is being compiled.</param>
+            <param name="lineIDX">The line number of the code to run on</param>
+            <param name="isInAMethod">If the code is in a method, this will be true.</param>
+            <param name="methodName">The name of the method that is being called.</param>
+        </member>
+        <member name="M:Easy14_Programming_Language.Program.CompileCode(System.String,System.String[],System.Int32,System.Boolean,System.String)">
+            <summary>
+            This function is used to compile code (only code within the file, unless you use the CompileCode_fromOtherFiles() function)
+            </summary>
+            <param name="fileLoc">The location of file than has the code</param>
+            <param name="textArray">The array of strings that contains the code.</param>
+            <param name="lineIDX">The line number of the code to run on</param>
             <param name="isInAMethod">If the code is in a method, this will be true.</param>
             <param name="methodName">The name of the method that is being called.</param>
         </member>

@@ -30,14 +30,13 @@ namespace Easy14_Programming_Language
             string code_part_unedited = code_part;
             code_part = code_part.TrimStart();
             code_part = code_part.Substring(3);
-            //code_part = code_part.Substring(0, code_part.Length - 1);
+            
             var textToPrint = code_part;
             if (textToPrint.Contains("="))
             {
                 string varName = textToPrint.Substring(0, textToPrint.IndexOf("=")).ToString();
                 varName = varName.TrimStart().TrimEnd();
                 string varContent = textToPrint.Substring(textToPrint.IndexOf("="), textToPrint.Length - textToPrint.IndexOf("=")).ToString();
-
 
                 /* Checking if the variable name starts with a number. */
                 char[] varName_charArray = varName.ToCharArray();

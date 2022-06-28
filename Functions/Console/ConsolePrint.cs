@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Easy14_Programming_Language
 {
+    /// <summary>
+    /// ConsolePrint is a class to print stuff to the console
+    /// </summary>
     public class ConsolePrint
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;

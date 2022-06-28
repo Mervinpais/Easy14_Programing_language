@@ -18,10 +18,10 @@ public class ExceptionSender
         string message = GetMessage(typeOfException);
         Console.WriteLine("EXCEPTION " + message);
         if (textArray != null)
-            Console.WriteLine(textArray);
+            Console.WriteLine(string.Join(Environment.NewLine, textArray));
         Console.ResetColor();
         Console.ReadKey();
-        Environment.Exit(-1);
+        //Environment.Exit(-1);
     }
 
     private static string GetMessage(string typeOfException)
@@ -118,6 +118,12 @@ public class ExceptionSender
                 break;
             case "0xF00004":
                 Message = $"{typeOfException_str}; Folder is UnReadable!";
+                break;
+            case "0xF00005":
+                Message = $"{typeOfException_str}; File is UnAccessable!";
+                break;
+            case "0xF00006":
+                Message = $"{typeOfException_str}; Folder is UnAccessable!";
                 break;
             case "0xF000C1":
                 Message = $"{typeOfException_str}; Method is not Found!";

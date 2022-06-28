@@ -1,0 +1,35 @@
+﻿=== Console.print() / print() ===
+
+Info: Uses the Console namespace
+
+Description;
+
+Prints stuff to the console
+=======
+
+Examples;
+
+(a) Below prints "Hello World" to the console
+Console.print("Hello world");
+
+(b) Below prints a new line
+Console.print();
+
+========
+
+Error Cases;
+
+(a) Mismatching quotes is not allowed
+print("Bruh');
+
+print('What");
+
+(b) Missing quotes is not allowed
+print(+Ratio);
+
+(c) No Single quotes (those are for the char datatype)
+print('this wont work :<')
+
+=========
+
+
