@@ -27,10 +27,10 @@ namespace Easy14_Programming_Language
         public static bool previewTheFile = false;
 
         //code from https://iq.direct/blog/51-how-to-get-the-current-executable-s-path-in-csharp.html :)
-        readonly static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        readonly static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+        readonly static string strExeFilePath = Assembly.GetExecutingAssembly().Location;
+        readonly static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
 
-        readonly static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
+        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
         readonly static string tempVariableFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
 
