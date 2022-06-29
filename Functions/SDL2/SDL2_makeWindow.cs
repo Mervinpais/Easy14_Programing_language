@@ -109,7 +109,7 @@ namespace Easy14_Programming_Language
             //SDL.SDL_Quit();
         }
 
-        public long interperate(int sizeX = 200, int sizeY = 200, int posX = SDL.SDL_WINDOWPOS_UNDEFINED, int posY = SDL.SDL_WINDOWPOS_UNDEFINED, string title = "myWindow", byte red = 30, byte green = 30, byte blue = 30, byte alpha = 255)
+        public long Interperate(int sizeX = 200, int sizeY = 200, int posX = SDL.SDL_WINDOWPOS_UNDEFINED, int posY = SDL.SDL_WINDOWPOS_UNDEFINED, string title = "myWindow", byte red = 30, byte green = 30, byte blue = 30, byte alpha = 255)
         {
             if (sizeX < 1)
             {

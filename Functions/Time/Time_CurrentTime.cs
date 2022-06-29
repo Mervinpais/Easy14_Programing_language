@@ -6,7 +6,7 @@ namespace Easy14_Programming_Language
 {
     class Time_CurrentTime
     {
-        public string interperate(string code_part, string[] textArray, string fileloc)
+        public string Interperate(string code_part, string[] textArray, string fileloc)
         {
             string endOfStatementCode = ")";
             string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
@@ -58,11 +58,12 @@ namespace Easy14_Programming_Language
             else if (code_part_unedited.StartsWith($"CurrentTime("))
                 code_part = code_part.Substring(12);
 
-            if (endOfStatementCode == ");")
-                code_part = code_part.Substring(0, code_part.Length - 2);
-            else
+            code_part = code_part.Substring(0, code_part.Length - 1);
+            if (code_part.EndsWith(")"))
+            {
                 code_part = code_part.Substring(0, code_part.Length - 1);
-            
+            }
+
             DateTime date = DateTime.Now;
             string date_str = Convert.ToString(date);
             return date_str;

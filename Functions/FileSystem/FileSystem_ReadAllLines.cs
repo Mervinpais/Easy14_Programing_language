@@ -5,14 +5,11 @@ namespace Easy14_Programming_Language
 {
     class FileSystem_ReadAllLines
     {
-        /// <summary>
-        /// It takes a string, a string, a string array, and an int, and returns a string array.
-        /// </summary>
-        /// <param name="code_part">The code that is being interperated</param>
-        /// <param name="fileloc">The location of the file being read</param>
-        /// <param name="textArray">The array of strings that contains the code.</param>
-        /// <param name="line_count">the line number of the code_part</param>
-        public string[] interperate(string code_part, string fileloc, string[] textArray, int line_count)
+        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
+        
+        public string[] Interperate(string code_part, string fileloc, string[] textArray, int line_count)
         {
             string code_part_unedited = code_part;
             string textToPrint;

@@ -6,10 +6,13 @@ namespace Easy14_Programming_Language
 {
     class ConsoleBeep
     {
-        public string interperate(string code_part, string[] textArray, string fileloc)
+        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
+        
+        public void Interperate(string code_part, string[] textArray, string fileloc)
         {
             string endOfStatementCode = ")";
-            string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
             foreach (string line in configFile)
             {
                 if (line.StartsWith("needSemicolons"))
@@ -19,7 +22,7 @@ namespace Easy14_Programming_Language
 
             string code_part_unedited = code_part;
             bool foundUsing = false;
-            if (code_part.StartsWith("Beep("))
+            if (code_part.StartsWith("beep("))
             {
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
@@ -29,7 +32,6 @@ namespace Easy14_Programming_Language
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to the Console.beep function.");
                     Console.ResetColor();
-                    return "";
                 }
 
                 foreach (string x in someLINEs)
@@ -47,34 +49,46 @@ namespace Easy14_Programming_Language
                 if (foundUsing == false)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'Beep' without its reference  (Use Console.Beep() to fix this error :)");
+                    Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'beep' without its reference  (Use Console.Beep() to fix this error :)");
                     Console.ResetColor();
-                    return "<ERROR_USED_FUNCTION_WHICH_NEEDED_A_USING_NAMESPACE_BEFORE>";
                 }
             }
-            else if (code_part.StartsWith($"Console.Beep(")) { }
+            else if (code_part.StartsWith($"Console.beep(")) { }
 
-            if (code_part_unedited.StartsWith($"Console.Beep("))
+            if (code_part_unedited.StartsWith($"Console.beep("))
                 code_part = code_part.Substring(13);
-            else if (code_part_unedited.StartsWith($"Beep("))
+            else if (code_part_unedited.StartsWith($"beep("))
                 code_part = code_part.Substring(5);
 
-            if (endOfStatementCode == ");")
-                code_part = code_part.Substring(0, code_part.Length - 2);
-            else
+            code_part = code_part.Substring(0, code_part.Length - 1);
+            if (code_part.EndsWith(")"))
+            {
                 code_part = code_part.Substring(0, code_part.Length - 1);
+            }
             
-            string[] codePart_Array = code_part.Split(',');
-            int codePartInt = Convert.ToInt32(codePart_Array[0]);
-            int codePartInt2 = Convert.ToInt32(codePart_Array[1]);
-            if (codePartInt > 32766 || codePartInt < 37)
+            if (code_part.Contains(","))
+            {
+
+                string[] codePart_Array = code_part.Split(',');
+                double codePartInt = Convert.ToDouble(codePart_Array[0]);
+                double codePartInt2 = Convert.ToDouble(codePart_Array[1]);
+                if (codePartInt > 32766 || codePartInt < 37)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Warning: The frequency of the beep is out of range. Default has been set");
+                    Console.ResetColor();
+                    Console.Beep();
+                }
+                else
+                {
+                    Console.Beep(Convert.ToInt32(codePartInt), Convert.ToInt32(codePartInt2 * 1000));
+                }
+            }
+            else
             {
                 Console.Beep();
             }
-            else {
-                Console.Beep(codePartInt, codePartInt2 * 1000);
-            }
-            return "";
+            return;
         }
     }
 }

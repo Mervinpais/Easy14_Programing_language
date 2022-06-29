@@ -5,14 +5,11 @@ namespace Easy14_Programming_Language
 {
     class Math_Multiply
     {
-        /// <summary>
-        /// This function takes in a string of code, a line number, and a file name, and returns an
-        /// integer
-        /// </summary>
-        /// <param name="code_part">The code to be interperated.</param>
-        /// <param name="lineNumber">The line number of the code that is being interperated.</param>
-        /// <param name="fileName">The name of the file that the code is in.</param>
-        public int interperate(string code_part, int lineNumber, string fileName = null)
+        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
+
+        public int Interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;
 
@@ -35,27 +32,30 @@ namespace Easy14_Programming_Language
                 string integer1_str = null;
                 string integer2_str = null;
 
-                if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP").Length != 0)
+                if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
                 {
-                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP");
-                    foreach (string file in files)
+                    if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP").Length != 0)
                     {
-                        string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
-                        if (_file == intergers[0])
+                        string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP");
+                        foreach (string file in files)
                         {
-                            integer1_str = File.ReadAllText(file);
-                            //Console.WriteLine(contentInFile.ToString());
-                            break;
+                            string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
+                            if (_file == intergers[0])
+                            {
+                                integer1_str = File.ReadAllText(file);
+                                //Console.WriteLine(contentInFile.ToString());
+                                break;
+                            }
                         }
-                    }
-                    foreach (string file in files)
-                    {
-                        string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
-                        if (_file == intergers[1])
+                        foreach (string file in files)
                         {
-                            integer2_str = File.ReadAllText(file);
-                            //Console.WriteLine(contentInFile.ToString());
-                            break;
+                            string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
+                            if (_file == intergers[1])
+                            {
+                                integer2_str = File.ReadAllText(file);
+                                //Console.WriteLine(contentInFile.ToString());
+                                break;
+                            }
                         }
                     }
                 }

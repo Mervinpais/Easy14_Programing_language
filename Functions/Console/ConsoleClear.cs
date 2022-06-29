@@ -6,10 +6,13 @@ namespace Easy14_Programming_Language
 {
     class ConsoleClear
     {
-        public void interperate(string code_part, string[] textArray, string fileloc)
+        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
+        
+        public void Interperate (string code_part, string[] textArray, string fileloc)
         {
             string endOfStatementCode = ")";
-            string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
             foreach (string line in configFile)
             {
                 if (line.StartsWith("needSemicolons"))

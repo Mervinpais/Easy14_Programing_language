@@ -5,7 +5,7 @@ namespace Easy14_Programming_Language
 {
     class SDL2_clearScreen
     {
-        public void interperate(long window, string color = "darkgrey")
+        public void Interperate(long window, string color = "darkgrey")
         {
             IntPtr window_intPtr = (IntPtr)window;
             IntPtr renderer = SDL.SDL_GetRenderer(window_intPtr);

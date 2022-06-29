@@ -5,7 +5,11 @@ namespace Easy14_Programming_Language
 {
     class FileSystem_RenameFile
     {
-        public void interperate(string code_part, string fileloc, string[] textArray, int line_count)
+        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
+
+        public void Interperate(string code_part, string fileloc, string[] textArray, int line_count)
         {
             string code_part_unedited;
             string textToPrint;
