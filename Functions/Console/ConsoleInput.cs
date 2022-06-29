@@ -80,6 +80,12 @@ namespace Easy14_Programming_Language
             }
 
             textToPrint = code_part;
+            if (code_part == "")
+            {
+                Console.Write(">");
+                Console.ReadLine();
+                return;
+            }
             bool isAString = false;
 
             int textToPrint_int;
@@ -135,62 +141,45 @@ namespace Easy14_Programming_Language
                 {
                     string text = textToPrint;
                     text = text.Replace("random.range(", "");
-                    text = text.Replace(")", "");
-                    int number1 = Convert.ToInt32(
-                        text.Substring(0, text.IndexOf(",")).Replace(",", "")
-                    );
-                    int number2 = Convert.ToInt32(
-                        text.Substring(text.IndexOf(",")).Replace(",", "")
-                    );
-                    Random rnd = new Random();
-                    Console.WriteLine(rnd.Next(number1, number2));
+                    text = text[..^1];
+                    int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
+                    int number2 = Convert.ToInt32(text.Substring(text.IndexOf(",")).Replace(",", ""));
+                    Random rnd = new Random(); Console.WriteLine(rnd.Next(number1, number2));
                 }
                 else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString /*&& ((isAnInt || isAnInt2) && (isADouble || isADouble2))*/)
                 {
-                    Math_Add math_Add = new Math_Add();
-                    var result = math_Add.Interperate(textToPrint, -1);
-                    Console.WriteLine(result);
-                    Console.Write(">");
+                    Math_Add math_Add = new Math_Add(); var result = math_Add.Interperate(textToPrint, -1);
+                    Console.WriteLine(result); Console.Write(">");
                     string textFromUser = Console.ReadLine();
                 }
                 else if (textToPrint.Contains("-") && textToPrint.Count(f => (f == '-')) == 1 && !isAString && (isAnInt && isADouble))
                 {
-                    Math_Subtract math_Subtract = new Math_Subtract();
-                    var result = math_Subtract.Interperate(textToPrint, -1);
-                    Console.WriteLine(result);
-                    Console.Write(">");
+                    Math_Subtract math_Subtract = new Math_Subtract(); var result = math_Subtract.Interperate(textToPrint, -1);
+                    Console.WriteLine(result); Console.Write(">");
                     string textFromUser = Console.ReadLine();
                 }
                 else if (textToPrint.Contains("*") && textToPrint.Count(f => (f == '*')) == 1 && !isAString && (isAnInt && isADouble))
                 {
-                    Math_Multiply math_Multiply = new Math_Multiply();
-                    var result = math_Multiply.Interperate(textToPrint, -1);
-                    Console.WriteLine(result);
-                    Console.Write(">");
+                    Math_Multiply math_Multiply = new Math_Multiply(); var result = math_Multiply.Interperate(textToPrint, -1);
+                    Console.WriteLine(result); Console.Write(">");
                     string textFromUser = Console.ReadLine();
                 }
                 else if (textToPrint.Contains("/") && textToPrint.Count(f => (f == '/')) == 1 && !isAString && (isAnInt && isADouble))
                 {
-                    Math_Divide math_Divide = new Math_Divide();
-                    var result = math_Divide.Interperate(textToPrint, -1);
-                    Console.WriteLine(result);
-                    Console.Write(">");
+                    Math_Divide math_Divide = new Math_Divide(); var result = math_Divide.Interperate(textToPrint, -1);
+                    Console.WriteLine(result); Console.Write(">");
                     string textFromUser = Console.ReadLine();
                 }
                 else if (textToPrint.Contains("%") && textToPrint.Count(f => (f == '%')) == 1 && !isAString && (isAnInt && isADouble))
                 {
-                    Math_Module math_Module = new Math_Module();
-                    var result = math_Module.Interperate(textToPrint, -1);
-                    Console.WriteLine(result);
-                    Console.Write(">");
+                    Math_Module math_Module = new Math_Module(); var result = math_Module.Interperate(textToPrint, -1);
+                    Console.WriteLine(result); Console.Write(">");
                     string textFromUser = Console.ReadLine();
                 }
                 else if (textToPrint.Contains("==") && textToPrint.Count(f => (f == '=')) == 2)
                 {
-                    Math_Equals math_Equals = new Math_Equals();
-                    var result = math_Equals.Interperate(textToPrint, -1);
-                    Console.WriteLine(result);
-                    Console.Write(">");
+                    Math_Equals math_Equals = new Math_Equals(); var result = math_Equals.Interperate(textToPrint, -1);
+                    Console.WriteLine(result); Console.Write(">");
                     string textFromUser = Console.ReadLine();
                 }
                 else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\"") && isAString && !isAnInt)

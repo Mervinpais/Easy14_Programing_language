@@ -10,7 +10,7 @@ namespace Easy14_Programming_Language
         static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
         
-        public void Interperate(string code_part = null, string[] textArray = null, string fileloc = null)
+        public void Interperate(string code_part = "Audio.AudioStop();", string[] textArray = null, string fileloc = null)
         {
             string endOfStatementCode = ")";
             foreach (string line in configFile)
@@ -22,7 +22,7 @@ namespace Easy14_Programming_Language
 
             string code_part_unedited = code_part;
             bool foundUsing = false;
-            if (code_part.StartsWith("stop("))
+            if (code_part.StartsWith("AudioStop("))
             {
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
@@ -53,7 +53,7 @@ namespace Easy14_Programming_Language
                     Console.ResetColor();
                 }
             }
-            else if (code_part.StartsWith($"Audio.stop(")) { }
+            else if (code_part.StartsWith($"Audio.AudioStop(")) { }
 
             SoundPlayer soundPlayer = new SoundPlayer();
             soundPlayer.Stop();
