@@ -129,6 +129,9 @@
 
 <h4> None, atleast of now :| </h4>
 
+<h2> Fixed Bugs </h2>
+
+<h3>Temperary Version file creation bug where it would create the temp version file at MY temp folder instead of the current users one</h3>
 </div>
 <hr>
 

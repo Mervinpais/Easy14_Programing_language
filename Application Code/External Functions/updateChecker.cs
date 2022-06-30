@@ -18,7 +18,7 @@ namespace Easy14_Programming_Language
         {
             //Initialize Variables
             /* It's initializing the variable `currentVer` to 0.0, so we can use it later. */
-            double currentVer = 0.0;
+            double currentVer = -1.0;
             ThrowErrorMessage tErM = new ThrowErrorMessage();
 
             /* It's just a variable that is used to store the data that we get from the update server,
@@ -35,14 +35,14 @@ namespace Easy14_Programming_Language
                 goes missing, it can still get the version from the cache file. */
                 try
                 {
-                    string currentVerFile_cached_FILE = "C:\\Users\\mervi\\AppData\\Local\\Temp\\EASY14_TEMP\\cachedVersion.txt";
+                    string currentVerFile_cached_FILE = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\..\\Local\\Temp\\EASY14_TEMP\\cachedVersion.txt";
 
-                    if (Directory.Exists("C:\\Users\\mervi\\AppData\\Local\\Temp\\EASY14_TEMP"))
+                    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\..\\Local\\Temp\\EASY14_TEMP"))
                     {
-                        Directory.Delete("C:\\Users\\mervi\\AppData\\Local\\Temp\\EASY14_TEMP", true);
+                        Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\..\\Local\\Temp\\EASY14_TEMP", true);
                     }
                     
-                    Directory.CreateDirectory("C:\\Users\\mervi\\AppData\\Local\\Temp\\EASY14_TEMP");
+                    Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\..\\Local\\Temp\\EASY14_TEMP");
                     File.WriteAllLines(currentVerFile_cached_FILE, currentVerFile);
                 }
                 catch (Exception e)
