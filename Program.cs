@@ -27,10 +27,10 @@ namespace Easy14_Programming_Language
         public static bool previewTheFile = false;
 
         //code from https://iq.direct/blog/51-how-to-get-the-current-executable-s-path-in-csharp.html :)
-        readonly static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        readonly static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+        readonly static string strExeFilePath = Assembly.GetExecutingAssembly().Location;
+        readonly static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
 
-        readonly static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
+        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
         readonly static string tempVariableFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
 
@@ -171,6 +171,60 @@ namespace Easy14_Programming_Language
                         Console.WriteLine("\n Uh Oh, this file isnt an actual .e14/.ese14 file!, please change the file extention to .e14 (preferred) or .ese14 to use this file \n");
                     }
                 }
+                else if (File.Exists(args[0]) || File.Exists(args[0]))
+                {
+                    int itemCount = 1;
+                    string[] filePath = null;
+                    foreach (var item in args)
+                    {
+                        if (item.EndsWith(".e14") || item.EndsWith(".ese14"))
+                        {
+                            filePath = args[1..itemCount];
+                        }
+                        itemCount++;
+                    }
+                    Console.WriteLine($"==== {DateTime.Now} | {filePath[filePath.Length - 1]} ====\n");
+
+                    if (filePath == null)
+                    {
+                        Console.WriteLine("\n ERROR; CAN NOT FIND FILE SPECIFIED \n");
+                    }
+
+                    if (filePath[filePath.Length - 1].EndsWith(".ese14") || filePath[filePath.Length - 1].EndsWith(".e14"))
+                    {
+                        if (args.Length > 2)
+                        {
+                            if (args[filePath.Length] == "-show_cmds" || args[filePath.Length] == "/show_cmds")
+                            {
+                                showCommands = true;
+                            }
+                            else if (args[filePath.Length] == "-preview_only" || args[filePath.Length] == "/preview_only")
+                            {
+                                previewTheFile = true;
+                            }
+                        }
+                        if (!previewTheFile)
+                        {
+                            CompileCode(String.Join(" ", filePath));
+                        }
+                        else
+                        {
+                            try
+                            {
+                                Console.WriteLine(String.Join(Environment.NewLine, File.ReadAllLines(args[1])));
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("\n An Error Occured While Reading File To Display in Preview, Below Is the Full Error Exception Message\n");
+                                Console.WriteLine(e);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("\n Uh Oh, this file isnt an actual .e14/.ese14 file!, please change the file extention to .e14 (preferred) or .ese14 to use this file \n");
+                    }
+                }
                 if (args[0] == "-help" || args[0] == "/help")
                 {
                     Console.WriteLine("Hello! Welcome to the help section of Easy14!");
@@ -246,6 +300,35 @@ namespace Easy14_Programming_Language
                     {
                         Program prog = new Program();
                         prog.CompileCode_fromOtherFiles(command.Replace("/run", "").Replace("-run", "").TrimStart());
+                    }
+                    else if (File.Exists(command) || File.Exists(command))
+                    {
+                        string filePath = command;
+
+                        Console.WriteLine($"==== {DateTime.Now} | {command} ====\n");
+
+                        if (filePath == null)
+                        {
+                            Console.WriteLine("\n ERROR; CAN NOT FIND FILE SPECIFIED \n");
+                        }
+
+                        if (command.EndsWith(".ese14") || command.EndsWith(".e14"))
+                        {
+                            try
+                            {
+                                Program prog = new Program();
+                                prog.CompileCode_fromOtherFiles(command);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("\n An Error Occured While Reading File, Below Is the Full Error Exception Message\n");
+                                Console.WriteLine(e);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("\n Uh Oh, this file isnt an actual .e14/.ese14 file!, please change the file extention to .e14 (preferred) or .ese14 to use this file \n");
+                        }
                     }
                     else if (command.ToLower() == "/help" || command.ToLower() == "-help")
                     {
@@ -1004,7 +1087,7 @@ namespace Easy14_Programming_Language
                     message. */
                     else if (!string.IsNullOrEmpty(line) && !string.IsNullOrWhiteSpace(line) && line != "}" && line != "break" && line != "return" && !line.StartsWith("using") && !line.StartsWith("//"))
                     {
-                        
+
                         if (line.Contains("."))
                         {
                             string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
@@ -1056,7 +1139,7 @@ namespace Easy14_Programming_Language
                                 }
                                 return;
                             }
-                            
+
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"ERROR; '{line}' is not a vaild code statement\n  Error was located on Line {lineCount}");
                             Console.ResetColor();
