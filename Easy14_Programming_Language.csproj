@@ -67,6 +67,10 @@
     <None Update="Application Code\options.ini">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
+    <None Update="README_style.css">
+      <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
+    </None>
     <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
