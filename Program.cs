@@ -66,7 +66,7 @@ namespace Easy14_Programming_Language
 
             if (Directory.Exists(tempVariableFolder))
             {
-                Directory.Delete(tempVariableFolder);
+                Directory.Delete(tempVariableFolder, true);
             }
 
             //==================The Update Checker====================\\
@@ -183,41 +183,25 @@ namespace Easy14_Programming_Language
                         }
                         itemCount++;
                     }
-                    Console.WriteLine($"==== {DateTime.Now} | {filePath[filePath.Length - 1]} ====\n");
+                    Console.WriteLine($"==== {DateTime.Now} | {string.Join(" ", args)} ====\n");
 
-                    if (filePath == null)
+                    if (string.Join(" ", args) == null)
                     {
                         Console.WriteLine("\n ERROR; CAN NOT FIND FILE SPECIFIED \n");
                     }
 
-                    if (filePath[filePath.Length - 1].EndsWith(".ese14") || filePath[filePath.Length - 1].EndsWith(".e14"))
+                    if (string.Join(" ", args).EndsWith(".ese14") || string.Join(" ", args).EndsWith(".e14"))
                     {
-                        if (args.Length > 2)
+                        try
                         {
-                            if (args[filePath.Length] == "-show_cmds" || args[filePath.Length] == "/show_cmds")
-                            {
-                                showCommands = true;
-                            }
-                            else if (args[filePath.Length] == "-preview_only" || args[filePath.Length] == "/preview_only")
-                            {
-                                previewTheFile = true;
-                            }
+                            //Console.WriteLine(String.Join(Environment.NewLine, File.ReadAllLines(args[1])));
+                            Program prog = new Program();
+                            prog.CompileCode_fromOtherFiles(textArray: File.ReadAllLines(string.Join(" ", args)));
                         }
-                        if (!previewTheFile)
+                        catch (Exception e)
                         {
-                            CompileCode(String.Join(" ", filePath));
-                        }
-                        else
-                        {
-                            try
-                            {
-                                Console.WriteLine(String.Join(Environment.NewLine, File.ReadAllLines(args[1])));
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine("\n An Error Occured While Reading File To Display in Preview, Below Is the Full Error Exception Message\n");
-                                Console.WriteLine(e);
-                            }
+                            Console.WriteLine("\n An Error Occured While Reading File To Display in Preview, Below Is the Full Error Exception Message\n");
+                            Console.WriteLine(e);
                         }
                     }
                     else
@@ -716,7 +700,7 @@ namespace Easy14_Programming_Language
             catch
             {
                 ExceptionSender ex_sender = new ExceptionSender();
-                ex_sender.SendException("0xF000C1");
+                ex_sender.SendException("0xFC00001");
             }
 
             /* Removing the first lineIDX lines from the list. */
@@ -744,49 +728,17 @@ namespace Easy14_Programming_Language
 
                 if (showCommands == true) Console.WriteLine(">>>" + line);
 
-                /* Checking if the line starts with "using" and ends with ";" and if it does, it checks
-                if the user has disabled libraries in the options.ini file. If the user has disabled
-                libraries, it will throw an error message. If the user has not disabled libraries,
-                it will check if the line is "using this;". If it is, it will print out a message.
-                If it is not, it will check if the using exists. If it does, it will continue. If it
-                does not, it will throw an error message. */
-
                 if (line.StartsWith($"using") && line.EndsWith($";"))
                 {
-                    if (disableLibraries)
-                    {
-                        ThrowErrorMessage tErM = new ThrowErrorMessage();
-                        tErM.sendErrMessage("You have disabled libraries in options.ini, if you want to use libraries, please change the true to false at line 10 in options.ini", null, "error");
-                        break;
-                    }
-                    if (line == "using this;")
-                    {
-                        Console.WriteLine("Did you expect \"The Zen of {programmingLanguageName}\" ?");
-                        Console.WriteLine("=========================================\n");
-                        Console.WriteLine("\nIm sorry but i don't care about making my own \"Zen of Easy14\"");
-                        break;
-                    }
-
-                    string currentDir = Directory.GetCurrentDirectory();
-
-                    string theSupposedNamspace = strWorkPath.Replace("\\bin\\Debug\\net6.0", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
-
-                    /* Checking if the using exists. */
-                    bool doesUsingExist = Directory.Exists(theSupposedNamspace);
-                    if (doesUsingExist)
-                    {
-                        /* just */
-                        continue;
-                    }
-                    else
-                    {
-                        Console.ResetColor();
-                        Console.WriteLine($"ERROR; The Using {line.Replace("using ", "").Replace(";", "")} Mentioned on line {lineCount} is not found!");
-                        Console.ResetColor();
-                        break;
-                    }
+                    Using_namespace_code using_Namespace_Code = new Using_namespace_code();
+                    using_Namespace_Code.usingFunction_interp(line, disableLibraries, lineCount);
                 }
-                else if (string.Join("", line_chrArr) != "" && char.IsDigit(line_chrArr[0])) //Example if you typed in 4 + 4 in the interactive interperator it would return 8 and same for -, *, / etc.
+                else if (line.StartsWith($"from") && line.EndsWith($";"))
+                {
+                    Using_namespace_code using_Namespace_Code = new Using_namespace_code();
+                    using_Namespace_Code.fromFunction_interp(line, disableLibraries, lineCount);
+                }
+                else if (string.Join("", line_chrArr) != "" && char.IsDigit(line_chrArr[0]))
                 {
                     string statement = string.Join("", line_chrArr);
                     if (statement.Contains('+'))
@@ -829,32 +781,32 @@ namespace Easy14_Programming_Language
                     continue;
                 }
 
-                else if (line.StartsWith($"Console.print(") || line.StartsWith($"print(") && line.EndsWith(";"))
+                else if (line.StartsWith($"Console.print(") || line.StartsWith($"print(") && line.EndsWith(");"))
                 {
                     ConsolePrint conPrint = new ConsolePrint();
                     ConsolePrint.Interperate(line, textArray, fileLoc);
                 }
-                else if (line.StartsWith($"Console.input(") || line.StartsWith($"input(") && line.EndsWith(";"))
+                else if (line.StartsWith($"Console.input(") || line.StartsWith($"input(") && line.EndsWith(");"))
                 {
                     ConsoleInput conInput = new ConsoleInput();
-                    conInput.Interperate(line, textArray, fileLoc, null);
+                    conInput.Interperate(line, lines, textArray, fileLoc, null);
                 }
-                else if (line.StartsWith($"Console.clear(") || line.StartsWith($"clear(") && line.EndsWith("}"))
+                else if (line.StartsWith($"Console.clear(") || line.StartsWith($"clear(") && line.EndsWith(");"))
                 {
                     ConsoleClear conClear = new ConsoleClear();
                     conClear.Interperate(line, textArray, fileLoc);
                 }
-                else if (line.StartsWith($"Console.exec(") || line.StartsWith($"exec(") && line.EndsWith("}"))
+                else if (line.StartsWith($"Console.exec(") || line.StartsWith($"exec(") && line.EndsWith(");"))
                 {
                     ConsoleExec conExec = new ConsoleExec();
                     conExec.Interperate(line, textArray, fileLoc);
                 }
-                else if (line.StartsWith($"Console.beep(") || line.StartsWith($"beep(") && line.EndsWith("}"))
+                else if (line.StartsWith($"Console.beep(") || line.StartsWith($"beep(") && line.EndsWith(");"))
                 {
                     AudioPlay conBeep = new AudioPlay();
                     conBeep.Interperate(line, textArray, fileLoc);
                 }
-                else if (line.StartsWith($"wait(") && line.EndsWith("}"))
+                else if (line.StartsWith($"wait(") && line.EndsWith(");"))
                 {
                     TimeWait wait = new TimeWait();
                     wait.Interperate(line, lineCount);
@@ -1087,8 +1039,17 @@ namespace Easy14_Programming_Language
                     message. */
                     else if (!string.IsNullOrEmpty(line) && !string.IsNullOrWhiteSpace(line) && line != "}" && line != "break" && line != "return" && !line.StartsWith("using") && !line.StartsWith("//"))
                     {
-
-                        if (line.Contains("."))
+                        string funcLine = null;
+                        try
+                        {
+                            funcLine = line.Substring(0, line.IndexOf("("));
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Error: " + line + " is not a valid line.");
+                            return;
+                        }
+                        if (funcLine.Contains("."))
                         {
                             string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
                             List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
@@ -1135,11 +1096,61 @@ namespace Easy14_Programming_Language
                                 }
                                 catch (Exception e)
                                 {
-                                    Console.WriteLine("Error: The function you are trying to use is not defined.");
+                                    Console.WriteLine("Error: The function you are trying to use returned an Error");
                                 }
                                 return;
                             }
+                        }
+                        else if (!funcLine.Contains("."))
+                        {
+                            string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
+                            List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
+                            List<string> allNamespacesAvaiable_list_main = new List<string>();
+                            foreach (string item in allNamespacesAvaiable_list)
+                            {
+                                allNamespacesAvaiable_list_main.Add(item[(item.LastIndexOf("\\") + 1)..]);
+                            }
+                            allNamespacesAvaiable_array = allNamespacesAvaiable_list_main.ToArray();
+                            string theFunctionOfTheLine = line;
+                            int index = Array.IndexOf(allNamespacesAvaiable_array, theFunctionOfTheLine);
+                            string params_str = line.Replace($"{theFunctionOfTheLine}.{theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("))}(", "");
+                            params_str = params_str.Substring(1, params_str.Length - 2);
+                            params_str = params_str.Substring(params_str.IndexOf("("), params_str.Length - params_str.IndexOf("("));
+                            string[] params_ = { };
 
+                            try { params_ = params_str.Split(","); }
+                            catch { /* Now we know this is a method without parameters */}
+                            string theFunctionOfTheLine_params = theFunctionOfTheLine;
+                            theFunctionOfTheLine = theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("));
+
+                            //theFunctionOfTheLine = theFunctionOfTheLine.Replace("(", "").Replace(");", "");
+
+                            //Older
+                            /*Type type_ = Type.GetType(theFunctionOfTheLine);
+                            MethodInfo method = type_.GetMethod("run");
+                            method.Invoke(null, null);*/
+
+                            //Old
+                            //Activator.CreateInstance(Convert.ToString(Assembly.GetExecutingAssembly()), Convert.ToString(Type.GetType(theFunctionOfTheLine)));                            
+
+                            string[] code =
+                            {
+                                $"Easy14_Programming_Language.{theFunctionOfTheLine} myfunc = new Easy14_Programming_Language.{theFunctionOfTheLine}();",
+                                $"myfunc.Interperate({string.Join(",", params_)});"
+                            };
+
+                            try
+                            {
+                                CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("Error: The function you are trying to use returned an Error");
+                            }
+                            return;
+                        }
+                        else
+                        {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"ERROR; '{line}' is not a vaild code statement\n  Error was located on Line {lineCount}");
                             Console.ResetColor();
@@ -1150,5 +1161,6 @@ namespace Easy14_Programming_Language
                 lineCount++;
             }
         }
+
     }
 }

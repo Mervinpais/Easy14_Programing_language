@@ -109,13 +109,13 @@ namespace Easy14_Programming_Language
                 {
                     someLINEs = new List<string>(textArray);
                 }
-                
+
                 int lin_count = 1;
 
                 foreach (string x in someLINEs)
                 {
                     lin_count++;
-                    if (!x.StartsWith("using") && x != "" && x != null) 
+                    if (!x.StartsWith("using") && x != "" && x != null)
                     { break; }
                 }
 
@@ -168,9 +168,9 @@ namespace Easy14_Programming_Language
                 if (false)
                 {
                     //Yes C#, i wnat this code to be unreachable ok? :)
-                    #pragma warning disable CS0162 // Unreachable code detected
+#pragma warning disable CS0162 // Unreachable code detected
                     prog.CompileCode_fromOtherFiles(null, Code_in_if_statement_List.ToArray());
-                    #pragma warning restore CS0162 // Unreachable code detected
+#pragma warning restore CS0162 // Unreachable code detected
                     System.Threading.Thread.Sleep(100);
                 }
             }
@@ -181,7 +181,7 @@ namespace Easy14_Programming_Language
                 if (!Directory.Exists(dir) || Directory.GetFiles(dir).Length <= 0)
                 {
                     ExceptionSender exception = new ExceptionSender();
-                    exception.SendException("0xF000C2");
+                    exception.SendException("0xFC0002");
                     return;
                 }
 
@@ -211,16 +211,34 @@ namespace Easy14_Programming_Language
                 string obj1_fileContent = null;
                 string obj2_fileContent = null;
                 if (obj1_variable)
-                    obj1_fileContent = File.ReadAllText(dir + @$"\\{obj1}.txt");
+                {
+                    try
+                    {
+                        obj1_fileContent = File.ReadAllText(dir + @$"\\{obj1.Replace("\"", "")}.txt");
+                    }
+                    catch
+                    {
+                        obj1_variable = false;
+                    }
+                }
                 if (obj2_variable)
-                    obj2_fileContent = File.ReadAllText(dir + @$"\\{obj2}.txt");
+                {
+                    try
+                    {
+                        obj2_fileContent = File.ReadAllText(dir + @$"\\{obj2.Replace("\"", "")}.txt");
+                    }
+                    catch
+                    {
+                        obj2_variable = false;
+                    }
+                }
 
 
                 if (obj1_variable && !obj2_variable)
                 {
                     if (obj1_fileContent == obj2.Replace("\"", ""))
                     {
-                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(1, if_lines_list.Count - 2);
+                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(2, if_lines_list.Count - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
@@ -232,7 +250,7 @@ namespace Easy14_Programming_Language
                 {
                     if (obj1.Replace("\"", "") == obj2_fileContent)
                     {
-                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(1, end_line_IDX - 2);
+                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(2, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
@@ -243,7 +261,7 @@ namespace Easy14_Programming_Language
                 {
                     if (obj1_fileContent == obj2_fileContent)
                     {
-                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(1, end_line_IDX);
+                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(2, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
@@ -255,7 +273,7 @@ namespace Easy14_Programming_Language
                 {
                     if (obj1.Replace("\"", "") == obj2.Replace("\"", ""))
                     {
-                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(1, end_line_IDX);
+                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(2, end_line_IDX - 2);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
@@ -272,11 +290,6 @@ namespace Easy14_Programming_Language
                     prog.CompileCode_fromOtherFiles(null, code_toContinueExceuting.ToArray());
                 }
             }
-
-
-
-
-
 
             else if (if_Line.Contains("!="))
             {
@@ -309,11 +322,25 @@ namespace Easy14_Programming_Language
 
                 if (obj1_variable)
                 {
-                    obj1_fileContent = File.ReadAllText(dir + @$"\\{obj1}.txt");
+                    try
+                    {
+                        obj1_fileContent = File.ReadAllText(dir + @$"\\{obj1.Replace("\"", "")}.txt");
+                    }
+                    catch
+                    {
+                        obj1_variable = false;
+                    }
                 }
                 if (obj2_variable)
                 {
-                    obj2_fileContent = File.ReadAllText(dir + @$"\\{obj2}.txt");
+                    try
+                    {
+                        obj2_fileContent = File.ReadAllText(dir + @$"\\{obj2.Replace("\"", "")}.txt");
+                    }
+                    catch
+                    {
+                        obj2_variable = false;
+                    }
                 }
 
 
@@ -321,7 +348,7 @@ namespace Easy14_Programming_Language
                 {
                     if (obj1_fileContent != obj2.Replace("\"", ""))
                     {
-                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(1, end_line_IDX);
+                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(2, end_line_IDX);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
@@ -332,7 +359,7 @@ namespace Easy14_Programming_Language
                 {
                     if (obj1.Replace("\"", "") != obj2_fileContent)
                     {
-                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(1, end_line_IDX);
+                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(2, end_line_IDX);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
@@ -343,7 +370,7 @@ namespace Easy14_Programming_Language
                 {
                     if (obj1_fileContent != obj2_fileContent)
                     {
-                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(1, end_line_IDX);
+                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(2, end_line_IDX);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;
@@ -356,7 +383,7 @@ namespace Easy14_Programming_Language
                     obj2 = obj2.Substring(0, obj2.Length).Substring(1);
                     if (obj1 != obj2)
                     {
-                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(1, end_line_IDX);
+                        List<string> Code_in_if_statement_List = if_lines_list.GetRange(2, end_line_IDX);
                         List<string> usings_code = someLINEs.GetRange(0, lin_count);
                         usings_code.AddRange(Code_in_if_statement_List);
                         Code_in_if_statement_List = usings_code;

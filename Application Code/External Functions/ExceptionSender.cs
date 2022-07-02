@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 
 /// <summary>
 /// the Class "ExceptionSender"
@@ -125,10 +123,10 @@ public class ExceptionSender
             case "0xF00006":
                 Message = $"{typeOfException_str}; Folder is UnAccessable!";
                 break;
-            case "0xF000C1":
+            case "0xFC0001":
                 Message = $"{typeOfException_str}; Method is not Found!";
                 break;
-            case "0xF000C2":
+            case "0xFC0002":
                 Message = $"{typeOfException_str}; Variable is not Found!";
                 break;
 
@@ -151,6 +149,9 @@ public class ExceptionSender
                 break;
             case "0x00ABCD":
                 Message = $"{typeOfException_str}; Are you reciting the alaphabet O_O?";
+                break;
+            default:
+                Message = $"{typeOfException_str}; An Unknown Error Occured";
                 break;
         }
         return Message;

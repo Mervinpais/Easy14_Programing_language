@@ -22,37 +22,28 @@ namespace Easy14_Programming_Language
         /// <param name="lineNumber"></param>
         public static void Interperate(string code_part, string[] textArray = null, string fileloc = null, int lineNumber = -1)
         {
-            string endOfStatementCode = ")";
-            
-            foreach (string line in configFile)
-            {
-                if (line.StartsWith("needSemicolons"))
-                {
-                    endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ");" : endOfStatementCode = ")");
-                    break;
-                }
-            }
             string code_part_unedited = code_part;
             string textToPrint;
 
             code_part = code_part.TrimStart();
             bool foundUsing = false;
-            
+
             if (code_part.StartsWith("print("))
             {
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else {
+                else
+                {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to print()");
                     Console.ResetColor();
                     return;
                 }
-                
+
                 foreach (string x in someLINEs)
                 {
-                    if (x.TrimStart().TrimEnd() == "using Console;")
+                    if (x.TrimStart().TrimEnd() == "using Console;" || x.TrimStart().TrimEnd() == "from Console get print;")
                     {
                         foundUsing = true;
                         break;
@@ -82,7 +73,7 @@ namespace Easy14_Programming_Language
 
             textToPrint = code_part;
             bool isAString = false;
-            
+
             int textToPrint_int;
             bool isAnInt = false;
             bool isAnInt2 = false;
@@ -90,9 +81,9 @@ namespace Easy14_Programming_Language
             double textToPrint_double;
             bool isADouble = false;
             bool isADouble2 = false;
-            
+
             isAString = ((textToPrint.StartsWith("\"") || textToPrint.StartsWith("cl\"")) && textToPrint.EndsWith("\"") || textToPrint.EndsWith("cl\""));
-            
+
             if (textToPrint == "")
             {
                 Console.WriteLine("");
@@ -116,7 +107,7 @@ namespace Easy14_Programming_Language
             }
             catch
             {
-                
+
             }
 
 
@@ -128,11 +119,14 @@ namespace Easy14_Programming_Language
             {
                 Console.WriteLine(textToPrint.ToString());
             }
-            else if (!isAString && (!isAnInt && !isADouble) && textToPrint.TrimEnd().TrimStart().StartsWith("true") || textToPrint.TrimEnd().TrimStart().StartsWith("false")) {
-                try {
+            else if (!isAString && (!isAnInt && !isADouble) && textToPrint.TrimEnd().TrimStart().StartsWith("true") || textToPrint.TrimEnd().TrimStart().StartsWith("false"))
+            {
+                try
+                {
                     Console.WriteLine(Convert.ToBoolean(textToPrint.TrimEnd().TrimStart()));
                 }
-                catch {
+                catch
+                {
                     ExceptionSender ExSend = new ExceptionSender();
                     string[] errorText = {
                         $"ERROR; Trying to convert \"{textToPrint}\" to a boolean failed!\n"
@@ -158,7 +152,7 @@ namespace Easy14_Programming_Language
                 Random rnd = new Random();
                 Console.WriteLine(rnd.Next(number1, number2));
             }
-            
+
             //=======================START OF MATH FUNCTIONS==========================\\
             else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString)
             {
@@ -239,7 +233,7 @@ namespace Easy14_Programming_Language
                 ThrowErrorMessage tErM = new ThrowErrorMessage();
                 string unknownLine = "<unknownLineNumber>";
                 var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
-                string[] errorText = {" Your syntax/parameters were incorrect!", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n"};
+                string[] errorText = { " Your syntax/parameters were incorrect!", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n" };
                 tErM.sendErrMessage(null, errorText, "error");
             }
             //}

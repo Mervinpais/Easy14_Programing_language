@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 
 namespace Easy14_Programming_Language
 {
@@ -24,13 +23,14 @@ namespace Easy14_Programming_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else {
+                else
+                {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to the CurrentTime function.");
                     Console.ResetColor();
                     return null;
                 }
-                
+
                 foreach (string x in someLINEs)
                 {
                     if (x.TrimStart().TrimEnd() == "using Time;")

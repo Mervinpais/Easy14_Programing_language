@@ -1,12 +1,16 @@
 using System;
 using System.IO;
-using System.Linq;
 
 namespace Easy14_Programming_Language
 {
-    class Time_IsLeapYear
+    class Random_RandomRange
     {
-
+        /// <summary>
+        /// It takes a string, an array of strings, and a string, and returns a string.
+        /// </summary>
+        /// <param name="code_part">The code that is being Interperated</param>
+        /// <param name="textArray">The array of strings that contains the code.</param>
+        /// <param name="fileloc">The location of the file</param>
         public string Interperate(string code_part, string[] textArray, string fileloc)
         {
             string endOfStatementCode = ")";
@@ -20,21 +24,23 @@ namespace Easy14_Programming_Language
 
             string code_part_unedited = code_part;
             bool foundUsing = false;
-            if (code_part.StartsWith("IsLeapYear("))
+            if (code_part.StartsWith("RandomRange("))
             {
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else {
+                else
+                {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Error: No file or text array was provided to the IsLeapYear function.");
+                    Console.WriteLine("Error: No file or text array was provided to the RandomRange function.");
                     Console.ResetColor();
                     return null;
                 }
-                
+
+                /* Checking if the code has the using Random; statement. */
                 foreach (string x in someLINEs)
                 {
-                    if (x.TrimStart().TrimEnd() == "using Time;")
+                    if (x.TrimStart().TrimEnd() == "using Random;")
                     {
                         foundUsing = true;
                         break;
@@ -44,40 +50,39 @@ namespace Easy14_Programming_Language
                         break;
                     }
                 }
+
+                /* Checking if the code has the using Random; statement. */
                 if (foundUsing == false)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR; The Using 'Time' wasnt referenced to use 'IsLeapYear' without its reference  (Use Time.IsLeapYear() to fix this error :)");
+                    Console.WriteLine($"ERROR; The Using 'Random' wasnt referenced to use 'RandomRange' without its reference  (Use Random.RandomRange() to fix this error :)");
                     Console.ResetColor();
                     return "<ERROR_USED_FUNCTION_WHICH_NEEDED_A_USING_NAMESPACE_BEFORE>";
                 }
             }
-            else if (code_part.StartsWith($"Time.IsLeapYear(")) { }
+            else if (code_part.StartsWith($"Random.RandomRange(")) { }
 
-            if (code_part_unedited.StartsWith($"Time.IsLeapYear("))
-                code_part = code_part.Substring(16);
-            else if (code_part_unedited.StartsWith($"IsLeapYear("))
-                code_part = code_part.Substring(11);
+            /* Removing the `RandomRange(` from the code. */
+            if (code_part_unedited.StartsWith($"Random.RandomRange("))
+                code_part = code_part.Substring(19);
+            else if (code_part_unedited.StartsWith($"RandomRange("))
+                code_part = code_part.Substring(12);
 
+            /* Removing the `);` or `)` from the code. */
             code_part = code_part.Substring(0, code_part.Length - 1);
             if (code_part.EndsWith(")"))
             {
                 code_part = code_part.Substring(0, code_part.Length - 1);
             }
 
-            int codePartInt = Convert.ToInt32(code_part);
-            if (codePartInt.ToString().Length > 4)
-            {
-                ExceptionSender exceptionSender = new ExceptionSender();
-                exceptionSender.SendException("0x000B13");
-                return "An Unhandled Exception Occured\n";
-            }
-            else {
-                bool isLeapYr = DateTime.IsLeapYear(codePartInt);
-                string isLeapYr_str = Convert.ToString(isLeapYr);
-                return isLeapYr_str;
-            }
-
+            string[] codePart_Array = code_part.Split(',');
+            int codePartInt = Convert.ToInt32(codePart_Array[0]);
+            int codePartInt2 = Convert.ToInt32(codePart_Array[1]);
+            /* Creating a random number between the two numbers. */
+            Random rnd = new Random();
+            int randomNumber = rnd.Next(codePartInt, codePartInt2);
+            string rndNumber_str = randomNumber.ToString();
+            return rndNumber_str;
         }
     }
 }

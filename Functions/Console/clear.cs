@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 
 namespace Easy14_Programming_Language
 {
@@ -9,8 +8,8 @@ namespace Easy14_Programming_Language
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
-        
-        public void Interperate (string code_part, string[] textArray, string fileloc)
+
+        public void Interperate(string code_part, string[] textArray, string fileloc)
         {
             string endOfStatementCode = ")";
             foreach (string line in configFile)
@@ -30,7 +29,8 @@ namespace Easy14_Programming_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else {
+                else
+                {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to Console.clear()");
                     Console.ResetColor();
@@ -38,7 +38,7 @@ namespace Easy14_Programming_Language
                 }
                 foreach (string x in someLINEs)
                 {
-                    if (x.TrimStart().TrimEnd() == "using Console;")
+                    if (x.TrimStart().TrimEnd() == "using Console;" || x.TrimStart().TrimEnd() == "from Console get clear;")
                     {
                         foundUsing = true;
                         break;

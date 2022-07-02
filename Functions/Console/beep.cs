@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 
 namespace Easy14_Programming_Language
 {
@@ -9,7 +8,7 @@ namespace Easy14_Programming_Language
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
-        
+
         public void Interperate(string code_part, string[] textArray, string fileloc)
         {
             string endOfStatementCode = ")";
@@ -36,7 +35,7 @@ namespace Easy14_Programming_Language
 
                 foreach (string x in someLINEs)
                 {
-                    if (x.TrimStart().TrimEnd() == "using Console;")
+                    if (x.TrimStart().TrimEnd() == "using Console;" || x.TrimStart().TrimEnd() == "from Console get beep;")
                     {
                         foundUsing = true;
                         break;
@@ -65,7 +64,7 @@ namespace Easy14_Programming_Language
             {
                 code_part = code_part.Substring(0, code_part.Length - 1);
             }
-            
+
             if (code_part.Contains(","))
             {
 

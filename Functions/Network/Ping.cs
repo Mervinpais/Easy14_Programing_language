@@ -55,7 +55,7 @@ namespace Easy14_Programming_Language
             {
                 code_part = code_part.Substring(0, code_part.Length - 1);
             }
-            
+
             textToPrint = line_;
             if (textToPrint.StartsWith('"'.ToString()) && textToPrint.EndsWith('"'.ToString()))
             {

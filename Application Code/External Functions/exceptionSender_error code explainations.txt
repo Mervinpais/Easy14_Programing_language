@@ -1,0 +1,27 @@
+﻿
+            ███████╗██████╗ ██████╗  █████╗ ██████╗   ██████╗ ██╗ █████╗  ██████╗ ██████╗  █████╗ ███╗   ███╗
+            ██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔══██╗  ██╔══██╗██║██╔══██╗██╔════╝ ██╔══██╗██╔══██╗████╗ ████║
+            █████╗  ██████╔╝██████╔╝██║  ██║██████╔╝  ██║  ██║██║███████║██║  ██╗ ██████╔╝███████║██╔████╔██║
+            ██╔══╝  ██╔══██╗██╔══██╗██║  ██║██╔══██╗  ██║  ██║██║██╔══██║██║  ╚██╗██╔══██╗██╔══██║██║╚██╔╝██║
+            ███████╗██║  ██║██║  ██║╚█████╔╝██║  ██║  ██████╔╝██║██║  ██║╚██████╔╝██║  ██║██║  ██║██║ ╚═╝ ██║
+            ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚════╝ ╚═╝  ╚═╝  ╚═════╝ ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝
+            ==================================================================================================
+
+                   |-> Sub-type of Error (example 0xFC0001 means an IO error happened and it was with user code)
+                   |                    (example 0xFA0001 means an IO error happened and it was with the program's code)
+                   ||-> 4th Number Place
+                   |||-> 3rd Number Place
+                   ||||-> 2nd Number Place
+                   ||||
+                0x000000 --> Last digit is the number (example 0xF00001 = File Error, 0xF00002 = Folder Error)
+  Nothing lol <-| |
+                  |-> What type of error
+                        0 = General Error
+                        A = Application/Programming Language/C# Error
+						B = ?
+                        C = Code Error
+                        D = ?
+                        E = System Error
+                        F = IO Error
+
+Last Updated; 1/7/2022

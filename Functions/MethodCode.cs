@@ -10,7 +10,7 @@ namespace Easy14_Programming_Language
          * CHANGLE LOG 24/6/2022;
          * Code will/has  be/been refactored for better readablilty and easier to understand
          */
-        
+
         readonly Program prog = new Program();
         public void Interperate(string code_part, string[] textArray, string[] lines, string fileloc, bool Making_A_Method)
         {
@@ -33,11 +33,12 @@ namespace Easy14_Programming_Language
                     }
                     lines_lineCounter++;
                 }
-                
+
                 int underStuff_lineCounterr = 0;
-                #pragma warning disable IDE0090 // Use 'new(...)'
+#pragma warning disable IDE0090 // Use 'new(...)'
                 List<string> understuff = new List<string>(method_lines_list);
-                #pragma warning restore IDE0090 // Use 'new(...)'
+#pragma warning restore IDE0090 // Use 'new(...)'
+
                 foreach (string line__ in understuff)
                 {
                     underStuff_lineCounterr++;
@@ -72,7 +73,7 @@ namespace Easy14_Programming_Language
                     }
                     usingsCodeList_lineCount++;
                 }
-                
+
                 List<string> code_in_method_code = method_lines_list.GetRange(1, last_line_Index - 1);
                 List<string> usings_code = usingsCode_list.GetRange(0, usingsCodeList_lineCount);
                 // This \/ is just something i added and it just fixes everything
@@ -80,7 +81,7 @@ namespace Easy14_Programming_Language
                 usings_code.AddRange(code_in_method_code);
                 usings_code_undercode.AddRange(understuff);
                 code_in_method_code = usings_code;
-                
+
                 string methodName = code_part_unedited;
                 methodName = methodName.Replace("func", "");
                 methodName = methodName.TrimStart();
@@ -99,15 +100,16 @@ namespace Easy14_Programming_Language
                 methodName = methodName.Replace("func", "");
                 methodName = methodName.TrimStart();
                 methodName = methodName[..methodName.IndexOf("(")];
-                
+
                 if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}"))
                 {
                     Console.WriteLine("ERROR; Can't Find method, make sure you made the method in your code");
                     return;
                 }
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}");
-                
-                try {
+
+                try
+                {
                     prog.CompileCode_fromOtherFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", null, 0, true, methodName);
                 }
                 catch
@@ -116,7 +118,7 @@ namespace Easy14_Programming_Language
                     return;
                 }
                 List<string> understuff = new List<string>(lines);
-                understuff.RemoveRange(understuff.IndexOf(code_part) , 1);
+                understuff.RemoveRange(understuff.IndexOf(code_part), 1);
                 // The Reason why the Above /\ needs to have a "+ 1" at the end is because it will get stuck in a loop, example (CHECK LINE 126);
             }
         }

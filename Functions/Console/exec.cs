@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 
 namespace Easy14_Programming_Language
 {
@@ -9,7 +8,7 @@ namespace Easy14_Programming_Language
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
-        
+
         public void Interperate(string code_part, string[] textArray, string fileloc, int lineNumber = -1)
         {
             string endOfStatementCode = ")";
@@ -31,7 +30,8 @@ namespace Easy14_Programming_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else {
+                else
+                {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to exec()");
                     Console.ResetColor();
@@ -39,7 +39,7 @@ namespace Easy14_Programming_Language
                 }
                 foreach (string x in someLINEs)
                 {
-                    if (x.TrimStart().TrimEnd() == "using Console;")
+                    if (x.TrimStart().TrimEnd() == "using Console;" || x.TrimStart().TrimEnd() == "from Console get exec;")
                     {
                         foundUsing = true;
                         break;
@@ -88,7 +88,7 @@ namespace Easy14_Programming_Language
                 ThrowErrorMessage tErM = new ThrowErrorMessage();
                 string unknownLine = "<unknownLineNumber>";
                 var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
-                string[] errorText = {" An error occurred while executing commands from the exec command", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n"};
+                string[] errorText = { " An error occurred while executing commands from the exec command", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n" };
                 tErM.sendErrMessage(null, errorText, "error");
             }
             //}

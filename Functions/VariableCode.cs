@@ -18,19 +18,10 @@ namespace Easy14_Programming_Language
         /// <param name="line_count">The line number of the code_part</param>
         public void Interperate(string code_part, string[] lines, int line_count)
         {
-            string endOfStatementCode = ")";
-            string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
-            foreach (string line in configFile)
-            {
-                if (line.StartsWith("needSemicolons"))
-                    endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ";" : endOfStatementCode = ")");
-                break;
-            }
-
             string code_part_unedited = code_part;
             code_part = code_part.TrimStart();
             code_part = code_part.Substring(3);
-            
+
             var textToPrint = code_part;
             if (textToPrint.Contains("="))
             {
@@ -38,7 +29,6 @@ namespace Easy14_Programming_Language
                 varName = varName.TrimStart().TrimEnd();
                 string varContent = textToPrint.Substring(textToPrint.IndexOf("="), textToPrint.Length - textToPrint.IndexOf("=")).ToString();
 
-                /* Checking if the variable name starts with a number. */
                 char[] varName_charArray = varName.ToCharArray();
                 if (char.IsDigit(varName_charArray[0]))
                 {
@@ -47,7 +37,6 @@ namespace Easy14_Programming_Language
                     Console.ForegroundColor = ConsoleColor.White;
                 }
 
-                /* Checking if the variable name contains any of the special characters. */
                 if (varName.Contains("/") || varName.Contains(@"\") || varName.Contains(":") || varName.Contains("*") || varName.Contains("?") || varName.Contains("\"") || varName.Contains("<") || varName.Contains(">") || varName.Contains("|") || varName.Contains(";") || varName.Contains("{") || varName.Contains("}"))
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -62,17 +51,11 @@ namespace Easy14_Programming_Language
                     );
                     varContent = varContent.Substring(1).TrimStart();
 
-                    //Below 2 lines of code will be used later in the code, its just for not needing to copy and paste alot
                     var varContent_clone = varContent.Replace("=", "").TrimStart().ToLower();
 
-                    /* Checking if the variable content starts with any of the math functions. */
                     bool doesContainMathFunctions = varContent_clone.StartsWith("cos") || varContent_clone.StartsWith("sin") || varContent_clone.StartsWith("tan") || varContent_clone.StartsWith("abs");
 
-                    /* Checking if the variable content starts with "random.range(" and ends with ")" or ";" (depending on
-                    the end of statement code). If it does, it will replace "random.range(" with nothing, and replace
-                    ")" with nothing. Then it will get the first number, and the second number. Then it will create a
-                    random number between the two numbers. Then it will write the random number to a file. */
-                    if (varContent.StartsWith("random.range(") && varContent.EndsWith(endOfStatementCode == ")" ? "" : ";"))
+                    if (varContent.StartsWith("random.range(") && varContent.EndsWith(");"))
                     {
                         string text = varContent;
                         text = text.Replace("random.range(", "");
@@ -83,11 +66,11 @@ namespace Easy14_Programming_Language
                         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", Convert.ToString(rnd.Next(number1, number2)));
                     }
 
-                    /* Checking if the code is a console input. */
-                    else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith(endOfStatementCode == ")" ? "" : ";"))
+                    else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith(");"))
                     {
                         ConsoleInput conInput = new ConsoleInput();
-                        conInput.Interperate(code_part, null, null, varName);
+                        var userInput = conInput.Interperate(code_part, lines, varName: varName);
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", userInput.ToString());
                     }
 
                     else if (varContent.Contains("+"))
@@ -179,13 +162,10 @@ namespace Easy14_Programming_Language
                         var result = math_sqrt.Interperate(varContent, line_count, varName);
                         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", result.ToString());
                     }
-                    else if (varContent.StartsWith('"'.ToString()) && varContent.EndsWith(endOfStatementCode == ")" ? "\";" : "\""))
+                    else if (varContent.StartsWith('"'.ToString()) && varContent.EndsWith("\";"))
                     {
-                        if (endOfStatementCode != ")")
-                            varContent = varContent.Substring(1);
-                        else if (endOfStatementCode == ")")
-                            varContent = varContent.Substring(1, varContent.Length - 2);
-                        varContent = varContent.Substring(0, endOfStatementCode == ")" ? varContent.Length - 1 : varContent.Length - 2);
+                        varContent = varContent.Substring(1, varContent.Length - 2);
+                        varContent = varContent.Substring(0, varContent.Length - 2);
                         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", varContent);
                     }
                     else if (int.TryParse(varContent.Substring(0, varContent.Length - 1), out _) == true)
