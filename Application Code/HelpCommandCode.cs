@@ -29,7 +29,7 @@ namespace Easy14_Programming_Language
                 ExceptionSender exceptionSender = new ExceptionSender();
                 exceptionSender.SendException("0xF00001", helpMessage);
             }
-            
+
             catch (UnauthorizedAccessException UnauthAccessEexception_Ex)
             {
                 string[] helpMessage =
@@ -61,17 +61,15 @@ namespace Easy14_Programming_Language
         public void DisplayDefaultHelpOptions()
         {
             string[] defaultHelp = {
-                "Hello! Welcome to the help section of Easy14!",
+                "=== Easy14 Arguments/Commands ===",
                 "   -help || /help = Show the list of arguments you can run with the Easy14 Language",
                 "",
                 "   -help <function> || /help <function> = lets you view help info about a function (you can make custom help guides too!)",
                 "",
                 "   -run || /run = Runs an easy14 file, the file extention must be .ese14 (ex; *easy14 app path* run *file.s14c*)",
                 "    |",
-                "     -show_cmds || /show_cmds = shows what command runs while running a file",
-                "     -preview_only || /preview_only = shows the file's content's",
-                "",
-                "   -keywords || /keywords = Shows all keywords that are statements in Easy14",
+                "    └-→ show_cmds || /show_cmds = shows what command runs while running a file",
+                "    └-→ preview_only || /preview_only = shows the file's content's",
                 "",
                 "   -intro || /intro = Introduction/Tutorial of Easy14",
                 "\n",

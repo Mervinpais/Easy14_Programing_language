@@ -3,13 +3,13 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class Math_Equals
+    class isEqualTo
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
-        public bool? Interperate(string code_part, int lineNumber, string fileName = null)
+        public bool? Interperate(string code_part, string fileName = null)
         {
             string code_part_unedited;
 
@@ -17,7 +17,8 @@ namespace Easy14_Programming_Language
             code_part = code_part_unedited.TrimStart();
 
             string expression = code_part;
-            if (expression is null && !expression.Contains("==")) {
+            if (expression is null && !expression.Contains("=="))
+            {
                 Console.WriteLine("ERROR; Can't Compare, please check your code and fix the error");
                 return null;
             }
@@ -26,7 +27,8 @@ namespace Easy14_Programming_Language
             //Console.WriteLine(expression);
             string[] intergers = expression.Split(' ');
             bool result = false;
-            try {
+            try
+            {
                 Nullable<int> integer1 = null;
                 Nullable<int> integer2 = null;
                 string integer1_str = null;
@@ -72,13 +74,21 @@ namespace Easy14_Programming_Language
                 //Seperatated Sections
 
                 if (integer1_str != "0xF000001" && integer2_str == "0xF000001")
+                {
                     result = Convert.ToInt32(integer1_str) == Convert.ToInt32(integer2);
+                }
                 else if (integer1_str == "0xF000001" && integer2_str != "0xF000001")
+                {
                     result = Convert.ToInt32(integer1) == Convert.ToInt32(integer2_str);
+                }
                 else if (integer1_str == "0xF000001" && integer2_str == "0xF000001")
+                {
                     result = Convert.ToInt32(integer1) == Convert.ToInt32(integer2);
+                }
                 else if (integer1_str != null && integer2_str != null)
+                {
                     result = Convert.ToInt32(integer1_str) == Convert.ToInt32(integer2_str);
+                }
             }
             catch
             {
@@ -86,12 +96,14 @@ namespace Easy14_Programming_Language
                 //Console.WriteLine(sum);
                 return null;
             }
-            
+
             /* Saving the result of the math equation to a file. */
-            if (fileName is not null) {
+            if (fileName is not null)
+            {
                 File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{fileName}.txt", result.ToString());
             }
-            else if (fileName is null) {
+            else if (fileName is null)
+            {
                 return result;
             }
             return result;

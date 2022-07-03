@@ -90,6 +90,22 @@
             Clean up the resources that were created.
             </summary>
         </member>
+        <member name="M:Easy14_Programming_Language.Using_namespace_code.usingFunction_interp(System.String,System.Boolean,System.Int32)">
+            <summary>
+            usingFunction is for when the line "using x" appears
+            </summary>
+            <param name="line">the line</param>
+            <param name="disableLibraries">are libraries disabled?</param>
+            <param name="lineCount">line count, duh</param>
+        </member>
+        <member name="M:Easy14_Programming_Language.Using_namespace_code.fromFunction_interp(System.String,System.Boolean,System.Int32)">
+            <summary>
+            formFunction is for when the line "from x get y" appears
+            </summary>
+            <param name="line">the line</param>
+            <param name="disableLibraries">are libraries disabled?</param>
+            <param name="lineCount">line count, duh</param>
+        </member>
         <member name="M:Easy14_Programming_Language.VariableCode.Interperate(System.String,System.String[],System.Int32)">
             <summary>
             It takes a string, an array of strings, and an integer, and does something with them.

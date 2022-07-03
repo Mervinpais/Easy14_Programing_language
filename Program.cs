@@ -712,18 +712,30 @@ namespace Easy14_Programming_Language
 
             /* Removing the leading whitespace from each line in the list. */
             List<string> lines_list_mod = new List<string>();
+            int linesListMod_LineCounter = 0;
             foreach (string item_ in lines_list)
             {
-                lines_list_mod.Add(item_.TrimStart());
+                string itemToBeAdded = item_.TrimStart();
+                if (itemToBeAdded.Contains("/*"))
+                {
+                    if (itemToBeAdded.Contains(@"*/"))
+                    {
+                        itemToBeAdded = itemToBeAdded.Substring(itemToBeAdded.IndexOf("/*"), itemToBeAdded.IndexOf(@"*/"));
+                    }
+                }
+                if (itemToBeAdded.Contains("//"))
+                {
+                    itemToBeAdded = itemToBeAdded.Substring(0, itemToBeAdded.IndexOf("//"));
+                }
+                lines_list_mod.Add(itemToBeAdded);
+                linesListMod_LineCounter++;
             }
-
             lines = lines_list_mod.ToArray();
 
             //Now below is where the magic happens!
 
             foreach (string line in lines)
             {
-
                 char[] line_chrArr = line.ToCharArray();
 
                 if (showCommands == true) Console.WriteLine(">>>" + line);
@@ -824,84 +836,84 @@ namespace Easy14_Programming_Language
                 {
                     Console.WriteLine("false");
                 }
-                else if (line.StartsWith($"if") && line.EndsWith("{"))
+                else if ((line.StartsWith($"if") && line.EndsWith("{")) || (line.StartsWith("if") && lines[lineCount] == "{"))
                 {
                     If_Loop if_Loop = new If_Loop();
                     if_Loop.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName);
                     return;
                 }
-                else if (line.StartsWith($"while") && line.EndsWith("{")) // || (lines[lineCount + 1] == "{")
+                else if ((line.StartsWith($"while") && line.EndsWith("{")) || (line.StartsWith("while") && lines[lineCount] == "{")) // || (lines[lineCount + 1] == "{")
                 {
                     //since we need the part that we need to loop until x == true, we first get and save the lines of the file/textArray
                     WhileLoop whileLoop = new WhileLoop();
                     whileLoop.Interperate(line, textArray, lines, fileLoc);
                     return;
                 }
-                else if (line.StartsWith("func ") && line.EndsWith(") {")) // || line.EndsWith("()" + (lines[lineCount + 1] == "{")
+                else if ((line.StartsWith("func ") && line.EndsWith(") {")) || (line.StartsWith("func ") && line.EndsWith(")") && lines[lineCount] == "{"))
                 {
                     MethodCode methodCode = new MethodCode();
                     methodCode.Interperate(line, textArray, lines, fileLoc, true);
                     return;
                 }
-                else if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"MakeFile(") && line.EndsWith("}"))
+                else if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"MakeFile(") && line.EndsWith("{"))
                 {
                     FileSystem_MakeFile fs_mkFile = new FileSystem_MakeFile();
                     fs_mkFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
-                else if (line.StartsWith($"FileSystem.MakeFolder(") || line.StartsWith($"MakeFolder(") && line.EndsWith("}"))
+                else if (line.StartsWith($"FileSystem.MakeFolder(") || line.StartsWith($"MakeFolder(") && line.EndsWith("{"))
                 {
                     FileSystem_MakeFolder fs_mkFolder = new FileSystem_MakeFolder();
                     fs_mkFolder.Interperate(line, fileLoc, textArray, lineCount);
                 }
-                else if (line.StartsWith($"FileSystem.DeleteFile(") || line.StartsWith($"DeleteFile(") && line.EndsWith("}"))
+                else if (line.StartsWith($"FileSystem.DeleteFile(") || line.StartsWith($"DeleteFile(") && line.EndsWith("{"))
                 {
                     FileSystem_DeleteFile fs_delFile = new FileSystem_DeleteFile();
                     fs_delFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
-                else if (line.StartsWith($"FileSystem.DeleteFolder(") || line.StartsWith($"DeleteFolder(") && line.EndsWith("}"))
+                else if (line.StartsWith($"FileSystem.DeleteFolder(") || line.StartsWith($"DeleteFolder(") && line.EndsWith("{"))
                 {
                     FileSystem_DeleteFolder fs_delFolder = new FileSystem_DeleteFolder();
                     fs_delFolder.Interperate(line, fileLoc, textArray, lineCount);
                 }
-                else if (line.StartsWith($"FileSystem.ReadFile(") || line.StartsWith($"ReadFile(") && line.EndsWith("}"))
+                else if (line.StartsWith($"FileSystem.ReadFile(") || line.StartsWith($"ReadFile(") && line.EndsWith("{"))
                 {
                     FileSystem_ReadFile fs_readFile = new FileSystem_ReadFile();
                     fs_readFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
-                else if (line.StartsWith($"FileSystem.RenameFile(") || line.StartsWith($"RenameFile(") && line.EndsWith("}"))
+                else if (line.StartsWith($"FileSystem.RenameFile(") || line.StartsWith($"RenameFile(") && line.EndsWith("{"))
                 {
                     FileSystem_RenameFile fs_renameFile = new FileSystem_RenameFile();
                     fs_renameFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
-                else if (line.StartsWith($"FileSystem.WriteFile(") || line.StartsWith($"WriteFile(") && line.EndsWith("}"))
+                else if (line.StartsWith($"FileSystem.WriteFile(") || line.StartsWith($"WriteFile(") && line.EndsWith("{"))
                 {
                     FileSystem_WriteFile fs_writeFile = new FileSystem_WriteFile();
                     fs_writeFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
-                else if (line.StartsWith($"Network.Ping(") || line.StartsWith($"Ping(") && line.EndsWith("}"))
+                else if (line.StartsWith($"Network.Ping(") || line.StartsWith($"Ping(") && line.EndsWith("{"))
                 {
                     NetworkPing netPing = new NetworkPing();
                     netPing.Interperate(line, fileLoc, textArray, lineCount);
                 }
-                else if (line.StartsWith($"Time.CurrentTime(") || line.StartsWith($"CurrentTime(") && line.EndsWith("}"))
+                else if (line.StartsWith($"Time.CurrentTime(") || line.StartsWith($"CurrentTime(") && line.EndsWith("{"))
                 {
                     Time_CurrentTime currentTime = new Time_CurrentTime();
                     string time = currentTime.Interperate(line, textArray, fileLoc);
                     Console.WriteLine(time);
                 }
-                else if (line.StartsWith($"Time.IsLeapYear(") || line.StartsWith($"IsLeapYear(") && line.EndsWith("}"))
+                else if (line.StartsWith($"Time.IsLeapYear(") || line.StartsWith($"IsLeapYear(") && line.EndsWith("{"))
                 {
                     Time_IsLeapYear isLeapYear = new Time_IsLeapYear();
                     string isLeapYear_str = isLeapYear.Interperate(line, textArray, fileLoc);
                     Console.WriteLine(Convert.ToBoolean(isLeapYear_str));
                 }
-                else if (line.StartsWith($"Random.RandomRange(") || line.StartsWith($"RandomRange(") && line.EndsWith("}"))
+                else if (line.StartsWith($"Random.RandomRange(") || line.StartsWith($"RandomRange(") && line.EndsWith("{"))
                 {
                     Random_RandomRange randomRange = new Random_RandomRange();
                     string randomRange_str = randomRange.Interperate(line, textArray, fileLoc);
                     Console.WriteLine(randomRange_str);
                 }
-                else if (line.StartsWith($"sdl2.makeWindow(") || line.StartsWith($"makeWindow(") && line.EndsWith(")"))
+                else if (line.StartsWith($"sdl2.makeWindow(") || line.StartsWith($"makeWindow(") && line.EndsWith(");"))
                 {
                     SDL2_makeWindow makeWindow = new SDL2_makeWindow();
                     string code_line = line.Replace("sdl2.", "").Replace("makeWindow(", "");
@@ -926,7 +938,7 @@ namespace Easy14_Programming_Language
                     Thread.Sleep(100);
                     continue;
                 }
-                else if (line.StartsWith($"sdl2.createShape(") || line.StartsWith($"createShape(") && line.EndsWith(")"))
+                else if (line.StartsWith($"sdl2.createShape(") || line.StartsWith($"createShape(") && line.EndsWith(");"))
                 {
                     SDL2_createShape createShape = new SDL2_createShape();
                     string code_line = line.Replace("sdl2.", "").Replace("createShape(", "");
@@ -946,7 +958,7 @@ namespace Easy14_Programming_Language
 
                     new Task(() => { createShape.Interperate(window, x, y, w, h); }).Start();
                 }
-                else if (line.StartsWith($"sdl2.clearScreen(") || line.StartsWith($"clearScreen(") && line.EndsWith(")"))
+                else if (line.StartsWith($"sdl2.clearScreen(") || line.StartsWith($"clearScreen(") && line.EndsWith(");"))
                 {
                     SDL2_clearScreen clearScreen = new SDL2_clearScreen();
                     string code_line = line.Replace("sdl2.", "").Replace("clearScreen(", "");
@@ -1097,13 +1109,14 @@ namespace Easy14_Programming_Language
                                 catch (Exception e)
                                 {
                                     Console.WriteLine("Error: The function you are trying to use returned an Error");
+                                    Console.WriteLine($"\n{e.Message}");
                                 }
                                 return;
                             }
                         }
                         else if (!funcLine.Contains("."))
                         {
-                            string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
+                            string[] allNamespacesAvaiable_array = Directory.GetDirectories(strWorkPath.Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
                             List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
                             List<string> allNamespacesAvaiable_list_main = new List<string>();
                             foreach (string item in allNamespacesAvaiable_list)
@@ -1146,6 +1159,7 @@ namespace Easy14_Programming_Language
                             catch (Exception e)
                             {
                                 Console.WriteLine("Error: The function you are trying to use returned an Error");
+                                Console.WriteLine($"\n{e.Message}");
                             }
                             return;
                         }

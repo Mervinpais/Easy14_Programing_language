@@ -122,8 +122,8 @@ namespace Easy14_Programming_Language
                     {
                         if (doesContainMathFunctions) return;
 
-                        Math_Equals math_equals = new Math_Equals();
-                        var result = math_equals.Interperate(varContent, line_count, varName);
+                        isEqualTo math_equals = new isEqualTo();
+                        var result = math_equals.Interperate(varContent, varName);
                         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("cos"))

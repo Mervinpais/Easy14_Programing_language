@@ -168,7 +168,8 @@ namespace Easy14_Programming_Language
                 }
                 else if (textToPrint.Contains("==") && textToPrint.Count(f => (f == '=')) == 2)
                 {
-                    Math_Equals math_Equals = new Math_Equals(); var result = math_Equals.Interperate(textToPrint, -1);
+                    isEqualTo math_Equals = new isEqualTo();
+                    var result = math_Equals.Interperate(textToPrint);
                     Console.WriteLine(result); Console.Write(">");
                     string textFromUser = Console.ReadLine();
                     return textFromUser;

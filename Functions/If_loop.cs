@@ -24,7 +24,7 @@ namespace Easy14_Programming_Language
             int end_line_IDX = 0;
 
             List<string> if_lines_list = new List<string>(lines);
-            List<string> usings_lines_list = new List<string>(if_lines_list);
+            List<string> usings_lines_list = new List<string>(lines);
 
             //Below we get the usings and then use them for other stuff
             int lines_lineCounter = 0;
@@ -80,8 +80,10 @@ namespace Easy14_Programming_Language
             if_Line = if_Line.Substring(2);
             if_Line = if_Line.Substring(1, if_Line.Length - 2);
 
-            string obj1 = null; bool obj1_variable = false;
-            string obj2 = null; bool obj2_variable = false;
+            string obj1 = null;
+            bool obj1_variable = false;
+            string obj2 = null;
+            bool obj2_variable = false;
 
             if_Line = if_Line.TrimEnd().TrimStart();
             if (if_Line != "(true)" && if_Line != "(false)")

@@ -67,7 +67,7 @@ namespace Easy14_Programming_Language
                 int usingsCodeList_lineCount = 1;
                 foreach (string x in usingsCode_list)
                 {
-                    if (!x.StartsWith("using"))
+                    if (!x.StartsWith("using") || !x.StartsWith("from"))
                     {
                         break;
                     }
