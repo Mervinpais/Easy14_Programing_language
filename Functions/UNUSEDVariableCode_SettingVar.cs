@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Easy14_Programming_Language
 {
@@ -34,7 +32,8 @@ namespace Easy14_Programming_Language
             code_part = code_part.Substring(3);
             code_part = code_part.TrimStart();
             //code_part = code_part.Substring(0, code_part.Length - 1);
-            if (code_part.StartsWith("Console.input(")) {
+            if (code_part.StartsWith("Console.input("))
+            {
                 code_part.Replace("Console.input(", "");
                 code_part.Substring(0, code_part.Length - 1);
                 Console.Write(">");

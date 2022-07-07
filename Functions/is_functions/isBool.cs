@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Easy14_Programming_Language
+﻿namespace Easy14_Programming_Language
 {
-    class isBool
+    public static class isBool
     {
-        public bool Interperate(bool? boolean)
+        public static bool Interperate(bool? boolean)
         {
             if (boolean is bool)
             {

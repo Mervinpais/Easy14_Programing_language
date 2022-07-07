@@ -2,9 +2,9 @@
 
 namespace Easy14_Programming_Language
 {
-    public class getKeyPress
+    public static class getKeyPress
     {
-        public ConsoleKeyInfo Interperate()
+        public static ConsoleKeyInfo Interperate()
         {
             ConsoleKeyInfo key = Console.ReadKey();
             return key;

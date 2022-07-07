@@ -7,7 +7,7 @@ namespace Easy14_Programming_Language
     /// <summary>
     /// ConsolePrint is a class to print stuff to the console
     /// </summary>
-    public class ConsolePrint
+    public static class ConsolePrint
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
@@ -127,11 +127,10 @@ namespace Easy14_Programming_Language
                 }
                 catch
                 {
-                    ExceptionSender ExSend = new ExceptionSender();
                     string[] errorText = {
                         $"ERROR; Trying to convert \"{textToPrint}\" to a boolean failed!\n"
                     };
-                    ExSend.SendException("0x000BC3", errorText);
+                    ExceptionSender.SendException("0x000BC3", errorText);
                 }
             }
             else if (textToPrint.StartsWith("random.range(") && textToPrint.EndsWith(")"))
@@ -140,8 +139,7 @@ namespace Easy14_Programming_Language
                 bool isAString2 = textToPrint.Substring(0, textToPrint.Length).Substring(13).StartsWith("\"") && textToPrint.Substring(0, textToPrint.Length).Substring(13).EndsWith("\"");
                 if (isAString2)
                 {
-                    ExceptionSender exceptionSender = new ExceptionSender();
-                    exceptionSender.SendException("0x0000B3");
+                    ExceptionSender.SendException("0x0000B3");
                     return;
                 }
                 string text = textToPrint;
@@ -156,40 +154,28 @@ namespace Easy14_Programming_Language
             //=======================START OF MATH FUNCTIONS==========================\\
             else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString)
             {
-                Math_Add math_Add = new Math_Add();
-                var result = math_Add.Interperate(textToPrint, -1);
-                Console.WriteLine(result);
+                Console.WriteLine(Math_Add.Interperate(textToPrint, -1));
             }
             else if (textToPrint.Contains("-") && textToPrint.Count(f => (f == '-')) == 1 && !isAString && (isAnInt && isADouble))
             {
-                Math_Subtract math_Subtract = new Math_Subtract();
-                var result = math_Subtract.Interperate(textToPrint, -1);
-                Console.WriteLine(result);
+                Console.WriteLine(Math_Subtract.Interperate(textToPrint, -1));
             }
             else if (textToPrint.Contains("*") && textToPrint.Count(f => (f == '*')) == 1 && !isAString && (isAnInt && isADouble))
             {
-                Math_Multiply math_Multiply = new Math_Multiply();
-                var result = math_Multiply.Interperate(textToPrint, -1);
-                Console.WriteLine(result);
+                Console.WriteLine(Math_Multiply.Interperate(textToPrint, -1));
             }
             else if (textToPrint.Contains("/") && textToPrint.Count(f => (f == '/')) == 1 && !isAString && (isAnInt && isADouble))
             {
-                Math_Divide math_Divide = new Math_Divide();
-                var result = math_Divide.Interperate(textToPrint, -1);
-                Console.WriteLine(result);
+                Console.WriteLine(Math_Divide.Interperate(textToPrint, -1));
             }
             else if (textToPrint.Contains("%") && textToPrint.Count(f => (f == '%')) == 1 && !isAString && (isAnInt && isADouble))
             {
-                Math_Module math_Modulo = new Math_Module();
-                var result = math_Modulo.Interperate(textToPrint, -1);
-                Console.WriteLine(result);
+                Console.WriteLine(Math_Module.Interperate(textToPrint, -1));
             }
             //=======================END OF MATH FUNCTIONS==========================\\
             else if (textToPrint.Contains("==") && textToPrint.Count(f => (f == '=')) == 2)
             {
-                isEqualTo math_Equals = new isEqualTo();
-                var result = math_Equals.Interperate(textToPrint);
-                Console.WriteLine(result);
+                Console.WriteLine(isEqualTo.Interperate(textToPrint));
             }
             else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\"") && isAString && !isAnInt)
             {
@@ -230,11 +216,10 @@ namespace Easy14_Programming_Language
             }
             else
             {
-                ThrowErrorMessage tErM = new ThrowErrorMessage();
                 string unknownLine = "<unknownLineNumber>";
                 var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
                 string[] errorText = { " Your syntax/parameters were incorrect!", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n" };
-                tErM.sendErrMessage(null, errorText, "error");
+                ThrowErrorMessage.sendErrMessage(null, errorText, "error");
             }
             //}
         }

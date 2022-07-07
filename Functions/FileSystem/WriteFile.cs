@@ -3,13 +3,13 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class FileSystem_WriteFile
+    public static class FileSystem_WriteFile
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
-        
-        public void Interperate(string code_part, string fileloc, string[] textArray, int line_count)
+
+        public static void Interperate(string code_part, string fileloc, string[] textArray, int line_count)
         {
             string code_part_unedited;
             string textToPrint;
@@ -23,7 +23,8 @@ namespace Easy14_Programming_Language
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else {
+                else
+                {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to the WriteFile function.");
                     Console.ResetColor();

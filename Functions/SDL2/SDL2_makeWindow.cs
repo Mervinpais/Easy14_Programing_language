@@ -3,16 +3,16 @@ using System;
 
 namespace Easy14_Programming_Language
 {
-    class SDL2_makeWindow
+    public static class SDL2_makeWindow
     {
-        IntPtr window;
-        IntPtr renderer;
-        bool running = true;
+        static IntPtr window;
+        static IntPtr renderer;
+        static bool running = true;
 
         /// <summary>
         /// Setup all of the SDL resources we'll need to display a window.
         /// </summary>
-        void Setup(int sizeX = 200, int sizeY = 200, int posX = SDL.SDL_WINDOWPOS_UNDEFINED, int posY = SDL.SDL_WINDOWPOS_UNDEFINED, string title = "myWindow")
+        public static void Setup(int sizeX = 200, int sizeY = 200, int posX = SDL.SDL_WINDOWPOS_UNDEFINED, int posY = SDL.SDL_WINDOWPOS_UNDEFINED, string title = "myWindow")
         {
             // Initilizes SDL.
             if (SDL.SDL_Init(SDL.SDL_INIT_VIDEO) < 0)
@@ -53,7 +53,7 @@ namespace Easy14_Programming_Language
         /// <summary>
         /// Checks to see if there are any events to be processed.
         /// </summary>
-        void PollEvents()
+        static void PollEvents()
         {
             // Check to see if there are any events and continue to do so until the queue is empty.
             while (SDL.SDL_PollEvent(out SDL.SDL_Event e) == 1)
@@ -78,7 +78,7 @@ namespace Easy14_Programming_Language
         /// <summary>
         /// Renders to the window.
         /// </summary>
-        void Render(byte red = 30, byte green = 30, byte blue = 30, byte alpha = 255)
+        static void Render(byte red = 30, byte green = 30, byte blue = 30, byte alpha = 255)
         {
             // Sets the color that the screen will be cleared with.
             SDL.SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
@@ -101,15 +101,15 @@ namespace Easy14_Programming_Language
         /// <summary>
         /// Clean up the resources that were created.
         /// </summary>
-        
-        void CleanUp()
+
+        static void CleanUp()
         {
             SDL.SDL_DestroyRenderer(renderer);
             SDL.SDL_DestroyWindow(window);
             //SDL.SDL_Quit();
         }
 
-        public long Interperate(int sizeX = 200, int sizeY = 200, int posX = SDL.SDL_WINDOWPOS_UNDEFINED, int posY = SDL.SDL_WINDOWPOS_UNDEFINED, string title = "myWindow", byte red = 30, byte green = 30, byte blue = 30, byte alpha = 255)
+        public static long Interperate(int sizeX = 200, int sizeY = 200, int posX = SDL.SDL_WINDOWPOS_UNDEFINED, int posY = SDL.SDL_WINDOWPOS_UNDEFINED, string title = "myWindow", byte red = 30, byte green = 30, byte blue = 30, byte alpha = 255)
         {
             if (sizeX < 1)
             {
@@ -147,7 +147,7 @@ namespace Easy14_Programming_Language
             {
                 alpha = 255;
             }
-            
+
             Setup(sizeX, sizeY, posX, posY, title);
             Render(red, green, blue, alpha);
             while (running)

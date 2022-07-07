@@ -3,13 +3,13 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class ConsoleClear
+    public static class ConsoleClear
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
-        public void Interperate(string code_part, string[] textArray, string fileloc)
+        public static void Interperate(string code_part, string[] textArray, string fileloc)
         {
             string endOfStatementCode = ")";
             foreach (string line in configFile)

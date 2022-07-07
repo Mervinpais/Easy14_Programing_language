@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Easy14_Programming_Language
+﻿namespace Easy14_Programming_Language
 {
-    class isNull
+    public static class isNull
     {
-        public bool Interperate(string? null_item)
+        public static bool Interperate(string? null_item)
         {
             if (null_item is null)
             {

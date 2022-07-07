@@ -1,11 +1,11 @@
-﻿using System;
-using SDL2;
+﻿using SDL2;
+using System;
 
 namespace Easy14_Programming_Language
 {
-    class SDL2_createShape
+    public static class SDL2_createShape
     {
-        public void Interperate(long window, int x, int y, int w, int h)
+        public static void Interperate(long window, int x, int y, int w, int h)
         {
             IntPtr window_intPtr = (IntPtr)window;
             IntPtr renderer = SDL.SDL_GetRenderer(window_intPtr);

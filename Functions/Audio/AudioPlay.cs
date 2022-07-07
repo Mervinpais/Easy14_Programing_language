@@ -4,18 +4,17 @@ using System.Media;
 
 namespace Easy14_Programming_Language
 {
-    public class AudioPlay
+    public static class AudioPlay
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
-        
-        public void Interperate(string code_part = null, string[] textArray = null, string fileloc = null)
+
+        public static void Interperate(string code_part = null, string[] textArray = null, string fileloc = null)
         {
             if (code_part == null && textArray == null && fileloc == null)
             {
-                ThrowErrorMessage throwErrorMessage = new ThrowErrorMessage();
-                throwErrorMessage.sendErrMessage("No parameters specified!", null, "error");
+                ThrowErrorMessage.sendErrMessage("No parameters specified!", null, "error");
                 return;
             }
             string endOfStatementCode = ")";

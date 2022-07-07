@@ -3,9 +3,9 @@ using System.Threading;
 
 namespace Easy14_Programming_Language
 {
-    class TimeWait
+    public static class TimeWait
     {
-        public void Interperate(string code_part, int line_count)
+        public static void Interperate(string code_part, int line_count)
         {
             string textToPrint;
             code_part = code_part.TrimStart();

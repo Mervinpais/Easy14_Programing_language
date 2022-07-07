@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Easy14_Programming_Language
+﻿namespace Easy14_Programming_Language
 {
-    class isString
+    public static class isString
     {
-        public bool Interperate(string str)
+        public static bool Interperate(string str)
         {
             if (str is string)
             {

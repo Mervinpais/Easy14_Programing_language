@@ -3,13 +3,13 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class Math_Subtract
+    public static class Math_Subtract
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
-        public int Interperate(string code_part, int lineNumber, string fileName = null)
+        public static int Interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;
 
@@ -17,7 +17,8 @@ namespace Easy14_Programming_Language
             code_part = code_part_unedited.TrimStart();
 
             string expression = code_part;
-            if (expression is null && !expression.Contains("-")) {
+            if (expression is null && !expression.Contains("-"))
+            {
                 Console.WriteLine("ERROR; Can't Subtract, please check your code and fix the error");
                 return 0;
             }
@@ -26,7 +27,8 @@ namespace Easy14_Programming_Language
             //Console.WriteLine(expression);
             string[] intergers = expression.Split('-');
             int result = 0; //incase the below sum can't be added
-            try {
+            try
+            {
                 Nullable<int> integer1 = null;
                 Nullable<int> integer2 = null;
                 string integer1_str = null;
@@ -60,9 +62,8 @@ namespace Easy14_Programming_Language
                     }
                 }
 
-                GetVariable getVar = new GetVariable();
-                integer1_str = getVar.findVar(intergers[0]);
-                integer2_str = getVar.findVar(intergers[1]);
+                integer1_str = GetVariable.findVar(intergers[0]);
+                integer2_str = GetVariable.findVar(intergers[1]);
 
                 if (integer1_str == "0xF000001")
                     integer1 = Convert.ToInt32(intergers[0]);
@@ -90,10 +91,12 @@ namespace Easy14_Programming_Language
                 return 0;
             }
             //Console.WriteLine(sum);
-            if (fileName is not null) {
+            if (fileName is not null)
+            {
                 File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{fileName}.txt", result.ToString());
             }
-            else if (fileName is null) {
+            else if (fileName is null)
+            {
                 //Console.WriteLine(result);
                 return result;
             }

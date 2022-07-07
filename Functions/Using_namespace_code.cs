@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Easy14_Programming_Language
 {
-    public class Using_namespace_code
+    public static class Using_namespace_code
     {
         readonly static string strExeFilePath = Assembly.GetExecutingAssembly().Location;
         readonly static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
@@ -15,12 +15,11 @@ namespace Easy14_Programming_Language
         /// <param name="line">the line</param>
         /// <param name="disableLibraries">are libraries disabled?</param>
         /// <param name="lineCount">line count, duh</param>
-        public void usingFunction_interp(string line, bool disableLibraries, int lineCount)
+        public static void usingFunction_interp(string line, bool disableLibraries, int lineCount)
         {
             if (disableLibraries)
             {
-                ThrowErrorMessage tErM = new ThrowErrorMessage();
-                tErM.sendErrMessage("You have disabled libraries in options.ini, if you want to use libraries, please change the true to false at line 10 in options.ini", null, "error");
+                ThrowErrorMessage.sendErrMessage("You have disabled libraries in options.ini, if you want to use libraries, please change the true to false at line 10 in options.ini", null, "error");
                 return;
             }
             if (line == "using _easy14_;")
@@ -57,12 +56,11 @@ namespace Easy14_Programming_Language
         /// <param name="line">the line</param>
         /// <param name="disableLibraries">are libraries disabled?</param>
         /// <param name="lineCount">line count, duh</param>
-        public void fromFunction_interp(string line, bool disableLibraries, int lineCount)
+        public static void fromFunction_interp(string line, bool disableLibraries, int lineCount)
         {
             if (disableLibraries)
             {
-                ThrowErrorMessage tErM = new ThrowErrorMessage();
-                tErM.sendErrMessage("You have disabled libraries in options.ini, if you want to use libraries, please change the true to false at line 10 in options.ini", null, "error");
+                ThrowErrorMessage.sendErrMessage("You have disabled libraries in options.ini, if you want to use libraries, please change the true to false at line 10 in options.ini", null, "error");
                 return;
             }
             if (line == "from _easy14_ get _use_;")

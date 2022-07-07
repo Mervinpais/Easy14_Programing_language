@@ -1,25 +1,22 @@
 using System;
 // Important Stuff/namespaces
-using System.Net;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 
 namespace Easy14_Programming_Language
 {
-    class updateChecker
+    public static class updateChecker
     {
         /// <summary>
         /// It checks for the latest version of the program.
         /// </summary>
         /// <param name="UpdatesWarningsDisabled">If you want to disable the warning message that
         /// appears when the user is running an outdated version of your app, set this to true.</param>
-        public void checkLatestVersion(bool UpdatesWarningsDisabled = false)
+        public static void checkLatestVersion(bool UpdatesWarningsDisabled = false)
         {
             //Initialize Variables
             /* It's initializing the variable `currentVer` to 0.0, so we can use it later. */
             double currentVer = -1.0;
-            ThrowErrorMessage tErM = new ThrowErrorMessage();
 
             /* It's just a variable that is used to store the data that we get from the update server,
             and if we can't get the data, it will be set to that. */
@@ -41,7 +38,7 @@ namespace Easy14_Programming_Language
                     {
                         Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\..\\Local\\Temp\\EASY14_TEMP", true);
                     }
-                    
+
                     Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\..\\Local\\Temp\\EASY14_TEMP");
                     File.WriteAllLines(currentVerFile_cached_FILE, currentVerFile);
                 }
@@ -50,9 +47,9 @@ namespace Easy14_Programming_Language
                     /* It's sending an error message to the user, telling them that we can't find out
                     what version this language is, and telling them to install the latest version
                     for their safety. */
-                    tErM.sendErrMessage("AN ERROR OCCURED WHEN SAVING TO CACHE (TO SAVE CURRENT VERSION) THIS WILL PREVENT THE LANGUAGE FROM REMEBERING IT'S VERSION IN THE CASE IF THE currentVersion.txt FILE GOES MISSING, ERROR MESSAGE BELOW\n", null, "error");
+                    ThrowErrorMessage.sendErrMessage("AN ERROR OCCURED WHEN SAVING TO CACHE (TO SAVE CURRENT VERSION) THIS WILL PREVENT THE LANGUAGE FROM REMEBERING IT'S VERSION IN THE CASE IF THE currentVersion.txt FILE GOES MISSING, ERROR MESSAGE BELOW\n", null, "error");
 
-                    tErM.sendErrMessage(e.Message, null, "error");
+                    ThrowErrorMessage.sendErrMessage(e.Message, null, "error");
                 }
             }
             catch
@@ -60,7 +57,7 @@ namespace Easy14_Programming_Language
                 /* It's checking if the user has disabled the update warnings, and if they have, it
                 will not show the warning. */
                 if (UpdatesWarningsDisabled)
-                    tErM.sendErrMessage("Uh oh! We can't find the version file(s)!, using cached version Files...", null, "warning");
+                    ThrowErrorMessage.sendErrMessage("Uh oh! We can't find the version file(s)!, using cached version Files...", null, "warning");
 
                 try
                 {
@@ -74,7 +71,7 @@ namespace Easy14_Programming_Language
                         /* It's sending an error message to the user, telling them that we can't find
                         out what version this language is, and telling them to install the latest
                         version for their safety. */
-                        tErM.sendErrMessage("An error occured! we can't find out what version this language is", null, "error");
+                        ThrowErrorMessage.sendErrMessage("An error occured! we can't find out what version this language is", null, "error");
                 }
             }
 
@@ -103,7 +100,9 @@ namespace Easy14_Programming_Language
             catch
             {
                 if (UpdatesWarningsDisabled)
-                    tErM.sendErrMessage("Uh oh! we can't check if you have the latest version of this language, please make sure you have the latest version yourself", null, "error");
+                {
+                    ThrowErrorMessage.sendErrMessage("Uh oh! we can't check if you have the latest version of this language, please make sure you have the latest version yourself", null, "error");
+                }
             }
         }
     }

@@ -4,16 +4,15 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class MethodCode
+    public static class MethodCode
     {
         /*
          * CHANGLE LOG 24/6/2022;
          * Code will/has  be/been refactored for better readablilty and easier to understand
          */
-
-        readonly Program prog = new Program();
-        public void Interperate(string code_part, string[] textArray, string[] lines, string fileloc, bool Making_A_Method)
+        public static void Interperate(string code_part, string[] textArray, string[] lines, string fileloc, bool Making_A_Method)
         {
+            Program prog = new Program();
             string code_part_unedited = code_part;
 
             if (Making_A_Method == true)

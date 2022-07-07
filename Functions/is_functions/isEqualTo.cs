@@ -3,13 +3,13 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class isEqualTo
+    public static class isEqualTo
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
-        public bool? Interperate(string code_part, string fileName = null)
+        public static bool? Interperate(string code_part, string fileName = null)
         {
             string code_part_unedited;
 
@@ -62,9 +62,8 @@ namespace Easy14_Programming_Language
                     }
                 }
 
-                GetVariable getVar = new GetVariable();
-                integer1_str = getVar.findVar(intergers[0]);
-                integer2_str = getVar.findVar(intergers[1]);
+                integer1_str = GetVariable.findVar(intergers[0]);
+                integer2_str = GetVariable.findVar(intergers[1]);
 
                 if (integer1_str == "0xF000001")
                     integer1 = Convert.ToInt32(intergers[0]);

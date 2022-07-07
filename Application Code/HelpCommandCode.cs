@@ -3,12 +3,12 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    public class HelpCommandCode
+    public static class HelpCommandCode
     {
         readonly static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         readonly static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
 
-        public void GetHelp(string function)
+        public static void GetHelp(string function)
         {
             string helpFiles = ((Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName) + "\\Application Code\\HelpCodeContents"); ;
             try
@@ -26,8 +26,7 @@ namespace Easy14_Programming_Language
                     "Can't Find the requested help file, make sure you typed it in correctly (if you did, dont add \".help\" at the end)",
                     $"Full Exception Message Below;\n\n{FileNoFound_Ex.Message}"
                 };
-                ExceptionSender exceptionSender = new ExceptionSender();
-                exceptionSender.SendException("0xF00001", helpMessage);
+                ExceptionSender.SendException("0xF00001", helpMessage);
             }
 
             catch (UnauthorizedAccessException UnauthAccessEexception_Ex)
@@ -40,8 +39,7 @@ namespace Easy14_Programming_Language
                     "Can't Acess the requested help file, make sure the file is not in use by another program",
                     $"Full Exception Message Below;\n\n{UnauthAccessEexception_Ex.Message}"
                 };
-                ExceptionSender exceptionSender = new ExceptionSender();
-                exceptionSender.SendException("0xF00005", helpMessage);
+                ExceptionSender.SendException("0xF00005", helpMessage);
             }
             catch (Exception e)
             {
@@ -53,12 +51,11 @@ namespace Easy14_Programming_Language
                     "An Unknown error occurred while getting file info",
                     $"Full Exception Message Below;\n\n{e.Message}"
                 };
-                ExceptionSender exceptionSender = new ExceptionSender();
-                exceptionSender.SendException("0xF00005", helpMessage);
+                ExceptionSender.SendException("0xF00005", helpMessage);
             }
         }
 
-        public void DisplayDefaultHelpOptions()
+        public static void DisplayDefaultHelpOptions()
         {
             string[] defaultHelp = {
                 "=== Easy14 Arguments/Commands ===",

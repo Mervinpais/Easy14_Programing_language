@@ -3,9 +3,9 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class AppInformation
+    public static class AppInformation
     {
-        public void ShowInfo()
+        public static void ShowInfo()
         {
             Console.WriteLine("=== Information of Easy 14 ===");
             string[] logo = {

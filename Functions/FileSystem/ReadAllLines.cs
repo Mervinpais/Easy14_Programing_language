@@ -8,7 +8,7 @@ namespace Easy14_Programming_Language
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
-        
+
         public string[] Interperate(string code_part, string fileloc, string[] textArray, int line_count)
         {
             string code_part_unedited = code_part;
@@ -24,7 +24,8 @@ namespace Easy14_Programming_Language
 
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else {
+                else
+                {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Error: No file or text array was provided to the ReadAllLines function.");
                     Console.ResetColor();
@@ -83,8 +84,7 @@ namespace Easy14_Programming_Language
                 /* Trying to read the file, and if it can't, it will throw an error. */
                 try
                 {
-                    GetVariable getVariable = new GetVariable();
-                    string file = getVariable.findVar(textToPrint);
+                    string file = GetVariable.findVar(textToPrint);
                     string[] contentInFile = File.ReadAllLines(file);
                     thingToReturn = contentInFile;
                 }

@@ -1,17 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Net.NetworkInformation;
-using System.Threading;
-using System.Net;
-using System.Linq;
 
 
 namespace Easy14_Programming_Language
 {
-    class IntroductionCode
+    public static class IntroductionCode
     {
-        public void IntroCode()
+        public static void IntroCode()
         {
             Console.WriteLine("=== Welcome to Easy 14! ===");
             Console.WriteLine("\n Hey there!, Easy 14 is a simple language for beginners so they can be confortable with other languages in the future if they wanted to change");
@@ -43,7 +38,7 @@ namespace Easy14_Programming_Language
                 if (nextLineEqualsCurrentVerDateInstall == true)
                     dateOfVerInstall = line_inText; nextLineEqualsCurrentVerDateInstall = false;
 
-                if (nextLineEqualsBuildType == true) 
+                if (nextLineEqualsBuildType == true)
                     BuildTypeOfApp = line_inText; nextLineEqualsBuildType = false;
 
                 if (line_inText == "[CURRENT VERSION]")

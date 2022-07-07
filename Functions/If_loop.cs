@@ -4,10 +4,8 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class If_Loop
+    public static class If_Loop
     {
-        Program prog = new Program();
-
         /// <summary>
         /// This function takes in a string, an array of strings, an array of strings, a string, a
         /// boolean, and a string.
@@ -18,8 +16,9 @@ namespace Easy14_Programming_Language
         /// <param name="fileloc">The location of the file</param>
         /// <param name="isInAMethod">If the code is in a method, this is true.</param>
         /// <param name="methodName">The name of the method that the code is in.</param>
-        public void Interperate(string code_part, string[] lines, string[] textArray, string fileloc, bool isInAMethod = false, string methodName = "}")
+        public static void Interperate(string code_part, string[] lines, string[] textArray, string fileloc, bool isInAMethod = false, string methodName = "}")
         {
+            Program prog = new Program();
             string code_part_unedited = code_part;
             int end_line_IDX = 0;
 
@@ -182,14 +181,12 @@ namespace Easy14_Programming_Language
                 string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
                 if (!Directory.Exists(dir) || Directory.GetFiles(dir).Length <= 0)
                 {
-                    ExceptionSender exception = new ExceptionSender();
-                    exception.SendException("0xFC0002");
+                    ExceptionSender.SendException("0xFC0002");
                     return;
                 }
 
-                GetVariable getVar = new GetVariable();
-                string var1_fileLoc = getVar.findVar(obj1);
-                string var2_fileLoc = getVar.findVar(obj2);
+                string var1_fileLoc = GetVariable.findVar(obj1);
+                string var2_fileLoc = GetVariable.findVar(obj2);
 
                 if (var1_fileLoc != "0xF00001") obj1_variable = true;
                 if (var2_fileLoc != "0xF00001") obj2_variable = true;
@@ -296,9 +293,8 @@ namespace Easy14_Programming_Language
             else if (if_Line.Contains("!="))
             {
                 string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
-                GetVariable getVar = new GetVariable();
-                string var1_fileLoc = getVar.findVar(obj1);
-                string var2_fileLoc = getVar.findVar(obj2);
+                string var1_fileLoc = GetVariable.findVar(obj1);
+                string var2_fileLoc = GetVariable.findVar(obj2);
 
                 if (var1_fileLoc != "0xF00001") obj1_variable = true;
                 if (var2_fileLoc != "0xF00001") obj2_variable = true;

@@ -4,18 +4,18 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class GetVariable
+    public static class GetVariable
     {
         /// <summary>
         /// It finds the variable name.
         /// </summary>
         /// <param name="variableName">The name of the variable you want to find.</param>
-        public string findVar(string variableName)
+        public static string findVar(string variableName)
         {
             string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
             /* A default value for the variable. */
             string theVariable = "0xF000001";
-            
+
             if (!Directory.Exists(dir))
             {
                 return theVariable;

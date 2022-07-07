@@ -4,11 +4,11 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class WhileLoop
+    public static class WhileLoop
     {
-        Program prog = new Program();
-        public void Interperate(string code_part, string[] textArray, string[] lines, string fileloc)
+        public static void Interperate(string code_part, string[] textArray, string[] lines, string fileloc)
         {
+            Program prog = new Program();
             string code_part_unedited;
             //string textToPrint;
             code_part_unedited = code_part;
@@ -92,12 +92,12 @@ namespace Easy14_Programming_Language
                 obj2 = obj2.TrimStart().TrimEnd();
 
 
-                if (obj1.StartsWith("\"") && obj1.EndsWith("\"")) 
+                if (obj1.StartsWith("\"") && obj1.EndsWith("\""))
                     obj1_variable = false;
-                else 
+                else
                     obj1_variable = true;
-                
-                if (obj2.StartsWith("\"") && obj2.EndsWith("\"")) 
+
+                if (obj2.StartsWith("\"") && obj2.EndsWith("\""))
                     obj2_variable = false;
                 else
                     obj2_variable = true;

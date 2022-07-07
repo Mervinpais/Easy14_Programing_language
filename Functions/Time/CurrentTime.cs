@@ -3,9 +3,9 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class Time_CurrentTime
+    public static class Time_CurrentTime
     {
-        public string Interperate(string code_part, string[] textArray, string fileloc)
+        public static string Interperate(string code_part, string[] textArray, string fileloc)
         {
             string endOfStatementCode = ")";
             string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");

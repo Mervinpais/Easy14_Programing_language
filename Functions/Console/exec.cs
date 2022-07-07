@@ -1,15 +1,18 @@
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 using System;
 using System.IO;
+using System.Reflection;
 
 namespace Easy14_Programming_Language
 {
-    class ConsoleExec
+    public static class ConsoleExec
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
 
-        public void Interperate(string code_part, string[] textArray, string fileloc, int lineNumber = -1)
+        public static void Interperate(string code_part, string[] textArray, string fileloc, int lineNumber = -1)
         {
             string endOfStatementCode = ")";
             foreach (string line in configFile)
@@ -80,16 +83,23 @@ namespace Easy14_Programming_Language
 
             try
             {
-                //Console.WriteLine(DateTime.Now);
-                prog.CompileCode_fromOtherFiles(null, execArray);
+                if (textToPrint.StartsWith("C#)"))
+                {
+                    textToPrint = textToPrint.Substring(4);
+                    execArray = new string[] { textToPrint.ToString() };
+                    CSharpScript.RunAsync(string.Join(Environment.NewLine, execArray), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                }
+                else
+                {
+                    prog.CompileCode_fromOtherFiles(null, execArray);
+                }
             }
-            catch
+            catch (Exception e)
             {
-                ThrowErrorMessage tErM = new ThrowErrorMessage();
                 string unknownLine = "<unknownLineNumber>";
                 var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
-                string[] errorText = { " An error occurred while executing commands from the exec command", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n" };
-                tErM.sendErrMessage(null, errorText, "error");
+                string[] errorText = { " An error occurred while executing commands from the exec command", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\nException;\n{e.Message}\n" };
+                ThrowErrorMessage.sendErrMessage(null, errorText, "error");
             }
             //}
         }

@@ -3,15 +3,15 @@ using System;
 
 namespace Easy14_Programming_Language
 {
-    class SDL2_clearScreen
+    public static class SDL2_clearScreen
     {
-        public void Interperate(long window, string color = "darkgrey")
+        public static void Interperate(long window, string color = "darkgrey")
         {
             IntPtr window_intPtr = (IntPtr)window;
             IntPtr renderer = SDL.SDL_GetRenderer(window_intPtr);
 
             SDL.SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-            
+
             //Make a case for the color
             switch (color)
             {
@@ -68,7 +68,7 @@ namespace Easy14_Programming_Language
                 case "lightbrown":
                     SDL.SDL_SetRenderDrawColor(renderer, 128, 0, 0, 255); break;
             }
-            
+
             //Clear the GUI
             SDL.SDL_RenderClear(renderer);
 

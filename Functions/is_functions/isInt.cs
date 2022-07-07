@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace Easy14_Programming_Language
+﻿namespace Easy14_Programming_Language
 {
-    class isInt
+    public static class isInt
     {
-        public bool Interperate(int? integer)
+        public static bool Interperate(int? integer)
         {
             if (integer is int)
             {

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class ThrowErrorMessage
+    public static class ThrowErrorMessage
     {
         /// <summary>
         /// It sends an error message.
@@ -12,7 +12,7 @@ namespace Easy14_Programming_Language
         /// <param name="textArray">An array of strings that will be used to replace the placeholders in
         /// the text string.</param>
         /// <param name="typeOfError"></param>
-        public void sendErrMessage(string text, string[] textArray, string typeOfError )
+        public static void sendErrMessage(string text, string[] textArray, string typeOfError)
         {
             /*
             
@@ -29,7 +29,7 @@ namespace Easy14_Programming_Language
             code_part_unedited = text;
             text = code_part_unedited.TrimStart();
             typeOfError = typeOfError.ToLower();
-            
+
             /* Checking if the type of error is an error or a warning. If it is an error, it will print
             the error in red. If it is a warning, it will print the warning in yellow. */
             if (typeOfError == "error")
@@ -48,7 +48,7 @@ namespace Easy14_Programming_Language
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 string[] joke_txt = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\jokesForThrowErrorMessage.txt");
                 Random random = new Random();
-                int line_to_choose = random.Next(1,joke_txt.Length);
+                int line_to_choose = random.Next(1, joke_txt.Length);
                 Console.WriteLine("\n JOKE:" + joke_txt[line_to_choose]);
             }
             /* Setting the color of the text to gray. */

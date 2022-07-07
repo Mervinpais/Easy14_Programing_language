@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.Scripting;
 using SDL2;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -60,14 +61,7 @@ namespace Easy14_Programming_Language
                 Console.WriteLine("\n==== Easy14 Console ====\n");
             }
 
-            //============================================================\\
-
-            /* Deleting the temporary folder that was created in the previous step. */
-
-            if (Directory.Exists(tempVariableFolder))
-            {
-                Directory.Delete(tempVariableFolder, true);
-            }
+            if (Directory.Exists(tempVariableFolder)) Directory.Delete(tempVariableFolder, true);
 
             //==================The Update Checker====================\\
 
@@ -96,8 +90,7 @@ namespace Easy14_Programming_Language
 
             if (!UpdatesDisabled)
             {
-                updateChecker uc = new updateChecker();
-                uc.checkLatestVersion(UpdatesWarningsDisabled);
+                updateChecker.checkLatestVersion(UpdatesWarningsDisabled);
             }
 
             //=========================================================\\
@@ -194,7 +187,6 @@ namespace Easy14_Programming_Language
                     {
                         try
                         {
-                            //Console.WriteLine(String.Join(Environment.NewLine, File.ReadAllLines(args[1])));
                             Program prog = new Program();
                             prog.CompileCode_fromOtherFiles(textArray: File.ReadAllLines(string.Join(" ", args)));
                         }
@@ -231,13 +223,11 @@ namespace Easy14_Programming_Language
                 }
                 if (args[0].ToLower() == "-intro" || args[0].ToLower() == "/intro")
                 {
-                    IntroductionCode introCode = new IntroductionCode();
-                    introCode.IntroCode();
+                    IntroductionCode.IntroCode();
                 }
                 if (args[0].ToLower() == "-appinfo" || args[0].ToLower() == "/appinfo")
                 {
-                    AppInformation appInfo = new AppInformation();
-                    appInfo.ShowInfo();
+                    AppInformation.ShowInfo();
                 }
             }
             else if (args.Length == 0)
@@ -276,8 +266,7 @@ namespace Easy14_Programming_Language
                     {
                         string exceptionToSend_str = command.Replace("send_exception(", "");
                         exceptionToSend_str = exceptionToSend_str[..^2];
-                        ExceptionSender es = new ExceptionSender();
-                        es.SendException(exceptionToSend_str);
+                        ExceptionSender.SendException(exceptionToSend_str);
                         break;
                     }
                     else if (command.ToLower().StartsWith("/run") || command.ToLower().StartsWith("-run"))
@@ -316,15 +305,13 @@ namespace Easy14_Programming_Language
                     }
                     else if (command.ToLower() == "/help" || command.ToLower() == "-help")
                     {
-                        HelpCommandCode helpCommandCode = new HelpCommandCode();
-                        helpCommandCode.DisplayDefaultHelpOptions();
+                        HelpCommandCode.DisplayDefaultHelpOptions();
                     }
                     else if (command.ToLower().StartsWith("/help") || command.ToLower().StartsWith("-help"))
                     {
-                        HelpCommandCode helpCommandCode = new HelpCommandCode();
                         string functionToGetHelpWith = command;
                         functionToGetHelpWith = functionToGetHelpWith.Substring(5).TrimStart().TrimEnd();
-                        helpCommandCode.GetHelp(functionToGetHelpWith);
+                        HelpCommandCode.GetHelp(functionToGetHelpWith);
                     }
                     else if (command.ToLower() == "/keywords" || command.ToLower() == "-keywords")
                     {
@@ -336,15 +323,13 @@ namespace Easy14_Programming_Language
                     }
                     else if (command.ToLower() == "/intro" || command.ToLower() == "-intro")
                     {
-                        IntroductionCode introCode = new IntroductionCode();
-                        introCode.IntroCode();
+                        IntroductionCode.IntroCode();
                     }
                     else if (command.ToLower() == "/appinfo" || command.ToLower() == "-appinfo")
                     {
-                        AppInformation appInfo = new AppInformation();
-                        appInfo.ShowInfo();
+                        AppInformation.ShowInfo();
                     }
-                    else if (command.Contains('\n')) //This is impossible since pasting a multiline will just paste one lines, then will automatically hit enter and continue on
+                    else if (command.Contains('\n'))
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("ERROR; Easy14 Interactive Cannot run multiline code \n");
@@ -384,7 +369,6 @@ namespace Easy14_Programming_Language
                 }
             }
 
-            //Thread.Sleep(500);
             Console.WriteLine("\n===== Easy14 Interactive Console =====\n");
             foreach (string line in configFile)
             {
@@ -440,13 +424,11 @@ namespace Easy14_Programming_Language
                 }
                 else if (command.ToLower() == "/intro" || command.ToLower() == "-intro")
                 {
-                    IntroductionCode introCode = new IntroductionCode();
-                    introCode.IntroCode();
+                    IntroductionCode.IntroCode();
                 }
                 else if (command.ToLower() == "/appinfo" || command.ToLower() == "-appinfo")
                 {
-                    AppInformation appInfo = new AppInformation();
-                    appInfo.ShowInfo();
+                    AppInformation.ShowInfo();
                 }
                 else if (command.Contains('\n'))
                 {
@@ -641,10 +623,9 @@ namespace Easy14_Programming_Language
                     }
                     catch (Exception e)
                     {
-                        ThrowErrorMessage tErM = new ThrowErrorMessage();
-                        tErM.sendErrMessage("Uh oh, the value you wanted to specify for the Console Window Hight won't work! (check if the value is a string/decimal and change it to an integer)", null, "error");
-                        tErM.sendErrMessage("Couldn't Change Window Height using the value in options.ini, using Default window height", null, "warning");
-                        tErM.sendErrMessage("Here is Exception Error;\n" + e.Message, null, "error");
+                        ThrowErrorMessage.sendErrMessage("Uh oh, the value you wanted to specify for the Console Window Hight won't work! (check if the value is a string/decimal and change it to an integer)", null, "error");
+                        ThrowErrorMessage.sendErrMessage("Couldn't Change Window Height using the value in options.ini, using Default window height", null, "warning");
+                        ThrowErrorMessage.sendErrMessage("Here is Exception Error;\n" + e.Message, null, "error");
                     }
                 }
 
@@ -654,31 +635,29 @@ namespace Easy14_Programming_Language
 
                 if (Console.WindowWidth != windowWidth)
                 {
-                    ThrowErrorMessage tErM = new ThrowErrorMessage();
                     try
                     {
                         Console.SetWindowSize(windowWidth > 150 ? windowWidth = 150 : windowWidth, Console.WindowHeight);
                     }
                     catch
                     {
-                        tErM.sendErrMessage("Uh oh, the value you wanted to specify for the Console Window Width won't work! (check if the value is a string/decimal and change it to an integer)", null, "error");
-                        tErM.sendErrMessage("Couldn't Change Window Width using the value in options.ini, using Default window width", null, "warning");
+                        ThrowErrorMessage.sendErrMessage("Uh oh, the value you wanted to specify for the Console Window Width won't work! (check if the value is a string/decimal and change it to an integer)", null, "error");
+                        ThrowErrorMessage.sendErrMessage("Couldn't Change Window Width using the value in options.ini, using Default window width", null, "warning");
                     }
                 }
                 else
                 {
-                    ThrowErrorMessage tErM = new ThrowErrorMessage();
                     if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                     {
-                        tErM.sendErrMessage("Changing terminal size on linux with C# isn't Possible", null, "error");
+                        ThrowErrorMessage.sendErrMessage("Changing terminal size on linux with C# isn't Possible", null, "error");
                     }
                     else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                     {
-                        tErM.sendErrMessage("Changing terminal size on OSX/MAC OS with C# isn't Possible", null, "error");
+                        ThrowErrorMessage.sendErrMessage("Changing terminal size on OSX/MAC OS with C# isn't Possible", null, "error");
                     }
                     else if (RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
                     {
-                        tErM.sendErrMessage("Changing terminal size on FreeBSD with C# isn't Possible", null, "error");
+                        ThrowErrorMessage.sendErrMessage("Changing terminal size on FreeBSD with C# isn't Possible", null, "error");
                     }
                 }
             }
@@ -699,8 +678,7 @@ namespace Easy14_Programming_Language
             }
             catch
             {
-                ExceptionSender ex_sender = new ExceptionSender();
-                ex_sender.SendException("0xFC00001");
+                ExceptionSender.SendException("0xFC00001");
             }
 
             /* Removing the first lineIDX lines from the list. */
@@ -742,40 +720,24 @@ namespace Easy14_Programming_Language
 
                 if (line.StartsWith($"using") && line.EndsWith($";"))
                 {
-                    Using_namespace_code using_Namespace_Code = new Using_namespace_code();
-                    using_Namespace_Code.usingFunction_interp(line, disableLibraries, lineCount);
+                    Using_namespace_code.usingFunction_interp(line, disableLibraries, lineCount);
                 }
                 else if (line.StartsWith($"from") && line.EndsWith($";"))
                 {
-                    Using_namespace_code using_Namespace_Code = new Using_namespace_code();
-                    using_Namespace_Code.fromFunction_interp(line, disableLibraries, lineCount);
+                    Using_namespace_code.fromFunction_interp(line, disableLibraries, lineCount);
                 }
                 else if (string.Join("", line_chrArr) != "" && char.IsDigit(line_chrArr[0]))
                 {
                     string statement = string.Join("", line_chrArr);
-                    if (statement.Contains('+'))
+                    //string plainNums = statement.Replace("+", " ");
+                    try
                     {
-                        Math_Add math_Add = new Math_Add();
-                        var result = math_Add.Interperate(statement, -1);
+                        double result = Convert.ToDouble(new DataTable().Compute(statement, null));
                         Console.WriteLine(result);
                     }
-                    if (statement.Contains('-'))
+                    catch
                     {
-                        Math_Subtract math_Subtract = new Math_Subtract();
-                        var result = math_Subtract.Interperate(statement, -1);
-                        Console.WriteLine(result);
-                    }
-                    if (statement.Contains('*'))
-                    {
-                        Math_Multiply math_Multiply = new Math_Multiply();
-                        var result = math_Multiply.Interperate(statement, -1);
-                        Console.WriteLine(result);
-                    }
-                    if (statement.Contains('/'))
-                    {
-                        Math_Divide math_Divide = new Math_Divide();
-                        var result = math_Divide.Interperate(statement, -1);
-                        Console.WriteLine(result);
+                        ThrowErrorMessage.sendErrMessage("Uh oh, the value you wanted to calculate won't work! (check if the value has a string value and change it to an integer)", null, "error");
                     }
                 }
 
@@ -795,38 +757,31 @@ namespace Easy14_Programming_Language
 
                 else if (line.StartsWith($"Console.print(") || line.StartsWith($"print(") && line.EndsWith(");"))
                 {
-                    ConsolePrint conPrint = new ConsolePrint();
                     ConsolePrint.Interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"Console.input(") || line.StartsWith($"input(") && line.EndsWith(");"))
                 {
-                    ConsoleInput conInput = new ConsoleInput();
-                    conInput.Interperate(line, lines, textArray, fileLoc, null);
+                    ConsoleInput.Interperate(line, lines, textArray, fileLoc, null);
                 }
                 else if (line.StartsWith($"Console.clear(") || line.StartsWith($"clear(") && line.EndsWith(");"))
                 {
-                    ConsoleClear conClear = new ConsoleClear();
-                    conClear.Interperate(line, textArray, fileLoc);
+                    ConsoleClear.Interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"Console.exec(") || line.StartsWith($"exec(") && line.EndsWith(");"))
                 {
-                    ConsoleExec conExec = new ConsoleExec();
-                    conExec.Interperate(line, textArray, fileLoc);
+                    ConsoleExec.Interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"Console.beep(") || line.StartsWith($"beep(") && line.EndsWith(");"))
                 {
-                    AudioPlay conBeep = new AudioPlay();
-                    conBeep.Interperate(line, textArray, fileLoc);
+                    AudioPlay.Interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"wait(") && line.EndsWith(");"))
                 {
-                    TimeWait wait = new TimeWait();
-                    wait.Interperate(line, lineCount);
+                    TimeWait.Interperate(line, lineCount);
                 }
                 else if (line.StartsWith($"var") && line.EndsWith(";"))
                 {
-                    VariableCode varCode = new VariableCode();
-                    varCode.Interperate(line, lines, lineCount);
+                    VariableCode.Interperate(line, lines, lineCount);
                 }
                 else if (line == "true")
                 {
@@ -838,84 +793,62 @@ namespace Easy14_Programming_Language
                 }
                 else if ((line.StartsWith($"if") && line.EndsWith("{")) || (line.StartsWith("if") && lines[lineCount] == "{"))
                 {
-                    If_Loop if_Loop = new If_Loop();
-                    if_Loop.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName);
-                    return;
+                    If_Loop.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName); return;
                 }
-                else if ((line.StartsWith($"while") && line.EndsWith("{")) || (line.StartsWith("while") && lines[lineCount] == "{")) // || (lines[lineCount + 1] == "{")
+                else if ((line.StartsWith($"while") && line.EndsWith("{")) || (line.StartsWith("while") && lines[lineCount] == "{"))
                 {
-                    //since we need the part that we need to loop until x == true, we first get and save the lines of the file/textArray
-                    WhileLoop whileLoop = new WhileLoop();
-                    whileLoop.Interperate(line, textArray, lines, fileLoc);
-                    return;
+                    WhileLoop.Interperate(line, textArray, lines, fileLoc); return;
                 }
                 else if ((line.StartsWith("func ") && line.EndsWith(") {")) || (line.StartsWith("func ") && line.EndsWith(")") && lines[lineCount] == "{"))
                 {
-                    MethodCode methodCode = new MethodCode();
-                    methodCode.Interperate(line, textArray, lines, fileLoc, true);
-                    return;
+                    MethodCode.Interperate(line, textArray, lines, fileLoc, true); return;
                 }
                 else if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"MakeFile(") && line.EndsWith("{"))
                 {
-                    FileSystem_MakeFile fs_mkFile = new FileSystem_MakeFile();
-                    fs_mkFile.Interperate(line, fileLoc, textArray, lineCount);
+                    FileSystem_MakeFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"FileSystem.MakeFolder(") || line.StartsWith($"MakeFolder(") && line.EndsWith("{"))
                 {
-                    FileSystem_MakeFolder fs_mkFolder = new FileSystem_MakeFolder();
-                    fs_mkFolder.Interperate(line, fileLoc, textArray, lineCount);
+                    FileSystem_MakeFolder.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"FileSystem.DeleteFile(") || line.StartsWith($"DeleteFile(") && line.EndsWith("{"))
                 {
-                    FileSystem_DeleteFile fs_delFile = new FileSystem_DeleteFile();
-                    fs_delFile.Interperate(line, fileLoc, textArray, lineCount);
+                    FileSystem_DeleteFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"FileSystem.DeleteFolder(") || line.StartsWith($"DeleteFolder(") && line.EndsWith("{"))
                 {
-                    FileSystem_DeleteFolder fs_delFolder = new FileSystem_DeleteFolder();
-                    fs_delFolder.Interperate(line, fileLoc, textArray, lineCount);
+                    FileSystem_DeleteFolder.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"FileSystem.ReadFile(") || line.StartsWith($"ReadFile(") && line.EndsWith("{"))
                 {
-                    FileSystem_ReadFile fs_readFile = new FileSystem_ReadFile();
-                    fs_readFile.Interperate(line, fileLoc, textArray, lineCount);
+                    FileSystem_ReadFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"FileSystem.RenameFile(") || line.StartsWith($"RenameFile(") && line.EndsWith("{"))
                 {
-                    FileSystem_RenameFile fs_renameFile = new FileSystem_RenameFile();
-                    fs_renameFile.Interperate(line, fileLoc, textArray, lineCount);
+                    FileSystem_RenameFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"FileSystem.WriteFile(") || line.StartsWith($"WriteFile(") && line.EndsWith("{"))
                 {
-                    FileSystem_WriteFile fs_writeFile = new FileSystem_WriteFile();
-                    fs_writeFile.Interperate(line, fileLoc, textArray, lineCount);
+                    FileSystem_WriteFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"Network.Ping(") || line.StartsWith($"Ping(") && line.EndsWith("{"))
                 {
-                    NetworkPing netPing = new NetworkPing();
-                    netPing.Interperate(line, fileLoc, textArray, lineCount);
+                    NetworkPing.Interperate(line, fileLoc, textArray, lineCount);
                 }
                 else if (line.StartsWith($"Time.CurrentTime(") || line.StartsWith($"CurrentTime(") && line.EndsWith("{"))
                 {
-                    Time_CurrentTime currentTime = new Time_CurrentTime();
-                    string time = currentTime.Interperate(line, textArray, fileLoc);
-                    Console.WriteLine(time);
+                    Console.WriteLine(Time_CurrentTime.Interperate(line, textArray, fileLoc));
                 }
                 else if (line.StartsWith($"Time.IsLeapYear(") || line.StartsWith($"IsLeapYear(") && line.EndsWith("{"))
                 {
-                    Time_IsLeapYear isLeapYear = new Time_IsLeapYear();
-                    string isLeapYear_str = isLeapYear.Interperate(line, textArray, fileLoc);
-                    Console.WriteLine(Convert.ToBoolean(isLeapYear_str));
+                    Console.WriteLine(Convert.ToBoolean(Time_IsLeapYear.Interperate(line, textArray, fileLoc)));
                 }
                 else if (line.StartsWith($"Random.RandomRange(") || line.StartsWith($"RandomRange(") && line.EndsWith("{"))
                 {
-                    Random_RandomRange randomRange = new Random_RandomRange();
-                    string randomRange_str = randomRange.Interperate(line, textArray, fileLoc);
-                    Console.WriteLine(randomRange_str);
+                    Console.WriteLine(Random_RandomRange.Interperate(line, textArray, fileLoc));
                 }
                 else if (line.StartsWith($"sdl2.makeWindow(") || line.StartsWith($"makeWindow(") && line.EndsWith(");"))
                 {
-                    SDL2_makeWindow makeWindow = new SDL2_makeWindow();
                     string code_line = line.Replace("sdl2.", "").Replace("makeWindow(", "");
                     code_line = code_line.Substring(0, code_line.Length - 2);
                     string[] values = code_line.Split(",");
@@ -932,7 +865,7 @@ namespace Easy14_Programming_Language
                     try { title = values[4]; } catch { }
                     IntPtr window = (IntPtr)0;
                     long window_int = -1;
-                    new Task(() => { window_int = makeWindow.Interperate(sizeX, sizeY, posX, posY, title); }).Start();
+                    new Task(() => { window_int = SDL2_makeWindow.Interperate(sizeX, sizeY, posX, posY, title); }).Start();
                     //window_int = makeWindow.Interperate(sizeX, sizeY, posX, posY, title);
                     window = (IntPtr)window_int;
                     Thread.Sleep(100);
@@ -940,7 +873,6 @@ namespace Easy14_Programming_Language
                 }
                 else if (line.StartsWith($"sdl2.createShape(") || line.StartsWith($"createShape(") && line.EndsWith(");"))
                 {
-                    SDL2_createShape createShape = new SDL2_createShape();
                     string code_line = line.Replace("sdl2.", "").Replace("createShape(", "");
                     code_line = code_line.Substring(0, code_line.Length - 2);
                     string[] values = code_line.Split(",");
@@ -956,11 +888,10 @@ namespace Easy14_Programming_Language
                     try { w = Convert.ToInt32(values[3]); } catch { }
                     try { h = Convert.ToInt32(values[4]); } catch { }
 
-                    new Task(() => { createShape.Interperate(window, x, y, w, h); }).Start();
+                    new Task(() => { SDL2_createShape.Interperate(window, x, y, w, h); }).Start();
                 }
                 else if (line.StartsWith($"sdl2.clearScreen(") || line.StartsWith($"clearScreen(") && line.EndsWith(");"))
                 {
-                    SDL2_clearScreen clearScreen = new SDL2_clearScreen();
                     string code_line = line.Replace("sdl2.", "").Replace("clearScreen(", "");
                     code_line = code_line.Substring(0, code_line.Length - 2);
                     long window = 0;
@@ -968,7 +899,7 @@ namespace Easy14_Programming_Language
                     string[] values = code_line.Split(",");
                     window = Convert.ToInt64(values[0]);
                     color = values[1];
-                    clearScreen.Interperate(window, color);
+                    SDL2_clearScreen.Interperate(window, color);
                 }
                 else
                 {
@@ -979,8 +910,7 @@ namespace Easy14_Programming_Language
                         {
                             if (line.EndsWith("();")) //Means its probably a function
                             {
-                                MethodCode methodCode = new MethodCode();
-                                methodCode.Interperate(line, textArray, lines, fileLoc, false);
+                                MethodCode.Interperate(line, textArray, lines, fileLoc, false);
                                 return;
                             }
                             foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
@@ -995,8 +925,7 @@ namespace Easy14_Programming_Language
                                         string content = line.Replace(partToReplace, "");
                                         if (content.Contains('+') && content.Count(f => (f == '+')) == 1)
                                         {
-                                            Math_Add math_Add = new Math_Add();
-                                            int result = math_Add.Interperate(content, 0, supposedVar);
+                                            int result = Math_Add.Interperate(content, 0, supposedVar);
                                         }
                                         else
                                         {
@@ -1099,7 +1028,7 @@ namespace Easy14_Programming_Language
                                 string[] code =
                                 {
                                 $"Easy14_Programming_Language.{theFunctionOfTheLine} myfunc = new Easy14_Programming_Language.{theFunctionOfTheLine}();",
-                                $"myfunc.Interperate({string.Join(",", params_)});"
+                                $"{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});"
                                 };
 
                                 try
@@ -1129,6 +1058,7 @@ namespace Easy14_Programming_Language
                             string params_str = line.Replace($"{theFunctionOfTheLine}.{theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("))}(", "");
                             params_str = params_str.Substring(1, params_str.Length - 2);
                             params_str = params_str.Substring(params_str.IndexOf("("), params_str.Length - params_str.IndexOf("("));
+                            params_str = params_str.Substring(1, params_str.Length - 2);
                             string[] params_ = { };
 
                             try { params_ = params_str.Split(","); }
@@ -1145,11 +1075,9 @@ namespace Easy14_Programming_Language
 
                             //Old
                             //Activator.CreateInstance(Convert.ToString(Assembly.GetExecutingAssembly()), Convert.ToString(Type.GetType(theFunctionOfTheLine)));                            
-
                             string[] code =
                             {
-                                $"Easy14_Programming_Language.{theFunctionOfTheLine} myfunc = new Easy14_Programming_Language.{theFunctionOfTheLine}();",
-                                $"myfunc.Interperate({string.Join(",", params_)});"
+                                $"Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});"
                             };
 
                             try

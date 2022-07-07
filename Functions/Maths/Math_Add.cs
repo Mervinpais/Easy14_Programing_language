@@ -3,13 +3,13 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    class Math_Add
+    public static class Math_Add
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
-        public int Interperate(string code_part, int lineNumber, string fileName = null)
+        public static int Interperate(string code_part, int lineNumber, string fileName = null)
         {
             string code_part_unedited;
 
@@ -20,7 +20,8 @@ namespace Easy14_Programming_Language
 
             /* Checking if the expression is null and if it doesn't contain a +, if it is null or
             doesn't contain a + it will return an error. */
-            if (expression is null && !expression.Contains("+")) {
+            if (expression is null && !expression.Contains("+"))
+            {
                 Console.WriteLine("ERROR; Can't Add, please check your code and fix the error");
                 return 0;
             }
@@ -30,21 +31,21 @@ namespace Easy14_Programming_Language
             //Console.WriteLine(expression);
             string[] intergers = expression.Split('+');
             int result = 0; //incase the below sum can't be added
-            try {
+            try
+            {
                 Nullable<int> integer1 = null;
                 Nullable<int> integer2 = null;
                 string integer1_str = null;
                 string integer2_str = null;
 
-                GetVariable getVar = new GetVariable();
-                integer1_str = getVar.findVar(intergers[0]);
-                integer2_str = getVar.findVar(intergers[1]);
+                integer1_str = GetVariable.findVar(intergers[0]);
+                integer2_str = GetVariable.findVar(intergers[1]);
 
                 if (integer1_str == "0xF000001")
                     integer1 = Convert.ToInt32(intergers[0]);
                 if (integer2_str == "0xF000001")
                     integer2 = Convert.ToInt32(intergers[1]);
-                
+
                 //Seperatated Sections
 
                 /* Checking if the 2 integers are variables or not, if they are variables it will get
@@ -65,13 +66,15 @@ namespace Easy14_Programming_Language
                 //Console.WriteLine(sum);
                 return 0;
             }
-            
+
             /* Checking if the fileName is not null, if it is not null it will write the result to a
             file, if it is null it will return the result. */
-            if (fileName is not null) {
+            if (fileName is not null)
+            {
                 File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{fileName}.txt", result.ToString());
             }
-            else if (fileName is null) {
+            else if (fileName is null)
+            {
                 //Console.WriteLine(result);
             }
             return result;
