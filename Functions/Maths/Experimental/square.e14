@@ -1,7 +1,0 @@
-﻿using Console;
-
-func int square(var x)
-{
-	var result = x * x;
-	return result;
-}

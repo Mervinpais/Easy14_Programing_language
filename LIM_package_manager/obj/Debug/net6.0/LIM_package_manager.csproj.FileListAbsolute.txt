@@ -1,0 +1,15 @@
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\bin\Debug\net6.0\LIM_package_manager.exe
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\bin\Debug\net6.0\LIM_package_manager.deps.json
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\bin\Debug\net6.0\LIM_package_manager.runtimeconfig.json
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\bin\Debug\net6.0\LIM_package_manager.dll
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\bin\Debug\net6.0\LIM_package_manager.pdb
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net6.0\LIM_package_manager.csproj.AssemblyReference.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net6.0\LIM_package_manager.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net6.0\LIM_package_manager.AssemblyInfoInputs.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net6.0\LIM_package_manager.AssemblyInfo.cs
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net6.0\LIM_package_manager.csproj.CoreCompileInputs.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net6.0\LIM_package_manager.dll
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net6.0\refint\LIM_package_manager.dll
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net6.0\LIM_package_manager.pdb
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net6.0\LIM_package_manager.genruntimeconfig.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net6.0\ref\LIM_package_manager.dll

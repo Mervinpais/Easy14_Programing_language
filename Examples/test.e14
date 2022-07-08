@@ -1,7 +1,0 @@
-using Console;
-using FileSystem;
-
-//Tests (For latest Features)
-
-print(cl"Line1");
-print(cl"Line2");

@@ -1,0 +1,21 @@
+﻿==== HELP =====
+
+- help:
+	Show this help.
+- version:
+	Shows current version.
+- list:
+	List all packages installe
+
+- lim install <packageURL>:
+	installs the package from the given URL.
+		|
+		 --- lim install --update --lim  || lim install --update --easy14:
+			This command is only for updating specific things, like Easy14 Programming Language or LIM itself! 
+			(You need to manually replace files from update package to the directory of LIM, Easy14 will get updated-
+			by LIM itself)
+- lim uninstall <packageName>:
+	uninstalls the package with the given name.
+
+- lim update <packageName>:
+	updates the package with the given name.

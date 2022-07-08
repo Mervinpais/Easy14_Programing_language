@@ -1,5 +1,0 @@
-﻿func m() {
-	Console.print("me");
-}
-
-m();
