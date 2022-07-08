@@ -799,6 +799,7 @@ namespace Easy14_Programming_Language
                 else if ((line.StartsWith($"while") && line.EndsWith("{")) || (line.StartsWith("while") && lines[lineCount] == "{"))
                 {
                     while_Loop_fixed.Interperate(line, lines, textArray, fileLoc); return;
+                    //WhileLoop.Interperate(line, textArray, lines, fileLoc); return;
                 }
                 else if ((line.StartsWith("func ") && line.EndsWith(") {")) || (line.StartsWith("func ") && line.EndsWith(")") && lines[lineCount] == "{"))
                 {
