@@ -17,25 +17,36 @@ ___
 ---
 # Version 2.9
 
-### New stuff;
+## New stuff;
 
     * Converted every class to a static class cause the dont take a state of an object
 	* Can do multiple arithmethic operations
 
-### Fixed bugs with;
+## Fixed bugs with;
 
 	* Most things
+	* Remade if and while loops that are bug free!
+	  └→ New syntax (see below)
+```csharp
+if (condition)
+{
+  //code
+}
+```
+<br>
+
+---
+
+<br>
 
 ## Known Issues
-
+###
 #### None, atleast of now :|
 
 ## Fixed Bugs
 
-#### Temperary Version file creation bug where it would create the temp version file at MY temp folder instead of the current users one
-
 ---
 
 ## Thanks for reading :)
-
+###
 #### i seriously need to be doing more tests on my code for bugs :|
