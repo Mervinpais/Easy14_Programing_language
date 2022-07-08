@@ -1,0 +1,25 @@
+﻿
+=== Console.exec() / exec() ===
+
+Info: Uses the Console namespace
+
+Description;
+
+executes easy14 code (or c# if you see the examples below)
+=======
+
+Examples;
+
+(a) Below runs a hello world statement in the exec functions (Easy14)
+Console.exec("Console.print("Hello world");");
+(b) Below runs a hello world statement in the exec functions (C#)
+Console.exec((C#)"System.Console.WriteLine("Hello world");");
+
+========
+
+Error Cases;
+
+Executing C# code that doesn't work in C#
+Executing Easy14 code that doesn't work in Easy14
+
+=========

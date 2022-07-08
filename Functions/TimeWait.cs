@@ -12,7 +12,7 @@ namespace Easy14_Programming_Language
             code_part = code_part[5..];
 
             code_part = code_part[..^1];
-            if (code_part.EndsWith(")"))
+            if (code_part.EndsWith(");"))
             {
                 code_part = code_part[..^1];
             }
@@ -21,7 +21,7 @@ namespace Easy14_Programming_Language
             try
             {
                 var n = textToPrint;
-                decimal n_decimal = Convert.ToDecimal(n);
+                decimal n_decimal = Convert.ToDecimal(n.Substring(0, n.Length - 1));
                 int amountTowait = Convert.ToInt32(n_decimal * 1000);
                 Thread.Sleep(amountTowait);
             }

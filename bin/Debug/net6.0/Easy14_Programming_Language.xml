@@ -52,6 +52,18 @@
             <param name="isInAMethod">If the code is in a method, this is true.</param>
             <param name="methodName">The name of the method that the code is in.</param>
         </member>
+        <member name="M:Easy14_Programming_Language.If_Loop_fixed.Interperate(System.String,System.String[],System.String[],System.String,System.Boolean,System.String)">
+            <summary>
+            This function takes in a string, an array of strings, an array of strings, a string, a
+            boolean, and a string.
+            </summary>
+            <param name="code_part">The code part that is being Interperated.</param>
+            <param name="lines">The lines of the code</param>
+            <param name="textArray">The array of strings that contains the code.</param>
+            <param name="fileloc">The location of the file</param>
+            <param name="isInAMethod">If the code is in a method, this is true.</param>
+            <param name="methodName">The name of the method that the code is in.</param>
+        </member>
         <member name="T:Easy14_Programming_Language.myFunc">
             <summary>
             myFunc is a placeholder name for the class
@@ -113,6 +125,18 @@
             <param name="code_part">The part of the code that is being Interperated.</param>
             <param name="lines">The lines of code</param>
             <param name="line_count">The line number of the code_part</param>
+        </member>
+        <member name="M:Easy14_Programming_Language.while_Loop_fixed.Interperate(System.String,System.String[],System.String[],System.String,System.Boolean,System.String)">
+            <summary>
+            This function takes in a string, an array of strings, an array of strings, a string, a
+            boolean, and a string.
+            </summary>
+            <param name="code_part">The code part that is being Interperated.</param>
+            <param name="lines">The lines of the code</param>
+            <param name="textArray">The array of strings that contains the code.</param>
+            <param name="fileloc">The location of the file</param>
+            <param name="isInAMethod">If the code is in a method, this is true.</param>
+            <param name="methodName">The name of the method that the code is in.</param>
         </member>
         <member name="T:Easy14_Programming_Language.Program">
             <summary>

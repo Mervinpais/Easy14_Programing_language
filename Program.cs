@@ -793,11 +793,12 @@ namespace Easy14_Programming_Language
                 }
                 else if ((line.StartsWith($"if") && line.EndsWith("{")) || (line.StartsWith("if") && lines[lineCount] == "{"))
                 {
-                    If_Loop.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName); return;
+                    If_Loop_fixed.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName); return;
+                    //If_Loop.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName); return;
                 }
                 else if ((line.StartsWith($"while") && line.EndsWith("{")) || (line.StartsWith("while") && lines[lineCount] == "{"))
                 {
-                    WhileLoop.Interperate(line, textArray, lines, fileLoc); return;
+                    while_Loop_fixed.Interperate(line, lines, textArray, fileLoc); return;
                 }
                 else if ((line.StartsWith("func ") && line.EndsWith(") {")) || (line.StartsWith("func ") && line.EndsWith(")") && lines[lineCount] == "{"))
                 {
@@ -974,6 +975,7 @@ namespace Easy14_Programming_Language
                             }
                         }
                     }
+
                     /* The below code is checking to see if the line is not empty, not whitespace, not
                     a closing bracket, not a break, not a return, not a using statement, and not a
                     comment. If the line is not any of those things, then it will print out an error

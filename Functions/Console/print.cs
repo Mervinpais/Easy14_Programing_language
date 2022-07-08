@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.IO;
 using System.Linq;
 
@@ -152,6 +153,19 @@ namespace Easy14_Programming_Language
             }
 
             //=======================START OF MATH FUNCTIONS==========================\\
+            else if (textToPrint.Contains("+") || textToPrint.Contains("-") || textToPrint.Contains("/") || textToPrint.Contains("*") || textToPrint.Contains("%"))
+            {
+                textToPrint = textToPrint.Substring(0, textToPrint.Length - 1);
+                try
+                {
+                    double result = Convert.ToDouble(new DataTable().Compute(textToPrint, null));
+                    Console.WriteLine(Convert.ToDouble(new DataTable().Compute(textToPrint, null)));
+                }
+                catch
+                {
+                    ThrowErrorMessage.sendErrMessage($"Uh oh, the value you wanted to calculate won't work! (check if the value is a string and change it to an integer)", null, "error");
+                }
+            }
             else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString)
             {
                 Console.WriteLine(Math_Add.Interperate(textToPrint, -1));

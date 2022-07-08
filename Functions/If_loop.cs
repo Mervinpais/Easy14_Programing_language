@@ -77,7 +77,7 @@ namespace Easy14_Programming_Language
             string[] arr = if_lines_list.ToArray();
             string if_Line = if_lines_list[1];
             if_Line = if_Line.Substring(2);
-            if_Line = if_Line.Substring(1, if_Line.Length - 2);
+            if_Line = if_Line.Substring(1, if_Line.Length - 1);
 
             string obj1 = null;
             bool obj1_variable = false;
