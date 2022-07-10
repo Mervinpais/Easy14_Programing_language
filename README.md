@@ -1,10 +1,10 @@
 ﻿# Easy14 Programing Language
 ---
-![](Images/repo%20github%20thumnail.png)
+![](Easy14_Programming_language/Images/repo%20github%20thumnail.png)
 ## Finally an _ok-ish_ language made with C#
 Basically a mashup of Python + C#
 
-![](Images/hand_heart_donate_icon.png)
+![](Easy14_Programming_language/Images/hand_heart_donate_icon.png)
 ### Donations can help me improve this language :)
 #### Note; Can't donate yet
 ___
