@@ -1,9 +1,0 @@
-﻿======PLANS======	
-
-- () in if statements
-- () in for loops
-- () in while loops
-- () in functions
-
-- fixing the usingSemicolons value in option.ini to make it work properly
-
