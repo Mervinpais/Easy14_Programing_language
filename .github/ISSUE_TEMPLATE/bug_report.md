@@ -24,7 +24,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
- - OS: [e.g. iOS]
+ - OS: [e.g. Windows, Ubuntu, Zorin etc.]
  - Browser [e.g. chrome, safari]
  - Version [e.g. 22]
 
@@ -35,5 +35,5 @@ If applicable, add screenshots to help explain your problem.
  - Version [e.g. 22]
 
 **Additional context**
-If you can, get the error code from the app's debug.log file (version 1.4 or higher only) and put it in so we can identify it quicker or atleast get some context of the situation
+If you can, get the error code from the app's debug.log file (version 2.8 or higher only) and put it in so we can identify it quicker or atleast get some context of the situation
 Add any other context about the problem here.
