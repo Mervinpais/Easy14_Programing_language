@@ -82,6 +82,14 @@
             <param name="textArray">The array of strings that contains the code.</param>
             <param name="fileloc">The location of the file</param>
         </member>
+        <member name="M:Easy14_Programming_Language.Random_RandomRangeDouble.Interperate(System.String,System.String[],System.String)">
+            <summary>
+            It takes a string, an array of strings, and a string, and returns a string.
+            </summary>
+            <param name="code_part">The code that is being Interperated</param>
+            <param name="textArray">The array of strings that contains the code.</param>
+            <param name="fileloc">The location of the file</param>
+        </member>
         <member name="M:Easy14_Programming_Language.SDL2_makeWindow.Setup(System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
             <summary>
             Setup all of the SDL resources we'll need to display a window.

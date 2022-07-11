@@ -39,14 +39,7 @@ namespace Easy14_Programming_Language
         {
             if (args.Length != 0)
             {
-                foreach (string item in args)
-                {
-                    Console.Write(item + " ");
-                }
-            }
-
-            if (args.Length != 0)
-            {
+                Console.Write(String.Join(" " + Environment.NewLine, args));
                 if (args[0] == "-run" || args[0] == "/run")
                 {
                     Console.WriteLine("\n==== Easy14 Interative Console ====\n");
@@ -68,42 +61,17 @@ namespace Easy14_Programming_Language
             /* Checking if the user has disabled updates in the config file. If they have not, it will
             check for updates. */
 
-            bool UpdatesDisabled = false;
-            bool UpdatesWarningsDisabled = false;
-            foreach (string item in configFile)
-            {
-                if (item.StartsWith("UpdatesDisabled"))
-                {
-                    if (item.EndsWith("true"))
-                    {
-                        UpdatesDisabled = true;
-                    }
-                }
-                if (item.StartsWith("UpdatesWarningsDisabled"))
-                {
-                    if (item.EndsWith("true"))
-                    {
-                        UpdatesWarningsDisabled = true;
-                    }
-                }
-            }
+            bool UpdatesDisabled = Convert.ToBoolean(Easy14_configuration.getOption("UpdatesDisabled"));
+            bool UpdatesWarningsDisabled = Convert.ToBoolean(Easy14_configuration.getOption("UpdatesWarningsDisabled"));
 
-            if (!UpdatesDisabled)
-            {
-                updateChecker.checkLatestVersion(UpdatesWarningsDisabled);
-            }
+            if (!UpdatesDisabled) updateChecker.checkLatestVersion(UpdatesWarningsDisabled);
 
             //=========================================================\\
 
             /* Reading the config file and getting the delay value. */
             foreach (string line in configFile)
             {
-                if (line.StartsWith("delay"))
-                {
-                    int delay = Convert.ToInt32(line.Replace("delay = ", ""));
-                    Thread.Sleep(delay * 1000);
-                    break;
-                }
+                if (line.StartsWith("delay")) Thread.Sleep(Convert.ToInt32(line.Replace("delay = ", "")) * 1000); break;
             }
 
             /* The below code is the code that runs when the app is ran, it checks for arguments
@@ -116,90 +84,47 @@ namespace Easy14_Programming_Language
                     string[] filePath = null;
                     foreach (var item in args)
                     {
-                        if (item.EndsWith(".e14") || item.EndsWith(".ese14"))
-                        {
-                            filePath = args[1..itemCount];
-                        }
+                        if (item.EndsWith(".e14") || item.EndsWith(".ese14")) filePath = args[1..itemCount];
                         itemCount++;
                     }
                     Console.WriteLine($"==== {DateTime.Now} | {filePath[filePath.Length - 1]} ====\n");
 
-                    if (filePath == null)
-                    {
-                        Console.WriteLine("\n ERROR; CAN NOT FIND FILE SPECIFIED \n");
-                    }
+                    if (filePath == null) Console.WriteLine("\n ERROR; CAN NOT FIND FILE SPECIFIED \n");
 
                     if (filePath[filePath.Length - 1].EndsWith(".ese14") || filePath[filePath.Length - 1].EndsWith(".e14"))
                     {
                         if (args.Length > 2)
                         {
-                            if (args[filePath.Length] == "-show_cmds" || args[filePath.Length] == "/show_cmds")
-                            {
-                                showCommands = true;
-                            }
-                            else if (args[filePath.Length] == "-preview_only" || args[filePath.Length] == "/preview_only")
-                            {
-                                previewTheFile = true;
-                            }
+                            if (args[filePath.Length] == "-show_cmds" || args[filePath.Length] == "/show_cmds") showCommands = true;
+                            else if (args[filePath.Length] == "-preview_only" || args[filePath.Length] == "/preview_only") previewTheFile = true;
                         }
-                        if (!previewTheFile)
-                        {
-                            CompileCode(String.Join(" ", filePath));
-                        }
+                        if (!previewTheFile) CompileCode(String.Join(" ", filePath));
                         else
                         {
-                            try
-                            {
-                                Console.WriteLine(String.Join(Environment.NewLine, File.ReadAllLines(args[1])));
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine("\n An Error Occured While Reading File To Display in Preview, Below Is the Full Error Exception Message\n");
-                                Console.WriteLine(e);
-                            }
+                            try { Console.WriteLine(String.Join(Environment.NewLine, File.ReadAllLines(args[1]))); }
+                            catch (Exception e) { Console.WriteLine($"\n An Error Occured While Reading File To Display in Preview, Below Is the Full Error Exception Message\n\n{e.Message}"); }
                         }
                     }
-                    else
-                    {
-                        Console.WriteLine("\n Uh Oh, this file isnt an actual .e14/.ese14 file!, please change the file extention to .e14 (preferred) or .ese14 to use this file \n");
-                    }
+                    else { Console.WriteLine("\n Uh Oh, this file isnt an actual .e14/.ese14 file!, please change the file extention to .e14 (preferred) or .ese14 to use this file \n"); }
                 }
                 else if (File.Exists(args[0]) || File.Exists(args[0]))
                 {
-                    int itemCount = 1;
-                    string[] filePath = null;
+                    int itemCount = 1; string[] filePath = null;
                     foreach (var item in args)
                     {
-                        if (item.EndsWith(".e14") || item.EndsWith(".ese14"))
-                        {
-                            filePath = args[1..itemCount];
-                        }
+                        if (item.EndsWith(".e14") || item.EndsWith(".ese14")) filePath = args[1..itemCount];
                         itemCount++;
                     }
                     Console.WriteLine($"==== {DateTime.Now} | {string.Join(" ", args)} ====\n");
 
-                    if (string.Join(" ", args) == null)
-                    {
-                        Console.WriteLine("\n ERROR; CAN NOT FIND FILE SPECIFIED \n");
-                    }
+                    if (string.Join(" ", args) == null) { Console.WriteLine("\n ERROR; CAN NOT FIND FILE SPECIFIED \n"); }
 
                     if (string.Join(" ", args).EndsWith(".ese14") || string.Join(" ", args).EndsWith(".e14"))
                     {
-                        try
-                        {
-                            Program prog = new Program();
-                            prog.CompileCode_fromOtherFiles(textArray: File.ReadAllLines(string.Join(" ", args)));
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("\n An Error Occured While Reading File To Display in Preview, Below Is the Full Error Exception Message\n");
-                            Console.WriteLine(e);
-                        }
+                        try { Program prog = new Program(); prog.CompileCode_fromOtherFiles(textArray: File.ReadAllLines(string.Join(" ", args))); }
+                        catch (Exception e) { Console.WriteLine($"\n An Error Occured While Reading File To Display in Preview, Below Is the Full Error Exception Message\n\n{e.Message}"); }
                     }
-                    else
-                    {
-                        Console.WriteLine("\n Uh Oh, this file isnt an actual .e14/.ese14 file!, please change the file extention to .e14 (preferred) or .ese14 to use this file \n");
-                    }
+                    else { Console.WriteLine("\n Uh Oh, this file isnt an actual .e14/.ese14 file!, please change the file extention to .e14 (preferred) or .ese14 to use this file \n"); }
                 }
                 if (args[0] == "-help" || args[0] == "/help")
                 {
@@ -209,8 +134,7 @@ namespace Easy14_Programming_Language
                     Console.WriteLine("    |");
                     Console.WriteLine("     -show_cmds || /show_cmds = shows what command runs while running a file");
                     Console.WriteLine("\n   -keywords || /keywords = Shows all keywords that are statements in Easy14");
-                    Console.WriteLine("\n   -intro || /intro = Introduction/Tutorial of Easy14");
-                    Console.WriteLine("\n");
+                    Console.WriteLine("\n   -intro || /intro = Introduction/Tutorial of Easy14\n");
                     Console.WriteLine("     |More Commands Comming Soon|");
                 }
                 if (args[0].ToLower() == "-keywords" || args[0].ToLower() == "/keywords")
@@ -221,150 +145,124 @@ namespace Easy14_Programming_Language
                     Console.WriteLine("\n   ================");
                     Console.WriteLine("\n====================");
                 }
-                if (args[0].ToLower() == "-intro" || args[0].ToLower() == "/intro")
-                {
-                    IntroductionCode.IntroCode();
-                }
-                if (args[0].ToLower() == "-appinfo" || args[0].ToLower() == "/appinfo")
-                {
-                    AppInformation.ShowInfo();
-                }
+                if (args[0].ToLower() == "-intro" || args[0].ToLower() == "/intro") IntroductionCode.IntroCode();
+                if (args[0].ToLower() == "-appinfo" || args[0].ToLower() == "/appinfo") AppInformation.ShowInfo();
             }
             else if (args.Length == 0)
             {
                 Console.WriteLine("No Arguments to Given :/");
-                Console.WriteLine(
-                    "if you need help with what args you can run, run the app with argument '-help' to get args help"
-                );
+                Console.WriteLine("if you need help with what args you can run, run the app with argument '-help' to get args help");
+
                 while (true)
                 {
                     Console.Write("\n>>>");
-                    string command = Console.ReadLine();
+                    try
+                    { //Needed since System.IO.IOException; No process is on the other end of the pipe. occurs
+                        string command = Console.ReadLine();
 
-                    if (command.ToLower() == "exit()" || command.ToLower() == "exit();")
-                    {
-                        /* Deleting the temporary folder that was created in the previous step. */
-                        Console.WriteLine("\n Clearing Variables... \n");
-                        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
+                        if (command.ToLower() == "exit()" || command.ToLower() == "exit();")
                         {
-                            Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP", true);
-                        }
-                        Console.WriteLine("\n Resetting Terminal Colors... \n");
-                        Console.ResetColor();
-                        Thread.Sleep(75);
-                        Console.WriteLine("\n Exiting Easy14 Interactive... \n");
-                        return;
-                    }
-                    else if (command.ToLower() == "exit")
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("\nPlease use \"exit()\" or \"exit();\" or Ctrl+C to close the interative console");
-                        Console.ResetColor();
-                        continue;
-                    }
-                    if (command.StartsWith("send_exception("))
-                    {
-                        string exceptionToSend_str = command.Replace("send_exception(", "");
-                        exceptionToSend_str = exceptionToSend_str[..^2];
-                        ExceptionSender.SendException(exceptionToSend_str);
-                        break;
-                    }
-                    else if (command.ToLower().StartsWith("/run") || command.ToLower().StartsWith("-run"))
-                    {
-                        Program prog = new Program();
-                        prog.CompileCode_fromOtherFiles(command.Replace("/run", "").Replace("-run", "").TrimStart());
-                    }
-                    else if (File.Exists(command) || File.Exists(command))
-                    {
-                        string filePath = command;
-
-                        Console.WriteLine($"==== {DateTime.Now} | {command} ====\n");
-
-                        if (filePath == null)
-                        {
-                            Console.WriteLine("\n ERROR; CAN NOT FIND FILE SPECIFIED \n");
-                        }
-
-                        if (command.EndsWith(".ese14") || command.EndsWith(".e14"))
-                        {
-                            try
+                            /* Deleting the temporary folder that was created in the previous step. */
+                            Console.WriteLine("\n Clearing Variables... \n");
+                            if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
                             {
-                                Program prog = new Program();
-                                prog.CompileCode_fromOtherFiles(command);
+                                Directory.Delete(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP", true);
                             }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine("\n An Error Occured While Reading File, Below Is the Full Error Exception Message\n");
-                                Console.WriteLine(e);
-                            }
+                            Console.ResetColor();
+                            Console.WriteLine("\n Exiting Easy14 Interactive... \n");
+                            return;
                         }
-                        else
+                        else if (command.ToLower() == "exit")
                         {
-                            Console.WriteLine("\n Uh Oh, this file isnt an actual .e14/.ese14 file!, please change the file extention to .e14 (preferred) or .ese14 to use this file \n");
-                        }
-                    }
-                    else if (command.ToLower() == "/help" || command.ToLower() == "-help")
-                    {
-                        HelpCommandCode.DisplayDefaultHelpOptions();
-                    }
-                    else if (command.ToLower().StartsWith("/help") || command.ToLower().StartsWith("-help"))
-                    {
-                        string functionToGetHelpWith = command;
-                        functionToGetHelpWith = functionToGetHelpWith.Substring(5).TrimStart().TrimEnd();
-                        HelpCommandCode.GetHelp(functionToGetHelpWith);
-                    }
-                    else if (command.ToLower() == "/keywords" || command.ToLower() == "-keywords")
-                    {
-                        Console.WriteLine("\n===== KEYWORDS =====");
-                        Console.WriteLine("\n   === Main (6) ===");
-                        Console.WriteLine("\n   print, if, while, func, wait, var");
-                        Console.WriteLine("\n   ================");
-                        Console.WriteLine("\n====================");
-                    }
-                    else if (command.ToLower() == "/intro" || command.ToLower() == "-intro")
-                    {
-                        IntroductionCode.IntroCode();
-                    }
-                    else if (command.ToLower() == "/appinfo" || command.ToLower() == "-appinfo")
-                    {
-                        AppInformation.ShowInfo();
-                    }
-                    else if (command.Contains('\n'))
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("ERROR; Easy14 Interactive Cannot run multiline code \n");
-                        Console.ResetColor();
-                        continue;
-                    }
-                    else
-                    {
-                        if (!command.StartsWith("-") && !command.StartsWith("/"))
-                        {
-                            string[] allNamespacesAvaiable_array = Directory.GetDirectories(strWorkPath + "\\..\\..\\..\\Functions");
-
-                            List<string> allNamespacesAvaiable_list = new List<string>();
-                            foreach (string namespace_ in allNamespacesAvaiable_array)
-                            {
-                                allNamespacesAvaiable_list.Add(string.Concat("using ", namespace_.AsSpan(namespace_.LastIndexOf("\\") + 1), ";"));
-                            }
-
-                            //thanks to the question https://stackoverflow.com/questions/59217/merging-two-arrays-in-net i managed to merge 2 arrays
-                            string[] allNamespacesAvaiable = allNamespacesAvaiable_list.ToArray();
-                            string[] command_array = { command };
-                            string[] commandAsArray = new string[allNamespacesAvaiable.Length + command_array.Length];
-                            Array.Copy(allNamespacesAvaiable, commandAsArray, allNamespacesAvaiable.Length);
-                            Array.Copy(command_array, 0, commandAsArray, allNamespacesAvaiable.Length, command_array.Length);
-
-                            Program prog = new Program();
-                            prog.CompileCode_fromOtherFiles(null, commandAsArray, 0, false, "}");
-                        }
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("ERROR; Easy14 Interactive can't understand what the args you specified \n");
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("\nPlease use \"exit()\" or \"exit();\" or Ctrl+C to close the interative console");
                             Console.ResetColor();
                             continue;
                         }
+                        if (command.StartsWith("send_exception("))
+                        {
+                            string exceptionToSend_str = command.Replace("send_exception(", "");
+                            exceptionToSend_str = exceptionToSend_str[..^2];
+                            ExceptionSender.SendException(exceptionToSend_str);
+                            break;
+                        }
+                        else if (command.ToLower().StartsWith("/run") || command.ToLower().StartsWith("-run"))
+                        {
+                            Program prog = new Program();
+                            prog.CompileCode_fromOtherFiles(command.Replace("/run", "").Replace("-run", "").TrimStart());
+                        }
+                        else if (File.Exists(command))
+                        {
+                            Console.WriteLine($"==== {DateTime.Now} | {command} ====\n");
+
+                            if (command == null)
+                            {
+                                Console.WriteLine("\n ERROR; CAN NOT FIND FILE SPECIFIED \n");
+                            }
+
+                            if (command.EndsWith(".ese14") || command.EndsWith(".e14"))
+                            {
+                                try { Program prog = new Program(); prog.CompileCode_fromOtherFiles(command); }
+                                catch (Exception e) { Console.WriteLine($"\n An Error Occured While Reading File, Below Is the Full Error Exception Message\n\n {e.Message}"); }
+                            }
+                            else { Console.WriteLine("\n Uh Oh, this file isnt an actual .e14/.ese14 file!, please change the file extention to .e14 (preferred) or .ese14 to use this file \n"); }
+                        }
+                        else if (command.ToLower() == "/help" || command.ToLower() == "-help") { HelpCommandCode.DisplayDefaultHelpOptions(); }
+                        else if (command.ToLower().StartsWith("/help") || command.ToLower().StartsWith("-help"))
+                        {
+                            HelpCommandCode.GetHelp(command.Substring(5).TrimStart().TrimEnd());
+                        }
+                        else if (command.ToLower() == "/keywords" || command.ToLower() == "-keywords")
+                        {
+                            Console.WriteLine("\n===== KEYWORDS =====");
+                            Console.WriteLine("\n   === Main (6) ===");
+                            Console.WriteLine("\n   print, if, while, func, wait, var");
+                            Console.WriteLine("\n   ================");
+                            Console.WriteLine("\n====================");
+                        }
+                        else if (command.ToLower() == "/intro" || command.ToLower() == "-intro") { IntroductionCode.IntroCode(); }
+                        else if (command.ToLower() == "/appinfo" || command.ToLower() == "-appinfo") { AppInformation.ShowInfo(); }
+                        else if (command.Contains('\n'))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("ERROR; Easy14 Interactive Cannot run multiline code \n");
+                            Console.ResetColor();
+                            continue;
+                        }
+                        else
+                        {
+                            if (!command.StartsWith("-") && !command.StartsWith("/"))
+                            {
+                                string[] allNamespacesAvaiable_array = Directory.GetDirectories(strWorkPath + "\\..\\..\\..\\Functions");
+
+                                List<string> allNamespacesAvaiable_list = new List<string>();
+                                foreach (string namespace_ in allNamespacesAvaiable_array)
+                                {
+                                    allNamespacesAvaiable_list.Add(string.Concat("using ", namespace_.AsSpan(namespace_.LastIndexOf("\\") + 1), ";"));
+                                }
+
+                                //thanks to the question https://stackoverflow.com/questions/59217/merging-two-arrays-in-net i managed to merge 2 arrays
+                                string[] allNamespacesAvaiable = allNamespacesAvaiable_list.ToArray();
+                                string[] command_array = { command };
+                                string[] commandAsArray = new string[allNamespacesAvaiable.Length + command_array.Length];
+                                Array.Copy(allNamespacesAvaiable, commandAsArray, allNamespacesAvaiable.Length);
+                                Array.Copy(command_array, 0, commandAsArray, allNamespacesAvaiable.Length, command_array.Length);
+
+                                Program prog = new Program();
+                                prog.CompileCode_fromOtherFiles(null, commandAsArray, 0, false, "}");
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("ERROR; Easy14 Interactive can't understand what the args you specified \n");
+                                Console.ResetColor();
+                                continue;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
                     }
                 }
             }
@@ -394,10 +292,7 @@ namespace Easy14_Programming_Language
             {
                 Console.Write("\n>>>");
                 string command = Console.ReadLine();
-                if (command.ToLower() == "exit()" || command.ToLower() == "exit();")
-                {
-                    return;
-                }
+                if (command.ToLower() == "exit()" || command.ToLower() == "exit();") return;
                 else if (command.ToLower() == "exit")
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -494,87 +389,31 @@ namespace Easy14_Programming_Language
         /// <param name="methodName">The name of the method that is being called.</param>
         public static void CompileCode(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
-            /*
-                SETUP
-            */
-
-            /* Reading the Options.ini file and setting the variables based on the Options.ini file. */
-
-            /* Options.ini vars code */
             bool disableLibraries = false;
             int windowHeight = Console.WindowHeight;
             int windowWidth = Console.WindowWidth;
             string windowState = "normal";
 
-            foreach (string line in configFile)
+            disableLibraries = Convert.ToBoolean(Easy14_configuration.getOption("disableLibraries"));
+            if (Easy14_configuration.getOption("windowHeight") != "false") windowHeight = Convert.ToInt32(Easy14_configuration.getOption("windowHeight"));
+            if (Easy14_configuration.getOption("windowWidth") != "false") windowWidth = Convert.ToInt32(Easy14_configuration.getOption("windowWidth"));
+            if (Easy14_configuration.getOption("windowState") != "false") windowState = Easy14_configuration.getOption("windowState");
+            if (Easy14_configuration.getOption("showOptionsINI_DataWhenE14_Loads") != "false")
             {
-                if (line.StartsWith("disableLibraries"))
+                if (Easy14_configuration.getOption("showOptionsINI_DataWhenE14_Loads") == "true")
                 {
-                    if (line.EndsWith("true"))
-                    {
-                        disableLibraries = true;
-                    }
-                    else
-                    {
-                        disableLibraries = false;
-                    }
-                }
-                else if (line.StartsWith("windowHeight"))
-                {
-                    if (!line.EndsWith("false"))
-                    {
-                        windowHeight = Convert.ToInt32(line.Replace("windowHeight = ", ""));
-                    }
-                }
-                else if (line.StartsWith("windowWidth"))
-                {
-                    if (!line.EndsWith("false"))
-                    {
-                        windowWidth = Convert.ToInt32(line.Replace("windowWidth = ", ""));
-                    }
-                }
-                else if (line.StartsWith("windowState"))
-                {
-                    if (line.EndsWith("max"))
-                    {
-                        windowState = "maximized";
-                    }
-                    else if (line.EndsWith("min"))
-                    {
-                        windowState = "minimized";
-                    }
-                    else if (line.EndsWith("hide"))
-                    {
-                        windowState = "hidden";
-                    }
-                    else if (line.EndsWith("normal"))
-                    {
-                        windowState = "normal";
-                    }
-                    else
-                    {
-                        windowState = "normal";
-                    }
-                }
-                else if (line.StartsWith("showOptionsINI_DataWhenE14_Loads"))
-                {
-                    if (line.EndsWith("true"))
-                    {
-                        List<string> configFileLIST = new List<string>();
+                    List<string> configFileLIST = new List<string>();
 
-                        foreach (string line_ in configFile)
-                        {
-                            if (line_.StartsWith(";") || line_ == "" || line_ == " ") continue;
-                            configFileLIST.Add(line_);
-                        }
-
-                        string[] configFile_modified = configFileLIST.ToArray();
-
-                        Console.WriteLine(string.Join(Environment.NewLine, configFile_modified));
-                        Console.WriteLine("\n========================\n\n");
+                    foreach (string line_ in configFile)
+                    {
+                        if (line_.StartsWith(";") || line_ == "" || line_ == " ") continue;
+                        configFileLIST.Add(line_);
                     }
-                }
 
+                    string[] configFile_modified = configFileLIST.ToArray();
+
+                    Console.WriteLine(string.Join(Environment.NewLine, configFile_modified)); Console.WriteLine("\n========================\n\n");
+                }
             }
 
             //========== Only thing using System.Runtime.InteropServices =========//
@@ -691,26 +530,8 @@ namespace Easy14_Programming_Language
             /* Removing the leading whitespace from each line in the list. */
             List<string> lines_list_mod = new List<string>();
             int linesListMod_LineCounter = 0;
-            foreach (string item_ in lines_list)
-            {
-                string itemToBeAdded = item_.TrimStart();
-                if (itemToBeAdded.Contains("/*"))
-                {
-                    if (itemToBeAdded.Contains(@"*/"))
-                    {
-                        itemToBeAdded = itemToBeAdded.Substring(itemToBeAdded.IndexOf("/*"), itemToBeAdded.IndexOf(@"*/"));
-                    }
-                }
-                if (itemToBeAdded.Contains("//"))
-                {
-                    itemToBeAdded = itemToBeAdded.Substring(0, itemToBeAdded.IndexOf("//"));
-                }
-                lines_list_mod.Add(itemToBeAdded);
-                linesListMod_LineCounter++;
-            }
-            lines = lines_list_mod.ToArray();
-
-            //Now below is where the magic happens!
+            lines = formatUserCode.format(lines);
+            textArray = formatUserCode.format(textArray);
 
             foreach (string line in lines)
             {
@@ -718,41 +539,23 @@ namespace Easy14_Programming_Language
 
                 if (showCommands == true) Console.WriteLine(">>>" + line);
 
-                if (line.StartsWith($"using") && line.EndsWith($";"))
-                {
-                    Using_namespace_code.usingFunction_interp(line, disableLibraries, lineCount);
-                }
-                else if (line.StartsWith($"from") && line.EndsWith($";"))
-                {
-                    Using_namespace_code.fromFunction_interp(line, disableLibraries, lineCount);
-                }
+                if (line.StartsWith($"using") && line.EndsWith($";")) Using_namespace_code.usingFunction_interp(line, disableLibraries, lineCount);
+                else if (line.StartsWith($"from") && line.EndsWith($";")) Using_namespace_code.fromFunction_interp(line, disableLibraries, lineCount);
                 else if (string.Join("", line_chrArr) != "" && char.IsDigit(line_chrArr[0]))
                 {
                     string statement = string.Join("", line_chrArr);
-                    //string plainNums = statement.Replace("+", " ");
-                    try
-                    {
-                        double result = Convert.ToDouble(new DataTable().Compute(statement, null));
-                        Console.WriteLine(result);
-                    }
-                    catch
-                    {
-                        ThrowErrorMessage.sendErrMessage("Uh oh, the value you wanted to calculate won't work! (check if the value has a string value and change it to an integer)", null, "error");
-                    }
+                    try { Console.WriteLine(Convert.ToDouble(new DataTable().Compute(statement, null))); }
+                    catch { ThrowErrorMessage.sendErrMessage("Uh oh, the value you wanted to calculate won't work! (check if the value has a string value and change it to an integer)", null, "error"); }
                 }
 
                 /* Checking if the user has entered "exit()" or "exit();" and if they have, it will
                 exit the program. */
-                else if (line.ToLower() == "exit()" || line.ToLower() == "exit();")
-                {
-                    return;
-                }
+                else if (line.ToLower() == "exit()" || line.ToLower() == "exit();") return;
                 else if (line.ToLower() == "exit")
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("\nPlease use \"exit()\" or \"exit();\" or Ctrl+C to close the interative console");
-                    Console.ResetColor();
-                    continue;
+                    Console.ResetColor(); continue;
                 }
 
                 else if (line.StartsWith($"Console.print(") || line.StartsWith($"print(") && line.EndsWith(");"))
@@ -783,23 +586,23 @@ namespace Easy14_Programming_Language
                 {
                     VariableCode.Interperate(line, lines, lineCount);
                 }
-                else if (line == "true")
+                else if (line == "true") Console.WriteLine("true");
+                else if (line == "false") Console.WriteLine("false");
+                else if (line.StartsWith($"Random.RandomRange(") || line.StartsWith($"RandomRange(") && line.EndsWith(");"))
                 {
-                    Console.WriteLine("true");
+                    Console.WriteLine(Random_RandomRange.Interperate(line, textArray, fileLoc));
                 }
-                else if (line == "false")
+                else if (line.StartsWith($"Random.RandomRangeDouble(") || line.StartsWith($"RandomRangeDouble(") && line.EndsWith(");"))
                 {
-                    Console.WriteLine("false");
+                    Console.WriteLine(Random_RandomRangeDouble.Interperate(line, textArray, fileLoc));
                 }
                 else if ((line.StartsWith($"if") && line.EndsWith("{")) || (line.StartsWith("if") && lines[lineCount] == "{"))
                 {
                     If_Loop_fixed.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName); return;
-                    //If_Loop.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName); return;
                 }
                 else if ((line.StartsWith($"while") && line.EndsWith("{")) || (line.StartsWith("while") && lines[lineCount] == "{"))
                 {
                     while_Loop_fixed.Interperate(line, lines, textArray, fileLoc); return;
-                    //WhileLoop.Interperate(line, textArray, lines, fileLoc); return;
                 }
                 else if ((line.StartsWith("func ") && line.EndsWith(") {")) || (line.StartsWith("func ") && line.EndsWith(")") && lines[lineCount] == "{"))
                 {
@@ -912,8 +715,7 @@ namespace Easy14_Programming_Language
                         {
                             if (line.EndsWith("();")) //Means its probably a function
                             {
-                                MethodCode.Interperate(line, textArray, lines, fileLoc, false);
-                                return;
+                                MethodCode.Interperate(line, textArray, lines, fileLoc, false); return;
                             }
                             foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
                             {
