@@ -42,9 +42,8 @@ if (a == b)
 though i may add () in the condition part, i am just too focused on fixing bugs first
 
 <div id="links_div">
+</div>
 
 ## Links
 
 [Tutorials](https://mervinpais.github.io/Easy14_Programing_language/webpages/docs.html)
-
-</div>
