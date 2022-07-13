@@ -1,47 +1,15 @@
-<head>
-   <link rel="stylesheet" type="text/css" href="https://mervinpais.github.io/Easy14_Programing_language/style.css">
-</head>
+ Documentation
+Here are the tutorials i currently offer for the language
 
-<body class="dark_body">
-   <head2> Documentation  </head2>
-   <br>
-   <head4> Here are the tutorials i currently offer for the language </head4>
-   <br>
-
-   <ol>
-
-   <li>
-      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/basicFunctions.html">Basic Functions</a>
-   </li>
-   <li>
-      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/console.html">Console</a>
-   </li>
-   <li>
-      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/variables.html">Variables</a>
-   </li>   
-   <li>
-      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/ifStatements.html">If Statements</a>
-   </li>
-   <head3> Upcomming Documentation (Currently Unavaliable) </head3>
-   <li>
-      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/loops.html">Loops</a>
-   </li>
-   <li>
-      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/arrays.html">Arrays</a>
-   </li>
-   <li>
-      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/functions.html">Functions</a>
-   </li>
-   <li>
-      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/classes.html">Classes</a>
-   </li>
-   <li>
-      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/objects.html">Objects</a>
-   </li>
-   <li>
-      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/files.html">Files</a>
-   </li>
-   <li>
-      <a class="link" href="https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/customLibraries.html">Custom Libaraies</a>
-   </li>
-</body>
+1.  [Basic Functions](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/basicFunctions.html)
+2.  [Console](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/console.html)
+3.  [Variables](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/variables.html)
+4.  [If Statements](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/ifStatements.html)
+5.  [Loops](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/loops.html)
+Upcomming Documentation (Currently Unavaliable)
+6.  [Arrays](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/arrays.html)
+7.  [Functions](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/functions.html)
+8.  [Classes](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/classes.html)
+9.  [Objects](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/objects.html)
+10.  [Files](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/files.html)
+11.  [Custom Libaraies](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/customLibraries.html)
