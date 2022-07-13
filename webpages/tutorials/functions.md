@@ -1,4 +1,4 @@
-# Arrays
+# Functions
 <div id="warn">
 
 </div>
