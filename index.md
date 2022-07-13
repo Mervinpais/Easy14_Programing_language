@@ -3,8 +3,9 @@
 [Links](#links_div)
 * * *
 
-An easy language for beginners?! wOW iTs NoT lIkE pYthOn ExIsTs (seriously though, try python first, it may be easier than this, this language is if you wanted to, say go from python to something more Object oriented)
+~~An easy language for beginners?! wOW iTs NoT lIkE pYthOn ExIsTs (seriously though, try python first, it may be easier than this, this language is if you wanted to, say go from python to something more Object oriented)~~
 
+A somewhat easy language for people
 * * *
 
 
@@ -13,37 +14,49 @@ Code Example
 ```csharp
 //Syntax highlighted code block
 
-Console.print("You can't use a print statement without a Console. if you didn't import the Console");
+Console.print("Hello world! (Printed without console namspace)");
 
 using Console;
 
-print("Hello Coders! or whatever that funny starter Hello world stater project said..");
+print("Hello world! (Printed with console namspace)");
 ```
 FAQ
 
 * * *
 
-Will This language support One-Liner Code?
-No sadly i wont do that as my language does the "Scratch" way of execution by running from top to down and you can't have other lines(statments) within one line I Might add it later, there is/was some code still left over from an attempt in the Console.Print if statement ;)
+Does this language support One-Liner Code?
+:   YES! it does! just write your code and make sure each line ends with ';' (semicolon)!
+    Example
+    - print("Hello world!"); print("Hello world2!");
+    - print("Oh"); print("the"); print("misery");
+
 
 Will this be a general purpose language?
 
-Not yet, there are still bugs needed to be fixed before it because general purpose
+:   Not yet, there are still bugs needed to be fixed before it because general purpose
 
-What is the syntax for loops?
+What is the syntax for if/while statments?
 
-```csharp
-if (a == b)
-{
-    //code
-}
-```
+:   See Below for
+    - syntax of if statment;
+        ```csharp
+            if (a == b)
+            {
+                //code
+            }
+        ```
+    - syntax of while statment;
+        ```csharp
+            while (a == b)
+            {
+                //code
+            }
+        ```
 
-though i may add () in the condition part, i am just too focused on fixing bugs first
+## Links
+
 
 <div id="links_div">
 </div>
-
-## Links
 
 [Tutorials](https://mervinpais.github.io/Easy14_Programing_language/webpages/docs.html)
