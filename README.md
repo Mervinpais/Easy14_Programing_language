@@ -1,6 +1,6 @@
-# Easy14_Programing_language
+# Easy14 Programing Language
 
-## Main Stuff
+## Intro
 
 Here is what you need to know
 

@@ -4,7 +4,7 @@
 <body class="dark_body">
    <head1> Console </head1>
    <br>
-   <para>Console was the first ever (Hardcoded) library made for Easy14 by Mervinpais (Creator of Easy14)</para>
+   <para>Console was the first ever (Hard-coded) library made for Easy14 by Mervin pais (Creator of Easy14)</para>
    <br>
    <div class="code">
       <code class="language-csharp">
@@ -32,6 +32,6 @@
       </code>
    </div>
    <br>
-   <para>More info comming soon</para>
+   <para>More info coming soon</para>
    <br>
 </body>
