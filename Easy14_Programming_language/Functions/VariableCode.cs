@@ -10,12 +10,6 @@ namespace Easy14_Programming_Language
         //and use it's 'compileCode_forOtherFiles' function to get 'compileCode' (because 'compileCode' is static, we need another function that is not static to access
         //the static function, kinda smart in my opinion), its kind of a bad way of doing it but it the easy way and has no error with it :|
 
-        /// <summary>
-        /// It takes a string, an array of strings, and an integer, and does something with them.
-        /// </summary>
-        /// <param name="code_part">The part of the code that is being Interperated.</param>
-        /// <param name="lines">The lines of code</param>
-        /// <param name="line_count">The line number of the code_part</param>
         public static void Interperate(string code_part, string[] lines, int line_count)
         {
             string code_part_unedited = code_part;
@@ -63,7 +57,7 @@ namespace Easy14_Programming_Language
                         int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
                         int number2 = Convert.ToInt32(text.Substring(text.IndexOf(",")).Replace(",", ""));
                         Random rnd = new Random();
-                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", Convert.ToString(rnd.Next(number1, number2)));
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", Random_RandomRange.Interperate(varContent, lines, null));
                     }
 
                     else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith(");"))

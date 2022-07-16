@@ -9,12 +9,6 @@ namespace Easy14_Programming_Language
         readonly static string strExeFilePath = Assembly.GetExecutingAssembly().Location;
         readonly static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
 
-        /// <summary>
-        /// usingFunction is for when the line "using x" appears
-        /// </summary>
-        /// <param name="line">the line</param>
-        /// <param name="disableLibraries">are libraries disabled?</param>
-        /// <param name="lineCount">line count, duh</param>
         public static void usingFunction_interp(string line, bool disableLibraries, int lineCount)
         {
             if (disableLibraries)
@@ -50,12 +44,6 @@ namespace Easy14_Programming_Language
             }
         }
 
-        /// <summary>
-        /// formFunction is for when the line "from x get y" appears
-        /// </summary>
-        /// <param name="line">the line</param>
-        /// <param name="disableLibraries">are libraries disabled?</param>
-        /// <param name="lineCount">line count, duh</param>
         public static void fromFunction_interp(string line, bool disableLibraries, int lineCount)
         {
             if (disableLibraries)

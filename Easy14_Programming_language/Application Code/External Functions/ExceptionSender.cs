@@ -1,15 +1,6 @@
 using System;
-
-/// <summary>
-/// the Class "ExceptionSender"
-/// </summary>
 public static class ExceptionSender
 {
-    /// <summary>
-    /// Allows to send exceptions from other files in the program
-    /// </summary>
-    /// <param name="typeOfException"></param>
-    /// <param name="textArray"></param>
     public static void SendException(string typeOfException, string[] textArray = null)
     {
         Console.ForegroundColor = ConsoleColor.Red;

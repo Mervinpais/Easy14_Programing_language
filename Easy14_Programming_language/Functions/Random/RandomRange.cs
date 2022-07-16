@@ -6,12 +6,6 @@ namespace Easy14_Programming_Language
 {
     public static class Random_RandomRange
     {
-        /// <summary>
-        /// It takes a string, an array of strings, and a string, and returns a string.
-        /// </summary>
-        /// <param name="code_part">The code that is being Interperated</param>
-        /// <param name="textArray">The array of strings that contains the code.</param>
-        /// <param name="fileloc">The location of the file</param>
         public static string Interperate(string code_part, string[] textArray, string fileloc)
         {
             string code_part_unedited = code_part;

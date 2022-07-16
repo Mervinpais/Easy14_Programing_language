@@ -13,18 +13,9 @@ using System.Threading.Tasks;
 
 namespace Easy14_Programming_Language
 {
-    /// <summary>
-    /// This class is the main class of the whole app
-    /// </summary>
     public class Program
     {
-        /// <summary>
-        /// showCommands is a variable that shows all the commands that are executed by the user (only when running files, not with the intractive Interperater)
-        /// </summary>
         public static bool showCommands = false;
-        /// <summary>
-        /// previewTheFile is a variable that instead of running the code, lets you preview what the file looks like
-        /// </summary>
         public static bool previewTheFile = false;
 
         //code from https://iq.direct/blog/51-how-to-get-the-current-executable-s-path-in-csharp.html :)
@@ -128,14 +119,7 @@ namespace Easy14_Programming_Language
                 }
                 if (args[0] == "-help" || args[0] == "/help")
                 {
-                    Console.WriteLine("Hello! Welcome to the help section of Easy14!");
-                    Console.WriteLine("\n   -help || /help = Show the list of arguments you can run with the Easy14 Language");
-                    Console.WriteLine("\n   -run || /run = Runs an easy14 file, the file extention must be .ese14 (ex; *easy14 app path* run *file.s14c*)");
-                    Console.WriteLine("    |");
-                    Console.WriteLine("     -show_cmds || /show_cmds = shows what command runs while running a file");
-                    Console.WriteLine("\n   -keywords || /keywords = Shows all keywords that are statements in Easy14");
-                    Console.WriteLine("\n   -intro || /intro = Introduction/Tutorial of Easy14\n");
-                    Console.WriteLine("     |More Commands Comming Soon|");
+                    HelpCommandCode.DisplayDefaultHelpOptions();
                 }
                 if (args[0].ToLower() == "-keywords" || args[0].ToLower() == "/keywords")
                 {
@@ -365,28 +349,10 @@ namespace Easy14_Programming_Language
                 }
             }
         }
-
-        /// <summary>
-        /// This function is used to compile code from other files
-        /// </summary>
-        /// <param name="fileLoc">The location of file than has the code</param>
-        /// <param name="textArray">The array of strings that contains the code.</param>
-        /// <param name="lineIDX">The line number of the code to run on</param>
-        /// <param name="isInAMethod">If the code is in a method, this will be true.</param>
-        /// <param name="methodName">The name of the method that is being called.</param>
         public void CompileCode_fromOtherFiles(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
             CompileCode(fileLoc, textArray, lineIDX, isInAMethod, methodName);
         }
-
-        /// <summary>
-        /// This function is used to compile code (only code within the file, unless you use the CompileCode_fromOtherFiles() function)
-        /// </summary>
-        /// <param name="fileLoc">The location of file than has the code</param>
-        /// <param name="textArray">The array of strings that contains the code.</param>
-        /// <param name="lineIDX">The line number of the code to run on</param>
-        /// <param name="isInAMethod">If the code is in a method, this will be true.</param>
-        /// <param name="methodName">The name of the method that is being called.</param>
         public static void CompileCode(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
             bool disableLibraries = false;
@@ -529,7 +495,6 @@ namespace Easy14_Programming_Language
 
             /* Removing the leading whitespace from each line in the list. */
             List<string> lines_list_mod = new List<string>();
-            int linesListMod_LineCounter = 0;
             lines = formatUserCode.format(lines);
             textArray = formatUserCode.format(textArray);
 
@@ -544,8 +509,14 @@ namespace Easy14_Programming_Language
                 else if (string.Join("", line_chrArr) != "" && char.IsDigit(line_chrArr[0]))
                 {
                     string statement = string.Join("", line_chrArr);
-                    try { Console.WriteLine(Convert.ToDouble(new DataTable().Compute(statement, null))); }
-                    catch { ThrowErrorMessage.sendErrMessage("Uh oh, the value you wanted to calculate won't work! (check if the value has a string value and change it to an integer)", null, "error"); }
+                    try
+                    {
+                        Console.WriteLine(Convert.ToDouble(new DataTable().Compute(statement, null)));
+                    }
+                    catch
+                    {
+                        ThrowErrorMessage.sendErrMessage("Uh oh, the value you wanted to calculate won't work! (check if the value has a string value and change it to an integer)", null, "error");
+                    }
                 }
 
                 /* Checking if the user has entered "exit()" or "exit();" and if they have, it will
@@ -584,7 +555,7 @@ namespace Easy14_Programming_Language
                 }
                 else if (line.StartsWith($"var") && line.EndsWith(";"))
                 {
-                    VariableCode.Interperate(line, lines, lineCount);
+                    VariableCode_fixed.Interperate(line, lines, lineCount);
                 }
                 else if (line == "true") Console.WriteLine("true");
                 else if (line == "false") Console.WriteLine("false");

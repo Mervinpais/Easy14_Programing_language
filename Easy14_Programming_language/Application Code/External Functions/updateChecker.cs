@@ -7,11 +7,6 @@ namespace Easy14_Programming_Language
 {
     public static class updateChecker
     {
-        /// <summary>
-        /// It checks for the latest version of the program.
-        /// </summary>
-        /// <param name="UpdatesWarningsDisabled">If you want to disable the warning message that
-        /// appears when the user is running an outdated version of your app, set this to true.</param>
         public static void checkLatestVersion(bool UpdatesWarningsDisabled = false)
         {
             //Initialize Variables

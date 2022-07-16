@@ -5,22 +5,12 @@ using System.Linq;
 
 namespace Easy14_Programming_Language
 {
-    /// <summary>
-    /// ConsolePrint is a class to print stuff to the console
-    /// </summary>
     public static class ConsolePrint
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
-        /// <summary>
-        /// Interperates whatever input is given
-        /// </summary>
-        /// <param name="code_part"></param>
-        /// <param name="textArray"></param>
-        /// <param name="fileloc"></param>
-        /// <param name="lineNumber"></param>
         public static void Interperate(string code_part, string[] textArray = null, string fileloc = null, int lineNumber = -1)
         {
             string code_part_unedited = code_part;

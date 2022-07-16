@@ -5,13 +5,6 @@ namespace Easy14_Programming_Language
 {
     public static class ThrowErrorMessage
     {
-        /// <summary>
-        /// It sends an error message.
-        /// </summary>
-        /// <param name="text">The text to be displayed in the message box.</param>
-        /// <param name="textArray">An array of strings that will be used to replace the placeholders in
-        /// the text string.</param>
-        /// <param name="typeOfError"></param>
         public static void sendErrMessage(string text, string[] textArray, string typeOfError)
         {
             /*
