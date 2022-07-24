@@ -2,7 +2,7 @@
 {
     public static class isNull
     {
-        public static bool Interperate(string? null_item)
+        public static bool Interperate(object null_item)
         {
             if (null_item is null)
             {

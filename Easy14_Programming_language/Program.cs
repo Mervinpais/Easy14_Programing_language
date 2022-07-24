@@ -143,7 +143,7 @@ namespace Easy14_Programming_Language
                     try
                     { //Needed since System.IO.IOException; No process is on the other end of the pipe. occurs
                         string command = Console.ReadLine();
-
+                        if (command == null) continue;
                         if (command.ToLower() == "exit()" || command.ToLower() == "exit();")
                         {
                             /* Deleting the temporary folder that was created in the previous step. */
@@ -535,7 +535,7 @@ namespace Easy14_Programming_Language
                 }
                 else if (line.StartsWith($"Console.input(") || line.StartsWith($"input(") && line.EndsWith(");"))
                 {
-                    ConsoleInput.Interperate(line, lines, textArray, fileLoc, null);
+                    input.Interperate(line, lines, textArray, fileLoc, null);
                 }
                 else if (line.StartsWith($"Console.clear(") || line.StartsWith($"clear(") && line.EndsWith(");"))
                 {
@@ -557,8 +557,11 @@ namespace Easy14_Programming_Language
                 {
                     VariableCode_fixed.Interperate(line, lines, lineCount);
                 }
+
                 else if (line == "true") Console.WriteLine("true");
+
                 else if (line == "false") Console.WriteLine("false");
+
                 else if (line.StartsWith($"Random.RandomRange(") || line.StartsWith($"RandomRange(") && line.EndsWith(");"))
                 {
                     Console.WriteLine(Random_RandomRange.Interperate(line, textArray, fileLoc));
@@ -566,6 +569,10 @@ namespace Easy14_Programming_Language
                 else if (line.StartsWith($"Random.RandomRangeDouble(") || line.StartsWith($"RandomRangeDouble(") && line.EndsWith(");"))
                 {
                     Console.WriteLine(Random_RandomRangeDouble.Interperate(line, textArray, fileLoc));
+                }
+                else if (line.StartsWith($"ToString(") && line.EndsWith(");"))
+                {
+                    Console.WriteLine(ConvertToString.Interperate(line));
                 }
                 else if ((line.StartsWith($"if") && line.EndsWith("{")) || (line.StartsWith("if") && lines[lineCount] == "{"))
                 {
@@ -734,14 +741,10 @@ namespace Easy14_Programming_Language
                                         content = content[5..];
                                         content = content[..^1];
                                         List<string> FileContents_list = new List<string>(FileContents);
-                                        try
-                                        {
-                                            FileContents_list.Remove(content);
-                                        }
-                                        catch
-                                        {
 
-                                        }
+                                        try { FileContents_list.Remove(content); }
+                                        catch { }
+
                                         File.WriteAllText(filePath, string.Join(Environment.NewLine, FileContents_list.ToArray()));
                                         break;
                                     }
@@ -763,7 +766,9 @@ namespace Easy14_Programming_Language
                         }
                         catch
                         {
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Error: " + line + " is not a valid line.");
+                            Console.ResetColor();
                             return;
                         }
                         if (funcLine.Contains("."))
@@ -803,8 +808,7 @@ namespace Easy14_Programming_Language
 
                                 string[] code =
                                 {
-                                $"Easy14_Programming_Language.{theFunctionOfTheLine} myfunc = new Easy14_Programming_Language.{theFunctionOfTheLine}();",
-                                $"{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});"
+                                    $"{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});"
                                 };
 
                                 try
@@ -862,8 +866,10 @@ namespace Easy14_Programming_Language
                             }
                             catch (Exception e)
                             {
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("Error: The function you are trying to use returned an Error");
                                 Console.WriteLine($"\n{e.Message}");
+                                Console.ResetColor();
                             }
                             return;
                         }

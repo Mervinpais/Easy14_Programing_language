@@ -60,11 +60,11 @@ namespace Easy14_Programming_Language
                         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", Random_RandomRange.Interperate(varContent, lines, null));
                     }
 
-                    else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith(");"))
-                    {
-                        var userInput = ConsoleInput.Interperate(code_part, lines, varName: varName);
-                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", userInput.ToString());
-                    }
+                    //else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith(");"))
+                    //{
+                    //    var userInput = input.Interperate(code_part, lines, varName: varName);
+                    //    File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", userInput.ToString());
+                    //}
 
                     else if (varContent.Contains("+") || varContent.Contains("-") || varContent.Contains("/") || varContent.Contains("*") || varContent.Contains("%"))
                     {

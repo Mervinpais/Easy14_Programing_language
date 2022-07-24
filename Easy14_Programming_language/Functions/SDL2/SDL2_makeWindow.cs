@@ -7,7 +7,6 @@ namespace Easy14_Programming_Language
     {
         static IntPtr window;
         static IntPtr renderer;
-        static bool running = true;
 
         public static void Setup(int sizeX = 200, int sizeY = 200, int posX = SDL.SDL_WINDOWPOS_UNDEFINED, int posY = SDL.SDL_WINDOWPOS_UNDEFINED, string title = "myWindow")
         {
@@ -45,9 +44,10 @@ namespace Easy14_Programming_Language
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine($"\nWindow \"{window}\" was created and shown");
             Console.ResetColor();
+            Console.Write("");
         }
 
-        static void PollEvents()
+        static string PollEvents(bool running = true)
         {
             // Check to see if there are any events and continue to do so until the queue is empty.
             while (SDL.SDL_PollEvent(out SDL.SDL_Event e) == 1)
@@ -63,10 +63,11 @@ namespace Easy14_Programming_Language
                     {
                         // ... close window A ...
                         running = false;
-                        break;
+                        return "<QUIT>";
                     }
                 }
             }
+            return "<?>";
         }
 
         static void Render(byte red = 30, byte green = 30, byte blue = 30, byte alpha = 255)
@@ -137,9 +138,11 @@ namespace Easy14_Programming_Language
 
             Setup(sizeX, sizeY, posX, posY, title);
             Render(red, green, blue, alpha);
+            bool running = true;
             while (running)
             {
-                PollEvents();
+                string polledEvents = PollEvents();
+                if (polledEvents == "<QUIT>") running = false;
             }
 
             CleanUp();

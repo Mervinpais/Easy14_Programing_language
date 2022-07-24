@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Easy14_Programming_Language
 {
-    public static class ConsoleInput
+    public static class input
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);

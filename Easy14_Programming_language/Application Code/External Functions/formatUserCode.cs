@@ -14,6 +14,11 @@ namespace Easy14_Programming_Language
                 string itemToBeAdded = item_.TrimStart();
                 if (itemToBeAdded.Contains(";"))
                 {
+                    if (itemToBeAdded.Contains(";\""))
+                    {
+                        lines_list_mod.Add(itemToBeAdded);
+                        continue;
+                    }
                     string[] itemsTobeAdded = itemToBeAdded.Split(";");
                     foreach (string item in itemsTobeAdded)
                     {
