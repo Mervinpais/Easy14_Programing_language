@@ -19,7 +19,6 @@ C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net6.0\Easy14_Programming_Language.runtimeconfig.json
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net6.0\Easy14_Programming_Language.dll
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net6.0\Easy14_Programming_Language.pdb
-C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net6.0\Easy14_Programming_Language.xml
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net6.0\Microsoft.CodeAnalysis.dll
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net6.0\Microsoft.CodeAnalysis.CSharp.dll
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net6.0\Microsoft.CodeAnalysis.CSharp.Scripting.dll
@@ -92,7 +91,6 @@ C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Release\net6.0\Easy14_Programming_Language.csproj.CopyComplete
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Release\net6.0\Easy14_Programming_Language.dll
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Release\net6.0\refint\Easy14_Programming_Language.dll
-C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Release\net6.0\Easy14_Programming_Language.xml
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Release\net6.0\Easy14_Programming_Language.pdb
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Release\net6.0\Easy14_Programming_Language.genruntimeconfig.cache
 C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Release\net6.0\ref\Easy14_Programming_Language.dll

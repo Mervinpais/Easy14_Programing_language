@@ -15,24 +15,16 @@ ___
 	* Python for other stuff
 	* Buggy _:)
 ---
-# Version 2.9
+# Version 2.10
 
 ## New stuff;
 
-    * Converted every class to a static class cause the dont take a state of an object
-	* Can do multiple arithmethic operations
+* Fixed a _few_ bugs
 
 ## Fixed bugs with;
 
-	* Most things
-	* Remade if and while loops that are bug free!
-	  └→ New syntax (see below)
-```csharp
-if (condition)
-{
-  //code
-}
-```
+* Most things :|
+
 <br>
 
 ---
