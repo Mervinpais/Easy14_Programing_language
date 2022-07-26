@@ -6,16 +6,6 @@ namespace Easy14_Programming_Language
 {
     public static class If_Loop
     {
-        /// <summary>
-        /// This function takes in a string, an array of strings, an array of strings, a string, a
-        /// boolean, and a string.
-        /// </summary>
-        /// <param name="code_part">The code part that is being Interperated.</param>
-        /// <param name="lines">The lines of the code</param>
-        /// <param name="textArray">The array of strings that contains the code.</param>
-        /// <param name="fileloc">The location of the file</param>
-        /// <param name="isInAMethod">If the code is in a method, this is true.</param>
-        /// <param name="methodName">The name of the method that the code is in.</param>
         public static void Interperate(string code_part, string[] lines, string[] textArray, string fileloc, bool isInAMethod = false, string methodName = "}")
         {
             Program prog = new Program();

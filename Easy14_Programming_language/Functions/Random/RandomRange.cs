@@ -1,27 +1,13 @@
 using System;
 using System.IO;
+using System.Linq;
 
 namespace Easy14_Programming_Language
 {
     public static class Random_RandomRange
     {
-        /// <summary>
-        /// It takes a string, an array of strings, and a string, and returns a string.
-        /// </summary>
-        /// <param name="code_part">The code that is being Interperated</param>
-        /// <param name="textArray">The array of strings that contains the code.</param>
-        /// <param name="fileloc">The location of the file</param>
         public static string Interperate(string code_part, string[] textArray, string fileloc)
         {
-            string endOfStatementCode = ")";
-            string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
-            foreach (string line in configFile)
-            {
-                if (line.StartsWith("needSemicolons"))
-                    endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ");" : endOfStatementCode = ")");
-                break;
-            }
-
             string code_part_unedited = code_part;
             bool foundUsing = false;
             if (code_part.StartsWith("RandomRange("))
@@ -38,6 +24,10 @@ namespace Easy14_Programming_Language
                 }
 
                 /* Checking if the code has the using Random; statement. */
+                var using_ =
+                    from x in someLINEs
+                    where x == "using Random;"
+                    select x;
                 foreach (string x in someLINEs)
                 {
                     if (x.TrimStart().TrimEnd() == "using Random;")
@@ -45,10 +35,7 @@ namespace Easy14_Programming_Language
                         foundUsing = true;
                         break;
                     }
-                    if (x.TrimStart().TrimEnd() == code_part)
-                    {
-                        break;
-                    }
+                    if (x.TrimStart().TrimEnd() == code_part) break;
                 }
 
                 /* Checking if the code has the using Random; statement. */
@@ -69,11 +56,10 @@ namespace Easy14_Programming_Language
                 code_part = code_part.Substring(12);
 
             /* Removing the `);` or `)` from the code. */
-            code_part = code_part.Substring(0, code_part.Length - 1);
-            if (code_part.EndsWith(")"))
-            {
+            if (code_part.EndsWith(";"))
                 code_part = code_part.Substring(0, code_part.Length - 1);
-            }
+            if (code_part.EndsWith(")"))
+                code_part = code_part.Substring(0, code_part.Length - 1);
 
             string[] codePart_Array = code_part.Split(',');
             int codePartInt = Convert.ToInt32(codePart_Array[0]);

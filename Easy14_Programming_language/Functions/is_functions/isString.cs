@@ -2,7 +2,7 @@
 {
     public static class isString
     {
-        public static bool Interperate(string str)
+        public static bool Interperate(object str)
         {
             if (str is string)
             {

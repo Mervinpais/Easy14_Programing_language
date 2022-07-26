@@ -2,7 +2,7 @@
 {
     public static class isBool
     {
-        public static bool Interperate(bool? boolean)
+        public static bool Interperate(object boolean)
         {
             if (boolean is bool)
             {

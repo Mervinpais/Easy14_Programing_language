@@ -2,7 +2,7 @@
 {
     public static class isInt
     {
-        public static bool Interperate(int? integer)
+        public static bool Interperate(object integer)
         {
             if (integer is int)
             {

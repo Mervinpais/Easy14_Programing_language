@@ -7,11 +7,7 @@ namespace Easy14_Programming_Language
     {
         static IntPtr window;
         static IntPtr renderer;
-        static bool running = true;
 
-        /// <summary>
-        /// Setup all of the SDL resources we'll need to display a window.
-        /// </summary>
         public static void Setup(int sizeX = 200, int sizeY = 200, int posX = SDL.SDL_WINDOWPOS_UNDEFINED, int posY = SDL.SDL_WINDOWPOS_UNDEFINED, string title = "myWindow")
         {
             // Initilizes SDL.
@@ -48,12 +44,10 @@ namespace Easy14_Programming_Language
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine($"\nWindow \"{window}\" was created and shown");
             Console.ResetColor();
+            Console.Write("");
         }
 
-        /// <summary>
-        /// Checks to see if there are any events to be processed.
-        /// </summary>
-        static void PollEvents()
+        static string PollEvents(bool running = true)
         {
             // Check to see if there are any events and continue to do so until the queue is empty.
             while (SDL.SDL_PollEvent(out SDL.SDL_Event e) == 1)
@@ -69,15 +63,13 @@ namespace Easy14_Programming_Language
                     {
                         // ... close window A ...
                         running = false;
-                        break;
+                        return "<QUIT>";
                     }
                 }
             }
+            return "<?>";
         }
 
-        /// <summary>
-        /// Renders to the window.
-        /// </summary>
         static void Render(byte red = 30, byte green = 30, byte blue = 30, byte alpha = 255)
         {
             // Sets the color that the screen will be cleared with.
@@ -97,10 +89,6 @@ namespace Easy14_Programming_Language
             // Switches out the currently presented render surface with the one we just did work on.
             SDL.SDL_RenderPresent(renderer);
         }
-
-        /// <summary>
-        /// Clean up the resources that were created.
-        /// </summary>
 
         static void CleanUp()
         {
@@ -150,9 +138,11 @@ namespace Easy14_Programming_Language
 
             Setup(sizeX, sizeY, posX, posY, title);
             Render(red, green, blue, alpha);
+            bool running = true;
             while (running)
             {
-                PollEvents();
+                string polledEvents = PollEvents();
+                if (polledEvents == "<QUIT>") running = false;
             }
 
             CleanUp();
