@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    public static class WhileLoop
+    public static class While_Loop_old
     {
         public static void Interperate(string code_part, string[] textArray, string[] lines, string fileloc)
         {

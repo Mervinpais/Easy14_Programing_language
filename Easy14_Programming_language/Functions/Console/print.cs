@@ -7,7 +7,7 @@ namespace Easy14_Programming_Language
     public static class ConsolePrint
     {
         static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
+        static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
         public static void Interperate(string code_part, string[] textArray = null, string fileloc = null, int lineNumber = -1)
@@ -49,20 +49,23 @@ namespace Easy14_Programming_Language
             {
                 code_part = code_part.Substring("print".Length);
             }
-
-            //check if code_part contains +, -, *, / or %
-            if (code_part.Contains("+")
-                || code_part.Contains("-")
-                || code_part.Contains("*")
-                || code_part.Contains("/")
-                || code_part.Contains("%"))
-            {
-                double result = Convert.ToDouble(new DataTable().Compute(code_part, null));
-                Console.WriteLine(Convert.ToDouble(new DataTable().Compute(code_part, null)));
-            }
-
             if (code_part.StartsWith("(")) code_part = code_part.Substring(1);
             if (code_part.EndsWith(");")) code_part = code_part.Substring(0, code_part.Length - 2);
+
+            //check if code_part contains +, -, *, / or %
+            try
+            {
+                if (
+                    code_part.Contains("+")
+                    || code_part.Contains("-")
+                    || code_part.Contains("*")
+                    || code_part.Contains("/")
+                    || code_part.Contains("%"))
+                {
+                    Console.WriteLine(Convert.ToDouble(new DataTable().Compute(code_part, null)));
+                }
+            }
+            catch { }
 
             if (code_part.StartsWith("\""))
             {
@@ -106,8 +109,6 @@ namespace Easy14_Programming_Language
                     }
                 }
             }
-
-
         }
     }
 }

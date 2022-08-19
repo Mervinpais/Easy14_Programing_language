@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    public static class MethodCode
+    public static class Method_Code_OLD
     {
         /*
          * CHANGLE LOG 24/6/2022;
@@ -91,6 +91,7 @@ namespace Easy14_Programming_Language
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}");
                 File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", string.Join(Environment.NewLine, code_in_method_code.ToArray()));
 
+                understuff.RemoveRange(0, code_in_method_code.Count);
                 prog.CompileCode_fromOtherFiles(null, understuff.ToArray(), 0, true, methodName);
             }
             else

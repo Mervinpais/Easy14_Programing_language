@@ -187,7 +187,7 @@ namespace Easy14_Programming_Language
                             if (command.EndsWith(".ese14") || command.EndsWith(".e14"))
                             {
                                 try { Program prog = new Program(); prog.CompileCode_fromOtherFiles(command); }
-                                catch (Exception e) { Console.WriteLine($"\n An Error Occured While Reading File, Below Is the Full Error Exception Message\n\n {e.Message}"); }
+                                catch (Exception e) { Console.WriteLine($"\n An Error Occured While Reading File, Below Is the Full Error Exception Message\n\n {e}"); }
                             }
                             else { Console.WriteLine("\n Uh Oh, this file isnt an actual .e14/.ese14 file!, please change the file extention to .e14 (preferred) or .ese14 to use this file \n"); }
                         }
@@ -495,8 +495,9 @@ namespace Easy14_Programming_Language
 
             /* Removing the leading whitespace from each line in the list. */
             List<string> lines_list_mod = new List<string>();
-            lines = formatUserCode.format(lines);
-            textArray = formatUserCode.format(textArray);
+
+            if (lines != null) { lines = formatUserCode.format(lines); }
+            if (textArray != null) { textArray = formatUserCode.format(textArray); }
 
             foreach (string line in lines)
             {
@@ -576,15 +577,15 @@ namespace Easy14_Programming_Language
                 }
                 else if ((line.StartsWith($"if") && line.EndsWith("{")) || (line.StartsWith("if") && lines[lineCount] == "{"))
                 {
-                    If_Loop_fixed.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName); return;
+                    If_Loop.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName); return;
                 }
                 else if ((line.StartsWith($"while") && line.EndsWith("{")) || (line.StartsWith("while") && lines[lineCount] == "{"))
                 {
-                    while_Loop_fixed.Interperate(line, lines, textArray, fileLoc); return;
+                    While_Loop.Interperate(line, lines, textArray, fileLoc); return;
                 }
                 else if ((line.StartsWith("func ") && line.EndsWith(") {")) || (line.StartsWith("func ") && line.EndsWith(")") && lines[lineCount] == "{"))
                 {
-                    MethodCode.Interperate(line, textArray, lines, fileLoc, true); return;
+                    Method_Code.Interperate(line, textArray, lines, fileLoc, true); return;
                 }
                 else if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"MakeFile(") && line.EndsWith("{"))
                 {
@@ -693,7 +694,7 @@ namespace Easy14_Programming_Language
                         {
                             if (line.EndsWith("();")) //Means its probably a function
                             {
-                                MethodCode.Interperate(line, textArray, lines, fileLoc, false); return;
+                                Method_Code.Interperate(line, textArray, lines, fileLoc, false); return;
                             }
                             foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
                             {

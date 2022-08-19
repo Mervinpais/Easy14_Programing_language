@@ -20,14 +20,15 @@ public static class ExceptionSender
         switch (typeOfException_str)
         {
             case "0x000000": Message = $"{typeOfException_str}; No-Error Exception"; break;
-            case "0x000001": Message = $"{typeOfException_str}; No-Error Exception"; break;
+            case "0x000001": Message = $"{typeOfException_str}; ? Exception"; break;
             case "0x000002": Message = $"{typeOfException_str}; Unknown Exception - No Data Was Given"; break;
             case "0x0000A0": Message = $"{typeOfException_str}; Application Error - Unknown Application Error"; break;
-            case "0x0000A1": Message = $"{typeOfException_str}; Failed to interperate - Not enough computer memory!"; break;
-            case "0x0000A2": Message = $"{typeOfException_str}; Failed to interperate - Missing Files..."; break;
-            case "0x0000A3": Message = $"{typeOfException_str}; Failed to interperate - Missing System Dll's!"; break;
-            case "0x0000A4": Message = $"{typeOfException_str}; Failed to interperate - Not Responding.."; break;
-            case "0x0000A5": Message = $"{typeOfException_str}; Failed to interperate - Application Crash"; break;
+            case "0x0000A1": Message = $"{typeOfException_str}; Failed - Not enough computer memory!"; break;
+            case "0x0000A2": Message = $"{typeOfException_str}; Failed - Missing Files..."; break;
+            case "0x0000A3": Message = $"{typeOfException_str}; Failed - Missing System Dll's!"; break;
+            case "0x0000A4": Message = $"{typeOfException_str}; Failed - Not Responding.."; break;
+            case "0x0000A5": Message = $"{typeOfException_str}; Failed - Application Crash"; break;
+
             //Program Errors (User code)
 
             case "0x0000B1": Message = $"{typeOfException_str}; String inside an Integer/Decimal Function!"; break;
@@ -61,8 +62,6 @@ public static class ExceptionSender
             case "0x0000C2": Message = $"{typeOfException_str}; Application Code Error - Missing Code"; break;
             //Funni/Not Real Errors (or you could say a 0% Chance Error since you can't get it ever)
             case "0x000404": Message = $"{typeOfException_str}; 404 - Failed to Get ERROR of ERROR"; break;
-            case "0x00FACE": Message = $"{typeOfException_str}; O_O Did you want Facey?"; break;
-            case "0x00ABCD": Message = $"{typeOfException_str}; Are you reciting the alaphabet O_O?"; break;
             default: Message = $"{typeOfException_str}; An Unknown Error Occured"; break;
         }
         return Message;

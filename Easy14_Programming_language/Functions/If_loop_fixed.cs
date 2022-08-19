@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    public static class If_Loop_fixed
+    public static class If_Loop
     {
         public static void Interperate(string code_part, string[] lines, string[] textArray, string fileloc, bool isInAMethod = false, string methodName = "}")
         {

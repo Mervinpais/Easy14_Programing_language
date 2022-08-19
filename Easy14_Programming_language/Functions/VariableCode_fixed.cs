@@ -230,7 +230,7 @@ namespace Easy14_Programming_Language
                                 $"string theFunctionOfTheLine = \"{theFunctionOfTheLine}\";",
                                 $"string[] params_ = {{{string.Join("\"" + System.Environment.NewLine + "\"", params_)}}};",
                                 "System.IO.Directory.CreateDirectory(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + \"\\\\EASY14_Variables_TEMP\");",
-                                $"var content = Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});",
+                                $"var content = Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join("\",\"", params_)});",
                                 "System.IO.File.WriteAllText(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + \"\\\\EASY14_Variables_TEMP\\\\" + $"{varName}" + ".txt\", content);"
                         };
                         try
