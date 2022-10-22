@@ -1,44 +1,52 @@
 ﻿# Easy14 Programing Language
 ---
 ![](Easy14_Programming_language/Images/repo%20github%20thumnail.png)
-## Finally an _ok-ish_ language made with C#
+## Finally an *ok-ish* language made with C#
 Basically a mashup of Python + C#
-
+<!---
 ![](Easy14_Programming_language/Images/hand_heart_donate_icon.png)
 ### Donations can help me improve this language :)
 #### Note; Can't donate yet
-___
-
-### Here is what you need to know (Summary)
-	* Not General purpose
-	* Runs on C# (+ Roslyn for C#)
-	* Python for other stuff
-	* Buggy _:)
+-->
 ---
-# Version 2.10
+
+### Summary
+
+* Maybe General purpose?
+* Runs on C# (+ Roslyn for C#)
+* Python for other stuff
+
+---
+
+# Version 3.0
 
 ## New stuff;
 
-* Fixed a _few_ bugs
+* Fixed **many** bugs
 
-## Fixed bugs with;
-
-* Most things :|
+27/9/2022;
+<br>
+* HARDcoded the help contents so you just need to type "/help clear" to get help about the Console.clear() function rather than "/help console.clear()".
 
 <br>
 
 ---
 
-<br>
-
 ## Known Issues
-###
-#### None, atleast of now :|
+
+```javascript
+var x = "Hello world!";
+print(x);
+
+>>>
+```
 
 ## Fixed Bugs
 
----
+> Fixed Console Namespace functions
 
-## Thanks for reading :)
-###
-#### i seriously need to be doing more tests on my code for bugs :|
+before any Console._myfunction()_ would not work due to older code compatibilty
+
+Now they have been (mostly) fixed
+
+---

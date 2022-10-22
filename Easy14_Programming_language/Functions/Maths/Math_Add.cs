@@ -5,18 +5,14 @@ namespace Easy14_Programming_Language
 {
     public static class Math_Add
     {
-        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
-        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
-
-        public static int Interperate(string code_part, int lineNumber, string fileName = null)
+        public static int Interperate(object code_part, int lineNumber, string fileName = null)
         {
-            string code_part_unedited;
+            object code_part_unedited;
 
             code_part_unedited = code_part;
-            code_part = code_part_unedited.TrimStart();
+            code_part = code_part_unedited.ToString().TrimStart();
 
-            string expression = code_part;
+            string expression = code_part.ToString();
 
             /* Checking if the expression is null and if it doesn't contain a +, if it is null or
             doesn't contain a + it will return an error. */

@@ -1,4 +1,4 @@
-# Why does a readme for this exsist?
+# Why does a readme for this exist?
 
 ## ExceptionSender.cs
 

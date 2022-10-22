@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Easy14_Programming_Language
@@ -16,6 +17,10 @@ namespace Easy14_Programming_Language
                 ░░░██║░░░██║░░██║██║██████╔╝  ██║██████╔╝  ╚██████╔╝██║░╚███║╚██████╔╝██████╔╝███████╗██████╔╝
                 ░░░╚═╝░░░╚═╝░░╚═╝╚═╝╚═════╝░  ╚═╝╚═════╝░  ░╚═════╝░╚═╝░░╚══╝░╚═════╝░╚═════╝░╚══════╝╚═════╝░
             */
+            StackTrace stackTrace = new StackTrace();
+
+            Console.WriteLine("DEVELOPER WARNING; THIS IS DEPRICATED, PLEASE USE THE NEWER, \"CSharpErrorReporter\" CLASS FOR BETTER ERROR REPORTING ");
+            Console.WriteLine($"DEVELOPER STUFF; \n ERROR MESSAGE CALLED FROM METHOD; {stackTrace.GetFrame(1).GetMethod().Name}");
             string code_part_unedited;
             if (textArray != null)
                 text = string.Join(Environment.NewLine, textArray);

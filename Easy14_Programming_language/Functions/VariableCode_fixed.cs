@@ -60,11 +60,11 @@ namespace Easy14_Programming_Language
 
                 else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith(");"))
                 {
-                    var userInput = input.Interperate(code_part, lines, varName: varName);
+                    var userInput = ConsoleInput.Interperate(code_part, lines, varName: varName);
                     File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", userInput.ToString());
                 }
 
-                else if (varContent.Contains("+") || varContent.Contains("-") || varContent.Contains("/") || varContent.Contains("*") || varContent.Contains("%"))
+                else if (varContent.Contains("+") || varContent.Contains("-") || varContent.Contains("/") || varContent.Contains("*") || varContent.Contains("%") && (varContent.StartsWith("\"") && varContent.EndsWith("\"")))
                 {
                     varContent = varContent.Substring(0, varContent.Length - 1);
                     try
@@ -99,7 +99,7 @@ namespace Easy14_Programming_Language
                 }
                 else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("abs"))
                 {
-                    var result = Math_Abs.Interperate(varContent, line_count, varName);
+                    var result = Math_Abs.Interperate(varContent);
                     File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", result.ToString());
                 }
                 else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("sq"))
@@ -139,7 +139,7 @@ namespace Easy14_Programming_Language
                     }
                     if (funcLine.Contains("."))
                     {
-                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
+                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0-windows", "").Replace("\\bin\\Release\\net6.0-windows", "") + "\\Functions");
                         List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
                         List<string> allNamespacesAvaiable_list_main = new List<string>();
                         foreach (string item in allNamespacesAvaiable_list)
@@ -164,14 +164,6 @@ namespace Easy14_Programming_Language
 
                             //theFunctionOfTheLine = theFunctionOfTheLine.Replace("(", "").Replace(");", "");
 
-                            //Older
-                            /*Type type_ = Type.GetType(theFunctionOfTheLine);
-                            MethodInfo method = type_.GetMethod("run");
-                            method.Invoke(null, null);*/
-
-                            //Old
-                            //Activator.CreateInstance(Convert.ToString(Assembly.GetExecutingAssembly()), Convert.ToString(Type.GetType(theFunctionOfTheLine)));                            
-
                             string[] code =
                             {
                                 $"string theFunctionOfTheLine = \"{theFunctionOfTheLine}\";",
@@ -187,15 +179,14 @@ namespace Easy14_Programming_Language
                             }
                             catch (Exception e)
                             {
-                                Console.WriteLine("Error: The function you are trying to use returned an Error");
-                                Console.WriteLine($"\n{e.Message}");
+                                CSharpErrorReporter.ConsoleLineReporter.Error("Error: The function you are trying to use returned an Error\n" + e.Message, "The function returned an Error");
                             }
                             return;
                         }
                     }
                     else if (!funcLine.Contains("."))
                     {
-                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(strWorkPath.Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Functions");
+                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(strWorkPath.Replace("\\bin\\Debug\\net6.0-windows", "").Replace("\\bin\\Release\\net6.0-windows", "") + "\\Functions");
                         List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
                         List<string> allNamespacesAvaiable_list_main = new List<string>();
                         foreach (string item in allNamespacesAvaiable_list)
@@ -230,7 +221,7 @@ namespace Easy14_Programming_Language
                                 $"string theFunctionOfTheLine = \"{theFunctionOfTheLine}\";",
                                 $"string[] params_ = {{{string.Join("\"" + System.Environment.NewLine + "\"", params_)}}};",
                                 "System.IO.Directory.CreateDirectory(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + \"\\\\EASY14_Variables_TEMP\");",
-                                $"var content = Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join("\",\"", params_)});",
+                                $"var content = System.Convert.ToString(Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join("\",\"", params_)}));",
                                 "System.IO.File.WriteAllText(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop) + \"\\\\EASY14_Variables_TEMP\\\\" + $"{varName}" + ".txt\", content);"
                         };
                         try

@@ -11,16 +11,16 @@ namespace Easy14_Programming_Language
         {
             //Initialize Variables
             /* It's initializing the variable `currentVer` to 0.0, so we can use it later. */
-            double currentVer = -1.0;
+            double currentVer = 0.0;
 
             /* It's just a variable that is used to store the data that we get from the update server,
             and if we can't get the data, it will be set to that. */
-            string wot = "<FAILED_TO_GET_UPDATEINFO>"; //incase we cant get the data this will be the error data
+            string wot = "<FAILED_TO_GET_UPDATEINFO>";
 
             try
             {
                 /* It's getting the current version of the language, and saving it to a variable. */
-                string[] currentVerFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\currentVersion.txt");
+                string[] currentVerFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0-windows", "").Replace("\\bin\\Release\\net6.0-windows", "") + "\\Application Code\\currentVersion.txt");
                 currentVer = Convert.ToDouble(currentVerFile[1]);
 
                 /* It's saving the current version to a cache file, so if the currentVersion.txt file
@@ -42,17 +42,19 @@ namespace Easy14_Programming_Language
                     /* It's sending an error message to the user, telling them that we can't find out
                     what version this language is, and telling them to install the latest version
                     for their safety. */
-                    ThrowErrorMessage.sendErrMessage("AN ERROR OCCURED WHEN SAVING TO CACHE (TO SAVE CURRENT VERSION) THIS WILL PREVENT THE LANGUAGE FROM REMEBERING IT'S VERSION IN THE CASE IF THE currentVersion.txt FILE GOES MISSING, ERROR MESSAGE BELOW\n", null, "error");
+                    CSharpErrorReporter.ConsoleLineReporter.Error("AN ERROR OCCURED WHEN SAVING TO CACHE (TO SAVE CURRENT VERSION) THIS WILL PREVENT THE LANGUAGE FROM REMEBERING IT'S VERSION IN THE CASE IF THE currentVersion.txt FILE GOES MISSING, ERROR MESSAGE BELOW\n");
 
-                    ThrowErrorMessage.sendErrMessage(e.Message, null, "error");
+                    CSharpErrorReporter.ConsoleLineReporter.Error(e.Message);
                 }
             }
             catch
             {
                 /* It's checking if the user has disabled the update warnings, and if they have, it
                 will not show the warning. */
-                if (UpdatesWarningsDisabled)
-                    ThrowErrorMessage.sendErrMessage("Uh oh! We can't find the version file(s)!, using cached version Files...", null, "warning");
+                if (!UpdatesWarningsDisabled)
+                {
+                    CSharpErrorReporter.ConsoleLineReporter.Error("Uh oh! We can't find the version file(s)!, using cached version Files...");
+                }
 
                 try
                 {
@@ -62,11 +64,11 @@ namespace Easy14_Programming_Language
                 }
                 catch
                 {
-                    if (UpdatesWarningsDisabled)
+                    if (!UpdatesWarningsDisabled)
                         /* It's sending an error message to the user, telling them that we can't find
                         out what version this language is, and telling them to install the latest
                         version for their safety. */
-                        ThrowErrorMessage.sendErrMessage("An error occured! we can't find out what version this language is", null, "error");
+                        CSharpErrorReporter.ConsoleLineReporter.Error("An error occured! we can't find out what version this language is");
                 }
             }
 
@@ -74,18 +76,27 @@ namespace Easy14_Programming_Language
             try
             {
                 HttpClient hc = new HttpClient();
-                wot = hc.GetStringAsync("https://pastebin.com/raw/nETTM1ih").Result;
+                if (checkForInternet.IsConnectedToInternet() == true)
+                {
+                    wot = hc.GetStringAsync("https://pastebin.com/raw/nETTM1ih").Result;
+                }
+                else
+                {
+                    CSharpErrorReporter.ConsoleLineReporter.Warning("NO INTENRET", "No Internet Connection Detected to get updates, this is not an error, this is a warning\n");
+                    return;
+                }
                 string[] upd = wot.Split(',');
-                if (Convert.ToDouble(upd[0]) > currentVer)
+                upd = upd[0].Split("\r\n");
+                if (Convert.ToDouble(upd[1]) > currentVer)
                 {
                     //if true, means we got an update
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
                     string[] updateText = {
                         "A New Update is available for you!",
-                        $"Version {upd[0].ToString()} has been released!",
+                        $"Version {upd[1]} has been released!",
                         "You can choose to update now by going to https://github.com/Mervinpais/Easy14_Programing_language to get the update!",
-                        "Or just stay on the same version, and we will tell you when this version is out of support :)\n"
+                        "Or just stay on the same version, note that newer versions will/may have bug fixes\n"
                     };
                     Console.WriteLine(string.Join(Environment.NewLine, updateText));
                     Console.BackgroundColor = ConsoleColor.Black;
@@ -94,9 +105,9 @@ namespace Easy14_Programming_Language
             }
             catch
             {
-                if (UpdatesWarningsDisabled)
+                if (!UpdatesWarningsDisabled)
                 {
-                    ThrowErrorMessage.sendErrMessage("Uh oh! we can't check if you have the latest version of this language, please make sure you have the latest version yourself", null, "error");
+                    CSharpErrorReporter.ConsoleLineReporter.Error("VERSION ERROR", "Uh oh! we can't check if you have the latest version of this language, please make sure you have the latest version yourself");
                 }
             }
         }

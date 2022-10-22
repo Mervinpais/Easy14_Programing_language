@@ -33,7 +33,7 @@ namespace Easy14_Programming_Language
 
                 SDL.SDL_RenderPresent(renderer);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Unspecified Error; No Renderer found!");

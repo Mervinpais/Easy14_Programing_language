@@ -8,20 +8,8 @@ namespace Easy14_Programming_Language
 {
     public static class ConsoleExec
     {
-        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
-        static string[] configFile = File.ReadAllLines(Path.Combine(strWorkPath + "..\\..\\..\\..\\Application Code", "options.ini"));
-
         public static void Interperate(string code_part, string[] textArray, string fileloc, int lineNumber = -1)
         {
-            string endOfStatementCode = ")";
-            foreach (string line in configFile)
-            {
-                if (line.StartsWith("needSemicolons"))
-                    endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ");" : endOfStatementCode = ")");
-                break;
-            }
-
             string code_part_unedited;
             string textToPrint;
 
@@ -63,9 +51,13 @@ namespace Easy14_Programming_Language
             else if (code_part.StartsWith($"Console.exec(")) { }
 
             if (code_part_unedited.StartsWith($"Console.exec("))
+            {
                 code_part = code_part.Substring(13);
+            }
             else if (code_part_unedited.StartsWith($"exec("))
+            {
                 code_part = code_part.Substring(5);
+            }
 
             code_part = code_part.Substring(0, code_part.Length - 1);
             if (code_part.EndsWith(")"))
@@ -98,8 +90,8 @@ namespace Easy14_Programming_Language
             {
                 string unknownLine = "<unknownLineNumber>";
                 var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
-                string[] errorText = { " An error occurred while executing commands from the exec command", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\nException;\n{e.Message}\n" };
-                ThrowErrorMessage.sendErrMessage(null, errorText, "error");
+                string[] errorText = { "An Error occurred while executing commands from the exec command", $"   at line \"{code_part_unedited}\" \nException;\n{e.Message}\n" };
+                CSharpErrorReporter.ConsoleLineReporter.CSharpError(string.Join(Environment.NewLine, errorText));
             }
             //}
         }

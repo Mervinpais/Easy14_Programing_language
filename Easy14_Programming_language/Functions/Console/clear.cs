@@ -5,26 +5,14 @@ namespace Easy14_Programming_Language
 {
     public static class ConsoleClear
     {
-        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
-        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
-
         public static void Interperate(string code_part, string[] textArray, string fileloc)
         {
-            string endOfStatementCode = ")";
-            foreach (string line in configFile)
-            {
-                if (line.StartsWith("needSemicolons"))
-                    endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ");" : endOfStatementCode = ")");
-                break;
-            }
-
             string code_part_unedited;
 
             code_part_unedited = code_part;
             code_part = code_part_unedited.TrimStart();
             bool foundUsing = false;
-            if (code_part.StartsWith($"print(") && code_part.EndsWith(endOfStatementCode == ")" ? ")" : ");"))
+            if (code_part.StartsWith($"clear(") && code_part.EndsWith(");"))
             {
                 string[] someLINEs = null;
                 if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
@@ -56,7 +44,7 @@ namespace Easy14_Programming_Language
                     return;
                 }
             }
-            else if (code_part.StartsWith($"Console.clear(") && code_part.EndsWith(endOfStatementCode == ")" ? ")" : ");")) { }
+            else if (code_part.StartsWith($"Console.clear(") && code_part.EndsWith(");")) { }
 
             Console.Clear();
 

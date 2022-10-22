@@ -66,7 +66,8 @@ namespace Easy14_Programming_Language
                     //    File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", userInput.ToString());
                     //}
 
-                    else if (varContent.Contains("+") || varContent.Contains("-") || varContent.Contains("/") || varContent.Contains("*") || varContent.Contains("%"))
+                    else if (varContent.Contains("+") || varContent.Contains("-") || varContent.Contains("/") || varContent.Contains("*") || varContent.Contains("%")
+                        && !varContent.StartsWith("\"") && !varContent.EndsWith("\""))
                     {
                         varContent = varContent.Substring(0, varContent.Length - 1);
                         try
@@ -102,7 +103,7 @@ namespace Easy14_Programming_Language
                     }
                     else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("abs"))
                     {
-                        var result = Math_Abs.Interperate(varContent, line_count, varName);
+                        var result = Math_Abs.Interperate(varContent);
                         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("sq"))

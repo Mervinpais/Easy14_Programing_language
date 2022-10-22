@@ -1,114 +1,175 @@
 using System;
-using System.Data;
 using System.IO;
+using System.Linq;
+using Z.Expressions;
+using Z.Expressions.Compiler.Shared;
 
 namespace Easy14_Programming_Language
 {
     public static class ConsolePrint
     {
-        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
-        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
+        static readonly string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+        static readonly string strWorkPath = Path.GetDirectoryName(strExeFilePath);
 
         public static void Interperate(string code_part, string[] textArray = null, string fileloc = null, int lineNumber = -1)
         {
-            code_part = code_part.TrimStart();
-            string[] lines = { };
-            if (textArray is not null && fileloc is null)
+            string[] lines = Array.Empty<string>();
+            if (textArray != null && fileloc == null)
             {
                 lines = textArray;
             }
-            else if (textArray is null && fileloc is not null)
+            else if (textArray == null && fileloc != null)
             {
                 lines = File.ReadAllLines(fileloc);
             }
+            else if (textArray == null && fileloc == null)
+            {
+                CSharpErrorReporter.ConsoleLineReporter.CSharpError("The Values textArray and fileloc are null");
+                return;
+            }
 
             bool foundUsing = false;
-            if (code_part.StartsWith("print("))
+            string statment_line = code_part.TrimStart();
+            if (statment_line.StartsWith("print"))
             {
                 foreach (string line in lines)
                 {
-                    string line_Trimmed = line.TrimStart().TrimEnd();
-                    if (line_Trimmed == "using Console;" || line_Trimmed == "for Console get print;") { foundUsing = true; break; }
-                    else if (line_Trimmed == code_part) { break; }
+                    string line_trimed = line.TrimStart().TrimEnd();
+                    if (line_trimed == "using Console;" || line_trimed == "from Console get print;")
+                    {
+                        foundUsing = true;
+                        break;
+                    }
+                    else if (line.TrimStart().TrimEnd() == statment_line)
+                    {
+                        break;
+                    }
                 }
 
                 if (!foundUsing)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'print' without its reference  (Use Console.print(\"*Text To Print*\") to fix this error :)");
-                    Console.ResetColor(); return;
+                    CSharpErrorReporter.ConsoleLineReporter.Error($"ERROR; 'Console' was not referenced to use 'print'");
+                    return;
                 }
             }
 
-            if (code_part.StartsWith("Console.print"))
+            if (!statment_line.StartsWith("Console.print"))
             {
-                code_part = code_part.Substring("Console.print".Length);
+                if (statment_line.StartsWith("print"))
+                {
+                    statment_line = statment_line.Substring("print".Length);
+                }
             }
-            else if (code_part.StartsWith("print"))
+            else
             {
-                code_part = code_part.Substring("print".Length);
+                statment_line = statment_line.Substring("Console.print".Length);
             }
-            if (code_part.StartsWith("(")) code_part = code_part.Substring(1);
-            if (code_part.EndsWith(");")) code_part = code_part.Substring(0, code_part.Length - 2);
 
-            //check if code_part contains +, -, *, / or %
+            if (!statment_line.StartsWith("("))
+            {
+                CSharpErrorReporter.ConsoleLineReporter.Error($"Failed to find the start of statement at line \' {code_part} \'");
+                return;
+            }
+            else
+            {
+                statment_line = statment_line.Substring(1, statment_line.Length - 1);
+            }
+
+            if (!statment_line.EndsWith(");"))
+            {
+                CSharpErrorReporter.ConsoleLineReporter.Error($"Failed to end statement at line \' {code_part} \'");
+                return;
+            }
+            else
+            {
+                statment_line = statment_line.Substring(0, statment_line.Length - 2);
+            }
+
             try
             {
-                if (
-                    code_part.Contains("+")
-                    || code_part.Contains("-")
-                    || code_part.Contains("*")
-                    || code_part.Contains("/")
-                    || code_part.Contains("%"))
+                if (statment_line.Contains('+') || statment_line.Contains("-") || statment_line.Contains("*") || statment_line.Contains("/") || statment_line.Contains("%"))
                 {
-                    Console.WriteLine(Convert.ToDouble(new DataTable().Compute(code_part, null)));
+                    if (!(statment_line.StartsWith("\"") && statment_line.EndsWith("\"")))
+                    {
+                        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\EASY14_Variables_TEMP"))
+                        {
+                            char[] variablesInMathExpression = statment_line.Where(Char.IsLetter).ToArray();
+                            foreach (char e in variablesInMathExpression)
+                            {
+                                string fileName = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\EASY14_Variables_TEMP\\" + e + ".txt";
+                                if (File.Exists(fileName))
+                                {
+                                    statment_line = statment_line.Replace(e, Convert.ToChar(File.ReadAllText(fileName)));
+                                }
+                            }
+                        }
+                        Console.WriteLine(Eval.Execute<int>(statment_line));
+                        return;
+                    }
                 }
             }
-            catch { }
+            catch (EvalException eval_ex)
+            {
+                if (eval_ex.Message.StartsWith("Integral constant is too large"))
+                {
+                    CSharpErrorReporter.ConsoleLineReporter.Error("The Number in the expresion is too large");
+                }
+                else
+                {
+                    CSharpErrorReporter.ConsoleLineReporter.Error(Convert.ToString(eval_ex.Message));
+                }
+            }
 
-            if (code_part.StartsWith("\""))
+            if (statment_line.StartsWith("cl"))
             {
-                if (code_part.EndsWith("\""))
+                if (statment_line.StartsWith("cl\"") && statment_line.EndsWith("\""))
                 {
-                    Console.WriteLine(code_part.Substring(1, code_part.Length - 2));
+                    Console.Write(statment_line.Substring(3, statment_line.Length - 4)); return;
                 }
-                else
+                else if (statment_line.StartsWith("cl\"") && !statment_line.EndsWith("\""))
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR; The String '{code_part}' is not closed properly");
-                    Console.ResetColor(); return;
+                    CSharpErrorReporter.ConsoleLineReporter.Error($"The String '{statment_line}' is not closed properly"); return;
+                }
+                else if (!statment_line.StartsWith("cl\"") && statment_line.EndsWith("\""))
+                {
+                    CSharpErrorReporter.ConsoleLineReporter.Error($"The String '{statment_line}' is not opened properly"); return;
                 }
             }
-            else if (code_part.EndsWith("\""))
+            else
             {
-                if (code_part.StartsWith("\""))
+                if (statment_line.StartsWith("\"") && statment_line.EndsWith("\""))
                 {
-                    Console.WriteLine(code_part.Substring(1, code_part.Length - 2));
+                    Console.WriteLine(statment_line.Substring(1, statment_line.Length - 2)); return;
                 }
-                else
+                else if (statment_line.StartsWith("\"") && !statment_line.EndsWith("\""))
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR; The String '{code_part}' is not opened properly");
-                    Console.ResetColor(); return;
+                    CSharpErrorReporter.ConsoleLineReporter.Error($"The String '{statment_line}' is not closed properly"); return;
+                }
+                else if (!statment_line.StartsWith("\"") && statment_line.EndsWith("\""))
+                {
+                    CSharpErrorReporter.ConsoleLineReporter.Error($"The String '{statment_line}' is not opened properly"); return;
                 }
             }
-            else if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\\EASY14_Variables_TEMP"))
+
+            string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\\EASY14_Variables_TEMP";
+            if (Directory.Exists(dir))
             {
-                if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\\EASY14_Variables_TEMP").Length != 0)
+                if (Directory.GetFiles(dir).Length != 0)
                 {
-                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP");
+                    string[] files = Directory.GetFiles(dir);
                     foreach (string file in files)
                     {
-                        if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == code_part)
+                        string varFileName = file.Substring(file.LastIndexOf("\\")).Replace(".txt", "").Substring(1);
+                        if (varFileName == statment_line)
                         {
-                            var contentInFile = File.ReadAllText(file).ToString();
-                            Console.WriteLine(contentInFile);
+                            Console.WriteLine(File.ReadAllText(file));
                             break;
                         }
                     }
                 }
             }
+
+            //Anything else...
         }
     }
 }

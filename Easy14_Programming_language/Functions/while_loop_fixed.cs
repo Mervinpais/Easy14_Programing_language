@@ -10,24 +10,24 @@ namespace Easy14_Programming_Language
         {
             //make a program that gets the if statement
             string if_line = code_part;
-            int lineCount_lines = 0;
+
             List<string> lines_list = new List<string>(lines);
             List<string> UnderLines_list = new List<string>();
             //From line 1 to where the if statment is, we remove it
-            foreach (string line in lines)
+            for (int i = 0; i < lines.Length; i++)
             {
+                string line = lines[i];
                 if (line == code_part)
                 {
-                    lines_list.RemoveRange(0, lineCount_lines);
+                    lines_list.RemoveRange(0, i);
                     break;
                 }
-                lineCount_lines++;
             }
             //remove everything under the }
-            lineCount_lines = 0;
             bool inIfStatment = false;
-            foreach (string line in lines)
+            for (int i = 0; i < lines.Length; i++)
             {
+                string line = lines[i];
                 if (!inIfStatment)
                 {
                     if (line == code_part)
@@ -40,17 +40,16 @@ namespace Easy14_Programming_Language
                     if (inIfStatment)
                     {
                         bool errorRecived = false;
-                        try { string tempLine = lines[lineCount_lines + 1]; } catch { errorRecived = true; }
+                        try { string tempLine = lines[i + 1]; } catch { errorRecived = true; }
                         if (errorRecived)
                         {
                             break;
                         }
-                        UnderLines_list = lines_list.GetRange(lineCount_lines - 2, lines_list.Count - lineCount_lines + 2);
-                        lines_list.RemoveRange(lineCount_lines - 2, lines_list.Count - lineCount_lines + 2);
+                        UnderLines_list = lines_list.GetRange(i - 2, lines_list.Count - i + 2);
+                        lines_list.RemoveRange(i - 2, lines_list.Count - i + 2);
                         break;
                     }
                 }
-                lineCount_lines++;
             }
 
             //Console.WriteLine(string.Join(Environment.NewLine, lines_list.ToArray()));
@@ -73,11 +72,9 @@ namespace Easy14_Programming_Language
                 if_line = if_line.Substring(0, if_line.Length - 1);
 
                 string obj1 = null;
-                bool obj1_isVar = false;
                 string obj2 = null;
-                bool obj2_isVar = false;
+                string condition_operator = "<?>";
 
-                string condition_operator = "?";
                 if (if_line.Contains("=="))
                 {
                     obj1 = if_line.Split("==")[0];
@@ -91,13 +88,22 @@ namespace Easy14_Programming_Language
                     condition_operator = "!=";
                 }
 
+                if (condition_operator == "<?>")
+                {
+                    CSharpErrorReporter.ConsoleLineReporter.Error("Error; unknown operator used at while statement");
+                    return;
+                }
+
                 obj1 = obj1.TrimStart().TrimEnd();
                 obj2 = obj2.TrimStart().TrimEnd();
 
+                bool obj1_isVar = false;
                 if (File.Exists(dir + "\\" + obj1 + ".txt"))
                 {
                     obj1_isVar = true;
                 }
+
+                bool obj2_isVar = false;
                 if (File.Exists(dir + "\\" + obj2 + ".txt"))
                 {
                     obj2_isVar = true;
@@ -110,49 +116,58 @@ namespace Easy14_Programming_Language
 
                 bool conditionIsTrue = false;
 
+                if (condition_operator == "<?>")
+                {
+                    CSharpErrorReporter.ConsoleLineReporter.Error("Error; unknown operator used at while statement");
+                    return;
+                }
                 if (obj1_isVar == true && obj2_isVar == false)
                 {
-                    if (condition_operator == "==")
+                    switch (condition_operator)
                     {
-                        if (File.ReadAllText(dir + "\\" + obj1 + ".txt") == obj2) conditionIsTrue = true;
-                    }
-                    else if (condition_operator == "!=")
-                    {
-                        if (File.ReadAllText(dir + "\\" + obj1 + ".txt") != obj2) conditionIsTrue = true;
+                        case "==":
+                            if (File.ReadAllText(dir + "\\" + obj1 + ".txt") == obj2) conditionIsTrue = true;
+                            break;
+                        case "!=":
+                            if (File.ReadAllText(dir + "\\" + obj1 + ".txt") != obj2) conditionIsTrue = true;
+                            break;
                     }
                 }
                 if (!obj1_isVar && obj2_isVar)
                 {
-                    if (condition_operator == "==")
+                    switch (condition_operator)
                     {
-                        if (obj1 == File.ReadAllText(dir + "\\" + obj2 + ".txt")) conditionIsTrue = true;
-                    }
-                    else if (condition_operator == "!=")
-                    {
-                        if (obj1 != File.ReadAllText(dir + "\\" + obj2 + ".txt")) conditionIsTrue = true;
+                        case "==":
+                            if (obj1 == File.ReadAllText(dir + "\\" + obj2 + ".txt")) conditionIsTrue = true;
+                            break;
+                        case "!=":
+                            if (obj1 != File.ReadAllText(dir + "\\" + obj2 + ".txt")) conditionIsTrue = true;
+                            break;
                     }
                 }
                 if (!obj1_isVar && !obj2_isVar)
                 {
-                    if (condition_operator == "==")
+                    switch (condition_operator)
                     {
-                        if (File.ReadAllText(dir + "\\" + obj1 + ".txt") == File.ReadAllText(dir + "\\" + obj2 + ".txt")) conditionIsTrue = true;
-                    }
-                    else if (condition_operator == "!=")
-                    {
-                        if (File.ReadAllText(dir + "\\" + obj1 + ".txt") != File.ReadAllText(dir + "\\" + obj2 + ".txt")) conditionIsTrue = true;
+                        case "==":
+                            if (File.ReadAllText(dir + "\\" + obj1 + ".txt") == File.ReadAllText(dir + "\\" + obj2 + ".txt")) conditionIsTrue = true;
+                            break;
+                        case "!=":
+                            if (File.ReadAllText(dir + "\\" + obj1 + ".txt") != File.ReadAllText(dir + "\\" + obj2 + ".txt")) conditionIsTrue = true;
+                            break;
                     }
 
                 }
                 if (obj1_isVar && obj2_isVar)
                 {
-                    if (condition_operator == "==")
+                    switch (condition_operator)
                     {
-                        if (obj1 == obj2) conditionIsTrue = true;
-                    }
-                    else if (condition_operator == "!=")
-                    {
-                        if (obj1 != obj2) conditionIsTrue = true;
+                        case "==":
+                            if (obj1 == obj2) conditionIsTrue = true;
+                            break;
+                        case "!=":
+                            if (obj1 != obj2) conditionIsTrue = true;
+                            break;
                     }
                 }
 
