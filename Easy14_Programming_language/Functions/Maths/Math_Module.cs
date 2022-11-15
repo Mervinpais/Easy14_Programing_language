@@ -41,7 +41,7 @@ namespace Easy14_Programming_Language
                         string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP");
                         foreach (string file in files)
                         {
-                            string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
+                            string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "");
                             if (_file == intergers[0])
                             {
                                 integer1_str = File.ReadAllText(file);
@@ -51,7 +51,7 @@ namespace Easy14_Programming_Language
                         }
                         foreach (string file in files)
                         {
-                            string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "");
+                            string _file = file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "");
                             if (_file == intergers[1])
                             {
                                 integer2_str = File.ReadAllText(file);
@@ -92,7 +92,7 @@ namespace Easy14_Programming_Language
             if it is null, it will return the result. */
             if (fileName is not null)
             {
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{fileName}.txt", result.ToString());
+                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{fileName}", result.ToString());
             }
             else if (fileName is null)
             {

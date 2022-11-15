@@ -599,7 +599,7 @@ namespace Easy14_Programming_Language
                 }
                 else if (line.StartsWith($"var") && line.EndsWith(";"))
                 {
-                    VariableCode_fixed.Interperate(line, lines, lineCount);
+                    VariableCode.Interperate(line, lines, lineCount);
                 }
                 else if (line.StartsWith($"Random.RandomRange(") || line.StartsWith($"RandomRange(") && line.EndsWith(");"))
                 {
@@ -733,7 +733,7 @@ namespace Easy14_Programming_Language
                             { Method_Code.Interperate(line, textArray, lines, fileLoc, false); return; }
                             foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
                             {
-                                string supposedVar = file[file.LastIndexOf("\\")..].Replace(".txt", "").Substring(1);
+                                string supposedVar = file[file.LastIndexOf("\\")..].Substring(1);
                                 if (line.StartsWith(supposedVar))
                                 {
                                     if (line.Contains('=') && (line.IndexOf("+") + 1) != line.IndexOf("=") && line.Count(f => (f == '=')) == 1)

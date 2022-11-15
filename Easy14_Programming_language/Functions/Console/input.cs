@@ -184,7 +184,7 @@ namespace Easy14_Programming_Language
                             string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
                             foreach (string file in files)
                             {
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint)
+                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "") == textToPrint)
                                 {
                                     var contentInFile = File.ReadAllText(file);
                                     Console.WriteLine(contentInFile.ToString());

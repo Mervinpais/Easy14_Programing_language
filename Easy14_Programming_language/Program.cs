@@ -86,7 +86,7 @@ namespace Easy14_Programming_Language
 
                     Console.WriteLine($"==== {DateTime.Now} | {string.Join(" ", args)} ====\n");
 
-                    if (File.Exists(string.Join(" ", args)))
+                    if (!File.Exists(string.Join(" ", args)))
                     {
                         Console.WriteLine("\n ERROR; CAN NOT FIND FILE SPECIFIED \n");
                     }
@@ -167,7 +167,7 @@ namespace Easy14_Programming_Language
 
                 else if (command.ToLower() == "exit")
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Warning("\nPlease use \"exit();\" or Ctrl+C to close the interative console", "e"); continue;
+                    CSharpErrorReporter.ConsoleLineReporter.Warning("\nPlease use \"exit();\" or Ctrl+C to close the interative console"); continue;
                 }
                 else if (command.ToLower().StartsWith("/run"))
                 {
@@ -225,12 +225,12 @@ namespace Easy14_Programming_Language
 
         //=========================== SEPERATOR =========================\\
 
-        public void CompileCode_fromOtherFiles(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
+        public object CompileCode_fromOtherFiles(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
-            CompileCode(fileLoc, textArray, lineIDX, isInAMethod, methodName);
+            return CompileCode(fileLoc, textArray, lineIDX, isInAMethod, methodName);
         }
 
-        public static void CompileCode(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
+        public static object CompileCode(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
             bool disableLibraries = false;
             int windowHeight = Console.WindowHeight;
@@ -405,7 +405,7 @@ namespace Easy14_Programming_Language
                 exit the program. */
                 else if (line.ToLower() == "exit()" || line.ToLower() == "exit();")
                 {
-                    return;
+                    return "";
                 }
                 else if (line.ToLower() == "exit")
                 {
@@ -440,31 +440,31 @@ namespace Easy14_Programming_Language
                 }
                 else if (line.StartsWith($"var") && line.EndsWith(";"))
                 {
-                    VariableCode_fixed.Interperate(line, lines, lineCount);
+                    VariableCode.Interperate(line, lines, lineCount);
                 }
                 else if (line.StartsWith($"Random.RandomRange(") || line.StartsWith($"RandomRange("))
                 {
-                    Console.WriteLine(Random_RandomRange.Interperate(line, textArray, fileLoc));
+                    Random_RandomRange.Interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"Random.RandomRangeDouble(") || line.StartsWith($"RandomRangeDouble("))
                 {
-                    Console.WriteLine(Random_RandomRangeDouble.Interperate(line, textArray, fileLoc));
+                    Random_RandomRangeDouble.Interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"ToString(") && line.EndsWith(");"))
                 {
-                    Console.WriteLine(ConvertToString.Interperate(line));
+                    ConvertToString.Interperate(line);
                 }
                 else if ((line.StartsWith($"if") && line.EndsWith("{")) || (line.StartsWith("if") && lines[lineCount] == "{"))
                 {
-                    If_Loop.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName); return;
+                    If_Loop.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName); return "";
                 }
                 else if ((line.StartsWith($"while") && line.EndsWith("{")) || (line.StartsWith("while") && lines[lineCount] == "{"))
                 {
-                    While_Loop.Interperate(line, lines, textArray, fileLoc); return;
+                    While_Loop.Interperate(line, lines, textArray, fileLoc); return "";
                 }
                 else if ((line.StartsWith("func ") && line.EndsWith(") {")) || (line.StartsWith("func ")))
                 {
-                    Method_Code.Interperate(line, textArray, lines, fileLoc, true); return;
+                    Method_Code.Interperate(line, textArray, lines, fileLoc, true); return "";
                 }
                 else if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"MakeFile("))
                 {
@@ -552,7 +552,7 @@ namespace Easy14_Programming_Language
                     catch
                     {
                         CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get Window parameter");
-                        return;
+                        return "";
                     }
 
                     try
@@ -617,18 +617,18 @@ namespace Easy14_Programming_Language
                             if (line.EndsWith("();")) //Means its probably a function
                             {
                                 Method_Code.Interperate(line, textArray, lines, fileLoc, false);
-                                return;
+                                return "";
                             }
                             foreach (string file in Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP"))
                             {
-                                string supposedVar = file[file.LastIndexOf("\\")..].Replace(".txt", "").Substring(1);
+                                string supposedVar = file[file.LastIndexOf("\\")..].Substring(1);
 
                                 if (line.StartsWith(supposedVar))
                                 {
                                     if (line.Contains('=') && (line.IndexOf("+") + 1) != line.IndexOf("=") && line.Count(f => (f == '=')) == 1)
                                     {
                                         string filePath = file;
-                                        string partToReplace = file.Substring(file.LastIndexOf("\\") + 1).Replace(".txt", "") + " = ";
+                                        string partToReplace = file.Substring(file.LastIndexOf("\\") + 1) + " = ";
                                         string content = line.Replace(partToReplace, "");
 
                                         if (content.Contains('+') && content.Count(f => (f == '+')) == 1)
@@ -646,7 +646,7 @@ namespace Easy14_Programming_Language
                                     if (line.Contains("+=") && line.Count(f => (f == '=')) == 1 && line.Count(f => (f == '+')) == 1 && line.IndexOf("=") == (line.IndexOf("+") + 1))
                                     {
                                         string filePath = file;
-                                        string partToReplace = file.Substring(file.LastIndexOf("\\") + 1).Replace(".txt", "") + " = ";
+                                        string partToReplace = file.Substring(file.LastIndexOf("\\") + 1) + " = ";
                                         string[] FileContents = File.ReadAllLines(filePath);
                                         string content = line.Replace(partToReplace, "");
                                         content = content[1..][..(content.Length - 2)];
@@ -662,7 +662,7 @@ namespace Easy14_Programming_Language
                                     if (line.Contains("-=") && line.Count(f => (f == '-')) == 1 && line.Count(f => (f == '-')) == 1 && line.IndexOf("-") == (line.IndexOf("-") + 1))
                                     {
                                         string filePath = file;
-                                        string partToReplace = file.Substring(file.LastIndexOf("\\") + 1).Replace(".txt", "") + " = ";
+                                        string partToReplace = file.Substring(file.LastIndexOf("\\") + 1) + " = ";
                                         string[] FileContents = File.ReadAllLines(filePath);
                                         string content = line.Replace(partToReplace, "");
                                         content = content[1..][..(content.Length - 2)];
@@ -700,7 +700,7 @@ namespace Easy14_Programming_Language
                             catch
                             {
                                 CSharpErrorReporter.ConsoleLineReporter.Error(line + " is not a valid line.");
-                                return;
+                                return "";
                             }
                         }
                         if (funcLine != null)
@@ -751,14 +751,14 @@ namespace Easy14_Programming_Language
 
                                     try
                                     {
-                                        CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                                        return CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
                                     }
                                     catch (Exception e)
                                     {
                                         CSharpErrorReporter.ConsoleLineReporter.Error("The function you are trying to use returned an Error");
                                         Console.WriteLine($"\n{e.Message}");
                                     }
-                                    return;
+                                    return "";
                                 }
                             }
                             else if (!funcLine.Contains("."))
@@ -777,7 +777,7 @@ namespace Easy14_Programming_Language
 
                                 params_str = params_str.Substring(1, params_str.Length - 2);
                                 params_str = params_str.Substring(params_str.IndexOf("("), params_str.Length - params_str.IndexOf("("));
-                                params_str = params_str.Substring(1, params_str.Length - 2);
+                                params_str = params_str.Substring(1, params_str.Length - 1);
                                 string[] params_ = { };
 
                                 try
@@ -804,14 +804,14 @@ namespace Easy14_Programming_Language
 
                                 try
                                 {
-                                    CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                                    return CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
                                 }
                                 catch (Exception e)
                                 {
                                     CSharpErrorReporter.ConsoleLineReporter.Error("C# EXCEPTION ERROR; " + e.GetType().Name, e.Message);
                                     Console.WriteLine("CSHARP_Error");
                                 }
-                                return;
+                                return "";
                             }
                             else
                             {
@@ -828,6 +828,7 @@ namespace Easy14_Programming_Language
                 }
                 lineCount++;
             }
+            return "";
         }
 
     }

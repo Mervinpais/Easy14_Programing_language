@@ -29,8 +29,8 @@ namespace Easy14_Programming_Language
             }
 
             bool foundUsing = false;
-            string statment_line = code_part.TrimStart();
-            if (statment_line.StartsWith("print"))
+            string statement_line = code_part.TrimStart();
+            if (statement_line.StartsWith("print"))
             {
                 foreach (string line in lines)
                 {
@@ -40,7 +40,7 @@ namespace Easy14_Programming_Language
                         foundUsing = true;
                         break;
                     }
-                    else if (line.TrimStart().TrimEnd() == statment_line)
+                    else if (line.TrimStart().TrimEnd() == statement_line)
                     {
                         break;
                     }
@@ -53,57 +53,78 @@ namespace Easy14_Programming_Language
                 }
             }
 
-            if (!statment_line.StartsWith("Console.print"))
+            if (!statement_line.StartsWith("Console.print") && statement_line.StartsWith("print"))
             {
-                if (statment_line.StartsWith("print"))
-                {
-                    statment_line = statment_line.Substring("print".Length);
-                }
+                statement_line = statement_line.Substring("print".Length);
+            }
+            else if (statement_line.StartsWith("Console.print") && !statement_line.StartsWith("print"))
+            {
+                statement_line = statement_line.Substring("Console.print".Length);
             }
             else
             {
-                statment_line = statment_line.Substring("Console.print".Length);
+                CSharpErrorReporter.ConsoleLineReporter.Message("Print was called without a \"print\" or \"Console.print\" at the start, checking again...");
+                statement_line = statement_line.TrimStart();
+                if (!statement_line.StartsWith("Console.print") && statement_line.StartsWith("print"))
+                {
+                    statement_line = statement_line.Substring("print".Length);
+                }
+                else if (statement_line.StartsWith("Console.print") && !statement_line.StartsWith("print"))
+                {
+                    statement_line = statement_line.Substring("Console.print".Length);
+                }
+                else
+                {
+
+                }
             }
 
-            if (!statment_line.StartsWith("("))
+            if (!statement_line.StartsWith("("))
             {
                 CSharpErrorReporter.ConsoleLineReporter.Error($"Failed to find the start of statement at line \' {code_part} \'");
                 return;
             }
             else
             {
-                statment_line = statment_line.Substring(1, statment_line.Length - 1);
+                statement_line = statement_line.Substring(1, statement_line.Length - 1);
             }
 
-            if (!statment_line.EndsWith(");"))
+            if (!statement_line.EndsWith(");"))
             {
                 CSharpErrorReporter.ConsoleLineReporter.Error($"Failed to end statement at line \' {code_part} \'");
                 return;
             }
             else
             {
-                statment_line = statment_line.Substring(0, statment_line.Length - 2);
+                statement_line = statement_line.Substring(0, statement_line.Length - 2);
             }
 
             try
             {
-                if (statment_line.Contains('+') || statment_line.Contains("-") || statment_line.Contains("*") || statment_line.Contains("/") || statment_line.Contains("%"))
+                if (statement_line.Contains('+') || statement_line.Contains("-") || statement_line.Contains("*") || statement_line.Contains("/") || statement_line.Contains("%"))
                 {
-                    if (!(statment_line.StartsWith("\"") && statment_line.EndsWith("\"")))
+                    if (!(statement_line.StartsWith("\"") && statement_line.EndsWith("\"")))
                     {
                         if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\EASY14_Variables_TEMP"))
                         {
-                            char[] variablesInMathExpression = statment_line.Where(Char.IsLetter).ToArray();
+                            char[] variablesInMathExpression = statement_line.Where(Char.IsLetter).ToArray();
                             foreach (char e in variablesInMathExpression)
                             {
                                 string fileName = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\EASY14_Variables_TEMP\\" + e + ".txt";
                                 if (File.Exists(fileName))
                                 {
-                                    statment_line = statment_line.Replace(e, Convert.ToChar(File.ReadAllText(fileName)));
+                                    statement_line = statement_line.Replace(e, Convert.ToChar(File.ReadAllText(fileName)));
                                 }
                             }
                         }
-                        Console.WriteLine(Eval.Execute<int>(statment_line));
+                        try
+                        {
+                            Console.WriteLine(Eval.Execute<int>(statement_line));
+                        }
+                        catch
+                        {
+                            Console.WriteLine(statement_line);
+                        }
                         return;
                     }
                 }
@@ -120,34 +141,34 @@ namespace Easy14_Programming_Language
                 }
             }
 
-            if (statment_line.StartsWith("cl"))
+            if (statement_line.StartsWith("cl"))
             {
-                if (statment_line.StartsWith("cl\"") && statment_line.EndsWith("\""))
+                if (statement_line.StartsWith("cl\"") && statement_line.EndsWith("\""))
                 {
-                    Console.Write(statment_line.Substring(3, statment_line.Length - 4)); return;
+                    Console.Write(statement_line.Substring(3, statement_line.Length - 4)); return;
                 }
-                else if (statment_line.StartsWith("cl\"") && !statment_line.EndsWith("\""))
+                else if (statement_line.StartsWith("cl\"") && !statement_line.EndsWith("\""))
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error($"The String '{statment_line}' is not closed properly"); return;
+                    CSharpErrorReporter.ConsoleLineReporter.Error($"The String '{statement_line}' is not closed properly"); return;
                 }
-                else if (!statment_line.StartsWith("cl\"") && statment_line.EndsWith("\""))
+                else if (!statement_line.StartsWith("cl\"") && statement_line.EndsWith("\""))
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error($"The String '{statment_line}' is not opened properly"); return;
+                    CSharpErrorReporter.ConsoleLineReporter.Error($"The String '{statement_line}' is not opened properly"); return;
                 }
             }
             else
             {
-                if (statment_line.StartsWith("\"") && statment_line.EndsWith("\""))
+                if (statement_line.StartsWith("\"") && statement_line.EndsWith("\""))
                 {
-                    Console.WriteLine(statment_line.Substring(1, statment_line.Length - 2)); return;
+                    Console.WriteLine(statement_line.Substring(1, statement_line.Length - 2)); return;
                 }
-                else if (statment_line.StartsWith("\"") && !statment_line.EndsWith("\""))
+                else if (statement_line.StartsWith("\"") && !statement_line.EndsWith("\""))
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error($"The String '{statment_line}' is not closed properly"); return;
+                    CSharpErrorReporter.ConsoleLineReporter.Error($"The String '{statement_line}' is not closed properly"); return;
                 }
-                else if (!statment_line.StartsWith("\"") && statment_line.EndsWith("\""))
+                else if (!statement_line.StartsWith("\"") && statement_line.EndsWith("\""))
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error($"The String '{statment_line}' is not opened properly"); return;
+                    CSharpErrorReporter.ConsoleLineReporter.Error($"The String '{statement_line}' is not opened properly"); return;
                 }
             }
 
@@ -160,7 +181,7 @@ namespace Easy14_Programming_Language
                     foreach (string file in files)
                     {
                         string varFileName = file.Substring(file.LastIndexOf("\\")).Replace(".txt", "").Substring(1);
-                        if (varFileName == statment_line)
+                        if (varFileName == statement_line)
                         {
                             Console.WriteLine(File.ReadAllText(file));
                             break;
@@ -170,6 +191,9 @@ namespace Easy14_Programming_Language
             }
 
             //Anything else...
+            Program prog = new Program();
+            Console.WriteLine(prog.CompileCode_fromOtherFiles(textArray: new string[] { statement_line }));
+            return;
         }
     }
 }

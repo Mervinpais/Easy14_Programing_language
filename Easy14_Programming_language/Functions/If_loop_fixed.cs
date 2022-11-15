@@ -94,11 +94,11 @@ namespace Easy14_Programming_Language
                 obj1 = obj1.TrimStart().TrimEnd();
                 obj2 = obj2.TrimStart().TrimEnd();
 
-                if (File.Exists(dir + "\\" + obj1 + ".txt"))
+                if (File.Exists(dir + "\\" + obj1))
                 {
                     obj1_isVar = true;
                 }
-                if (File.Exists(dir + "\\" + obj2 + ".txt"))
+                if (File.Exists(dir + "\\" + obj2))
                 {
                     obj2_isVar = true;
                 }
@@ -114,33 +114,33 @@ namespace Easy14_Programming_Language
                 {
                     if (condition_operator == "==")
                     {
-                        if (File.ReadAllText(dir + "\\" + obj1 + ".txt") == obj2) conditionIsTrue = true;
+                        if (File.ReadAllText(dir + "\\" + obj1) == obj2) conditionIsTrue = true;
                     }
                     else if (condition_operator == "!=")
                     {
-                        if (File.ReadAllText(dir + "\\" + obj1 + ".txt") != obj2) conditionIsTrue = true;
+                        if (File.ReadAllText(dir + "\\" + obj1) != obj2) conditionIsTrue = true;
                     }
                 }
                 if (!obj1_isVar && obj2_isVar)
                 {
                     if (condition_operator == "==")
                     {
-                        if (obj1 == File.ReadAllText(dir + "\\" + obj2 + ".txt")) conditionIsTrue = true;
+                        if (obj1 == File.ReadAllText(dir + "\\" + obj2)) conditionIsTrue = true;
                     }
                     else if (condition_operator == "!=")
                     {
-                        if (obj1 != File.ReadAllText(dir + "\\" + obj2 + ".txt")) conditionIsTrue = true;
+                        if (obj1 != File.ReadAllText(dir + "\\" + obj2)) conditionIsTrue = true;
                     }
                 }
                 if (!obj1_isVar && !obj2_isVar)
                 {
                     if (condition_operator == "==")
                     {
-                        if (File.ReadAllText(dir + "\\" + obj1 + ".txt") == File.ReadAllText(dir + "\\" + obj2 + ".txt")) conditionIsTrue = true;
+                        if (File.ReadAllText(dir + "\\" + obj1) == File.ReadAllText(dir + "\\" + obj2)) conditionIsTrue = true;
                     }
                     else if (condition_operator == "!=")
                     {
-                        if (File.ReadAllText(dir + "\\" + obj1 + ".txt") != File.ReadAllText(dir + "\\" + obj2 + ".txt")) conditionIsTrue = true;
+                        if (File.ReadAllText(dir + "\\" + obj1) != File.ReadAllText(dir + "\\" + obj2)) conditionIsTrue = true;
                     }
 
                 }

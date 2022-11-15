@@ -67,7 +67,7 @@ namespace Easy14_Programming_Language
             file, if it is null it will return the result. */
             if (fileName is not null)
             {
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{fileName}.txt", result.ToString());
+                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{fileName}", result.ToString());
             }
             else if (fileName is null)
             {

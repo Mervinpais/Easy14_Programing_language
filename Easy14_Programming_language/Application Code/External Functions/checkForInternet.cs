@@ -1,4 +1,5 @@
-﻿using System.Net.NetworkInformation;
+﻿using System;
+using System.Net.NetworkInformation;
 
 namespace Easy14_Programming_Language
 {
@@ -9,15 +10,22 @@ namespace Easy14_Programming_Language
             string host = "www.google.com";
             bool result = false;
             Ping p = new Ping();
-            try
+            for (int i = 0; i < 3; i++)
             {
-                PingReply reply = p.Send(host, 2500);
-                if (reply.Status == IPStatus.Success)
+                try
                 {
-                    return true;
+                    PingReply reply = p.Send(host, 2000);
+                    if (reply.Status == IPStatus.Success)
+                    {
+                        return true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error occured while checking internet...\n {0}", e.Message);
+                    return false;
                 }
             }
-            catch { }
             return result;
         }
     }

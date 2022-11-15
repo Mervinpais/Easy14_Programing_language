@@ -25,28 +25,43 @@ namespace Easy14_Programming_Language
                 Console.WriteLine("C# Exception Error Occured! Please report this bug to the Github repo so that this can be fixed!!\n\n".ToUpper() + Message);
                 changeColor("");
             }
+
             public static void Error(string Title, string Message)
             {
                 changeColor("Red");
-                Console.WriteLine("An Error Occured! \n\n".ToUpper() + Message, Title);
+                Console.WriteLine("Easy14 Error; \n\n".ToUpper() + Message, Title);
                 changeColor("");
             }
             public static void Error(string Message)
             {
                 changeColor("Red");
-                Console.WriteLine("An Error Occured! \n\n".ToUpper() + Message);
+                Console.WriteLine("Easy14 Error; \n\n".ToUpper() + Message);
                 changeColor("");
             }
+
             public static void Warning(string Title, string Message)
             {
                 changeColor("Yellow");
-                Console.WriteLine("C# Warning!\n\n" + Message, Title);
+                Console.WriteLine("Easy14 Warning; \n\n" + Message, Title);
                 changeColor("");
             }
             public static void Warning(string Message)
             {
                 changeColor("Yellow");
-                Console.WriteLine("C# Warning!\n\n" + Message);
+                Console.WriteLine("Easy14 Warning; \n\n" + Message);
+                changeColor("");
+            }
+
+            public static void Message(string Title, string Message)
+            {
+                changeColor("Grey");
+                Console.WriteLine("Easy14 Message; \n\n" + Message, Title);
+                changeColor("");
+            }
+            public static void Message(string Message)
+            {
+                changeColor("Grey");
+                Console.WriteLine("Easy14 Message; \n\n" + Message);
                 changeColor("");
             }
         }
