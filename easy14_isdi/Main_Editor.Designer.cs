@@ -110,6 +110,7 @@
             this.Name = "Main_Editor";
             this.Text = "Easy14 Scripter";
             this.Load += new System.EventHandler(this.Main_Editor_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Main_Editor_Paint);
             this.ResumeLayout(false);
 
         }

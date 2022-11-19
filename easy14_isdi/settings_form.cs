@@ -23,10 +23,23 @@ namespace easy14_isde
         private void title_label_Click(object sender, EventArgs e)
         {
             /*if (set_me_to_1 == 1)
-            {
+            {1
                 this.BackColor = Color.Red;
                 title_label.ForeColor = Color.Yellow;
             }*/
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedIndex == 0) //Light theme
+            {
+
+            }
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
 
         }
     }

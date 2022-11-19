@@ -2,13 +2,13 @@
 
 ## Supported Versions
 
-As of 26th of August 2022;
-Version 2.6 is still in support but will be soon be release from the supported versions chamber
+As of 15th of November 2022; (Darn its been that long?)
+Version 2.8 is still in support but will be soon be release from the supported versions chamber
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 2.9 - 3.0   | ✅ Fully Supported!|
-| 2.6 - 2.8   | ✅ Still in support|
+| 3.0 - 2.9   | ✅ Fully Supported!|
+| 2.8 - 2.6   | ✅ Still in support|
 | < 2.5   | ❌  No/Lost Support|
 
 ## Reporting a Vulnerability
@@ -28,11 +28,10 @@ Make sure you have C# is installed to use this app!
 | Operation system  | Supported |
 | ----------------  | --------- |
 |  Windows 10/11    |    🙂✔️  |
-|  Windows 7        |    😦❌ (.NET 6 not supported on windows 7) |
+|  Windows 7        |    😦❌ (.NET 6 & .NET 7 not supported on Windows 7) |
 |  Mac OS           |    😞❌  | 
 |  Linux            |    😞❌  |
 |  └─ Ubuntu        |    😞❌  |
 |  └─ Debian        |    😞❌  |
 
-The Operating system's mentioned here are the one's i want to support and other operating systems wont be supported cuz i dont want to support them (yet)w
-- (Im not sure if an ubuntu linux app will work on debian and i dont have a spare pc to run an OS on so :/
+The Operating system's mentioned here are the ones i want to support and other operating systems won't be supported because this language is not really widespread and useful

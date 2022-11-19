@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace easy14_isde
+namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Environment
 {
     public partial class Main_Editor : Form
     {
@@ -109,6 +109,18 @@ namespace easy14_isde
                 Console.WriteLine(saveFileDialog.FileName);
                 saveFile = saveFileDialog.FileName;
             }
+            else if (saveFile != null)
+            {
+                var w = new Form() { Size = new Size(0, 0) };
+                Task.Delay(TimeSpan.FromSeconds(0.75)) //just a value for time being because i am lazy
+                    .ContinueWith((t) => w.Close(), TaskScheduler.FromCurrentSynchronizationContext());
+                MessageBox.Show(w, "Saving", "");
+                File.WriteAllText(saveFile, code_text_area_rtb.Text);
+            }
+            else
+            {
+                MessageBox.Show("An Error occured while saving to file " + saveFile);
+            }
             string dir = Directory.GetCurrentDirectory().Replace("easy14_isdi\\bin\\Debug", "") + "\\Easy14_Programming_language\\bin\\Debug\\net6.0-windows\\Easy14_Programming_Language.exe";
             Console.WriteLine(dir);
             Console.WriteLine(saveFile);
@@ -128,14 +140,13 @@ namespace easy14_isde
         private void settings_btn_Click(object sender, EventArgs e)
         {
             //only for now since i dont have much time to focus on ISDE 
-            if (trys_set <= 3)
+            if (trys_set <= 2)
             {
-                MessageBox.Show("This area of the program is not flly developed (yet)", "404 Not Found");
+                MessageBox.Show("This area of the program is not fully developed (yet)", "?");
                 trys_set = trys_set + 1;
             }
             else
             {
-                MessageBox.Show("Fine!, i bring you...", "?");
                 settings_form settings_Form = new settings_form();
                 settings_Form.Show();
             }
@@ -192,6 +203,23 @@ namespace easy14_isde
             else
             {
                 File.WriteAllText(settings_file, "[Settings]\ntheme=dark");
+            }
+        }
+
+        private void Main_Editor_Paint(object sender, PaintEventArgs e)
+        {
+            string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+            dir = dir.Substring(6, dir.Length - 16);
+            /*MessageBox.Show(File.Exists(dir + "\\options.txt").ToString());
+            MessageBox.Show(dir + "\\options.txt".ToString());*/
+            string file = dir + "\\options.txt";
+            string[] lines = File.ReadAllLines(file);
+            if (lines.Length > 0)
+            {
+                if (lines[0] == "theme-dark")
+                {
+
+                }
             }
         }
     }

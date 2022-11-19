@@ -43,8 +43,9 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(135, 47);
             this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
+            this.button1.Text = "Apply Theme";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // title_label
             // 
@@ -94,12 +95,13 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::easy14_isde.Properties.Resources.keep_calm_its_not_finished_yet;
-            this.pictureBox1.Location = new System.Drawing.Point(237, 262);
+            this.pictureBox1.Location = new System.Drawing.Point(336, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(371, 320);
+            this.pictureBox1.Size = new System.Drawing.Size(112, 124);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // settings_form
             // 
