@@ -5,19 +5,8 @@ namespace Easy14_Programming_Language
 {
     public static class ConsoleBeep
     {
-        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
-        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
-
         public static void Interperate(string code_part, string[] textArray, string fileloc)
         {
-            string endOfStatementCode = ")";
-            foreach (string line in configFile)
-            {
-                if (line.StartsWith("needSemicolons"))
-                    endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ");" : endOfStatementCode = ")");
-                break;
-            }
 
             string code_part_unedited = code_part;
             bool foundUsing = false;
@@ -55,19 +44,21 @@ namespace Easy14_Programming_Language
             else if (code_part.StartsWith($"Console.beep(")) { }
 
             if (code_part_unedited.StartsWith($"Console.beep("))
-                code_part = code_part.Substring(13);
-            else if (code_part_unedited.StartsWith($"beep("))
-                code_part = code_part.Substring(5);
-
-            code_part = code_part.Substring(0, code_part.Length - 1);
-            if (code_part.EndsWith(")"))
             {
-                code_part = code_part.Substring(0, code_part.Length - 1);
+                code_part = code_part.Substring(13);
+            }
+            else if (code_part_unedited.StartsWith($"beep("))
+            {
+                code_part = code_part.Substring(5);
+            }
+
+            if (code_part.EndsWith(");"))
+            {
+                code_part = code_part.Substring(0, code_part.Length - 2);
             }
 
             if (code_part.Contains(","))
             {
-
                 string[] codePart_Array = code_part.Split(',');
                 double codePartInt = Convert.ToDouble(codePart_Array[0]);
                 double codePartInt2 = Convert.ToDouble(codePart_Array[1]);

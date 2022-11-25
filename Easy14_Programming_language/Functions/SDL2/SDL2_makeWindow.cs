@@ -23,7 +23,8 @@ namespace Easy14_Programming_Language
                 posY,
                 sizeX,
                 sizeY,
-                SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN);
+                SDL.SDL_WindowFlags.SDL_WINDOW_SHOWN
+            );
 
             if (window == IntPtr.Zero)
             {

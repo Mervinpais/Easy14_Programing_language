@@ -2,20 +2,32 @@
 
 namespace Easy14_Programming_Language
 {
+    /* A class that converts a value to a string. */
     public static class ConvertToString
     {
         public static string Interperate(object val)
         {
-            if (val.ToString().StartsWith("ToString(")) val = val.ToString().Substring(8);
-            if (val.ToString().EndsWith(");")) val = val.ToString().Substring(1, val.ToString().Length - 3);
-            if (val.ToString().EndsWith("\"") && val.ToString().StartsWith("\"")) val = val.ToString().Substring(1, val.ToString().Length - 2);
+            Console.WriteLine("Start");
+            if (string.Join("", val).StartsWith("ConvertToString("))
+            {
+                val = val.ToString().Substring(8);
+            }
+            if (string.Join("", val).EndsWith(");"))
+            {
+                val = val.ToString().Substring(1, val.ToString().Length - 3);
+            }
+            if (string.Join("", val).EndsWith("\"") && val.ToString().StartsWith("\""))
+            {
+                val = val.ToString().Substring(1, val.ToString().Length - 2);
+            }
+            Console.WriteLine("End");
             try
             {
                 return Convert.ToString(val);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e.Message);
+                throw new UnableToConvertException("Failed to convert OBJECT to STRING");
                 return "";
             }
             return "";

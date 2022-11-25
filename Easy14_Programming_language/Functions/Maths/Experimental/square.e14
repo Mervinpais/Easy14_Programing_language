@@ -1,7 +1,13 @@
 ﻿using Console;
 
-func int square(var x)
+print("START");
+
+
+func square()
 {
-	var result = x * x;
+	var result = 2 * 2;
 	return result;
+	print(result);
 }
+
+Console.print("END");

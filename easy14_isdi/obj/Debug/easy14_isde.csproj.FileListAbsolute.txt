@@ -1,0 +1,12 @@
+C:\Users\mervi\repos\Easy14_Programming_Language\easy14_isdi\obj\Debug\easy14_isde.csproj.AssemblyReference.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\easy14_isdi\obj\Debug\easy14_isde.csproj.SuggestedBindingRedirects.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\easy14_isdi\obj\Debug\easy14_isde.Main_Editor.resources
+C:\Users\mervi\repos\Easy14_Programming_Language\easy14_isdi\obj\Debug\easy14_isde.Properties.Resources.resources
+C:\Users\mervi\repos\Easy14_Programming_Language\easy14_isdi\obj\Debug\easy14_isde.csproj.GenerateResource.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\easy14_isdi\obj\Debug\easy14_isde.csproj.CoreCompileInputs.cache
+C:\Users\mervi\repos\Easy14_Programming_Language\easy14_isdi\bin\Debug\easy14_isde.exe.config
+C:\Users\mervi\repos\Easy14_Programming_Language\easy14_isdi\bin\Debug\easy14_isde.exe
+C:\Users\mervi\repos\Easy14_Programming_Language\easy14_isdi\bin\Debug\easy14_isde.pdb
+C:\Users\mervi\repos\Easy14_Programming_Language\easy14_isdi\obj\Debug\easy14_isde.exe
+C:\Users\mervi\repos\Easy14_Programming_Language\easy14_isdi\obj\Debug\easy14_isde.pdb
+C:\Users\mervi\repos\Easy14_Programming_Language\easy14_isdi\obj\Debug\easy14_isde.settings_form.resources

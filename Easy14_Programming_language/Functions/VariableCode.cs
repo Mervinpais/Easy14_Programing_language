@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    public static class VariableCode
+    public static class VariableCode_OLD
     {
         //Above needed as functions like 'compileCode' in Program.cs cant be accessed here and instead of copying it to other functions, just make an object of it 
         //and use it's 'compileCode_forOtherFiles' function to get 'compileCode' (because 'compileCode' is static, we need another function that is not static to access
@@ -57,7 +57,7 @@ namespace Easy14_Programming_Language
                         int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
                         int number2 = Convert.ToInt32(text.Substring(text.IndexOf(",")).Replace(",", ""));
                         Random rnd = new Random();
-                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", Random_RandomRange.Interperate(varContent, lines, null));
+                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}", Random_RandomRange.Interperate(varContent, lines, null));
                     }
 
                     //else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith(");"))
@@ -66,13 +66,14 @@ namespace Easy14_Programming_Language
                     //    File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", userInput.ToString());
                     //}
 
-                    else if (varContent.Contains("+") || varContent.Contains("-") || varContent.Contains("/") || varContent.Contains("*") || varContent.Contains("%"))
+                    else if (varContent.Contains("+") || varContent.Contains("-") || varContent.Contains("/") || varContent.Contains("*") || varContent.Contains("%")
+                        && !varContent.StartsWith("\"") && !varContent.EndsWith("\""))
                     {
                         varContent = varContent.Substring(0, varContent.Length - 1);
                         try
                         {
                             double result = Convert.ToDouble(new DataTable().Compute(varContent, null));
-                            File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", result.ToString());
+                            File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}", result.ToString());
                         }
                         catch
                         {
@@ -102,7 +103,7 @@ namespace Easy14_Programming_Language
                     }
                     else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("abs"))
                     {
-                        var result = Math_Abs.Interperate(varContent, line_count, varName);
+                        var result = Math_Abs.Interperate(varContent);
                         File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}.txt", result.ToString());
                     }
                     else if (varContent.Replace("=", "").TrimStart().ToLower().StartsWith("sq"))
@@ -147,7 +148,7 @@ namespace Easy14_Programming_Language
                 else
                 {
                     Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
-                    File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}.txt", null);
+                    File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP\{varName}", null);
                 }
             }
         }

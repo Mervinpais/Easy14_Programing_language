@@ -10,18 +10,8 @@ namespace Easy14_Programming_Language
         static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
-        public static void Interperate(string code_part = "Audio.AudioStop();", string[] textArray = null, string fileloc = null)
+        public static void Interperate(string code_part, string[] textArray = null, string fileloc = null)
         {
-            string endOfStatementCode = ")";
-            foreach (string line in configFile)
-            {
-                if (line.StartsWith("needSemicolons"))
-                    endOfStatementCode.Equals(line.EndsWith("true") ? endOfStatementCode = ");" : endOfStatementCode = ")");
-                break;
-            }
-
-            string code_part_unedited = code_part;
-            bool foundUsing = false;
             if (code_part.StartsWith("AudioStop("))
             {
                 string[] someLINEs = null;
@@ -29,11 +19,10 @@ namespace Easy14_Programming_Language
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Error: No file or text array was provided to the Console.beep function.");
-                    Console.ResetColor();
+                    CSharpErrorReporter.ConsoleLineReporter.Error("Error: No file or text array was provided to the Console.beep function.");
                 }
 
+                bool foundUsing = false;
                 foreach (string x in someLINEs)
                 {
                     if (x.TrimStart().TrimEnd() == "using Audio;")
@@ -48,15 +37,30 @@ namespace Easy14_Programming_Language
                 }
                 if (foundUsing == false)
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'stop' without its reference  (Use Console.Beep() to fix this error :)");
-                    Console.ResetColor();
+                    CSharpErrorReporter.ConsoleLineReporter.Error($"The Using 'Audio' wasnt referenced to use 'stop' without its reference");
                 }
             }
             else if (code_part.StartsWith($"Audio.AudioStop(")) { }
 
-            SoundPlayer soundPlayer = new SoundPlayer();
-            soundPlayer.Stop();
+            if (code_part.EndsWith(");"))
+            {
+                code_part = code_part.Substring(0, code_part.Length - 2);
+            }
+            else
+            {
+                CSharpErrorReporter.ConsoleLineReporter.Error("Failed to End statement");
+            }
+
+            try
+            {
+                SoundPlayer soundPlayer = new SoundPlayer();
+                soundPlayer.Stop();
+            }
+            catch (Exception)
+            {
+                CSharpErrorReporter.ConsoleLineReporter.Error("Failed to stop audio");
+            }
+
             return;
         }
     }

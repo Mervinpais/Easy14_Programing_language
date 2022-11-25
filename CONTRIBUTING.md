@@ -1,10 +1,10 @@
 # Contributing
-![Contributing can help me continue my Project](https://raw.githubusercontent.com/Mervinpais/Easy14_Programing_language/Latest_version/Images/Contribution_Image1.png)
-Contributing to this project can help me finish off work that i can't solve, example there is a security bug and i'm asleep, if you can, you can patch the bug and notify me about the bug and the patch you mnade so i know you have atleast helpped in fixing the bugs in the project
+![Contributing can help me continue my Project](Easy14_Programming_language\Images\Contribution_Image1.png)
+Contributing to this project can help me finish off work that i can't solve, example in the case of a 0-Day bug, if you can, you can patch the bug and notify me about the bug and the patch you made so i can review if its good/not
 
-## What to do if a contributer added some malicious code
-Better to first reprot to the user to me and tell what has changged, and i will fix the code and check if the user had malicious intent of adding the code/not and report them if so
-### OR
-Report the user to github by yourself and (try) fix the code, this may/not be the best option as you dont rely on me having to respond on your report
+## What to do if a contributer added something bad/malicious
+1. Report the user first to prevent them from doing any more damage
+2. Revert the code back to the working one
+3. Check if it works
 
 Thanks for reading :)

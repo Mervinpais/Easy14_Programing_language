@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    public static class If_Loop
+    public static class If_Loop_OLD
     {
         public static void Interperate(string code_part, string[] lines, string[] textArray, string fileloc, bool isInAMethod = false, string methodName = "}")
         {
@@ -203,7 +203,7 @@ namespace Easy14_Programming_Language
                 {
                     try
                     {
-                        obj1_fileContent = File.ReadAllText(dir + @$"\\{obj1.Replace("\"", "")}.txt");
+                        obj1_fileContent = File.ReadAllText(dir + @$"\\{obj1.Replace("\"", "")}");
                     }
                     catch
                     {
@@ -214,7 +214,7 @@ namespace Easy14_Programming_Language
                 {
                     try
                     {
-                        obj2_fileContent = File.ReadAllText(dir + @$"\\{obj2.Replace("\"", "")}.txt");
+                        obj2_fileContent = File.ReadAllText(dir + @$"\\{obj2.Replace("\"", "")}");
                     }
                     catch
                     {
@@ -312,7 +312,7 @@ namespace Easy14_Programming_Language
                 {
                     try
                     {
-                        obj1_fileContent = File.ReadAllText(dir + @$"\\{obj1.Replace("\"", "")}.txt");
+                        obj1_fileContent = File.ReadAllText(dir + @$"\\{obj1.Replace("\"", "")}");
                     }
                     catch
                     {
@@ -323,7 +323,7 @@ namespace Easy14_Programming_Language
                 {
                     try
                     {
-                        obj2_fileContent = File.ReadAllText(dir + @$"\\{obj2.Replace("\"", "")}.txt");
+                        obj2_fileContent = File.ReadAllText(dir + @$"\\{obj2.Replace("\"", "")}");
                     }
                     catch
                     {

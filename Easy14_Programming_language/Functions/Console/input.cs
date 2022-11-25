@@ -4,13 +4,9 @@ using System.Linq;
 
 namespace Easy14_Programming_Language
 {
-    public static class input
+    public static class ConsoleInput
     {
-        static string strExeFilePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-        static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
-        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
-
-        public static string Interperate(string code_part, string[] lines, string[] textArray = null, string fileloc = null, string varName = null, int lineNumber = -1, string[] namespacesUsed = null)
+        public static string Interperate(string code_part, string[] lines, string[] textArray = null, string fileloc = null, string varName = null)
         {
             string code_part_unedited = code_part;
             string textToPrint;
@@ -188,7 +184,7 @@ namespace Easy14_Programming_Language
                             string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
                             foreach (string file in files)
                             {
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "").Replace(".txt", "") == textToPrint)
+                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "") == textToPrint)
                                 {
                                     var contentInFile = File.ReadAllText(file);
                                     Console.WriteLine(contentInFile.ToString());

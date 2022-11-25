@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Easy14_Programming_Language
@@ -9,23 +10,30 @@ namespace Easy14_Programming_Language
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
-        public static double Interperate(string code_part, int lineNumber, string fileName = null)
+        public static double Interperate(object code_part, bool ForVariable = false)
         {
-            string code_part_unedited;
+            code_part = code_part.ToString().TrimStart();
 
-            code_part_unedited = code_part;
-            code_part = code_part_unedited.TrimStart();
-
-            string expression = code_part.ToLower();
-            if (expression is null && !expression.Contains("abs"))
+            string expression = code_part.ToString().ToLower();
+            /*
+            if (expression is null || !expression.Contains("abs"))
+            { Console.WriteLine("ERROR; Can't do Abs, please check your code and fix the error"); return 0.0; }
+            */
+            expression = expression.Trim();
+            if (string.IsNullOrEmpty(expression))
             {
-                Console.WriteLine("ERROR; Can't do Abs, please check your code and fix the error");
-                return 0.0;
+                return 0;
             }
-            expression = expression.Replace(" ", "");
-            expression = expression.Replace("=", "");
-            //Console.WriteLine(expression);
-            int theNumber = Convert.ToInt32(expression.Replace("abs(", "").Replace(")", ""));
+
+            if (expression.Contains("=")) expression = expression.Replace("=", "");
+
+            if (!expression.StartsWith("abs")) { }
+            else
+            {
+                expression = expression.Replace("abs(", "").Replace(")", "");
+            }
+            Debug.WriteLine(expression);
+            int theNumber = Convert.ToInt32(expression);
 
             /* Taking the absolute value of the number. */
             var result = Math.Abs(theNumber);

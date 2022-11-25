@@ -14,7 +14,26 @@ namespace Easy14_Programming_Language
             try
             {
                 string helpFile = helpFiles + "\\" + function.ToLower() + ".help";
-                Console.WriteLine(string.Join(Environment.NewLine, File.ReadAllLines(helpFile)));
+                if (function.ToLower() == "print" || function.ToLower() == "print()" || function.ToLower() == "console.print" || function.ToLower() == "console.print()")
+                {
+
+                }
+                else if (function.ToLower() == "exec" || function.ToLower() == "exec()" || function.ToLower() == "console.exec" || function.ToLower() == "console.exec()")
+                {
+
+                }
+                else if (function.ToLower() == "input" || function.ToLower() == "input()" || function.ToLower() == "console.input" || function.ToLower() == "console.input()")
+                {
+
+                }
+                else if (function.ToLower() == "clear" || function.ToLower() == "clear()" || function.ToLower() == "console.clear" || function.ToLower() == "console.clear()")
+                {
+
+                }
+                else
+                {
+                    Console.WriteLine(string.Join(Environment.NewLine, File.ReadAllLines(helpFile)));
+                }
             }
             catch (FileNotFoundException FileNoFound_Ex)
             {

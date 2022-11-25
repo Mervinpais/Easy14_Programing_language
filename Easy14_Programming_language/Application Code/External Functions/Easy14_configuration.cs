@@ -9,7 +9,7 @@ namespace Easy14_Programming_Language
         readonly static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
-        public static string getOption(string optionName)
+        public static object getBoolOption(string optionName)
         {
             foreach (string item in configFile)
             {
@@ -17,11 +17,11 @@ namespace Easy14_Programming_Language
                 {
                     if (item.EndsWith("true"))
                     {
-                        return "true";
+                        return true;
                     }
                     else if (item.EndsWith("false"))
                     {
-                        return "false";
+                        return false;
                     }
                     else
                     {
@@ -29,7 +29,29 @@ namespace Easy14_Programming_Language
                     }
                 }
             }
-            return "false";
+            return false;
+        }
+        public static object getIntOption(string optionName)
+        {
+            foreach (string item in configFile)
+            {
+                if (item.StartsWith(optionName))
+                {
+                    if (int.TryParse(item.Replace($"{optionName} =", ""), out _) == true)
+                    {
+                        return item.Replace($"{optionName} =", "");
+                    }
+                    else if (int.TryParse(item.Replace($"{optionName} =", ""), out _) == false)
+                    {
+                        throw new UnableToConvertException(); //Not yet finished
+                    }
+                    else
+                    {
+                        return item.Replace($"{optionName} =", "");
+                    }
+                }
+            }
+            return "";
         }
     }
 }
