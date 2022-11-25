@@ -29,39 +29,39 @@ namespace Easy14_Programming_Language
             public static void Error(string Title, string Message)
             {
                 changeColor("Red");
-                Console.WriteLine("Easy14 Error; \n\n".ToUpper() + Message, Title);
+                Console.WriteLine("Easy14 Error; \n\n".ToUpper() + Message.ToString(), Title);
                 changeColor("");
             }
             public static void Error(string Message)
             {
                 changeColor("Red");
-                Console.WriteLine("Easy14 Error; \n\n".ToUpper() + Message);
+                Console.WriteLine("Easy14 Error; \n\n".ToUpper() + Message.ToString());
                 changeColor("");
             }
 
             public static void Warning(string Title, string Message)
             {
                 changeColor("Yellow");
-                Console.WriteLine("Easy14 Warning; \n\n" + Message, Title);
+                Console.WriteLine("Easy14 Warning; \n\n" + Message.ToString(), Title);
                 changeColor("");
             }
             public static void Warning(string Message)
             {
                 changeColor("Yellow");
-                Console.WriteLine("Easy14 Warning; \n\n" + Message);
+                Console.WriteLine("Easy14 Warning; \n\n" + Message.ToString());
                 changeColor("");
             }
 
             public static void Message(string Title, string Message)
             {
                 changeColor("Grey");
-                Console.WriteLine("Easy14 Message; \n\n" + Message, Title);
+                Console.WriteLine("Easy14 Message; \n\n" + Message.ToString(), Title);
                 changeColor("");
             }
             public static void Message(string Message)
             {
                 changeColor("Grey");
-                Console.WriteLine("Easy14 Message; \n\n" + Message);
+                Console.WriteLine("Easy14 Message; \n\n" + Message.ToString());
                 changeColor("");
             }
         }

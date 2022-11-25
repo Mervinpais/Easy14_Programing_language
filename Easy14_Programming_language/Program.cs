@@ -26,6 +26,7 @@ namespace Easy14_Programming_Language
 
         static void Main(string[] args)
         {
+            Console.ResetColor();
             Console.WriteLine("\n==== Easy14 Console ====\n");
 
             if (Directory.Exists(tempVariableFolder))
@@ -69,45 +70,6 @@ namespace Easy14_Programming_Language
             and runs the code accordingly */
             if (args.Length > 0)
             {
-                //Very bad way of geting a file from arguments but "if it works, dont touch it ever"
-                if (File.Exists(args[0]))
-                {
-                    int itemCount = 1;
-                    string[] filePath = null;
-
-                    foreach (var item in args)
-                    {
-                        if (item.EndsWith(".e14") || item.EndsWith(".ese14"))
-                        {
-                            filePath = args[1..itemCount];
-                        }
-                        itemCount++;
-                    }
-
-                    Console.WriteLine($"==== {DateTime.Now} | {string.Join(" ", args)} ====\n");
-
-                    if (!File.Exists(string.Join(" ", args)))
-                    {
-                        Console.WriteLine("\n ERROR; CAN NOT FIND FILE SPECIFIED \n");
-                    }
-
-                    if (string.Join(" ", args).EndsWith(".ese14") || string.Join(" ", args).EndsWith(".e14"))
-                    {
-                        try
-                        {
-                            Program prog = new Program();
-                            prog.CompileCode_fromOtherFiles(textArray: File.ReadAllLines(string.Join("", args)));
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine($"\n An Error Occured While Reading File To Display in Preview, Below Is the Full Error Exception Message\n\n{e}");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("\n Uh Oh, this file isnt an actual .e14/.ese14 file!, please change the file extention to .e14 (preferred) or .ese14 to use this file \n");
-                    }
-                }
                 if (args[0] == "/help")
                 {
                     HelpCommandCode.DisplayDefaultHelpOptions();
@@ -238,6 +200,7 @@ namespace Easy14_Programming_Language
             string windowState = "normal";
 
             disableLibraries = Convert.ToBoolean(Easy14_configuration.getBoolOption("disableLibraries"));
+
             if ((bool)Easy14_configuration.getBoolOption("windowHeight") != false)
             {
                 windowHeight = Convert.ToInt32(Easy14_configuration.getBoolOption("windowHeight"));
@@ -432,7 +395,7 @@ namespace Easy14_Programming_Language
                 }
                 else if (line.StartsWith($"Console.beep(") || line.StartsWith($"beep("))
                 {
-                    AudioPlay.Interperate(line, textArray, fileLoc);
+                    ConsoleBeep.Interperate(line, textArray, fileLoc);
                 }
                 else if (line.StartsWith($"wait(") && line.EndsWith(");"))
                 {
@@ -454,19 +417,26 @@ namespace Easy14_Programming_Language
                 {
                     ConvertToString.Interperate(line);
                 }
-                else if ((line.StartsWith($"if") && line.EndsWith("{")) || (line.StartsWith("if") && lines[lineCount] == "{"))
+                try
                 {
-                    If_Loop.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName); return "";
+                    if ((line.StartsWith($"if") && line.EndsWith("{")) || (line.StartsWith("if") && lines[lineCount] == "{"))
+                    {
+                        If_Loop.Interperate(line, lines, textArray, fileLoc, isInAMethod, methodName); return "";
+                    }
+                    else if ((line.StartsWith($"while") && line.EndsWith("{")) || (line.StartsWith("while") && lines[lineCount] == "{"))
+                    {
+                        While_Loop.Interperate(line, lines, textArray, fileLoc); return "";
+                    }
+                    else if ((line.StartsWith("func ") && line.EndsWith(") {")) || (line.StartsWith("func ")))
+                    {
+                        Method_Code.Interperate(line, textArray, lines, fileLoc, true); return "";
+                    }
                 }
-                else if ((line.StartsWith($"while") && line.EndsWith("{")) || (line.StartsWith("while") && lines[lineCount] == "{"))
+                catch (IndexOutOfRangeException indexOutRangeEx)
                 {
-                    While_Loop.Interperate(line, lines, textArray, fileLoc); return "";
+                    CSharpErrorReporter.ConsoleLineReporter.Error("Invalid Syntax", $"Invalid Syntax at line {lineCount}\n{line}\n");
                 }
-                else if ((line.StartsWith("func ") && line.EndsWith(") {")) || (line.StartsWith("func ")))
-                {
-                    Method_Code.Interperate(line, textArray, lines, fileLoc, true); return "";
-                }
-                else if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"MakeFile("))
+                if (line.StartsWith($"FileSystem.MakeFile(") || line.StartsWith($"MakeFile("))
                 {
                     FileSystem_MakeFile.Interperate(line, fileLoc, textArray, lineCount);
                 }
