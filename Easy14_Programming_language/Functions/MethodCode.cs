@@ -34,9 +34,7 @@ namespace Easy14_Programming_Language
                 }
 
                 int underStuff_lineCounterr = 0;
-#pragma warning disable IDE0090 // Use 'new(...)'
                 List<string> understuff = new List<string>(method_lines_list);
-#pragma warning restore IDE0090 // Use 'new(...)'
 
                 foreach (string line__ in understuff)
                 {

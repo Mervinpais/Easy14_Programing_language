@@ -26,7 +26,9 @@ namespace Easy14_Programming_Language
 
         static void Main_OLD(string[] args)
         {
+            CSharpErrorReporter.ConsoleLineReporter.Error("Calling the depricated method \"Main_OLD\" is illegal");
             return;
+
             Console.WriteLine("\n==== Easy14 Console ====\n");
 
             if (Directory.Exists(tempVariableFolder))
@@ -540,8 +542,8 @@ namespace Easy14_Programming_Language
                 if (showCommands == true) Console.WriteLine(">>>" + line);
 
 
-                if (line.StartsWith($"using") && line.EndsWith($";")) Using_namespace_code.usingFunction_interp(line, disableLibraries, lineCount);
-                else if (line.StartsWith($"from") && line.EndsWith($";")) Using_namespace_code.fromFunction_interp(line, disableLibraries, lineCount);
+                if (line.StartsWith($"using") && line.EndsWith($";")) UsingNamspaceFunction.UsingFunction(line, disableLibraries, lineCount);
+                else if (line.StartsWith($"from") && line.EndsWith($";")) UsingNamspaceFunction.ForFunction(line, disableLibraries, lineCount);
                 else if (string.Join("", line_chrArr) != "" && char.IsDigit(line_chrArr[0]))
                 {
                     string statement = string.Join("", line_chrArr);

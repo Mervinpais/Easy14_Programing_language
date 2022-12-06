@@ -3,12 +3,12 @@ using System.Reflection;
 
 namespace Easy14_Programming_Language
 {
-    public static class Using_namespace_code
+    public static class UsingNamspaceFunction
     {
         readonly static string strExeFilePath = Assembly.GetExecutingAssembly().Location;
         readonly static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
 
-        public static void usingFunction_interp(string line, bool disableLibraries, int lineCount)
+        public static void UsingFunction(string line, bool disableLibraries, int lineCount)
         {
             if (disableLibraries)
             {
@@ -40,7 +40,7 @@ namespace Easy14_Programming_Language
             }
         }
 
-        public static void fromFunction_interp(string line, bool disableLibraries, int lineCount)
+        public static void ForFunction(string line, bool disableLibraries, int lineCount)
         {
             if (disableLibraries)
             {

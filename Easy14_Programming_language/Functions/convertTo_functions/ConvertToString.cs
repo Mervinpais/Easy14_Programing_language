@@ -10,15 +10,15 @@ namespace Easy14_Programming_Language
             Console.WriteLine("Start");
             if (string.Join("", val).StartsWith("ConvertToString("))
             {
-                val = val.ToString().Substring(8);
+                val = val.ToString()[8..];
             }
             if (string.Join("", val).EndsWith(");"))
             {
-                val = val.ToString().Substring(1, val.ToString().Length - 3);
+                val = val.ToString()[1..^2];
             }
             if (string.Join("", val).EndsWith("\"") && val.ToString().StartsWith("\""))
             {
-                val = val.ToString().Substring(1, val.ToString().Length - 2);
+                val = val.ToString()[1..^1];
             }
             Console.WriteLine("End");
             try
@@ -28,9 +28,7 @@ namespace Easy14_Programming_Language
             catch (Exception)
             {
                 throw new UnableToConvertException("Failed to convert OBJECT to STRING");
-                return "";
             }
-            return "";
         }
     }
 }
