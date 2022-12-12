@@ -24,7 +24,7 @@ namespace Easy14_Programming_Language
 
             string currentDir = Directory.GetCurrentDirectory();
 
-            string theSupposedNamspace = strWorkPath.Replace("\\bin\\Debug\\net6.0-windows", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
+            string theSupposedNamspace = strWorkPath.Replace("\\bin\\Debug\\net7.0-windows", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
 
             /* Checking if the using exists. */
             bool doesUsingExist = Directory.Exists(theSupposedNamspace);
@@ -53,7 +53,7 @@ namespace Easy14_Programming_Language
                 return;
             }
 
-            string theSupposedNamespace = strWorkPath.Replace("\\bin\\Debug\\net6.0-windows", "") + "\\Functions\\";
+            string theSupposedNamespace = strWorkPath.Replace("\\bin\\Debug\\net7.0-windows", "") + "\\Functions\\";
             theSupposedNamespace = theSupposedNamespace + line.Substring(line.IndexOf("from"), line.Length - (line.IndexOf("get") - 2)).Substring(4).TrimStart().TrimEnd();
             theSupposedNamespace = theSupposedNamespace.TrimStart().TrimEnd();
             string theSupposedClass = theSupposedNamespace;

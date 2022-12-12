@@ -16,23 +16,25 @@ namespace Easy14_Programming_Language
 {
     public class Program
     {
-        public static bool showCommands = false;
-        public static bool previewTheFile = false;
+        public static bool ShowStatementsDuringRuntime = false;
+        public static bool DisplayFileContentsBeforeRuntime = false;
 
         //code from https://iq.direct/blog/51-how-to-get-the-current-executable-s-path-in-csharp.html :)
         readonly static string strExeFilePath = Assembly.GetExecutingAssembly().Location;
         readonly static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
-        readonly static string tempVariableFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
+        readonly static string TemporaryVariableFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
+        readonly static string version = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(6, Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Length - 59) + @"\Easy14_Programming_language\Application Code\currentVersion.txt";
 
         static void Main(string[] args)
         {
             Console.ResetColor();
-            Console.WriteLine("\n==== Easy14 Console ====\n");
+            Console.WriteLine($"Easy14 {File.ReadAllLines(version)[1]} on {OSPlatform.Windows}");
+            Console.WriteLine("Type in \"help\" or \"info\" for information\n");
 
-            if (Directory.Exists(tempVariableFolder))
+            if (Directory.Exists(TemporaryVariableFolder))
             {
-                Directory.Delete(tempVariableFolder, true);
+                Directory.Delete(TemporaryVariableFolder, true);
             }
 
             //==================The Update Checker====================\\
@@ -134,8 +136,8 @@ namespace Easy14_Programming_Language
                 }
                 else if (line.ToLower().StartsWith("/run"))
                 {
-                    Program prog = new Program();
-                    prog.CompileCode_fromOtherFiles(line.TrimStart().Substring(4));
+                    Program compiler = new Program();
+                    compiler.CompileCode_fromOtherFiles(line.TrimStart().Substring(4));
                 }
                 else if (line.ToLower() == "/help")
                 {
@@ -155,9 +157,9 @@ namespace Easy14_Programming_Language
                     {
                         string[] NamespacesArray = Directory.GetDirectories(Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Assembly.GetExecutingAssembly().Location)))))))) + "\\Functions");
                         List<string> NamespaceList = new List<string>();
-                        foreach (string namespace_ in NamespacesArray)
+                        foreach (string Namespace_ in NamespacesArray)
                         {
-                            NamespaceList.Add(string.Concat("using ", namespace_.AsSpan(namespace_.LastIndexOf("\\") + 1), ";"));
+                            NamespaceList.Add(string.Concat("using ", Namespace_.AsSpan(Namespace_.LastIndexOf("\\") + 1), ";"));
                         }
 
                         string[] allNamespaces = NamespaceList.ToArray();
@@ -195,12 +197,12 @@ namespace Easy14_Programming_Language
 
         public static object CompileCode(string FileLocation = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
-            bool disableLibraries = false;
+            bool LibrariesDisabled = false;
             int windowHeight = Console.WindowHeight;
             int windowWidth = Console.WindowWidth;
             string windowState = "normal";
 
-            disableLibraries = Convert.ToBoolean(Easy14_configuration.getBoolOption("disableLibraries"));
+            LibrariesDisabled = Convert.ToBoolean(Easy14_configuration.getBoolOption("disableLibraries"));
 
             if ((bool)Easy14_configuration.getBoolOption("windowHeight") != false)
             {
@@ -329,24 +331,24 @@ namespace Easy14_Programming_Language
 
             foreach (string statement in statements)
             {
-                char[] statement_chrArr = statement.ToCharArray();
+                string[] statement_split = statement.Split(" ");
 
-                if (showCommands == true)
+                if (ShowStatementsDuringRuntime == true)
                 {
                     Console.WriteLine(">>>" + statement);
                 }
 
                 if (statement.StartsWith($"using") && statement.EndsWith($";"))
                 {
-                    UsingNamspaceFunction.UsingFunction(statement, disableLibraries, lineCount);
+                    UsingNamspaceFunction.UsingFunction(statement, LibrariesDisabled, lineCount);
                 }
                 else if (statement.StartsWith($"from") && statement.EndsWith($";"))
                 {
-                    UsingNamspaceFunction.ForFunction(statement, disableLibraries, lineCount);
+                    UsingNamspaceFunction.ForFunction(statement, LibrariesDisabled, lineCount);
                 }
-                else if (string.Join("", statement_chrArr) != "" && char.IsDigit(statement_chrArr[0]))
+                else if (string.Join("", statement.ToCharArray()) != "" && char.IsDigit(statement.ToCharArray()[0]))
                 {
-                    string expression = string.Join("", statement_chrArr);
+                    string expression = string.Join("", statement.ToCharArray());
                     try
                     {
                         Console.WriteLine(Convert.ToDouble(new DataTable().Compute(expression, null)));
@@ -377,14 +379,16 @@ namespace Easy14_Programming_Language
                     Console.WriteLine("\nPlease use \"exit()\" or \"exit();\" or Ctrl+C to close the interative console");
                     Console.ResetColor(); continue;
                 }
-
-                else if (statement.StartsWith($"Console.print(") || statement.StartsWith($"print("))
+                else if (statement_split[0] == "Console")
                 {
-                    ConsolePrint.Interperate(statement, textArray, FileLocation);
-                }
-                else if (statement.StartsWith($"Console.input(") || statement.StartsWith($"input("))
-                {
-                    ConsoleInput.Interperate(statement, statements, textArray, FileLocation, null);
+                    if (statement_split[1] == "Print")
+                    {
+                        ConsolePrint.Interperate(statement_split[2]);
+                    }
+                    else if (statement_split[1] == "Input")
+                    {
+                        ConsoleInput.Interperate(statement, statements, textArray, FileLocation, null);
+                    }
                 }
                 else if (statement.StartsWith($"Console.clear(") || statement.StartsWith($"clear("))
                 {

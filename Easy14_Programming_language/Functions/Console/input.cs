@@ -213,4 +213,11 @@ namespace Easy14_Programming_Language
             return "";
         }
     }
+
+    public class AssignStatement_
+    {
+        public string Variable { get; set; }
+        public int Value { get; set; }
+    }
+
 }
