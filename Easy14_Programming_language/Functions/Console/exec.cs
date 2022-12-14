@@ -1,99 +1,47 @@
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
 using System;
 using System.IO;
-using System.Reflection;
 
 namespace Easy14_Programming_Language
 {
     public static class ConsoleExec
     {
-        public static void Interperate(string code_part, string[] textArray, string fileloc, int lineNumber = -1)
+        public static void Interperate(string line)
         {
-            string code_part_unedited;
-            string textToPrint;
-
-            code_part_unedited = code_part;
-            code_part = code_part_unedited.TrimStart();
-            bool foundUsing = false;
-            if (code_part.StartsWith($"exec("))
+            if (line == null) { return; }
+            if (line.StartsWith("\"") && line.StartsWith("\""))
             {
-                string[] someLINEs = null;
-                if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
-                else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else
+                Program prog = new Program();
+                prog.CompileCode_fromOtherFiles(line);
+            }
+            else
+            {
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                string variable_dir = dir + "\\EASY14_Variables_TEMP";
+                if (!Directory.Exists(variable_dir))
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Error: No file or text array was provided to exec()");
-                    Console.ResetColor();
+                    CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
                     return;
                 }
-                foreach (string x in someLINEs)
+
+                var files = Directory.GetFiles(variable_dir);
+                if (!(files.Length > 0))
                 {
-                    if (x.TrimStart().TrimEnd() == "using Console;" || x.TrimStart().TrimEnd() == "from Console get exec;")
-                    {
-                        foundUsing = true;
-                        break;
-                    }
-                    if (x.TrimStart().TrimEnd() == code_part)
-                    {
-                        break;
-                    }
-                }
-                if (foundUsing == false)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'exec' without its reference  (Use Console.exec(\"*Text To Execute*\") to fix this error :)");
-                    Console.ResetColor();
+                    CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
                     return;
                 }
-            }
-            else if (code_part.StartsWith($"Console.exec(")) { }
 
-            if (code_part_unedited.StartsWith($"Console.exec("))
-            {
-                code_part = code_part.Substring(13);
-            }
-            else if (code_part_unedited.StartsWith($"exec("))
-            {
-                code_part = code_part.Substring(5);
-            }
-
-            code_part = code_part.Substring(0, code_part.Length - 1);
-            if (code_part.EndsWith(")"))
-            {
-                code_part = code_part.Substring(0, code_part.Length - 1);
-            }
-
-            code_part = code_part.Substring(1);
-            code_part = code_part.Substring(0, code_part.Length - 1);
-
-            textToPrint = code_part;
-
-            Program prog = new Program();
-            string[] execArray = { textToPrint.ToString() };
-
-            try
-            {
-                if (textToPrint.StartsWith("C#)"))
+                var variable = variable_dir + "\\" + line;
+                if (File.Exists(variable))
                 {
-                    textToPrint = textToPrint.Substring(4);
-                    execArray = new string[] { textToPrint.ToString() };
-                    CSharpScript.RunAsync(string.Join(Environment.NewLine, execArray), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                    Program prog = new Program();
+                    prog.CompileCode_fromOtherFiles(line);
                 }
                 else
                 {
-                    prog.CompileCode_fromOtherFiles(null, execArray);
+                    CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
+                    return;
                 }
             }
-            catch (Exception e)
-            {
-                string unknownLine = "<unknownLineNumber>";
-                var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
-                string[] errorText = { "An Error occurred while executing commands from the exec command", $"   at line \"{code_part_unedited}\" \nException;\n{e.Message}\n" };
-                CSharpErrorReporter.ConsoleLineReporter.CSharpError(string.Join(Environment.NewLine, errorText));
-            }
-            //}
         }
     }
 }

@@ -1,216 +1,51 @@
 using System;
 using System.IO;
-using System.Linq;
 
 namespace Easy14_Programming_Language
 {
     public static class ConsoleInput
     {
-        public static string Interperate(string code_part, string[] lines, string[] textArray = null, string fileloc = null, string varName = null)
+        public static string Interperate(string line)
         {
-            string code_part_unedited = code_part;
-            string textToPrint;
-
-            if (code_part.IndexOf("=") > 0)
+            if (line.StartsWith("\"") && line.EndsWith("\""))
             {
-                code_part = code_part.Substring(varName.Length + 3);
+                line = line.Substring(1, line.Length - 2);
+                Console.WriteLine(line);
+                Console.Write(">");
+                string returnedInput = Console.ReadLine();
+                return returnedInput;
             }
-            code_part = code_part.TrimStart();
-
-            bool foundUsing = false;
-            if (code_part.StartsWith($"input("))
+            else
             {
-                string[] someLines = null;
-                if (textArray == null && fileloc != null) someLines = File.ReadAllLines(fileloc);
-                else if (textArray != null && fileloc == null) someLines = textArray;
-                else someLines = lines;
-
-                foreach (string x in someLines)
+                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                string variable_dir = dir + "\\EASY14_Variables_TEMP";
+                if (!Directory.Exists(variable_dir))
                 {
-                    if (x == code_part)
-                    {
-                        break;
-                    }
-                    if (x.StartsWith("using") || x.StartsWith("from"))
-                    {
-                        if (x == "using Console;" || x == "from Console get input;")
-                        {
-                            foundUsing = true;
-                            break;
-                        }
-                    }
-                }
-                if (foundUsing == false)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR; The Using 'Console' wasnt referenced to use 'input' without its reference  (Use Console.input(\"*Text*\") to fix this error :)");
-                    Console.ResetColor();
+                    CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
                     return "";
                 }
-            }
-            else if (code_part.StartsWith($"Console.input(")) { foundUsing = true; }
 
-            code_part_unedited = code_part;
-            if (code_part.StartsWith("Console."))
-                code_part = code_part.Substring(14);
-            else
-                code_part = code_part.Substring(6);
-
-            code_part = code_part.Substring(0, code_part.Length - 2);
-
-            textToPrint = code_part;
-            if (code_part == "")
-            {
-                Console.Write(">");
-                string textFromUser = Console.ReadLine();
-                return textFromUser;
-            }
-            bool isAString = false;
-
-            int textToPrint_int;
-            bool isAnInt = false;
-            bool isAnInt2 = false;
-
-            double textToPrint_double;
-            bool isADouble = false;
-            bool isADouble2 = false;
-
-            isAString = (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\""));
-
-            var num1_toCheck = textToPrint.Substring(0, (textToPrint.Length / 2 + 1) - 1);
-            var num2_toCheck = textToPrint.Substring((textToPrint.Length / 2 - 1) + 2);
-            num1_toCheck = num1_toCheck.TrimEnd().TrimStart();
-            num2_toCheck = num2_toCheck.TrimEnd().TrimStart();
-
-            isAnInt = int.TryParse(num1_toCheck, out textToPrint_int);
-            isAnInt2 = int.TryParse(num2_toCheck, out textToPrint_int);
-
-            isADouble = double.TryParse(num1_toCheck, out textToPrint_double);
-            isADouble2 = double.TryParse(num2_toCheck, out textToPrint_double);
-
-            if (foundUsing == true && code_part_unedited.StartsWith("input") || code_part_unedited.StartsWith("Console.input"))
-            {
-                if (textToPrint == "Time.Now")
+                var files = Directory.GetFiles(variable_dir);
+                if (!(files.Length > 0))
                 {
-                    Console.WriteLine(DateTime.Now);
+                    CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
+                    return "";
+                }
+
+                var variable = variable_dir + "\\" + line;
+                if (File.Exists(variable))
+                {
+                    Console.WriteLine(File.ReadAllText(variable));
                     Console.Write(">");
-                    string textFromUser = Console.ReadLine();
-                }
-                else if (!isAString && (isAnInt || isADouble) && !textToPrint.Contains("+") && !textToPrint.Contains("-") && !textToPrint.Contains("*") && !textToPrint.Contains("/") && !textToPrint.Contains("%") && !textToPrint.Contains("=="))
-                {
-                    Console.WriteLine(textToPrint.ToString());
-                }
-                else if (!isAString && (!isAnInt && !isADouble) && textToPrint.TrimEnd().TrimStart().StartsWith("true") || textToPrint.TrimEnd().TrimStart().StartsWith("false"))
-                {
-                    try
-                    {
-                        Console.WriteLine(Convert.ToBoolean(textToPrint.TrimEnd().TrimStart()));
-                    }
-                    catch
-                    {
-                        string[] errorText = {
-                        $"ERROR; Trying to convert \"{textToPrint}\" to a boolean failed!\n"
-                        };
-                        ExceptionSender.SendException("0x000BC3", errorText);
-                    }
-                }
-                else if (textToPrint.StartsWith("random.range("))
-                {
-                    string text = textToPrint;
-                    text = text.Replace("random.range(", "");
-                    text = text[..^1];
-                    int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
-                    int number2 = Convert.ToInt32(text.Substring(text.IndexOf(",")).Replace(",", ""));
-                    Random rnd = new Random();
-                    Console.WriteLine(rnd.Next(number1, number2));
-                    string textFromUser = Console.ReadLine();
-                    return textFromUser;
-                }
-                else if (textToPrint.Contains("+") && textToPrint.Count(f => (f == '+')) == 1 && !isAString /*&& ((isAnInt || isAnInt2) && (isADouble || isADouble2))*/)
-                {
-                    Console.WriteLine(Math_Add.Interperate(textToPrint, -1));
-                    Console.Write(">");
-                    string textFromUser = Console.ReadLine();
-                    return textFromUser;
-                }
-                else if (textToPrint.Contains("-") && textToPrint.Count(f => (f == '-')) == 1 && !isAString && (isAnInt && isADouble))
-                {
-                    Console.WriteLine(Math_Subtract.Interperate(textToPrint, -1));
-                    Console.Write(">");
-                    string textFromUser = Console.ReadLine();
-                    return textFromUser;
-                }
-                else if (textToPrint.Contains("*") && textToPrint.Count(f => (f == '*')) == 1 && !isAString && (isAnInt && isADouble))
-                {
-                    Console.WriteLine(Math_Multiply.Interperate(textToPrint, -1));
-                    Console.Write(">");
-                    string textFromUser = Console.ReadLine();
-                    return textFromUser;
-                }
-                else if (textToPrint.Contains("/") && textToPrint.Count(f => (f == '/')) == 1 && !isAString && (isAnInt && isADouble))
-                {
-                    Console.WriteLine(Math_Divide.Interperate(textToPrint, -1));
-                    Console.Write(">");
-                    string textFromUser = Console.ReadLine();
-                    return textFromUser;
-                }
-                else if (textToPrint.Contains("%") && textToPrint.Count(f => (f == '%')) == 1 && !isAString && (isAnInt && isADouble))
-                {
-                    Console.WriteLine(Math_Module.Interperate(textToPrint, -1));
-                    Console.Write(">");
-                    string textFromUser = Console.ReadLine();
-                    return textFromUser;
-                }
-                else if (textToPrint.Contains("==") && textToPrint.Count(f => (f == '=')) == 2)
-                {
-                    Console.WriteLine(isEqualTo.Interperate(textToPrint));
-                    Console.Write(">");
-                    string textFromUser = Console.ReadLine();
-                    return textFromUser;
-                }
-                else if (textToPrint.StartsWith("\"") && textToPrint.EndsWith("\"") && isAString && !isAnInt)
-                {
-                    Console.WriteLine(textToPrint.Substring(0, textToPrint.Length - 1).Substring(1));
-                    Console.Write(">");
-                    string textFromUser = Console.ReadLine();
-                    return textFromUser;
-                }
-                else if (!isAString && !isAnInt)
-                {
-                    if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP"))
-                    {
-                        if (Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP").Length != 0)
-                        {
-                            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\EASY14_Variables_TEMP");
-                            foreach (string file in files)
-                            {
-                                if (file.Substring(file.LastIndexOf(@"\")).Replace(@"\", "") == textToPrint)
-                                {
-                                    var contentInFile = File.ReadAllText(file);
-                                    Console.WriteLine(contentInFile.ToString());
-                                    Console.Write(">");
-                                    string textFromUser = Console.ReadLine();
-                                    return textFromUser;
-                                }
-                            }
-                        }
-                    }
+                    string returnedInput = Console.ReadLine();
+                    return returnedInput;
                 }
                 else
                 {
-                    Console.Write(">");
-                    string textFromUser = Console.ReadLine();
-                    return textFromUser;
-                    /*
-                    ThrowErrorMessage tErM = new ThrowErrorMessage();
-                    string unknownLine = "<unknownLineNumber>";
-                    var returnLineNumber = lineNumber > -1 ? lineNumber.ToString() : unknownLine;
-                    string[] errorText = { " Your syntax/parameters were incorrect!", $"  at line {returnLineNumber}", $"at line {code_part_unedited}\n" };
-                    tErM.sendErrMessage(null, errorText, "error");
-                    */
+                    CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
+                    return "";
                 }
             }
-            return "";
         }
     }
 

@@ -60,7 +60,7 @@ namespace Easy14_Programming_Language
 
                 else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith(");"))
                 {
-                    var userInput = ConsoleInput.Interperate(code_part, lines, varName: varName);
+                    var userInput = ConsoleInput.Interperate(code_part/*, lines, varName: varName*/);
                     File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}", userInput.ToString());
                 }
 
@@ -139,7 +139,7 @@ namespace Easy14_Programming_Language
                     }
                     if (funcLine.Contains("."))
                     {
-                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0-windows", "").Replace("\\bin\\Release\\net6.0-windows", "") + "\\Functions");
+                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net7.0-windows", "").Replace("\\bin\\Release\\net7.0-windows", "") + "\\Functions");
                         List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
                         List<string> allNamespacesAvaiable_list_main = new List<string>();
                         foreach (string item in allNamespacesAvaiable_list)
@@ -186,7 +186,7 @@ namespace Easy14_Programming_Language
                     }
                     else if (!funcLine.Contains("."))
                     {
-                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(strWorkPath.Replace("\\bin\\Debug\\net6.0-windows", "").Replace("\\bin\\Release\\net6.0-windows", "") + "\\Functions");
+                        string[] allNamespacesAvaiable_array = Directory.GetDirectories(strWorkPath.Replace("\\bin\\Debug\\net7.0-windows", "").Replace("\\bin\\Release\\net7.0-windows", "") + "\\Functions");
                         List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
                         List<string> allNamespacesAvaiable_list_main = new List<string>();
                         foreach (string item in allNamespacesAvaiable_list)

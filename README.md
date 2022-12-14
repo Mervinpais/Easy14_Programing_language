@@ -18,29 +18,28 @@ Basically a mashup of Python + C#
 
 ---
 
-# Version 3.0
+# Version 3.1
 
 ## New stuff;
 
-* Fixed **many** bugs
+* Replaced the old "if (keyword) then keyword_function" with a basic AST
+* Fixed Bugs 🪲🛠️
+* Better Syntax
+  - Before
+    ```
+    Console.print("Hello world!");
+    ```
+  - After
+    ```
+    Console Print "Hello world!";
+    ```
 
-27/9/2022;
-<br>
-* HARDcoded the help contents so you just need to type "/help clear" to get help about the Console.clear() function rather than "/help console.clear()".
-
-<br>
-
+    It may look like a downgrade but it's best to keep the code simpler to remeber (and easier to fix bugs with 🥲)
 ---
 
 ## Known Issues
 
-```javascript
-var x = "Hello world!";
-print(x);
-
->>>
-```
-
+- None
 ## Fixed Bugs
 
 > Fixed Console Namespace functions

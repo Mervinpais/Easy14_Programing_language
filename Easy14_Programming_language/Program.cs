@@ -387,20 +387,20 @@ namespace Easy14_Programming_Language
                     }
                     else if (statement_split[1] == "Input")
                     {
-                        ConsoleInput.Interperate(statement, statements, textArray, FileLocation, null);
+                        ConsoleInput.Interperate(statement_split[2]);
                     }
-                }
-                else if (statement.StartsWith($"Console.clear(") || statement.StartsWith($"clear("))
-                {
-                    ConsoleClear.Interperate(statement, textArray, FileLocation);
-                }
-                else if (statement.StartsWith($"Console.exec(") || statement.StartsWith($"exec("))
-                {
-                    ConsoleExec.Interperate(statement, textArray, FileLocation);
-                }
-                else if (statement.StartsWith($"Console.beep(") || statement.StartsWith($"beep("))
-                {
-                    ConsoleBeep.Interperate(statement, textArray, FileLocation);
+                    else if (statement_split[1] == "Clear")
+                    {
+                        ConsoleClear.Interperate();
+                    }
+                    else if (statement_split[1] == "Execute")
+                    {
+                        ConsoleExec.Interperate(statement_split[2]);
+                    }
+                    else if (statement_split[1] == "Beep")
+                    {
+                        ConsoleBeep.Interperate($"{statement_split[2]} {statement_split[3]}");
+                    }
                 }
                 else if (statement.StartsWith($"wait(") && statement.EndsWith(");"))
                 {
@@ -682,7 +682,7 @@ namespace Easy14_Programming_Language
                         {
                             if (funcLine.Contains("."))
                             {
-                                string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0-windows", "").Replace("\\bin\\Release\\net6.0-windows", "") + "\\Functions");
+                                string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net7.0-windows", "").Replace("\\bin\\Release\\net7.0-windows", "") + "\\Functions");
                                 List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
                                 List<string> allNamespacesAvaiable_list_main = new List<string>();
                                 foreach (string item in allNamespacesAvaiable_list)
@@ -738,7 +738,7 @@ namespace Easy14_Programming_Language
                             }
                             else if (!funcLine.Contains("."))
                             {
-                                string[] allNamespacesAvaiable_array = Directory.GetDirectories(strWorkPath.Replace("\\bin\\Debug\\net6.0-windows", "").Replace("\\bin\\Release\\net6.0-windows", "") + "\\Functions");
+                                string[] allNamespacesAvaiable_array = Directory.GetDirectories(strWorkPath.Replace("\\bin\\Debug\\net7.0-windows", "").Replace("\\bin\\Release\\net7.0-windows", "") + "\\Functions");
                                 List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
                                 List<string> allNamespacesAvaiable_list_main = new List<string>();
                                 foreach (string item in allNamespacesAvaiable_list)
@@ -790,13 +790,13 @@ namespace Easy14_Programming_Language
                             }
                             else
                             {
-                                CSharpErrorReporter.ConsoleLineReporter.Error($"\'{statement}\' is not a vaild code statement\n  Error was located on Line {lineCount - 13}");
+                                //CSharpErrorReporter.ConsoleLineReporter.Error($"\'{statement}\' is not a vaild code statement\n  Error was located on Line {lineCount - 13}");
                                 break;
                             }
                         }
                         else
                         {
-                            CSharpErrorReporter.ConsoleLineReporter.Error($"\'{statement}\' is not a vaild code statement\n  Error was located on Line {lineCount - 13}");
+                            //CSharpErrorReporter.ConsoleLineReporter.Error($"\'{statement}\' is not a vaild code statement\n  Error was located on Line {lineCount - 13}");
                             break;
                         }
                     }
