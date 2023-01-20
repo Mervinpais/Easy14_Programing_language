@@ -57,7 +57,7 @@ namespace Easy14_Programming_Language
                         int number1 = Convert.ToInt32(text.Substring(0, text.IndexOf(",")).Replace(",", ""));
                         int number2 = Convert.ToInt32(text.Substring(text.IndexOf(",")).Replace(",", ""));
                         Random rnd = new Random();
-                        File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}", Random_RandomRange.Interperate(varContent, lines, null));
+                        //File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @$"\\EASY14_Variables_TEMP\\{varName}", Random_RandomRange.Interperate(varContent, lines, null));
                     }
 
                     //else if (varContent.StartsWith($"Console.input(") || varContent.StartsWith($"input(") && varContent.EndsWith(");"))

@@ -5,9 +5,36 @@ namespace Easy14_Programming_Language
 {
     public static class ConsoleInput
     {
-        public static string Interperate(string line)
+        public static string Interperate(string line = null)
         {
-            if (line.StartsWith("\"") && line.EndsWith("\""))
+            line = line.Substring("Input".Length);
+
+            if (line.EndsWith(";"))
+            {
+                line = line.Substring(0, line.Length - 1);    //SYNTAX CHECK 1
+            }
+            else
+            {
+                return "";
+            }
+
+            if (line.StartsWith("(") && line.EndsWith(")"))
+            {
+                line = line.Substring(1, line.Length - 2);    //SYNTAX CHECK 2
+            }
+            else
+            {
+                return "";
+            }
+
+
+            if (line == "")
+            {
+                Console.Write(">");
+                string returnedInput = Console.ReadLine();
+                return returnedInput;
+            }
+            else if (line.StartsWith("\"") && line.EndsWith("\""))
             {
                 line = line.Substring(1, line.Length - 2);
                 Console.WriteLine(line);
@@ -48,11 +75,4 @@ namespace Easy14_Programming_Language
             }
         }
     }
-
-    public class AssignStatement_
-    {
-        public string Variable { get; set; }
-        public int Value { get; set; }
-    }
-
 }

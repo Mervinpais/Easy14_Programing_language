@@ -1,0 +1,20 @@
+Copyright (c) 2023 Mervinpais14 (Formerly Mervinpaismakeswindows14)
+=======================================================
+
+Welcome to Easy14!, please check out the orginal Github repository if you want to help out!
+
+https://github.com/Mervinpais/Easy14_Programing_language
+
+Thanks for installing Easy14!, Please bugs to the github repo and any questions can be answersed on my (our) discord;
+
+https://discord.gg/HWmNkE6Xc9
+
+(Note; The link is permanent so you can join anytime :)
+
+Want tutorials?
+
+https://mervinpais.github.io/Easy14_Programing_language/webpages/docs.html
+
+/\ Github website for the Tutorials
+
+IMPORTANT; These tutorials wont be updated untiil i relased a new version or new patch (minor changes wont get a tutorial update)

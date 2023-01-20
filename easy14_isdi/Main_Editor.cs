@@ -85,7 +85,7 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
 
             ChangeColorOfWord("if|else|while", "Teal");
             ChangeColorOfWord("using", "Orange");
-            ChangeColorOfWord("\"", "DarkGreen");
+            ChangeColorOfWord("\"", "LightGreen");
             ChangeColorOfWord("Console", "LightBlue");
         }
 

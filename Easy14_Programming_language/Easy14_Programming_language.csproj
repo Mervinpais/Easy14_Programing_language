@@ -40,8 +40,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove=".github\**" />
     <Compile Remove=".vs\**" />
+    <EmbeddedResource Remove=".github\**" />
     <EmbeddedResource Remove=".vs\**" />
+    <None Remove=".github\**" />
     <None Remove=".vs\**" />
   </ItemGroup>
 
@@ -54,7 +57,6 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include=".github\ISSUE_TEMPLATE\bug_report.md" />
   </ItemGroup>
 
   <ItemGroup>

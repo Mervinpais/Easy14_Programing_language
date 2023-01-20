@@ -20,17 +20,41 @@ namespace Easy14_Programming_Language
         public static bool DisplayFileContentsBeforeRuntime = false;
 
         //code from https://iq.direct/blog/51-how-to-get-the-current-executable-s-path-in-csharp.html :)
+        // Get the directory path of the current executing assembly
+        static string rootPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+        // Get the parent directory of the root path, and then the parent of that directory, and so on
+        static string parentPath = Path.GetDirectoryName(Directory.GetParent(Directory.GetParent(rootPath).FullName).FullName);
+
+        // Combine the parent path with the path to the options.ini file
+        static string optionsPath = Path.Combine(parentPath, @"Application Code\options.ini");
+
+        // Read the options.ini file into an array of strings
+        static string[] configFile = File.ReadAllLines(optionsPath);
+
+        // Get the path to the desktop and combine it with the path to the EASY14_Variables_TEMP folder
+        static string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        static string tempPath = Path.Combine(desktopPath, "EASY14_Variables_TEMP");
+
+        // Declare the readonly fields
         readonly static string strExeFilePath = Assembly.GetExecutingAssembly().Location;
         readonly static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
-        static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
-        readonly static string TemporaryVariableFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP";
-        readonly static string version = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(6, Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase).Length - 59) + @"\Easy14_Programming_language\Application Code\currentVersion.txt";
+        readonly static string TemporaryVariableFolder = tempPath;
+        readonly static string version = Path.Combine(parentPath, @"Application Code\currentVersion.txt");
+
 
         static void Main(string[] args)
         {
             Console.ResetColor();
-            Console.WriteLine($"Easy14 {File.ReadAllLines(version)[1]} on {OSPlatform.Windows}");
+            string osName = "Not Detected";
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) { osName = "Windows"; }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) { osName = "Linux"; }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) { osName = "OSX"; }
+            else { osName = "Unknown"; }
+
+            Console.WriteLine($"Easy14 {File.ReadAllLines(version)[1]} on {osName}");
             Console.WriteLine("Type in \"help\" or \"info\" for information\n");
+
 
             if (Directory.Exists(TemporaryVariableFolder))
             {
@@ -42,9 +66,9 @@ namespace Easy14_Programming_Language
             /* Checking if the user has disabled updates in the config file. If they have not, it will
             check for updates. */
 
-            bool UpdatesDisabled = Convert.ToBoolean(Easy14_configuration.getBoolOption("UpdatesDisabled"));
+            bool UpdatesDisabled = Convert.ToBoolean(Easy14_configuration.GetBoolOption("UpdatesDisabled"));
 
-            bool UpdatesWarningsDisabled = Convert.ToBoolean(Easy14_configuration.getBoolOption("UpdatesWarningsDisabled"));
+            bool UpdatesWarningsDisabled = Convert.ToBoolean(Easy14_configuration.GetBoolOption("UpdatesWarningsDisabled"));
 
             if (!UpdatesDisabled)
             {
@@ -163,9 +187,9 @@ namespace Easy14_Programming_Language
                         }
 
                         string[] allNamespaces = NamespaceList.ToArray();
-                        string[] command_Array = new string[allNamespaces.Length + new string[] { line }.Length];
+                        string[] command_Array = new string[allNamespaces.Length + 1];
                         Array.Copy(allNamespaces, command_Array, allNamespaces.Length);
-                        Array.Copy(new string[] { line }, 0, command_Array, allNamespaces.Length, new string[] { line }.Length);
+                        command_Array[allNamespaces.Length] = line;
 
                         Program prog = new Program();
                         prog.CompileCode_fromOtherFiles(null, command_Array, 0, false, "}");
@@ -202,24 +226,15 @@ namespace Easy14_Programming_Language
             int windowWidth = Console.WindowWidth;
             string windowState = "normal";
 
-            LibrariesDisabled = Convert.ToBoolean(Easy14_configuration.getBoolOption("disableLibraries"));
+            LibrariesDisabled = Convert.ToBoolean(Easy14_configuration.GetBoolOption("disableLibraries"));
 
-            if ((bool)Easy14_configuration.getBoolOption("windowHeight") != false)
-            {
-                windowHeight = Convert.ToInt32(Easy14_configuration.getBoolOption("windowHeight"));
-            }
-            if ((bool)Easy14_configuration.getBoolOption("windowWidth") != false)
-            {
-                windowWidth = Convert.ToInt32(Easy14_configuration.getBoolOption("windowWidth"));
-            }
-            if ((string)Easy14_configuration.getBoolOption("windowState") != "false")
-            {
-                windowState = (string)Easy14_configuration.getBoolOption("windowState");
-            }
+            windowHeight = Convert.ToInt32(Easy14_configuration.GetBoolOption("windowHeight"));
+            windowWidth = Convert.ToInt32(Easy14_configuration.GetBoolOption("windowWidth"));
+            windowState = (string)Easy14_configuration.GetBoolOption("windowState");
 
-            if ((bool)Easy14_configuration.getBoolOption("showOptionsINI_DataWhenE14_Loads") != false)
+            if ((bool)Easy14_configuration.GetBoolOption("showOptionsINI_DataWhenE14_Loads") != false)
             {
-                if ((string)Easy14_configuration.getBoolOption("showOptionsINI_DataWhenE14_Loads") == "true")
+                if ((string)Easy14_configuration.GetBoolOption("showOptionsINI_DataWhenE14_Loads") == "true")
                 {
                     List<string> configFileLIST = new List<string>();
 
@@ -263,7 +278,11 @@ namespace Easy14_Programming_Language
                 {
                     try
                     {
-                        Console.SetWindowSize(Console.WindowWidth, windowHeight > 50 ? windowHeight = 50 : windowHeight);
+                        if (windowHeight < 50)
+                        {
+                            windowHeight = 50;
+                        }
+                        Console.SetWindowSize(Console.WindowWidth, windowHeight);
                     }
                     catch (Exception e)
                     {
@@ -277,7 +296,11 @@ namespace Easy14_Programming_Language
                 {
                     try
                     {
-                        Console.SetWindowSize(windowWidth > 150 ? windowWidth = 150 : windowWidth, Console.WindowHeight);
+                        if (windowWidth < 150)
+                        {
+                            windowWidth = 150;
+                        }
+                        Console.SetWindowSize(windowWidth, Console.WindowHeight);
                     }
                     catch
                     {
@@ -331,7 +354,9 @@ namespace Easy14_Programming_Language
 
             foreach (string statement in statements)
             {
-                string[] statement_split = statement.Split(" ");
+                string[] statement_split_Space = statement.Split(" ");
+                string[] statement_split_dot = statement.Split(".");
+                List<string> statement_list_split = new List<string>(statement.Split(" "));
 
                 if (ShowStatementsDuringRuntime == true)
                 {
@@ -376,47 +401,56 @@ namespace Easy14_Programming_Language
                 else if (statement.ToLower() == "exit")
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("\nPlease use \"exit()\" or \"exit();\" or Ctrl+C to close the interative console");
+                    Console.WriteLine("\nPlease use \"exit();\" or Ctrl+C to close the interative console");
                     Console.ResetColor(); continue;
                 }
-                else if (statement_split[0] == "Console")
+                else if (statement_split_dot[0] == "Console")
                 {
-                    if (statement_split[1] == "Print")
+                    if (statement_split_dot[1].StartsWith("Print"))
                     {
-                        ConsolePrint.Interperate(statement_split[2]);
+                        ConsolePrint.Interperate(statement_split_dot[1]);
                     }
-                    else if (statement_split[1] == "Input")
+                    else if (statement_split_dot[1].StartsWith("Input"))
                     {
-                        ConsoleInput.Interperate(statement_split[2]);
+                        ConsoleInput.Interperate(statement_split_dot[1]);
                     }
-                    else if (statement_split[1] == "Clear")
+                    else if (statement_split_dot[1].StartsWith("Clear"))
                     {
                         ConsoleClear.Interperate();
                     }
-                    else if (statement_split[1] == "Execute")
+                    else if (statement_split_dot[1].StartsWith("Execute") || statement_split_dot[1].StartsWith("Exec"))
                     {
-                        ConsoleExec.Interperate(statement_split[2]);
+                        ConsoleExec.Interperate(statement_split_dot[1]);
                     }
-                    else if (statement_split[1] == "Beep")
+                    else if (statement_split_dot[1].StartsWith("Beep"))
                     {
-                        ConsoleBeep.Interperate($"{statement_split[2]} {statement_split[3]}");
+                        ConsoleBeep.Interperate($"{statement_split_dot[2]} {statement_split_dot[3]}");
                     }
                 }
-                else if (statement.StartsWith($"wait(") && statement.EndsWith(");"))
+                else if (statement_split_dot[0] == "Time")
                 {
-                    TimeWait.Interperate(statement, lineCount);
+                    if (statement_split_dot[1] == "Wait")
+                    {
+                        TimeWait.Interperate(statement_split_dot[2]);
+                    }
                 }
-                else if (statement.StartsWith($"var") && statement.EndsWith(";"))
+                else if (statement_split_Space[0] == "var")
                 {
-                    VariableCode.Interperate(statement, statements, lineCount);
+                    if (statement_split_Space[2] == "=")
+                    {
+                        VariableCode.Interperate(statement_split_Space[1], String.Join(" ", statement_list_split.GetRange(3, statement_list_split.Count - 3)));
+                    }
                 }
-                else if (statement.StartsWith($"Random.RandomRange(") || statement.StartsWith($"RandomRange("))
+                else if (statement_split_dot[0] == "Random")
                 {
-                    Random_RandomRange.Interperate(statement, textArray, FileLocation);
-                }
-                else if (statement.StartsWith($"Random.RandomRangeDouble(") || statement.StartsWith($"RandomRangeDouble("))
-                {
-                    Random_RandomRangeDouble.Interperate(statement, textArray, FileLocation);
+                    if (statement_split_dot[1] == "Range")
+                    {
+                        return Random_RandomRange.Interperate(String.Join(" ", statement_list_split.GetRange(2, statement_list_split.Count - 2)));
+                    }
+                    else if (statement_split_dot[1] == $"RangeDouble")
+                    {
+                        Random_RandomRangeDouble.Interperate(statement, textArray, FileLocation);
+                    }
                 }
                 else if (statement.StartsWith($"ToString(") && statement.EndsWith(");"))
                 {
@@ -424,15 +458,15 @@ namespace Easy14_Programming_Language
                 }
                 try
                 {
-                    if ((statement.StartsWith($"if") && statement.EndsWith("{")) || (statement.StartsWith("if") && statements[lineCount] == "{"))
+                    if (statement_split_Space[0] == $"if" && (statement.EndsWith("{") || statements[lineCount] == "{"))
                     {
                         If_Loop.Interperate(statement, statements, textArray, FileLocation, isInAMethod, methodName); return "";
                     }
-                    else if ((statement.StartsWith($"while") && statement.EndsWith("{")) || (statement.StartsWith("while") && statements[lineCount] == "{"))
+                    else if (statement_split_Space[0] == $"while" && (statement.EndsWith("{") || statements[lineCount] == "{"))
                     {
                         While_Loop.Interperate(statement, statements, textArray, FileLocation); return "";
                     }
-                    else if ((statement.StartsWith("func ") && statement.EndsWith(") {")) || (statement.StartsWith("func ")))
+                    else if (statement_split_Space[0] == "func " && (statement.EndsWith(") {") || statements[lineCount] == "{"))
                     {
                         Method_Code.Interperate(statement, textArray, statements, FileLocation, true); return "";
                     }
@@ -441,147 +475,152 @@ namespace Easy14_Programming_Language
                 {
                     CSharpErrorReporter.ConsoleLineReporter.Error("Invalid Syntax", $"Invalid Syntax at line {lineCount}\n{statement}\n");
                 }
-                if (statement.StartsWith($"FileSystem.MakeFile(") || statement.StartsWith($"MakeFile("))
+                if (statement_split_dot[0] == "FileSystem")
                 {
-                    FileSystem_MakeFile.Interperate(statement, FileLocation, textArray, lineCount);
-                }
-                else if (statement.StartsWith($"FileSystem.MakeFolder(") || statement.StartsWith($"MakeFolder("))
-                {
-                    FileSystem_MakeFolder.Interperate(statement, FileLocation, textArray, lineCount);
-                }
-                else if (statement.StartsWith($"FileSystem.DeleteFile(") || statement.StartsWith($"DeleteFile("))
-                {
-                    FileSystem_DeleteFile.Interperate(statement, FileLocation, textArray, lineCount);
-                }
-                else if (statement.StartsWith($"FileSystem.DeleteFolder(") || statement.StartsWith($"DeleteFolder("))
-                {
-                    FileSystem_DeleteFolder.Interperate(statement, FileLocation, textArray, lineCount);
-                }
-                else if (statement.StartsWith($"FileSystem.ReadFile(") || statement.StartsWith($"ReadFile("))
-                {
-                    FileSystem_ReadFile.Interperate(statement, FileLocation, textArray, lineCount);
-                }
-                else if (statement.StartsWith($"FileSystem.RenameFile(") || statement.StartsWith($"RenameFile("))
-                {
-                    FileSystem_RenameFile.Interperate(statement, FileLocation, textArray, lineCount);
-                }
-                else if (statement.StartsWith($"FileSystem.WriteFile(") || statement.StartsWith($"WriteFile("))
-                {
-                    FileSystem_WriteFile.Interperate(statement, FileLocation, textArray, lineCount);
-                }
-                else if (statement.StartsWith($"Network.Ping(") || statement.StartsWith($"Ping("))
-                {
-                    NetworkPing.Interperate(statement, FileLocation, textArray, lineCount);
-                }
-                else if (statement.StartsWith($"Time.CurrentTime(") || statement.StartsWith($"CurrentTime("))
-                {
-                    return Time_CurrentTime.Interperate(statement, textArray, FileLocation);
-                }
-                else if (statement.StartsWith($"Time.IsLeapYear(") || statement.StartsWith($"IsLeapYear("))
-                {
-                    return Convert.ToBoolean(Time_IsLeapYear.Interperate(statement, textArray, FileLocation));
-                }
-                else if (statement.StartsWith($"Random.RandomRange(") || statement.StartsWith($"RandomRange("))
-                {
-                    return Random_RandomRange.Interperate(statement, textArray, FileLocation);
-                }
-                else if (statement.StartsWith($"sdl2.makeWindow(") || statement.StartsWith($"makeWindow("))
-                {
-                    string code_line = statement.Replace("sdl2.", "").Replace("makeWindow(", "");
-                    code_line = code_line.Substring(0, code_line.Length - 2);
-                    string[] values = code_line.Split(",");
-                    int sizeX = 200;
-                    int sizeY = 200;
-                    int posX = SDL.SDL_WINDOWPOS_UNDEFINED;
-                    int posY = SDL.SDL_WINDOWPOS_UNDEFINED;
-                    string title = "myWindowTitle";
-
-                    try { sizeX = Convert.ToInt32(values[0]); } catch { }
-                    try { sizeY = Convert.ToInt32(values[1]); } catch { }
-                    try { posX = Convert.ToInt32(values[2]); } catch { }
-                    try { posY = Convert.ToInt32(values[3]); } catch { }
-                    try { title = values[4]; } catch { }
-                    IntPtr window = (IntPtr)0;
-                    long window_int = -1;
-                    new Task(() => { window_int = SDL2_makeWindow.Interperate(sizeX, sizeY, posX, posY, title); }).Start();
-                    //window_int = makeWindow.Interperate(sizeX, sizeY, posX, posY, title);
-                    window = (IntPtr)window_int;
-                    Thread.Sleep(100);
-                    continue;
-                }
-                else if (statement.StartsWith($"sdl2.createShape(") || statement.StartsWith($"createShape("))
-                {
-                    string code_line = statement.Replace("sdl2.", "").Replace("createShape(", "");
-                    code_line = code_line.Substring(0, code_line.Length - 2);
-                    string[] values = code_line.Split(",");
-                    long window = 0;
-                    int XPosition = 0;
-                    int YPosition = 0;
-                    int width = 0;
-                    int height = 0;
-
-                    try
+                    if (statement_split_dot[1].StartsWith("MakeFile("))
                     {
+                        FileSystem_MakeFile.Interperate(statement, FileLocation, textArray, lineCount);
+                    }
+                    else if (statement_split_dot[1].StartsWith("MakeFolder("))
+                    {
+                        FileSystem_MakeFolder.Interperate(statement, FileLocation, textArray, lineCount);
+                    }
+                    else if (statement_split_dot[1].StartsWith("DeleteFile"))
+                    {
+                        FileSystem_DeleteFile.Interperate(statement, FileLocation, textArray, lineCount);
+                    }
+                    else if (statement_split_dot[1].StartsWith("DeleteFolder"))
+                    {
+                        FileSystem_DeleteFolder.Interperate(statement, FileLocation, textArray, lineCount);
+                    }
+                    else if (statement_split_dot[1].StartsWith("ReadFile"))
+                    {
+                        FileSystem_ReadFile.Interperate(statement, FileLocation, textArray, lineCount);
+                    }
+                    else if (statement_split_dot[1].StartsWith("RenameFile"))
+                    {
+                        FileSystem_RenameFile.Interperate(statement, FileLocation, textArray, lineCount);
+                    }
+                    else if (statement_split_dot[1].StartsWith("WriteFile"))
+                    {
+                        FileSystem_WriteFile.Interperate(statement, FileLocation, textArray, lineCount);
+                    }
+                }
+                else if (statement_split_dot[0] == "Network")
+                {
+                    if (statement_split_dot[1].StartsWith("Ping"))
+                    {
+                        NetworkPing.Interperate(statement, FileLocation, textArray, lineCount);
+                    }
+                }
+                else if (statement_split_dot[0] == "Time")
+                {
+                    if (statement_split_dot[1].StartsWith("CurrentTime"))
+                    {
+                        return Time_CurrentTime.Interperate(statement, textArray, FileLocation);
+                    }
+                    else if (statement_split_dot[1].StartsWith("IsLeapYear"))
+                    {
+                        return Convert.ToBoolean(Time_IsLeapYear.Interperate(statement, textArray, FileLocation));
+                    }
+                }
+                else if (statement_split_dot[0] == "sdl2")
+                {
+                    if (statement_split_dot[1].StartsWith("makeWindow"))
+                    {
+                        string[] values = statement.Replace("sdl2.", "").Replace("makeWindow(", "").TrimEnd(')').Split(",");
+                        int sizeX = 200;
+                        int sizeY = 200;
+                        int posX = SDL.SDL_WINDOWPOS_UNDEFINED;
+                        int posY = SDL.SDL_WINDOWPOS_UNDEFINED;
+                        string title = "myWindowTitle";
+
+                        if (values.Length >= 1 && int.TryParse(values[0], out sizeX))
+                        {
+                            // sizeX was successfully parsed as an integer
+                        }
+
+                        if (values.Length >= 2 && int.TryParse(values[1], out sizeY))
+                        {
+                            // sizeY was successfully parsed as an integer
+                        }
+
+                        if (values.Length >= 3 && int.TryParse(values[2], out posX))
+                        {
+                            // posX was successfully parsed as an integer
+                        }
+
+                        if (values.Length >= 4 && int.TryParse(values[3], out posY))
+                        {
+                            // posY was successfully parsed as an integer
+                        }
+
+                        if (values.Length >= 5)
+                        {
+                            title = values[4];
+                        }
+
+                        IntPtr window = (IntPtr)0;
+                        long window_int = -1;
+                        new Task(() => { window_int = SDL2_makeWindow.Interperate(sizeX, sizeY, posX, posY, title); }).Start();
+                        //window_int = makeWindow.Interperate(sizeX, sizeY, posX, posY, title);
+                        window = (IntPtr)window_int;
+                        Thread.Sleep(100);
+                        continue;
+                    }
+                    if (statement_split_dot[1].StartsWith("createShape"))
+                    {
+                        string[] values = statement.Replace("sdl2.", "").Replace("createShape(", "").TrimEnd(')').Split(",");
+                        long window = 0;
+                        int xPosition = 0;
+                        int yPosition = 0;
+                        int width = 0;
+                        int height = 0;
+
+                        if (!long.TryParse(values[0], out window))
+                        {
+                            CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get Window parameter");
+                            return "";
+                        }
+
+                        if (values.Length >= 2 && !int.TryParse(values[1], out xPosition))
+                        {
+                            CSharpErrorReporter.ConsoleLineReporter.Warning("Failed to get x (right) position parameter");
+                            xPosition = int.MaxValue;
+                        }
+
+                        if (values.Length >= 3 && !int.TryParse(values[2], out yPosition))
+                        {
+                            CSharpErrorReporter.ConsoleLineReporter.Warning("Failed to get y (up) position parameter");
+                            yPosition = int.MaxValue;
+                        }
+
+                        if (values.Length >= 4 && !int.TryParse(values[3], out width))
+                        {
+                            CSharpErrorReporter.ConsoleLineReporter.Warning("Failed to get w (width) size parameter");
+                            width = int.MaxValue;
+                        }
+
+                        if (values.Length >= 5 && !int.TryParse(values[4], out height))
+                        {
+                            CSharpErrorReporter.ConsoleLineReporter.Warning("Failed to get h (height) size parameter");
+                            height = int.MaxValue;
+                        }
+
+                        new Task(() => { SDL2_createShape.Interperate(window, xPosition, yPosition, width, height); }).Start();
+
+                    }
+                    if (statement_split_dot[1].StartsWith("clearScreen"))
+                    {
+                        string code_line = statement.Replace("sdl2.", "").Replace("clearScreen(", "");
+                        code_line = code_line.Substring(0, code_line.Length - 2);
+                        long window = 0;
+                        string color = null;
+                        string[] values = code_line.Split(",");
                         window = Convert.ToInt64(values[0]);
+                        color = values[1];
+                        SDL2_clearScreen.Interperate(window, color);
                     }
-                    catch
-                    {
-                        CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get Window parameter");
-                        return "";
-                    }
-
-                    try
-                    {
-                        XPosition = Convert.ToInt32(values[1]);
-                    }
-                    catch
-                    {
-                        CSharpErrorReporter.ConsoleLineReporter.Warning("Failed to get x (right) position parameter");
-                        XPosition = int.MaxValue;
-                    }
-
-                    try
-                    {
-                        YPosition = Convert.ToInt32(values[2]);
-                    }
-                    catch
-                    {
-                        CSharpErrorReporter.ConsoleLineReporter.Warning("Failed to get y (up) position parameter");
-                        YPosition = int.MaxValue;
-                    }
-
-                    try
-                    {
-                        width = Convert.ToInt32(values[3]);
-                    }
-                    catch
-                    {
-                        CSharpErrorReporter.ConsoleLineReporter.Warning("Failed to get w (width) size parameter");
-                        width = int.MaxValue;
-                    }
-
-                    try
-                    {
-                        height = Convert.ToInt32(values[4]);
-                    }
-                    catch
-                    {
-                        CSharpErrorReporter.ConsoleLineReporter.Warning("Failed to get h (height) size parameter");
-                        height = int.MaxValue;
-                    }
-
-                    new Task(() => { SDL2_createShape.Interperate(window, XPosition, YPosition, width, height); }).Start();
-                }
-                else if (statement.StartsWith($"sdl2.clearScreen(") || statement.StartsWith($"clearScreen("))
-                {
-                    string code_line = statement.Replace("sdl2.", "").Replace("clearScreen(", "");
-                    code_line = code_line.Substring(0, code_line.Length - 2);
-                    long window = 0;
-                    string color = null;
-                    string[] values = code_line.Split(",");
-                    window = Convert.ToInt64(values[0]);
-                    color = values[1];
-                    SDL2_clearScreen.Interperate(window, color);
                 }
                 else
                 {
@@ -726,7 +765,7 @@ namespace Easy14_Programming_Language
 
                                     try
                                     {
-                                        return CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                                        return "";//CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
                                     }
                                     catch (Exception e)
                                     {

@@ -35,8 +35,8 @@ namespace Easy14_Programming_Language
             /* Checking if the user has disabled updates in the config file. If they have not, it will
             check for updates. */
 
-            bool UpdatesDisabled = Convert.ToBoolean(Easy14_configuration.getBoolOption("UpdatesDisabled"));
-            bool UpdatesWarningsDisabled = Convert.ToBoolean(Easy14_configuration.getBoolOption("UpdatesWarningsDisabled"));
+            bool UpdatesDisabled = Convert.ToBoolean(Easy14_configuration.GetBoolOption("UpdatesDisabled"));
+            bool UpdatesWarningsDisabled = Convert.ToBoolean(Easy14_configuration.GetBoolOption("UpdatesWarningsDisabled"));
             if (!UpdatesDisabled) updateChecker.checkLatestVersion(UpdatesWarningsDisabled);
 
             //=========================================================\\

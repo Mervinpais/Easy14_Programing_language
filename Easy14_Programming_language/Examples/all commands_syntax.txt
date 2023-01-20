@@ -1,0 +1,11 @@
+using _;
+from _ using _;
+
+Console.Print("");
+Console.Input("");
+Console.Clear();
+Console.Execute(""); // Code only in the parameter, text will not work
+
+Time.Wait();
+
+var _ = _;
