@@ -27,7 +27,7 @@ namespace Easy14_Programming_Language
         static string parentPath = Path.GetDirectoryName(Directory.GetParent(Directory.GetParent(rootPath).FullName).FullName);
 
         // Combine the parent path with the path to the options.ini file
-        static string optionsPath = Path.Combine(parentPath, @"Application Code\options.ini");
+        static string optionsPath = "Application Code\\options.ini";
 
         // Read the options.ini file into an array of strings
         static string[] configFile = File.ReadAllLines(optionsPath);
@@ -286,9 +286,9 @@ namespace Easy14_Programming_Language
                     }
                     catch (Exception e)
                     {
-                        CSharpErrorReporter.ConsoleLineReporter.Error("Uh oh, the value you wanted to specify for the Console Window Hight won't work! (check if the value is a string/decimal and change it to an integer)");
-                        CSharpErrorReporter.ConsoleLineReporter.Warning("Couldn't Change Window Height using the value in options.ini, using Default window height");
-                        CSharpErrorReporter.ConsoleLineReporter.Error("Here is Exception Error;\n" + e.Message);
+                        CSharpErrorReporter.ConsoleLineReporter.Error("The Console Window Height value must be an integer, not a string or decimal");
+                        CSharpErrorReporter.ConsoleLineReporter.Warning("Could not change window height using options.ini, using default instead.");
+                        CSharpErrorReporter.Logger.Error(e, "", 0x01, 0x1);
                     }
                 }
 

@@ -69,7 +69,7 @@
 
   <ItemGroup>
     <None Update="Application Code\options.ini">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="README_style.css">
       <PackagePath>\</PackagePath>

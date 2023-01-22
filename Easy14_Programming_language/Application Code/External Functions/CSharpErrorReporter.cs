@@ -9,10 +9,60 @@ namespace Easy14_Programming_Language
 
         public static class Logger
         {
-            public static void Error(Exception ex, string message = null)
+            /// <summary>
+            /// From The Logger Class, Used to Report errors to the Debug Log
+            /// </summary>
+            /// <param name="exception">An Exception to get info about the exception</param>
+            /// <param name="message">A Custom Message to give extra info (If Needed) about an error</param>
+            /// <param name="errCode">The Main Error Code for Report specific errors (1 = Program, 2 = C#, -1 = Unknown, 1x = Error in the program.cs file)</param>
+            /// <param name="posErrCode">place where the error occured (1 = Top of file, 2 = In Between, 3 = End of file)</param>
+            public static void Error(Exception exception, string message = null, int errCode = 0x00, int posErrCode = 0x0)
             {
-                Debug.WriteLine($"\nError: \n{ex.Message}");
-                Debug.WriteLine(message);
+                if (errCode != 0x00)
+                {
+                    Debug.Write("Error Infomation; ");
+                    switch (errCode)
+                    {
+                        case 0x01:
+                            Debug.Write("Program Error");
+                            break;
+                        case 0x02:
+                            Debug.Write("C# Error");
+                            break;
+                        case 0x03:
+                            Debug.Write("Loading Error");
+                            break;
+                        case 0xF1:
+                            Debug.Write("File Error");
+                            break;
+                        case -0x01:
+                            Debug.Write("Unknown Error");
+                            break;
+                        case 0x10:
+                            Debug.Write("Error Occured in main program file");
+                            switch (posErrCode)
+                            {
+                                case 0x1:
+                                    break;
+
+                                case 0x2:
+                                    Debug.Write(", may have occured near the start");
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                            break;
+                        default:
+                            Debug.Write("Unknown Error Code");
+                            break;
+                    }
+                }
+                Debug.WriteLine($"\nError: \n{exception.Message}");
+                if (message != null)
+                {
+                    Debug.WriteLine(message);
+                }
             }
 
             public static void Warning(Exception ex, string message = null)
