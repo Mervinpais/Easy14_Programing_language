@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -18,6 +17,12 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
             save_BTN_Module();
         }
 
+        private string current_theme_;
+        public string current_theme
+        {
+            get { return current_theme_; }
+            set { current_theme_ = value; }
+        }
         async private void save_BTN_Module()
         {
             while (true)
@@ -80,7 +85,7 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
 
             ChangeColorOfWord("if|else|while", "Teal");
             ChangeColorOfWord("using", "Orange");
-            ChangeColorOfWord("\"", "DarkGreen");
+            ChangeColorOfWord("\"", "LightGreen");
             ChangeColorOfWord("Console", "LightBlue");
         }
 
@@ -162,65 +167,56 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
 
         private void Main_Editor_Load(object sender, EventArgs e)
         {
-            string settings_file = Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Assembly.GetExecutingAssembly().Location)))))) + "\\settings.ini";
-            if (File.Exists(settings_file))
-            {
-                List<string> file_contents = new List<string>(File.ReadAllLines(settings_file));
-                file_contents.RemoveAt(0);
-                if (file_contents.Count > 0)
-                {
-                    if (file_contents[0].StartsWith("theme"))
-                    {
-                        if (file_contents[0].ToLower().EndsWith("dark"))
-                        {
-                            code_text_area_rtb.BackColor = Color.FromArgb(64, 64, 64);
-                            code_text_area_rtb.ForeColor = Color.White;
-                            BackColor = Color.FromKnownColor(KnownColor.WindowFrame);
-                        }
-                        else if (file_contents[0].ToLower().EndsWith("light"))
-                        {
-                            code_text_area_rtb.BackColor = Color.FromArgb(200, 200, 200);
-                            code_text_area_rtb.ForeColor = Color.Black;
-                            BackColor = Color.FromKnownColor(KnownColor.WindowFrame);
-                        }
-                        else if (file_contents[0].ToLower().EndsWith("communist"))
-                        {
-                            code_text_area_rtb.BackColor = Color.FromArgb(200, 20, 30);
-                            code_text_area_rtb.ForeColor = Color.Yellow;
-                            BackColor = Color.FromArgb(100, 10, 15);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Theme at line \"" + file_contents[0] + "\" does NOT exist!", "Error");
-                        }
-                    }
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else
-            {
-                File.WriteAllText(settings_file, "[Settings]\ntheme=dark");
-            }
+            ThemeSetter();
         }
 
         private void Main_Editor_Paint(object sender, PaintEventArgs e)
+        {
+            ThemeSetter();
+        }
+
+        private void ThemeSetter()
         {
             string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
             dir = dir.Substring(6, dir.Length - 16);
             /*MessageBox.Show(File.Exists(dir + "\\options.txt").ToString());
             MessageBox.Show(dir + "\\options.txt".ToString());*/
-            string file = dir + "\\options.txt";
+            string file = dir + "\\settings.ini";
             string[] lines = File.ReadAllLines(file);
+
             if (lines.Length > 0)
             {
-                if (lines[0] == "theme-dark")
+                if (lines[0] == "theme dark")
                 {
-
+                    if (current_theme == "dark")
+                    {
+                        return;
+                    }
+                    this.BackColor = SystemColors.WindowFrame;
+                    run_code_btn.BackColor = Color.White;
+                    save_file_btn.BackColor = Color.White;
+                    open_file_btn.BackColor = Color.White;
+                    run_code_btn.ForeColor = Color.Black;
+                    save_file_btn.ForeColor = Color.Black;
+                    open_file_btn.ForeColor = Color.Black;
+                }
+                else if (lines[0] == "theme light")
+                {
+                    if (current_theme == "light")
+                    {
+                        return;
+                    }
+                    this.BackColor = Color.White;
+                    run_code_btn.BackColor = Color.Gray;
+                    save_file_btn.BackColor = Color.Gray;
+                    open_file_btn.BackColor = Color.Gray;
+                    run_code_btn.ForeColor = Color.White;
+                    save_file_btn.ForeColor = Color.White;
+                    open_file_btn.ForeColor = Color.White;
                 }
             }
+            current_theme = lines[0].Substring(6);
+            this.Refresh();
         }
     }
 }

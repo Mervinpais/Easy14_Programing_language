@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace easy14_isde
@@ -10,14 +13,9 @@ namespace easy14_isde
             InitializeComponent();
         }
 
-        public int set_me_to_1 = 1;
         private void settings_form_Load(object sender, EventArgs e)
         {
-            if (set_me_to_1 == 0)
-            {
-                MessageBox.Show("◻︎●︎♏︎♋︎⬧︎♏︎ ⬧︎♏︎⧫︎ ⧫︎♒︎♏︎ ⬧︎♏︎⧫︎♉︎❍︎♏︎♉︎⧫︎□︎♉︎📂︎ ❖︎♋︎❒︎♓︎♋︎♌︎●︎♏︎ ♓︎■︎ ⧫︎♒︎♏︎ ♍︎□︎♎︎♏︎ ⧫︎□︎ 📂︎ ⧫︎□︎ ♍︎□︎■︎⧫︎♓︎■︎◆︎♏︎");
-                Environment.Exit(-1);
-            }
+
         }
 
         private void title_label_Click(object sender, EventArgs e)
@@ -34,7 +32,15 @@ namespace easy14_isde
         {
             if (comboBox1.SelectedIndex == 0) //Light theme
             {
-
+                string settings_file = Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Assembly.GetExecutingAssembly().Location)))))) + "\\settings.ini";
+                File.WriteAllText(settings_file, "theme light");
+                Debug.WriteLine("Theme set to LIGHT");
+            }
+            if (comboBox1.SelectedIndex == 1) //Dark theme
+            {
+                string settings_file = Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Assembly.GetExecutingAssembly().Location)))))) + "\\settings.ini";
+                File.WriteAllText(settings_file, "theme dark");
+                Debug.WriteLine("Theme set to DARK");
             }
         }
 

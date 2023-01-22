@@ -3,12 +3,12 @@ using System.Reflection;
 
 namespace Easy14_Programming_Language
 {
-    public static class Using_namespace_code
+    public static class UsingNamspaceFunction
     {
         readonly static string strExeFilePath = Assembly.GetExecutingAssembly().Location;
         readonly static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
 
-        public static void usingFunction_interp(string line, bool disableLibraries, int lineCount)
+        public static void UsingFunction(string line, bool disableLibraries, int lineCount)
         {
             if (disableLibraries)
             {
@@ -24,7 +24,7 @@ namespace Easy14_Programming_Language
 
             string currentDir = Directory.GetCurrentDirectory();
 
-            string theSupposedNamspace = strWorkPath.Replace("\\bin\\Debug\\net6.0-windows", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
+            string theSupposedNamspace = strWorkPath.Replace("\\bin\\Debug\\net7.0-windows", "") + "\\Functions\\" + line.Replace("using ", "").Replace(";", "");
 
             /* Checking if the using exists. */
             bool doesUsingExist = Directory.Exists(theSupposedNamspace);
@@ -40,7 +40,7 @@ namespace Easy14_Programming_Language
             }
         }
 
-        public static void fromFunction_interp(string line, bool disableLibraries, int lineCount)
+        public static void ForFunction(string line, bool disableLibraries, int lineCount)
         {
             if (disableLibraries)
             {
@@ -53,7 +53,7 @@ namespace Easy14_Programming_Language
                 return;
             }
 
-            string theSupposedNamespace = strWorkPath.Replace("\\bin\\Debug\\net6.0-windows", "") + "\\Functions\\";
+            string theSupposedNamespace = strWorkPath.Replace("\\bin\\Debug\\net7.0-windows", "") + "\\Functions\\";
             theSupposedNamespace = theSupposedNamespace + line.Substring(line.IndexOf("from"), line.Length - (line.IndexOf("get") - 2)).Substring(4).TrimStart().TrimEnd();
             theSupposedNamespace = theSupposedNamespace.TrimStart().TrimEnd();
             string theSupposedClass = theSupposedNamespace;

@@ -1,5 +1,5 @@
 [CURRENT VERSION]
-3.0
+3.1
 
 [TYPE OF BUILD]
 Unfinished Build

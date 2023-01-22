@@ -2,14 +2,14 @@
 
 ## Supported Versions
 
-As of 15th of November 2022; (Darn its been that long?)
-Version 2.8 is still in support but will be soon be release from the supported versions chamber
+As of 1st of December 2022;
+Version 2.9 may be kicked out from the lobby soon
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 3.0 - 2.9   | ✅ Fully Supported!|
-| 2.8 - 2.6   | ✅ Still in support|
-| < 2.5   | ❌  No/Lost Support|
+| 3.1 - 2.0   | ✅ Fully Supported!|
+| 2.9 - 2.7   | ❔ Still in support (but it is recommended to get a newer version|
+| < 2.6   | ❌  No Support|
 
 ## Reporting a Vulnerability
 
@@ -23,7 +23,7 @@ If a bug is found, please report it in issues, if you want to, you can also emai
 If a problem related to compatablity is found, please report it
 
 ## IMPORTANT
-Make sure you have C# is installed to use this app!
+Make sure you have C# is installed to use this app (programming language)!
 
 | Operation system  | Supported |
 | ----------------  | --------- |
@@ -34,4 +34,6 @@ Make sure you have C# is installed to use this app!
 |  └─ Ubuntu        |    😞❌  |
 |  └─ Debian        |    😞❌  |
 
-The Operating system's mentioned here are the ones i want to support and other operating systems won't be supported because this language is not really widespread and useful
+The Operating system's mentioned here are the ones i want to support and other operating systems won't be supported because this (programming) language is not really widespread and useful
+
+Note for windows 7, i will make versions for them using .net 5 but some features wont be avaliable due to an older runtime

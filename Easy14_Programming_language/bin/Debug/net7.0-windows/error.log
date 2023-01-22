@@ -1,0 +1,4 @@
+System.ArgumentException: Must specify valid information for parsing in the string. (Parameter 'value')
+   at System.Enum.TryParse(Type enumType, ReadOnlySpan`1 value, Boolean ignoreCase, Boolean throwOnFailure, Object& result)
+   at System.Enum.Parse(Type enumType, String value, Boolean ignoreCase)
+   at Easy14_Programming_Language.CSharpErrorReporter.ConsoleLineReporter.changeColor(String consoleColor) in C:\Users\mervi\repos\Easy14_Programming_Language\Easy14_Programming_language\Application Code\External Functions\CSharpErrorReporter.cs:line 31
