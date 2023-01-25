@@ -116,7 +116,7 @@ namespace Easy14_Programming_Language
                 Console.WriteLine("if you need help with what args you can run, run the app with argument '/help' to get args help");
             }
 
-            Console.WriteLine("\n===== Easy14 Interactive Console =====\n");
+            Console.WriteLine("\n===== Easy14 =====\n");
             foreach (string line in configFile)
             {
                 if (line.StartsWith("turnOnDeveloperOptions"))
@@ -156,7 +156,7 @@ namespace Easy14_Programming_Language
 
                 else if (line.ToLower() == "exit")
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Warning("\nPlease use \"exit();\" or Ctrl+C to close the interative console"); continue;
+                    ErrorReportor.ConsoleLineReporter.Warning("\nPlease use \"exit();\" or Ctrl+C to close the interative console"); continue;
                 }
                 else if (line.ToLower().StartsWith("/run"))
                 {
@@ -179,24 +179,24 @@ namespace Easy14_Programming_Language
                 {
                     if (!line.StartsWith("/"))
                     {
-                        string[] NamespacesArray = Directory.GetDirectories(Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Assembly.GetExecutingAssembly().Location)))))))) + "\\Functions");
-                        List<string> NamespaceList = new List<string>();
-                        foreach (string Namespace_ in NamespacesArray)
-                        {
-                            NamespaceList.Add(string.Concat("using ", Namespace_.AsSpan(Namespace_.LastIndexOf("\\") + 1), ";"));
-                        }
+                        //string[] NamespacesArray = Directory.GetDirectories(Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Convert.ToString(Directory.GetParent(Assembly.GetExecutingAssembly().Location)))))))) + "\\Functions");
+                        //List<string> NamespaceList = new List<string>();
+                        //foreach (string Namespace_ in NamespacesArray)
+                        //{
+                        //    NamespaceList.Add(string.Concat("using ", Namespace_.AsSpan(Namespace_.LastIndexOf("\\") + 1), ";"));
+                        //}
 
-                        string[] allNamespaces = NamespaceList.ToArray();
-                        string[] command_Array = new string[allNamespaces.Length + 1];
-                        Array.Copy(allNamespaces, command_Array, allNamespaces.Length);
-                        command_Array[allNamespaces.Length] = line;
+                        //string[] allNamespaces = NamespaceList.ToArray();
+                        //string[] command_Array = new string[allNamespaces.Length + 1];
+                        //Array.Copy(allNamespaces, command_Array, allNamespaces.Length);
+                        //command_Array[allNamespaces.Length] = line;
 
                         Program prog = new Program();
-                        prog.CompileCode_fromOtherFiles(null, command_Array, 0, false, "}");
+                        prog.CompileCode_fromOtherFiles(null, new string[] { line }, 0, false, "}");
                     }
                     else
                     {
-                        CSharpErrorReporter.ConsoleLineReporter.Error("ERROR; Easy14 Interactive can't understand what the args you specified \n");
+                        ErrorReportor.ConsoleLineReporter.Error("ERROR; Easy14 Interactive can't understand what the args you specified \n");
                         continue;
                     }
                 }
@@ -286,9 +286,9 @@ namespace Easy14_Programming_Language
                     }
                     catch (Exception e)
                     {
-                        CSharpErrorReporter.ConsoleLineReporter.Error("The Console Window Height value must be an integer, not a string or decimal");
-                        CSharpErrorReporter.ConsoleLineReporter.Warning("Could not change window height using options.ini, using default instead.");
-                        CSharpErrorReporter.Logger.Error(e, "", 0x01, 0x1);
+                        ErrorReportor.ConsoleLineReporter.Error("The Console Window Height value must be an integer, not a string or decimal");
+                        ErrorReportor.ConsoleLineReporter.Warning("Could not change window height using options.ini, using default instead.");
+                        ErrorReportor.Logger.Error(e, "", ErrorReportor.EASY14_IO_FILE_ERROR);
                     }
                 }
 
@@ -304,14 +304,14 @@ namespace Easy14_Programming_Language
                     }
                     catch
                     {
-                        CSharpErrorReporter.ConsoleLineReporter.Error("Uh oh, the value you wanted to specify for the Console Window Width won't work! (check if the value is a string/decimal and change it to an integer)");
-                        CSharpErrorReporter.ConsoleLineReporter.Warning("Couldn't Change Window Width using the value in options.ini, using Default window width");
+                        ErrorReportor.ConsoleLineReporter.Error("Uh oh, the value you wanted to specify for the Console Window Width won't work! (check if the value is a string/decimal and change it to an integer)");
+                        ErrorReportor.ConsoleLineReporter.Warning("Couldn't Change Window Width using the value in options.ini, using Default window width");
                     }
                 }
             }
             else if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                CSharpErrorReporter.ConsoleLineReporter.Error("Changing terminal size on a system other than Windows with C# isn't Possible");
+                ErrorReportor.ConsoleLineReporter.Error("Changing terminal size on a system other than Windows with C# isn't Possible");
             }
 
             /* Reading the file and storing it in a string array. */
@@ -473,7 +473,7 @@ namespace Easy14_Programming_Language
                 }
                 catch (IndexOutOfRangeException /*indexOutRangeEx*/)
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error("Invalid Syntax", $"Invalid Syntax at line {lineCount}\n{statement}\n");
+                    ErrorReportor.ConsoleLineReporter.Error("Invalid Syntax", $"Invalid Syntax at line {lineCount}\n{statement}\n");
                 }
                 if (statement_split_dot[0] == "FileSystem")
                 {
@@ -579,31 +579,31 @@ namespace Easy14_Programming_Language
 
                         if (!long.TryParse(values[0], out window))
                         {
-                            CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get Window parameter");
+                            ErrorReportor.ConsoleLineReporter.Error("Failed to get Window parameter");
                             return "";
                         }
 
                         if (values.Length >= 2 && !int.TryParse(values[1], out xPosition))
                         {
-                            CSharpErrorReporter.ConsoleLineReporter.Warning("Failed to get x (right) position parameter");
+                            ErrorReportor.ConsoleLineReporter.Warning("Failed to get x (right) position parameter");
                             xPosition = int.MaxValue;
                         }
 
                         if (values.Length >= 3 && !int.TryParse(values[2], out yPosition))
                         {
-                            CSharpErrorReporter.ConsoleLineReporter.Warning("Failed to get y (up) position parameter");
+                            ErrorReportor.ConsoleLineReporter.Warning("Failed to get y (up) position parameter");
                             yPosition = int.MaxValue;
                         }
 
                         if (values.Length >= 4 && !int.TryParse(values[3], out width))
                         {
-                            CSharpErrorReporter.ConsoleLineReporter.Warning("Failed to get w (width) size parameter");
+                            ErrorReportor.ConsoleLineReporter.Warning("Failed to get w (width) size parameter");
                             width = int.MaxValue;
                         }
 
                         if (values.Length >= 5 && !int.TryParse(values[4], out height))
                         {
-                            CSharpErrorReporter.ConsoleLineReporter.Warning("Failed to get h (height) size parameter");
+                            ErrorReportor.ConsoleLineReporter.Warning("Failed to get h (height) size parameter");
                             height = int.MaxValue;
                         }
 
@@ -713,7 +713,7 @@ namespace Easy14_Programming_Language
                             }
                             catch
                             {
-                                CSharpErrorReporter.ConsoleLineReporter.Error(statement + " is not a valid line.");
+                                ErrorReportor.ConsoleLineReporter.Error(statement + " is not a valid line.");
                                 return "";
                             }
                         }
@@ -769,7 +769,7 @@ namespace Easy14_Programming_Language
                                     }
                                     catch (Exception e)
                                     {
-                                        CSharpErrorReporter.ConsoleLineReporter.Error("The function you are trying to use returned an Error");
+                                        ErrorReportor.ConsoleLineReporter.Error("The function you are trying to use returned an Error");
                                         Console.WriteLine($"\n{e.Message}");
                                     }
                                     return "";
@@ -822,7 +822,7 @@ namespace Easy14_Programming_Language
                                 }
                                 catch (Exception e)
                                 {
-                                    CSharpErrorReporter.ConsoleLineReporter.Error("C# EXCEPTION ERROR; " + e.GetType().Name, e.Message);
+                                    ErrorReportor.ConsoleLineReporter.Error("C# EXCEPTION ERROR; " + e.GetType().Name, e.Message);
                                     Console.WriteLine("CSHARP_Error");
                                 }
                                 return "";

@@ -48,14 +48,14 @@ namespace Easy14_Programming_Language
                 string variable_dir = dir + "\\EASY14_Variables_TEMP";
                 if (!Directory.Exists(variable_dir))
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
+                    ErrorReportor.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
                     return "";
                 }
 
                 var files = Directory.GetFiles(variable_dir);
                 if (!(files.Length > 0))
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
+                    ErrorReportor.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
                     return "";
                 }
 
@@ -69,7 +69,7 @@ namespace Easy14_Programming_Language
                 }
                 else
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
+                    ErrorReportor.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
                     return "";
                 }
             }

@@ -64,17 +64,17 @@ namespace Easy14_Programming_Language
                         }
                         else
                         {
-                            CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
+                            ErrorReportor.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
                         }
                     }
                     else
                     {
-                        CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
+                        ErrorReportor.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
                     }
                 }
                 else
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
+                    ErrorReportor.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
                 }
             }
 
@@ -97,7 +97,7 @@ namespace Easy14_Programming_Language
                 {
                     errorMessage.Add("Mismatching quotes (or Missing quotes)");
                 }
-                CSharpErrorReporter.ConsoleLineReporter.Error(string.Join(Environment.NewLine, errorMessage));
+                ErrorReportor.ConsoleLineReporter.Error(string.Join(Environment.NewLine, errorMessage));
             }
 
             //Anything else...

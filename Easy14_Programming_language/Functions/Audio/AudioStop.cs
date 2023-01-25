@@ -19,25 +19,25 @@ namespace Easy14_Programming_Language
                 else if (textArray != null && fileloc == null) someLINEs = textArray;
                 else
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error("Error: No file or text array was provided to the Console.beep function.");
+                    ErrorReportor.ConsoleLineReporter.Error("Error: No file or text array was provided to the Console.beep function.");
                 }
 
                 bool foundUsing = false;
-                foreach (string x in someLINEs)
+                foreach (string usingStatements in someLINEs)
                 {
-                    if (x.TrimStart().TrimEnd() == "using Audio;")
+                    if (usingStatements.TrimStart().TrimEnd() == "using Audio;")
                     {
                         foundUsing = true;
                         break;
                     }
-                    if (x.TrimStart().TrimEnd() == code_part)
+                    if (usingStatements.TrimStart().TrimEnd() == code_part)
                     {
                         break;
                     }
                 }
                 if (foundUsing == false)
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error($"The Using 'Audio' wasnt referenced to use 'stop' without its reference");
+                    ErrorReportor.ConsoleLineReporter.Error($"The Using 'Audio' wasnt referenced to use 'stop' without its reference");
                 }
             }
             else if (code_part.StartsWith($"Audio.AudioStop(")) { }
@@ -48,7 +48,7 @@ namespace Easy14_Programming_Language
             }
             else
             {
-                CSharpErrorReporter.ConsoleLineReporter.Error("Failed to End statement");
+                ErrorReportor.ConsoleLineReporter.Error("Failed to End statement");
             }
 
             try
@@ -58,7 +58,7 @@ namespace Easy14_Programming_Language
             }
             catch (Exception)
             {
-                CSharpErrorReporter.ConsoleLineReporter.Error("Failed to stop audio");
+                ErrorReportor.ConsoleLineReporter.Error("Failed to stop audio");
             }
 
             return;

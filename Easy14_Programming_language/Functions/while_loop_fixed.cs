@@ -90,7 +90,7 @@ namespace Easy14_Programming_Language
 
                 if (condition_operator == "<?>")
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error("Error; unknown operator used at while statement");
+                    ErrorReportor.ConsoleLineReporter.Error("Error; unknown operator used at while statement");
                     return;
                 }
 
@@ -118,7 +118,7 @@ namespace Easy14_Programming_Language
 
                 if (condition_operator == "<?>")
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error("Error; unknown operator used at while statement");
+                    ErrorReportor.ConsoleLineReporter.Error("Error; unknown operator used at while statement");
                     return;
                 }
                 if (obj1_isVar == true && obj2_isVar == false)

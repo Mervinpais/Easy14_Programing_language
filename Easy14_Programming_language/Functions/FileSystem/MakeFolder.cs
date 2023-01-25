@@ -31,17 +31,17 @@ namespace Easy14_Programming_Language
                     return;
                 }
 
-                foreach (string x in someLINEs)
+                foreach (string usingStatements in someLINEs)
                 {
-                    if (x.StartsWith("using"))
+                    if (usingStatements.StartsWith("using"))
                     {
-                        if (x == "using FileSystem;")
+                        if (usingStatements == "using FileSystem;")
                         {
                             foundUsing = true;
                             break;
                         }
                     }
-                    if (x == code_part)
+                    if (usingStatements == code_part)
                     {
                         break;
                     }

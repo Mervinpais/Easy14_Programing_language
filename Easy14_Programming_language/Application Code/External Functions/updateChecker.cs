@@ -42,9 +42,9 @@ namespace Easy14_Programming_Language
                     /* It's sending an error message to the user, telling them that we can't find out
                     what version this language is, and telling them to install the latest version
                     for their safety. */
-                    CSharpErrorReporter.ConsoleLineReporter.Error("AN ERROR OCCURED WHEN SAVING TO CACHE (TO SAVE CURRENT VERSION) THIS WILL PREVENT THE LANGUAGE FROM REMEBERING IT'S VERSION IN THE CASE IF THE currentVersion.txt FILE GOES MISSING, ERROR MESSAGE BELOW\n");
+                    ErrorReportor.ConsoleLineReporter.Error("AN ERROR OCCURED WHEN SAVING TO CACHE (TO SAVE CURRENT VERSION) THIS WILL PREVENT THE LANGUAGE FROM REMEBERING IT'S VERSION IN THE CASE IF THE currentVersion.txt FILE GOES MISSING, ERROR MESSAGE BELOW\n");
 
-                    CSharpErrorReporter.ConsoleLineReporter.Error(e.Message);
+                    ErrorReportor.ConsoleLineReporter.Error(e.Message);
                 }
             }
             catch
@@ -53,7 +53,7 @@ namespace Easy14_Programming_Language
                 will not show the warning. */
                 if (!UpdatesWarningsDisabled)
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error("Uh oh! We can't find the version file(s)!, using cached version Files...");
+                    ErrorReportor.ConsoleLineReporter.Error("Uh oh! We can't find the version file(s)!, using cached version Files...");
                 }
 
                 try
@@ -68,7 +68,7 @@ namespace Easy14_Programming_Language
                         /* It's sending an error message to the user, telling them that we can't find
                         out what version this language is, and telling them to install the latest
                         version for their safety. */
-                        CSharpErrorReporter.ConsoleLineReporter.Error("An error occured! we can't find out what version this language is");
+                        ErrorReportor.ConsoleLineReporter.Error("An error occured! we can't find out what version this language is");
                 }
             }
 
@@ -82,7 +82,7 @@ namespace Easy14_Programming_Language
                 }
                 else
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Warning("NO INTENRET", "No Internet Connection Detected to get updates, this is not an error, this is a warning\n");
+                    ErrorReportor.ConsoleLineReporter.Warning("NO INTENRET", "No Internet Connection Detected to get updates, this is not an error, this is a warning\n");
                     return;
                 }
                 string[] upd = wot.Split(',');
@@ -107,7 +107,7 @@ namespace Easy14_Programming_Language
             {
                 if (!UpdatesWarningsDisabled)
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error("VERSION ERROR", "Uh oh! we can't check if you have the latest version of this language, please make sure you have the latest version yourself");
+                    ErrorReportor.ConsoleLineReporter.Error("VERSION ERROR", "Uh oh! we can't check if you have the latest version of this language, please make sure you have the latest version yourself");
                 }
             }
         }

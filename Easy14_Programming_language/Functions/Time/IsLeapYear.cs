@@ -31,14 +31,14 @@ namespace Easy14_Programming_Language
                     return null;
                 }
 
-                foreach (string x in someLINEs)
+                foreach (string usingStatements in someLINEs)
                 {
-                    if (x.TrimStart().TrimEnd() == "using Time;")
+                    if (usingStatements.TrimStart().TrimEnd() == "using Time;")
                     {
                         foundUsing = true;
                         break;
                     }
-                    if (x.TrimStart().TrimEnd() == code_part)
+                    if (usingStatements.TrimStart().TrimEnd() == code_part)
                     {
                         break;
                     }

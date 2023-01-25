@@ -4,8 +4,14 @@ using System.Windows.Forms;
 
 namespace Easy14_Programming_Language
 {
-    public static class CSharpErrorReporter
+    public static class ErrorReportor
     {
+        public static readonly int EASY14_PROGRAM_ERROR = 0x01;
+        public static readonly int EASY14_CSHARP_ERROR = 0x02;
+        public static readonly int EASY14_LOADING_ERROR = 0x01;
+        public static readonly int EASY14_IO_FILE_ERROR = 0xF1;
+        public static readonly int EASY14_UNKNOWN_ERROR = -0x01;
+        public static readonly int EASY14_MAIN_PROGRAM_FILE_ERROR = 0x10;
 
         public static class Logger
         {
@@ -16,7 +22,7 @@ namespace Easy14_Programming_Language
             /// <param name="message">A Custom Message to give extra info (If Needed) about an error</param>
             /// <param name="errCode">The Main Error Code for Report specific errors (1 = Program, 2 = C#, -1 = Unknown, 1x = Error in the program.cs file)</param>
             /// <param name="posErrCode">place where the error occured (1 = Top of file, 2 = In Between, 3 = End of file)</param>
-            public static void Error(Exception exception, string message = null, int errCode = 0x00, int posErrCode = 0x0)
+            public static void Error(Exception exception, string message = null, int errCode = 0x00)
             {
                 if (errCode != 0x00)
                 {
@@ -40,18 +46,6 @@ namespace Easy14_Programming_Language
                             break;
                         case 0x10:
                             Debug.Write("Error Occured in main program file");
-                            switch (posErrCode)
-                            {
-                                case 0x1:
-                                    break;
-
-                                case 0x2:
-                                    Debug.Write(", may have occured near the start");
-                                    break;
-
-                                default:
-                                    break;
-                            }
                             break;
                         default:
                             Debug.Write("Unknown Error Code");
@@ -96,7 +90,7 @@ namespace Easy14_Programming_Language
                 {
                     ConsoleColor_ = ConsoleColor.Gray;
                     Debug.WriteLine("Color Value invalid, Value;\"" + Convert.ToString(consoleColor) + "\", Error Occured in CSharpErrorReporter");
-                    CSharpErrorReporter.Logger.Error(ex);
+                    ErrorReportor.Logger.Error(ex);
                 }
                 Console.ForegroundColor = ConsoleColor_;
             }

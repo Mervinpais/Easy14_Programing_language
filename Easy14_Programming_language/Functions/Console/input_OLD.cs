@@ -29,15 +29,15 @@ namespace Easy14_Programming_Language
                 else if (textArray != null && fileloc == null) someLines = textArray;
                 else someLines = lines;
 
-                foreach (string x in someLines)
+                foreach (string usingStatements in someLines)
                 {
-                    if (x == code_part)
+                    if (usingStatements == code_part)
                     {
                         break;
                     }
-                    if (x.StartsWith("using") || x.StartsWith("from"))
+                    if (usingStatements.StartsWith("using") || usingStatements.StartsWith("from"))
                     {
-                        if (x == "using Console;" || x == "from Console get input;")
+                        if (usingStatements == "using Console;" || usingStatements == "from Console get input;")
                         {
                             foundUsing = true;
                             break;

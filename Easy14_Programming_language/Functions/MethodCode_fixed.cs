@@ -45,7 +45,7 @@ namespace Easy14_Programming_Language
                             }
                             catch (Exception e)
                             {
-                                CSharpErrorReporter.ConsoleLineReporter.Error(e.Message);
+                                ErrorReportor.ConsoleLineReporter.Error(e.Message);
                             }
                         }
                         break;

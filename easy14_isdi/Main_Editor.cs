@@ -30,10 +30,17 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
                 await Task.Delay(250);
                 if (saveFile != null)
                 {
-                    string SavedfileContents = File.ReadAllText(saveFile);
-                    if (SavedfileContents != code_text_area_rtb.Text)
+                    if (saveFile != "")
                     {
-                        save_file_btn.Enabled = true;
+                        string SavedfileContents = File.ReadAllText(saveFile);
+                        if (SavedfileContents != code_text_area_rtb.Text)
+                        {
+                            save_file_btn.Enabled = true;
+                        }
+                        else
+                        {
+                            save_file_btn.Enabled = false;
+                        }
                     }
                     else
                     {
@@ -139,7 +146,10 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
             openFileDialog.ShowDialog();
             saveFile = openFileDialog.FileName;
             this.Text = openFileDialog.FileName.Substring(openFileDialog.FileName.LastIndexOf("\\") + 1, openFileDialog.FileName.Length - openFileDialog.FileName.LastIndexOf("\\") - 1) + " - Easy14 Scripter";
-            code_text_area_rtb.Text = string.Join("\n", File.ReadAllLines(openFileDialog.FileName));
+            if (openFileDialog.FileName != "")
+            {
+                code_text_area_rtb.Text = string.Join("\n", File.ReadAllLines(openFileDialog.FileName));
+            }
         }
 
         private void settings_btn_Click(object sender, EventArgs e)
