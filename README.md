@@ -7,7 +7,7 @@ Basically a mashup of Python + C#
 	</head>
 </html>
 
-# Version 1
+# Version 0.0.01 (OLD: Version 1)
 The Cool Sh!t finally arrived, here is what you need to know
 
 * This is just like any other hight level language
