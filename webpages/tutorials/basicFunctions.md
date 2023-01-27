@@ -8,29 +8,29 @@ Last Updated; 27/Jan/2022
 
 <p>Console.Print() is used to print stuff to the screen</p>
 
-    ```csharp
-        Console.Print("Hello World");
-    ```
+```csharp
+    Console.Print("Hello World");
+```
 
 <p>All what Print() could/can do;</p>
 
-    ```csharp
-        using Console;
+```csharp
+    using Console;
 
-        Print("Hello world");
-    ```
+    Print("Hello world");
+```
 
 <p>You can also print arithmetic operations</p>
 
-    ```csharp
-        Print(1+2);
+```csharp
+    Print(1+2);
 
-        //Works
+    //Works
 
-        Print(1+4-2);
+    Print(1+4-2);
 
-        //Also works :)
-    ```
+    //Also works :)
+```
 
 <p>You can do +, -, *, /, % (Modulo), and == in a print statement</p>
 
@@ -38,40 +38,40 @@ Last Updated; 27/Jan/2022
 
 <p>Console.Input() is used for input (usually from the user)</p>
 
-    ```csharp
-        Console.Input();
+```csharp
+    Console.Input();
 
-        using Console;
+    using Console;
 
-        Input();
-    ```
+    Input();
+```
 
 <p> All what Input() could/can do; </p>
 
-    ```csharp
-        Console.Input();
+```csharp
+    Console.Input();
 
-        Console.input("Some Input Message");
+    Console.input("Some Input Message");
 
-    ```
+```
 
 ### Console.Clear()
 
 <p> Console.Clear() is used to Clear the console </p>
 
-    ```csharp
-        Console.Clear();
+```csharp
+    Console.Clear();
 
-        using Console;
+    using Console;
 
-        Clear();
-    ```
+    Clear();
+```
 
 <p> Below is what Clear(); can do currently </p>
 
-    ```csharp
-        Console.Clear(); //Regular Stuff
+```csharp
+    Console.Clear(); //Regular Stuff
 
-        //IMPORTANT; Below was code supposed to be add during ver 0.0.20 or something but i forgo 💀 so its a dead feature
-        //Clear("Clearing the screen...");
-    ```
+    //IMPORTANT; Below was code supposed to be add during ver 0.0.20 or something but i forgo 💀 so its a dead feature
+    //Clear("Clearing the screen...");
+```
