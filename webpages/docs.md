@@ -17,3 +17,5 @@ Upcoming Documentation (Currently Unavailable)
 9.  [Objects](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/objects.html)
 10.  [Files](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/files.html)
 11.  [Custom Libraries](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/customLibraries.html)
+
+- Last Update; 27/Jan/2023

@@ -28,7 +28,6 @@ Does this language support One-Liner Code?
 :   YES! it does! just write your code and make sure each line ends with ';' (semicolon)!
     Example
     - print("Hello world!"); print("Hello world2!");
-    - print("Oh"); print("the"); print("misery");
 
 
 Will this be a general purpose language?
