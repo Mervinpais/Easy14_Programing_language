@@ -2,80 +2,76 @@
 
 <br>
 
-### Console.print()
+Last Updated; 27/Jan/2022
 
-Console.print() is used to print stuff to the screen
+### Console.Print()
 
-```csharp
-Console.print("Hello World");
-```
+<p>Console.Print() is used to print stuff to the screen</p>
 
-we can remove the unnecessary "Console" part of our code by add a using statement at the top
+    ```csharp
+        Console.Print("Hello World");
+    ```
 
-```csharp
-using Console;
+<p>All what Print() could/can do;</p>
 
-print("Hello world");
-```
+    ```csharp
+        using Console;
 
-You can also print arithmetic operations (only one at a time though :(
+        Print("Hello world");
+    ```
 
-```csharp
-print(1+2);
+<p>You can also print arithmetic operations</p>
 
-//Works
+    ```csharp
+        Print(1+2);
 
-print(1+4-2);
+        //Works
 
-//Wont work :(
-```
+        Print(1+4-2);
 
-You can do +, -, *, /, % (Modulo), and == in a print statement
+        //Also works :)
+    ```
 
-### Console.input()
+<p>You can do +, -, *, /, % (Modulo), and == in a print statement</p>
 
-Console.input() is used to ask the user for input
+### Console.Input()
 
-```csharp
-Console.input();
+<p>Console.Input() is used for input (usually from the user)</p>
 
-using Console;
+    ```csharp
+        Console.Input();
 
-input();
-```
+        using Console;
 
-Below is what input(); can do currently
+        Input();
+    ```
 
-```csharp
-input();
+<p> All what Input() could/can do; </p>
 
-//Works
+    ```csharp
+        Console.Input();
 
-input("My Input");
+        Console.input("Some Input Message");
 
-//also works :)
-```
+    ```
 
-### Console.clear()
+### Console.Clear()
 
-Console.clear() is used to clear the console/screen
+<p> Console.Clear() is used to Clear the console </p>
 
-```csharp
-Console.clear();
+    ```csharp
+        Console.Clear();
 
-using Console;
+        using Console;
 
-clear();
-```
+        Clear();
+    ```
 
-Below is what clear(); can do currently
+<p> Below is what Clear(); can do currently </p>
 
-```csharp
-clear();
+    ```csharp
+        Console.Clear(); //Regular Stuff
 
-//Works
-
-clear("Clearing the screen...");
-
-//Wont work :(
-```
+        //IMPORTANT; Below was code supposed to be add during ver 0.0.20 or something but i forgo 💀 so its a dead feature
+        //Clear("Clearing the screen...");
+    ```
