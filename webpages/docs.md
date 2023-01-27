@@ -18,4 +18,4 @@ Upcoming Documentation (Currently Unavailable)
 10.  [Files](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/files.html)
 11.  [Custom Libraries](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/customLibraries.html)
 
-- Last Update; 27/Jan/2023
+Last Updated; 27/Jan/2023
