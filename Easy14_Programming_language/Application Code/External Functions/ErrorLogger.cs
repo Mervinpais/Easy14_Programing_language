@@ -82,14 +82,14 @@ namespace Easy14_Programming_Language
                     if (consoleColor == "")
                     {
                         Console.ForegroundColor = ConsoleColor_;
-                        //return;
+                        return;
                     }
                     ConsoleColor_ = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), consoleColor, true);
                 }
                 catch (Exception ex)
                 {
                     ConsoleColor_ = ConsoleColor.Gray;
-                    Debug.WriteLine("Color Value invalid, Value;\"" + Convert.ToString(consoleColor) + "\", Error Occured in CSharpErrorReporter");
+                    Debug.WriteLine("Color Value invalid, Value;\"" + Convert.ToString(consoleColor) + "\", Error Occured in ErrorLogger");
                     ErrorReportor.Logger.Error(ex);
                 }
                 Console.ForegroundColor = ConsoleColor_;
