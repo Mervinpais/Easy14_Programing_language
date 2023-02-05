@@ -61,13 +61,13 @@ namespace Easy14_Programming_Language
 
             public static void Warning(Exception ex, string message = null)
             {
-                Debug.WriteLine($"\nWarning: \n{ex.Message}");
+                Debug.WriteLine($"\nWarning: {ex.Message}");
                 Debug.WriteLine(message);
             }
 
             public static void Message(Exception ex, string message = null)
             {
-                Debug.WriteLine("\nMessage: \n" + ex.ToString());
+                Debug.WriteLine("\nMessage: " + ex.ToString());
                 Debug.WriteLine(message);
             }
         }
@@ -110,39 +110,39 @@ namespace Easy14_Programming_Language
             public static void Error(string Title, string Message)
             {
                 changeColor("Red");
-                Console.WriteLine("Easy14 Error; \n\n".ToUpper() + Message.ToString(), Title);
+                Console.WriteLine("Easy14 Error; ".ToUpper() + Message.ToString(), Title);
                 changeColor("");
             }
             public static void Error(string Message)
             {
                 changeColor("Red");
-                Console.WriteLine("Easy14 Error; \n\n".ToUpper() + Message.ToString());
+                Console.WriteLine("Easy14 Error; ".ToUpper() + Message.ToString());
                 changeColor("");
             }
 
             public static void Warning(string Title, string Message)
             {
                 changeColor("Yellow");
-                Console.WriteLine("Easy14 Warning; \n\n" + Message.ToString(), Title);
+                Console.WriteLine("Easy14 Warning; " + Message.ToString(), Title);
                 changeColor("");
             }
             public static void Warning(string Message)
             {
                 changeColor("Yellow");
-                Console.WriteLine("Easy14 Warning; \n\n" + Message.ToString());
+                Console.WriteLine("Easy14 Warning; " + Message.ToString());
                 changeColor("");
             }
 
             public static void Message(string Title, string Message)
             {
                 changeColor("Grey");
-                Console.WriteLine("Easy14 Message; \n\n" + Message.ToString(), Title);
+                Console.WriteLine("Easy14 Message; " + Message.ToString(), Title);
                 changeColor("");
             }
             public static void Message(string Message)
             {
                 changeColor("Grey");
-                Console.WriteLine("Easy14 Message; \n\n" + Message.ToString());
+                Console.WriteLine("Easy14 Message; " + Message.ToString());
                 changeColor("");
             }
         }

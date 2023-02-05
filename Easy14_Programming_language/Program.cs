@@ -426,7 +426,11 @@ namespace Easy14_Programming_Language
                 }
                 else if (statementSplitSpace[0] == "var")
                 {
-                    if (statementSplitSpace[2] == "=")
+                    if (statement.EndsWith(";"))
+                    {
+                        VariableCode.Interperate(statementSplitSpace[1]);
+                    }
+                    else if (statementSplitSpace[2] == "=")
                     {
                         VariableCode.Interperate(statementSplitSpace[1], String.Join(" ", statementListSplit.GetRange(3, statementListSplit.Count - 3)));
                     }
