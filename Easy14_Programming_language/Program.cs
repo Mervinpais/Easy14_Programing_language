@@ -426,14 +426,18 @@ namespace Easy14_Programming_Language
                 }
                 else if (statementSplitSpace[0] == "var")
                 {
-                    if (statement.EndsWith(";"))
+                    if (statement.EndsWith(";") && statementSplitSpace[2] != "=")
                     {
                         VariableCode.Interperate(statementSplitSpace[1]);
                     }
-                    else if (statementSplitSpace[2] == "=")
+                    else if (statementSplitSpace[2] == "=" && statement.EndsWith(";"))
                     {
-                        VariableCode.Interperate(statementSplitSpace[1], String.Join(" ", statementListSplit.GetRange(3, statementListSplit.Count - 3)));
+                        VariableCode.Interperate(statementSplitSpace[1], statementSplitSpace[3]);
                     }
+                }
+                else if (VariableCode.variableList.ContainsKey(statementSplitSpace[0]))
+                {
+                    Console.WriteLine(VariableCode.variableList[statementSplitSpace[0]]);
                 }
                 else if (statementSplitDot[0] == "Random")
                 {
