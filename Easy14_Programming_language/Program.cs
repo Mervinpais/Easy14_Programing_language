@@ -361,7 +361,7 @@ namespace Easy14_Programming_Language
                 {
                     UsingNamspaceFunction.ForFunction(statement, librariesDisabled, lineCount);
                 }
-                else if (string.Join("", statement.ToCharArray()) != "" && char.IsDigit(statement.ToCharArray()[0]))
+                else if (statement.Contains("+") || statement.Contains("-") || statement.Contains("*") || statement.Contains("/") || statement.Contains("%"))
                 {
                     string expression = string.Join("", statement.ToCharArray());
                     try
@@ -373,11 +373,11 @@ namespace Easy14_Programming_Language
                         Console.WriteLine(e.GetType());
                         if (e.GetType().ToString() == "System.OverflowException")
                         {
-                            ThrowErrorMessage.sendErrMessage("The Number to calculate is too large! (For Int32), please try a number less than 2147483647", null, "error");
+                            ErrorReportor.ConsoleLineReporter.Error("The Number to calculate is too large! (For Int32), please try a number less than 2147483647");
                         }
                         else
                         {
-                            ThrowErrorMessage.sendErrMessage("Uh oh, the value you wanted to calculate won't work! (check if the value has a string value and change it to an integer)", null, "error");
+                            ErrorReportor.ConsoleLineReporter.Error("Uh oh, the value you wanted to calculate won't work! (check if the value has a string value and change it to an integer)");
                         }
                     }
                 }
@@ -435,10 +435,10 @@ namespace Easy14_Programming_Language
                         VariableCode.Interperate(statementSplitSpace[1], statementSplitSpace[3]);
                     }
                 }
-                else if (VariableCode.variableList.ContainsKey(statementSplitSpace[0]))
-                {
-                    Console.WriteLine(VariableCode.variableList[statementSplitSpace[0]]);
-                }
+                //else if (VariableCode.variableList.ContainsKey(statementSplitSpace[0]))
+                //{
+                //    Console.WriteLine(VariableCode.variableList[statementSplitSpace[0]]);
+                //}
                 else if (statementSplitDot[0] == "Random")
                 {
                     if (statementSplitDot[1] == "Range")

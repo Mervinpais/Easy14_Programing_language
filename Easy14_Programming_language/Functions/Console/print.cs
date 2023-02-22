@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Data;
 
 namespace Easy14_Programming_Language
 {
@@ -44,37 +44,26 @@ namespace Easy14_Programming_Language
                     return;
                 }
             }
-            else if (line.StartsWith("\"") || line.EndsWith("\"") || (line.IndexOf("\"") % 2 != 0))
+            else if (VariableCode.variableList.ContainsKey(line))
             {
-                QuotesMismatch = true;
+                Console.WriteLine(VariableCode.variableList[line]);
+            }
+            else if ((!line.StartsWith("\"") || !line.EndsWith("\"")) && !(!line.StartsWith("\"") && !line.EndsWith("\"")))
+            {
+                if ((line.IndexOf("\"") % 2 != 0))
+                {
+                    QuotesMismatch = true;
+                }
             }
             else
             {
-                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                string variable_dir = dir + "\\EASY14_Variables_TEMP";
-                if (Directory.Exists(variable_dir))
+                try
                 {
-                    var files = Directory.GetFiles(variable_dir);
-                    if (files.Length > 0)
-                    {
-                        var variable = variable_dir + "\\" + line;
-                        if (File.Exists(variable))
-                        {
-                            Console.WriteLine(File.ReadAllText(variable));
-                        }
-                        else
-                        {
-                            ErrorReportor.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
-                        }
-                    }
-                    else
-                    {
-                        ErrorReportor.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
-                    }
+                    Console.WriteLine(new DataTable().Compute(line, ""));
                 }
-                else
+                catch
                 {
-                    ErrorReportor.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
+
                 }
             }
 
