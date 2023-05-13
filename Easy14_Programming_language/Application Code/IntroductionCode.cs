@@ -47,8 +47,8 @@ namespace Easy14_Programming_Language
                 if (line_inText == "[DATE OF VERSION INSTALLED]")
                     nextLineEqualsCurrentVerDateInstall = true;
 
-                if (line_inText == "[TYPE OF BUILD]")
-                    nextLineEqualsBuildType = true;
+                /*if (line_inText == "[TYPE OF BUILD]")
+                    nextLineEqualsBuildType = true;*/
             }
 
             Console.WriteLine($"\n Current Version; {currentVersion}, The Current Version was installed on {dateOfVerInstall} and is a {BuildTypeOfApp}");

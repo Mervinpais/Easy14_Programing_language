@@ -36,7 +36,7 @@ namespace Easy14_Programming_Language
             catch (Exception)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Unspecified Error; No Renderer found!");
+                ConsolePrint.Interperate("Unspecified Error; No Renderer found!");
                 Console.ResetColor();
             }
         }

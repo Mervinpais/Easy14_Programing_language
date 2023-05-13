@@ -12,13 +12,13 @@ namespace Easy14_Programming_Language
         {
             if (disableLibraries)
             {
-                CSharpErrorReporter.ConsoleLineReporter.Warning("You have disabled libraries in options.ini, if you want to use libraries, please change the true to false at line 10 in options.ini");
+                ErrorReportor.ConsoleLineReporter.Warning("You have disabled libraries in options.ini, if you want to use libraries, please change the true to false at line 10 in options.ini");
                 return;
             }
 
             if (line == "using _easy14_;")
             {
-                CSharpErrorReporter.ConsoleLineReporter.Warning("You already are :)");
+                ErrorReportor.ConsoleLineReporter.Warning("You already are :)");
                 return;
             }
 
@@ -35,7 +35,7 @@ namespace Easy14_Programming_Language
             }
             else
             {
-                CSharpErrorReporter.ConsoleLineReporter.Error($"The Using {line.Replace("using ", "").Replace(";", "")} Mentioned on line {lineCount} is not found!");
+                ErrorReportor.ConsoleLineReporter.Error($"The Using {line.Replace("using ", "").Replace(";", "")} Mentioned on line {lineCount} is not found!");
                 return;
             }
         }
@@ -44,12 +44,12 @@ namespace Easy14_Programming_Language
         {
             if (disableLibraries)
             {
-                CSharpErrorReporter.ConsoleLineReporter.Warning("You have disabled libraries in options.ini, if you want to use libraries, please change the true to false at line 10 in options.ini");
+                ErrorReportor.ConsoleLineReporter.Warning("You have disabled libraries in options.ini, if you want to use libraries, please change the true to false at line 10 in options.ini");
                 return;
             }
             if (line == "from _easy14_ get _use_;")
             {
-                CSharpErrorReporter.ConsoleLineReporter.Warning("You already are :)");
+                ErrorReportor.ConsoleLineReporter.Warning("You already are :)");
                 return;
             }
 
@@ -71,13 +71,13 @@ namespace Easy14_Programming_Language
                 }
                 else
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error($"The Using class \"{theSupposedClass}\" Mentioned on line {lineCount}, (Line: {line}) is not found!");
+                    ErrorReportor.ConsoleLineReporter.Error($"The Using class \"{theSupposedClass}\" Mentioned on line {lineCount}, (Line: {line}) is not found!");
                     return;
                 }
             }
             else
             {
-                CSharpErrorReporter.ConsoleLineReporter.Error($"The Using \"{theSupposedNamespace}\" Mentioned on line {lineCount}, (Line: {line}) is not found!");
+                ErrorReportor.ConsoleLineReporter.Error($"The Using \"{theSupposedNamespace}\" Mentioned on line {lineCount}, (Line: {line}) is not found!");
                 return;
             }
         }

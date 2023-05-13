@@ -1,4 +1,4 @@
-16/Dec/2022;
+23/Mar/2023;
 
 # The Systax Update (Reforms) (During Version 3.1's Development)
 
@@ -14,7 +14,7 @@
 ```
 <br>
 
-## New 🤢🤮
+## (Proposed) New 🤢🤮
 
 ```C#
     Console Print "Hello";
@@ -24,13 +24,8 @@
 ### Now below I have remade the "New" syntax into a better version of the Old syntax while being less worse than the New syntax
 <br>
 
-## (Re)Proposed 🤔 (Its like the Old syntax)
+## (Updated) Final 🤔
 
 ```C#
-    Console.print("Hello");
-    //Looks like the old systax but better
+    Console.Print("Hello world!");
 ```
-
-## IMPORTANT
-### Even if it looks the same like the older syntax, its because i lost the old syntax code and the old syntax was better so yea, just a Reform
-

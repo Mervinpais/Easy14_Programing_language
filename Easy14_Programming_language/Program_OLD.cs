@@ -20,7 +20,7 @@ namespace Easy14_Programming_Language
 
         static void Main_OLD(string[] args)
         {
-            CSharpErrorReporter.ConsoleLineReporter.Error("Calling the depricated method \"Main_OLD\" is illegal");
+            ErrorReportor.ConsoleLineReporter.Error("Calling the depricated method \"Main_OLD\" is illegal");
             return;
 
             Console.WriteLine("\n==== Easy14 Console ====\n");
@@ -249,14 +249,14 @@ namespace Easy14_Programming_Language
                             }
                             else
                             {
-                                CSharpErrorReporter.ConsoleLineReporter.Error("ERROR; Can't understand what the args you specified\n");
+                                ErrorReportor.ConsoleLineReporter.Error("ERROR; Can't understand what the args you specified\n");
                                 continue;
                             }
                         }
                     }
                     catch (Exception e)
                     {
-                        CSharpErrorReporter.ConsoleLineReporter.Error("An Error Occured while running up Easy14 Interperator (×_×) \n\n" + e.GetType().Name + $"\n====DEBUG INFO====\n\n{e.Message}\n{e.InnerException}\n{e.Data}\n\n=== STACK TRACE ===\n\n{e.StackTrace}\n");
+                        ErrorReportor.ConsoleLineReporter.Error("An Error Occured while running up Easy14 Interperator (×_×) \n\n" + e.GetType().Name + $"\n====DEBUG INFO====\n\n{e.Message}\n{e.InnerException}\n{e.Data}\n\n=== STACK TRACE ===\n\n{e.StackTrace}\n");
                     }
                 }
             }
@@ -299,7 +299,7 @@ namespace Easy14_Programming_Language
 
                 else if (command.ToLower() == "exit")
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Warning("\nPlease use \"exit();\" or Ctrl+C to close the interative console", "e");
+                    ErrorReportor.ConsoleLineReporter.Warning("\nPlease use \"exit();\" or Ctrl+C to close the interative console", "e");
                     continue;
                 }
                 else if (command.ToLower().StartsWith("/run"))
@@ -332,7 +332,7 @@ namespace Easy14_Programming_Language
                 }
                 else if (command.Contains('\n'))
                 {
-                    CSharpErrorReporter.ConsoleLineReporter.Error("ERROR; Easy14 Interactive Cannot run multiline code \n");
+                    ErrorReportor.ConsoleLineReporter.Error("ERROR; Easy14 Interactive Cannot run multiline code \n");
                     continue;
                 }
                 else
@@ -360,7 +360,7 @@ namespace Easy14_Programming_Language
                     }
                     else
                     {
-                        CSharpErrorReporter.ConsoleLineReporter.Error("ERROR; Easy14 Interactive can't understand what the args you specified \n");
+                        ErrorReportor.ConsoleLineReporter.Error("ERROR; Easy14 Interactive can't understand what the args you specified \n");
                         continue;
                     }
                 }

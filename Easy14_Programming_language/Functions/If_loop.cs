@@ -103,10 +103,10 @@ namespace Easy14_Programming_Language
 
                 int lin_count = 1;
 
-                foreach (string x in someLINEs)
+                foreach (string usingStatements in someLINEs)
                 {
                     lin_count++;
-                    if (!x.StartsWith("using") && x != "" && x != null)
+                    if (!usingStatements.StartsWith("using") && usingStatements != "" && usingStatements != null)
                     { break; }
                 }
 
@@ -140,10 +140,10 @@ namespace Easy14_Programming_Language
 
                 int lin_count = 1;
 
-                foreach (string x in someLINEs)
+                foreach (string usingStatements in someLINEs)
                 {
                     lin_count++;
-                    if (!x.StartsWith("using") && x != "" && x != null)
+                    if (!usingStatements.StartsWith("using") && usingStatements != "" && usingStatements != null)
                     {
                         break;
                     }
@@ -186,10 +186,10 @@ namespace Easy14_Programming_Language
                 else if (textArray != null && fileloc == null) someLINEs = new List<string>(textArray);
                 int lin_count = 1;
 
-                foreach (string x in someLINEs)
+                foreach (string usingStatements in someLINEs)
                 {
                     lin_count++;
-                    if (!x.StartsWith("using") && x != "" && x != null)
+                    if (!usingStatements.StartsWith("using") && usingStatements != "" && usingStatements != null)
                     {
                         break;
                     }
@@ -293,10 +293,10 @@ namespace Easy14_Programming_Language
                 if (textArray == null && fileloc != null) someLINEs = new List<string>(File.ReadAllLines(fileloc));
                 else if (textArray != null && fileloc == null) someLINEs = new List<string>(textArray);
                 int lin_count = 1;
-                foreach (string x in someLINEs)
+                foreach (string usingStatements in someLINEs)
                 {
                     lin_count++;
-                    if (!x.StartsWith("using") && x != "" && x != null)
+                    if (!usingStatements.StartsWith("using") && usingStatements != "" && usingStatements != null)
                     {
                         break;
                     }

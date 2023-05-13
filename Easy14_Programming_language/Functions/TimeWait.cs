@@ -39,7 +39,7 @@ namespace Easy14_Programming_Language
             }
             catch
             {
-                CSharpErrorReporter.ConsoleLineReporter.Error("Input provide is not a valid integer"); //only possible probloem i think
+                ErrorReportor.ConsoleLineReporter.Error("Input provide is not a valid integer"); //only possible probloem i think
             }
         }
     }

@@ -39,14 +39,14 @@ namespace Easy14_Programming_Language
                     Console.ResetColor();
                 }
 
-                foreach (string x in someLINEs)
+                foreach (string usingStatments in someLINEs)
                 {
-                    if (x.TrimStart().TrimEnd() == "using Console;")
+                    if (usingStatments.TrimStart().TrimEnd() == "using Console;")
                     {
                         foundUsing = true;
                         break;
                     }
-                    if (x.TrimStart().TrimEnd() == code_part)
+                    if (usingStatments.TrimStart().TrimEnd() == code_part)
                     {
                         break;
                     }

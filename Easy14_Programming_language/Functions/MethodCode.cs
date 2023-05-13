@@ -10,6 +10,8 @@ namespace Easy14_Programming_Language
          * CHANGLE LOG 24/6/2022;
          * Code will/has  be/been refactored for better readablilty and easier to understand
          */
+        public static Dictionary<string, object> methodList = new Dictionary<string, object>();
+
         public static void Interperate(string code_part, string[] textArray, string[] lines, string fileloc, bool Making_A_Method)
         {
             Program prog = new Program();
