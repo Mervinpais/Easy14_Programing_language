@@ -30,15 +30,15 @@ namespace Easy14_Programming_Language
 
             if (line == "")
             {
-                Console.Write(">");
+                ConsolePrint.Interperate(">", false);
                 string returnedInput = Console.ReadLine();
                 return returnedInput;
             }
             else if (line.StartsWith("\"") && line.EndsWith("\""))
             {
                 line = line.Substring(1, line.Length - 2);
-                Console.WriteLine(line);
-                Console.Write(">");
+                ConsolePrint.Interperate(line);
+                ConsolePrint.Interperate(">", false);
                 string returnedInput = Console.ReadLine();
                 return returnedInput;
             }
@@ -62,8 +62,8 @@ namespace Easy14_Programming_Language
                 var variable = variable_dir + "\\" + line;
                 if (File.Exists(variable))
                 {
-                    Console.WriteLine(File.ReadAllText(variable));
-                    Console.Write(">");
+                    ConsolePrint.Interperate(File.ReadAllText(variable));
+                    ConsolePrint.Interperate(">", false);
                     string returnedInput = Console.ReadLine();
                     return returnedInput;
                 }

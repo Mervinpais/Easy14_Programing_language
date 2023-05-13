@@ -13,7 +13,7 @@ namespace Easy14_Programming_Language
             // Initilizes SDL.
             if (SDL.SDL_Init(SDL.SDL_INIT_VIDEO) < 0)
             {
-                Console.WriteLine($"There was an issue initializing SDL. {SDL.SDL_GetError()}");
+                ConsolePrint.Interperate($"There was an issue initializing SDL. {SDL.SDL_GetError()}");
             }
 
             // Create a new window given a title, size, and passes it a flag indicating it should be shown.
@@ -28,7 +28,7 @@ namespace Easy14_Programming_Language
 
             if (window == IntPtr.Zero)
             {
-                Console.WriteLine($"There was an issue creating the window. {SDL.SDL_GetError()}");
+                ConsolePrint.Interperate($"There was an issue creating the window. {SDL.SDL_GetError()}");
             }
 
             // Creates a new SDL hardware renderer using the default graphics device with VSYNC enabled.
@@ -40,12 +40,12 @@ namespace Easy14_Programming_Language
 
             if (renderer == IntPtr.Zero)
             {
-                Console.WriteLine($"There was an issue creating the renderer. {SDL.SDL_GetError()}");
+                ConsolePrint.Interperate($"There was an issue creating the renderer. {SDL.SDL_GetError()}");
             }
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.WriteLine($"\nWindow \"{window}\" was created and shown");
+            ConsolePrint.Interperate($"\nWindow \"{window}\" was created and shown");
             Console.ResetColor();
-            Console.Write("");
+            ConsolePrint.Interperate("");
         }
 
         static string PollEvents(bool running = true)

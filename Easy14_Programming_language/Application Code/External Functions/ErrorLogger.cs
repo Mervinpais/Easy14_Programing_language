@@ -110,39 +110,39 @@ namespace Easy14_Programming_Language
             public static void Error(string Title, string Message)
             {
                 changeColor("Red");
-                Console.WriteLine("Easy14 Error; ".ToUpper() + Message.ToString(), Title);
+                Console.WriteLine("Error:> ".ToUpper() + Message.ToString(), Title);
                 changeColor("");
             }
             public static void Error(string Message)
             {
                 changeColor("Red");
-                Console.WriteLine("Easy14 Error; ".ToUpper() + Message.ToString());
+                Console.WriteLine("Error:> ".ToUpper() + Message.ToString());
                 changeColor("");
             }
 
             public static void Warning(string Title, string Message)
             {
                 changeColor("Yellow");
-                Console.WriteLine("Easy14 Warning; " + Message.ToString(), Title);
+                Console.WriteLine("Warning:> " + Message.ToString(), Title);
                 changeColor("");
             }
             public static void Warning(string Message)
             {
                 changeColor("Yellow");
-                Console.WriteLine("Easy14 Warning; " + Message.ToString());
+                Console.WriteLine("Warning:> " + Message.ToString());
                 changeColor("");
             }
 
             public static void Message(string Title, string Message)
             {
                 changeColor("Grey");
-                Console.WriteLine("Easy14 Message; " + Message.ToString(), Title);
+                Console.WriteLine("Message:> " + Message.ToString(), Title);
                 changeColor("");
             }
             public static void Message(string Message)
             {
                 changeColor("Grey");
-                Console.WriteLine("Easy14 Message; " + Message.ToString());
+                Console.WriteLine("Message:> " + Message.ToString());
                 changeColor("");
             }
         }
@@ -151,11 +151,11 @@ namespace Easy14_Programming_Language
         {
             public static void CSharpError(string Title, string Message)
             {
-                MessageBox.Show("C# Exception Error Occured! Please report this bug to the Github repo so that this can be fixed!!\n\n".ToUpper() + Message, Title);
+                MessageBox.Show("C# Exception Error Occured! Please report this bug to the Github repo so that this can be fixed!\n\n".ToUpper() + Message, Title);
             }
             public static void CSharpError(string Message)
             {
-                MessageBox.Show("C# Exception Error Occured! Please report this bug to the Github repo so that this can be fixed!!\n\n".ToUpper() + Message);
+                MessageBox.Show("C# Exception Error Occured! Please report this bug to the Github repo so that this can be fixed!\n\n".ToUpper() + Message);
             }
             public static void Error(string Title, string Message)
             {
@@ -167,11 +167,11 @@ namespace Easy14_Programming_Language
             }
             public static void Warning(string Message)
             {
-                MessageBox.Show("C# Warning!!\n\n" + Message);
+                MessageBox.Show("C# Warning\n\n" + Message);
             }
             public static void Warning(string Title, string Message)
             {
-                MessageBox.Show("C# Warning!!\n\n" + Message, Title);
+                MessageBox.Show("C# Warning\n\n" + Message, Title);
             }
         }
     }

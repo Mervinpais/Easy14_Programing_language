@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Easy14_Programming_Language": {
+      "commandName": "Project"
+    },
+    "App Test'": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\mervi\\Desktop\\stuff.e14"
+    }
+  }
+}

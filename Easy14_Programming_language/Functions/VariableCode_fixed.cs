@@ -28,7 +28,7 @@ namespace Easy14_Programming_Language
             {
                 try
                 {
-                    variableList.Add(name, value);
+                    variableList.Add(name, value.ToString().Substring(1, value.ToString().Length - 2));
                 }
                 catch (Exception ex)
                 {

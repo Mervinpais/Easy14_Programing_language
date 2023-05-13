@@ -28,11 +28,19 @@ namespace Easy14_Programming_Language
         // Parent path of the root path
         static string parentPath = Path.GetDirectoryName(Directory.GetParent(Directory.GetParent(rootPath).FullName).FullName);
 
+        /// <summary>
+        /// Was used to fix a bug where loading files to run in Easy14 would crash the program, due to path issues
+        /// </summary>
+        static void testFunc() // # needs to be removed before release
+        {
+            Console.WriteLine(parentPath);
+            Console.WriteLine(rootPath);
+        }
         // Path to the options file
         static string optionsPath = "Application Code\\options.ini";
 
         // Array of contents in the options file
-        static string[] configFile = File.ReadAllLines(optionsPath);
+        static string[] configFile = File.ReadAllLines(rootPath + "\\" + optionsPath);
 
         // Desktop path of the system
         static string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -56,7 +64,8 @@ namespace Easy14_Programming_Language
 
         static void Main(string[] args)
         {
-            string osName = "Not Detected";
+            Console.WriteLine(string.Join(" ", args));
+            string osName;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) osName = "Windows";
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) osName = "Linux";
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) osName = "OSX";
@@ -82,7 +91,7 @@ namespace Easy14_Programming_Language
 
             if (!UpdatesDisabled)
             {
-                updateChecker.checkLatestVersion(UpdatesWarningsDisabled);
+                //updateChecker.checkLatestVersion(UpdatesWarningsDisabled);
             }
 
             //=========================================================\\
@@ -111,13 +120,24 @@ namespace Easy14_Programming_Language
                 {
                     HelpCommandCode.DisplayDefaultHelpOptions();
                 }
-                if (args[0].ToLower() == "/intro")
+                else if (args[0].ToLower() == "/intro")
                 {
                     IntroductionCode.IntroCode();
                 }
-                if (args[0].ToLower() == "/appinfo")
+                else if (args[0].ToLower() == "/appinfo")
                 {
                     AppInformation.ShowInfo();
+                }
+                else
+                {
+                    if (File.Exists(args[0]) == true)
+                    {
+                        CompileCode(args[0]);
+                    }
+                    else
+                    {
+
+                    }
                 }
             }
 
@@ -148,6 +168,7 @@ namespace Easy14_Programming_Language
                     break;
                 }
             }
+            Functions.TestingApps.Easy14_Tester.Load();
             while (true)
             {
                 Console.Write(":>");
@@ -192,17 +213,6 @@ namespace Easy14_Programming_Language
                 }
             }
         }
-
-        //=========================== SEPERATOR =========================\\
-
-
-
-
-
-
-
-
-        //=========================== SEPERATOR =========================\\
 
         public object CompileCode_fromOtherFiles(string fileLoc = null, string[] textArray = null, int lineIDX = 0, bool isInAMethod = false, string methodName = "}")
         {
@@ -301,7 +311,7 @@ namespace Easy14_Programming_Language
             }
             else if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                ErrorReportor.ConsoleLineReporter.Error("Changing terminal size on a system other than Windows with C# isn't Possible");
+                ErrorReportor.ConsoleLineReporter.Error("Changing terminal size on a system other than Windows with C# isn't Possible Due to C# implementation");
             }
 
             /* Reading the file and storing it in a string array. */
@@ -396,25 +406,32 @@ namespace Easy14_Programming_Language
                 }
                 else if (statementSplitDot[0] == "Console")
                 {
-                    if (statementSplitDot[1].StartsWith("Print"))
+                    if (statementSplitDot.Length > 0)
                     {
-                        ConsolePrint.Interperate(statementSplitDot[1]);
+                        if (statementSplitDot[1].StartsWith("Print"))
+                        {
+                            ConsolePrint.Interperate(statementSplitDot[1]);
+                        }
+                        else if (statementSplitDot[1].StartsWith("Input"))
+                        {
+                            ConsoleInput.Interperate(statementSplitDot[1]);
+                        }
+                        else if (statementSplitDot[1].StartsWith("Clear"))
+                        {
+                            ConsoleClear.Interperate();
+                        }
+                        else if (statementSplitDot[1].StartsWith("Execute") || statementSplitDot[1].StartsWith("Exec"))
+                        {
+                            ConsoleExec.Interperate(statementSplitDot[1]);
+                        }
+                        else if (statementSplitDot[1].StartsWith("Beep"))
+                        {
+                            ConsoleBeep.Interperate(statementSplitDot[1]);
+                        }
                     }
-                    else if (statementSplitDot[1].StartsWith("Input"))
+                    else
                     {
-                        ConsoleInput.Interperate(statementSplitDot[1]);
-                    }
-                    else if (statementSplitDot[1].StartsWith("Clear"))
-                    {
-                        ConsoleClear.Interperate();
-                    }
-                    else if (statementSplitDot[1].StartsWith("Execute") || statementSplitDot[1].StartsWith("Exec"))
-                    {
-                        ConsoleExec.Interperate(statementSplitDot[1]);
-                    }
-                    else if (statementSplitDot[1].StartsWith("Beep"))
-                    {
-                        ConsoleBeep.Interperate($"{statementSplitDot[2]} {statementSplitDot[3]}");
+                        Console.WriteLine(File.ReadAllText(parentPath + "\\Functions\\Console\\info.txt"));
                     }
                 }
                 else if (statementSplitDot[0] == "Time")
@@ -700,7 +717,7 @@ namespace Easy14_Programming_Language
                     a closing bracket, not a break, not a return, not a using statement, and not a
                     comment. If the line is not any of those things, then it will print out an error
                     message. */
-                    else if (!string.IsNullOrEmpty(statement) && !string.IsNullOrWhiteSpace(statement) && statement != "}" && statement != "break" && statement != "return" && !statement.StartsWith("using") && !statement.StartsWith("//"))
+                    else if (!string.IsNullOrEmpty(statement) && !string.IsNullOrWhiteSpace(statement) && statement != "}" && statement != "break" && statement != "return" && !statement.StartsWith("using") && !statement.StartsWith("var") && !statement.StartsWith("//"))
                     {
                         string funcLine = null;
                         if (statement.Contains("("))
@@ -719,59 +736,64 @@ namespace Easy14_Programming_Language
                         {
                             if (funcLine.Contains("."))
                             {
-                                string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net7.0-windows", "").Replace("\\bin\\Release\\net7.0-windows", "") + "\\Functions");
-                                List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
-                                List<string> allNamespacesAvaiable_list_main = new List<string>();
-                                foreach (string item in allNamespacesAvaiable_list)
+                                try
                                 {
-                                    allNamespacesAvaiable_list_main.Add(item[(item.LastIndexOf("\\") + 1)..]);
-                                }
-                                allNamespacesAvaiable_array = allNamespacesAvaiable_list_main.ToArray();
-                                string theNamespaceOfTheLine = statement.Split(".")[0];
-                                if (allNamespacesAvaiable_array.Contains(theNamespaceOfTheLine))
-                                {
-                                    int index = Array.IndexOf(allNamespacesAvaiable_array, theNamespaceOfTheLine);
-                                    string theClassOfTheLine = statement.Split(".")[0];
-                                    string theFunctionOfTheLine = statement.Split(".")[1];
-                                    string params_str = statement.Replace($"{theNamespaceOfTheLine}.{theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("))}(", "");
-                                    params_str = params_str.Substring(0, params_str.Length - 2);
-                                    string[] params_ = { };
-
-                                    try
+                                    string[] allNamespacesAvaiable_array = Directory.GetDirectories(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net7.0-windows", "").Replace("\\bin\\Release\\net7.0-windows", "") + "\\Functions");
+                                    List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
+                                    List<string> allNamespacesAvaiable_list_main = new List<string>();
+                                    foreach (string item in allNamespacesAvaiable_list)
                                     {
-                                        params_ = params_str.Split(",");
+                                        allNamespacesAvaiable_list_main.Add(item[(item.LastIndexOf("\\") + 1)..]);
                                     }
-                                    catch { /* Now we know this is a method without parameters */}
-
-                                    string theFunctionOfTheLine_params = theFunctionOfTheLine;
-                                    theFunctionOfTheLine = theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("));
-
-                                    //theFunctionOfTheLine = theFunctionOfTheLine.Replace("(", "").Replace(");", "");
-
-                                    //Older
-                                    /*Type type_ = Type.GetType(theFunctionOfTheLine);
-                                    MethodInfo method = type_.GetMethod("run");
-                                    method.Invoke(null, null);*/
-
-                                    //Old
-                                    //Activator.CreateInstance(Convert.ToString(Assembly.GetExecutingAssembly()), Convert.ToString(Type.GetType(theFunctionOfTheLine)));                            
-
-                                    string[] code =
+                                    allNamespacesAvaiable_array = allNamespacesAvaiable_list_main.ToArray();
+                                    string theNamespaceOfTheLine = statement.Split(".")[0];
+                                    if (allNamespacesAvaiable_array.Contains(theNamespaceOfTheLine))
                                     {
+                                        int index = Array.IndexOf(allNamespacesAvaiable_array, theNamespaceOfTheLine);
+                                        string theClassOfTheLine = statement.Split(".")[0];
+                                        string theFunctionOfTheLine = statement.Split(".")[1];
+                                        string params_str = statement.Replace($"{theNamespaceOfTheLine}.{theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("))}(", "");
+                                        params_str = params_str.Substring(0, params_str.Length - 2);
+                                        string[] params_ = { };
+
+                                        try
+                                        {
+                                            params_ = params_str.Split(",");
+                                        }
+                                        catch { /* Now we know this is a method without parameters */}
+
+                                        string theFunctionOfTheLine_params = theFunctionOfTheLine;
+                                        theFunctionOfTheLine = theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("));
+
+                                        //theFunctionOfTheLine = theFunctionOfTheLine.Replace("(", "").Replace(");", "");
+
+                                        //Older
+                                        /*Type type_ = Type.GetType(theFunctionOfTheLine);
+                                        MethodInfo method = type_.GetMethod("run");
+                                        method.Invoke(null, null);*/
+
+                                        //Old
+                                        //Activator.CreateInstance(Convert.ToString(Assembly.GetExecutingAssembly()), Convert.ToString(Type.GetType(theFunctionOfTheLine)));                            
+
+                                        string[] code =
+                                        {
                                         $"Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});"
                                     };
 
-                                    try
-                                    {
-                                        return "";//CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                                        try
+                                        {
+                                            return "";//CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            ErrorReportor.ConsoleLineReporter.Error("The function you are trying to use returned an Error");
+                                            Console.WriteLine($"\n{e.Message}");
+                                        }
+                                        return "";
                                     }
-                                    catch (Exception e)
-                                    {
-                                        ErrorReportor.ConsoleLineReporter.Error("The function you are trying to use returned an Error");
-                                        Console.WriteLine($"\n{e.Message}");
-                                    }
-                                    return "";
                                 }
+                                catch (Exception e)
+                                { Console.WriteLine(e.InnerException); }
                             }
                             else if (!funcLine.Contains("."))
                             {
@@ -818,13 +840,13 @@ namespace Easy14_Programming_Language
                             }
                             else
                             {
-                                //CSharpErrorReporter.ConsoleLineReporter.Error($"\'{statement}\' is not a vaild code statement\n  Error was located on Line {lineCount - 13}");
+                                ErrorReportor.ConsoleLineReporter.Error($"\'{statement}\' is not a vaild code statement\n  Error was located on Line {lineCount - 13}");
                                 break;
                             }
                         }
                         else
                         {
-                            //CSharpErrorReporter.ConsoleLineReporter.Error($"\'{statement}\' is not a vaild code statement\n  Error was located on Line {lineCount - 13}");
+                            ErrorReportor.ConsoleLineReporter.Error($"\'{statement}\' is not a vaild code statement\n  Error was located on Line {lineCount - 13}");
                             break;
                         }
                     }

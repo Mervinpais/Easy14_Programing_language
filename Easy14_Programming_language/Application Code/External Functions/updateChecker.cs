@@ -99,7 +99,7 @@ namespace Easy14_Programming_Language
                 }
                 else
                 {
-                    ErrorReportor.ConsoleLineReporter.Warning("NO INTENRET", "No Internet Connection Detected to get updates, this is not an error, this is a warning\n");
+                    ErrorReportor.ConsoleLineReporter.Warning("NO INTENRET", "No Internet Connection Detected for updates \n");
                     return;
                 }
                 string[] UpdateInfo = DataFromServer.Split("\r\n");

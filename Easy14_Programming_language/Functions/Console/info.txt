@@ -1,0 +1,4 @@
+Console is a Class for printing,inputting,clearing the screen,beeping etc.
+
+<!>This Class comes with Easy14<!>
+<!!>This Class should not be removed as is it is part of Easy14<!!>

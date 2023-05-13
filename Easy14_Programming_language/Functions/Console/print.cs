@@ -1,48 +1,32 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
 
 namespace Easy14_Programming_Language
 {
     public static class ConsolePrint
     {
-        public static void Interperate(string line)
+        public static void Interperate(string line, bool newLine = true)
         {
-            bool missingSemiColon = false;
-            bool missingParenthesis = false;
-            bool QuotesMismatch = false;
-
-            line = line.Substring("Print".Length);
-
-            if (line.EndsWith(";"))
+            if (line.StartsWith("Print("))
             {
-                line = line.Substring(0, line.Length - 1);
+                if (!line.EndsWith(";"))
+                {
+                    ErrorReportor.ConsoleLineReporter.Error(line + " is missing a semicolon.");
+                }
+                line = line.Substring(6, line.Length - 8);
             }
             else
             {
-                missingSemiColon = true;
+                line = "\"" + line + "\"";
             }
-
-            if (line.StartsWith("(") && line.EndsWith(")"))
-            {
-                line = line.Substring(1, line.Length - 2);
-            }
-            else
-            {
-                missingParenthesis = true;
-                line = line.Replace("(", "");
-                line = line.Replace(")", "");
-            }
-
-            int errors = (missingSemiColon ? 1 : 0) + (missingParenthesis ? 1 : 0) + (QuotesMismatch ? 1 : 0);
             if (line.StartsWith("\"") && line.EndsWith("\""))
             {
                 line = line.Substring(1, line.Length - 2);
-                if (errors == 0)
-                {
-                    Console.WriteLine(line);
-                    return;
-                }
+
+                if (newLine == true) Console.WriteLine(line);
+                else Console.Write(line);
+
+                return;
             }
             else if (VariableCode.variableList.ContainsKey(line))
             {
@@ -52,7 +36,7 @@ namespace Easy14_Programming_Language
             {
                 if ((line.IndexOf("\"") % 2 != 0))
                 {
-                    QuotesMismatch = true;
+                    ErrorReportor.ConsoleLineReporter.Error("Mismatch of quotes with line \'" + line + "\', make sure there is no inquality between the double quotes.");
                 }
             }
             else
@@ -65,28 +49,6 @@ namespace Easy14_Programming_Language
                 {
 
                 }
-            }
-
-            if (0 < errors)
-            {
-                List<string> errorMessage = new List<string>
-                {
-                    "Errors within print statement;"
-                };
-
-                if (missingSemiColon)
-                {
-                    errorMessage.Add("Missing a Semicolon");
-                }
-                if (missingParenthesis)
-                {
-                    errorMessage.Add("Missing 1 (or more) Parenthesies");
-                }
-                if (QuotesMismatch)
-                {
-                    errorMessage.Add("Mismatching quotes (or Missing quotes)");
-                }
-                ErrorReportor.ConsoleLineReporter.Error(string.Join(Environment.NewLine, errorMessage));
             }
 
             //Anything else...

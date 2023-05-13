@@ -19,10 +19,11 @@ namespace Easy14_Programming_Language
                     {
                         return true;
                     }
+                    else { return false; }
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Error occured while checking internet...\n {0}", e.Message);
+                    Console.WriteLine($"Error occured while checking internet...\n\n {e.InnerException}\n");
                     return false;
                 }
             }
