@@ -7,19 +7,7 @@ namespace Easy14_Programming_Language
     {
         public static void Interperate(string line, bool newLine = true)
         {
-            if (line.StartsWith("Print("))
-            {
-                if (!line.EndsWith(";"))
-                {
-                    ErrorReportor.ConsoleLineReporter.Error(line + " is missing a semicolon.");
-                }
-                line = line.Substring(6, line.Length - 8);
-            }
-            else
-            {
-                line = "\"" + line + "\"";
-            }
-            if (line.StartsWith("\"") && line.EndsWith("\""))
+            if (ItemChecks.IsString(line))
             {
                 line = line.Substring(1, line.Length - 2);
 
@@ -27,6 +15,11 @@ namespace Easy14_Programming_Language
                 else Console.Write(line);
 
                 return;
+            }
+            else if (line.EndsWith(';'))
+            {
+                Program prog = new Program();
+                Console.WriteLine(prog.ExternalComplieCode(line));
             }
             else if (VariableCode.variableList.ContainsKey(line))
             {

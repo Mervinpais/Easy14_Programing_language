@@ -6,7 +6,7 @@ namespace Easy14_Programming_Language
 {
     public static class While_Loop
     {
-        public static void Interperate(string code_part, string[] lines, string[] textArray, string fileloc, bool isInAMethod = false, string methodName = "}")
+        public static void Interperate(string code_part, string[] lines, string[] textArray)
         {
             //make a program that gets the if statement
             string if_line = code_part;
@@ -173,9 +173,9 @@ namespace Easy14_Programming_Language
 
                 while (conditionIsTrue)
                 {
-                    prog.CompileCode_fromOtherFiles(textArray: if_content.ToArray());
+                    prog.ExternalComplieCode(textArray: if_content.ToArray());
                 }
-                prog.CompileCode_fromOtherFiles(textArray: UnderLines_list.ToArray());
+                prog.ExternalComplieCode(textArray: UnderLines_list.ToArray());
             }
         }
     }

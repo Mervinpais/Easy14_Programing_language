@@ -5,7 +5,7 @@ namespace Easy14_Programming_Language
 {
     public static class Time_IsLeapYear
     {
-        public static string Interperate(string code_part, string[] textArray, string fileloc)
+        public static string Interperate(string code_part, string[] textArray)
         {
             string endOfStatementCode = ")";
             string[] configFile = File.ReadAllLines(Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "").Replace("\\bin\\Release\\net6.0", "") + "\\Application Code\\options.ini");
@@ -20,15 +20,13 @@ namespace Easy14_Programming_Language
             bool foundUsing = false;
             if (code_part.StartsWith("IsLeapYear("))
             {
-                string[] someLINEs = null;
-                if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
-                else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else
+                string[] someLINEs = textArray;
+                if (textArray == null)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Error: No file or text array was provided to the IsLeapYear function.");
+                    Console.WriteLine("Error: No file or text array was provided to the DeleteFile function.");
                     Console.ResetColor();
-                    return null;
+                    return "";
                 }
 
                 foreach (string usingStatements in someLINEs)

@@ -1,7 +1,7 @@
 [CURRENT VERSION]
-0.0.32
+1.0.0 Fixed
 
 [DATE OF UPDATE]
-1-10-23
+7-13-23
 
 //[Date Format]: (DD/MM/YYYY)

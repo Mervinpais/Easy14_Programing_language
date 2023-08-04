@@ -1,4 +1,5 @@
 ﻿# Easy14 Programing Language
+# THIS WILL BE REVAMPED SOON
 ---
 ![](Easy14_Programming_language/Images/repo%20github%20thumnail.png)
 ## Finally an *ok-ish* language made with C#
@@ -18,7 +19,8 @@ Basically a mashup of Python + C#
 
 ---
 
-# Version 3.1
+
+<!---# Version 1.0
 
 ## New stuff;
 

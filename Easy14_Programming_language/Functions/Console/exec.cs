@@ -11,7 +11,7 @@ namespace Easy14_Programming_Language
             if (line.StartsWith("\"") && line.StartsWith("\""))
             {
                 Program prog = new Program();
-                prog.CompileCode_fromOtherFiles(line);
+                prog.ExternalComplieCode(line);
             }
             else
             {
@@ -34,7 +34,7 @@ namespace Easy14_Programming_Language
                 if (File.Exists(variable))
                 {
                     Program prog = new Program();
-                    prog.CompileCode_fromOtherFiles(line);
+                    prog.ExternalComplieCode(line);
                 }
                 else
                 {

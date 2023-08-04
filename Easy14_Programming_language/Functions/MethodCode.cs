@@ -92,7 +92,7 @@ namespace Easy14_Programming_Language
                 File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", string.Join(Environment.NewLine, code_in_method_code.ToArray()));
 
                 understuff.RemoveRange(0, code_in_method_code.Count);
-                prog.CompileCode_fromOtherFiles(null, understuff.ToArray(), 0, true, methodName);
+                prog.ExternalComplieCode(null, understuff.ToArray(), 0);
             }
             else
             {
@@ -110,7 +110,7 @@ namespace Easy14_Programming_Language
 
                 try
                 {
-                    prog.CompileCode_fromOtherFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", null, 0, true, methodName);
+                    prog.ExternalComplieCode(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", null, 0);
                 }
                 catch
                 {

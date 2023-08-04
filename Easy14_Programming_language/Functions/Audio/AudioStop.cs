@@ -14,12 +14,13 @@ namespace Easy14_Programming_Language
         {
             if (code_part.StartsWith("AudioStop("))
             {
-                string[] someLINEs = null;
-                if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
-                else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else
+                string[] someLINEs = textArray;
+                if (textArray == null)
                 {
-                    ErrorReportor.ConsoleLineReporter.Error("Error: No file or text array was provided to the Console.beep function.");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to the DeleteFile function.");
+                    Console.ResetColor();
+                    return;
                 }
 
                 bool foundUsing = false;

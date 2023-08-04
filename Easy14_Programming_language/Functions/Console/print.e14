@@ -1,0 +1,6 @@
+recive command;
+if (command.StartsWith("print")) {
+	Replace(command, "print", "");
+}
+
+Sys.Write(command, true);

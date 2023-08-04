@@ -6,7 +6,7 @@ namespace Easy14_Programming_Language
 {
     public static class NetworkPing
     {
-        public static void Interperate(string code_part, string fileloc, string[] textArray, int line_count)
+        public static void Interperate(string code_part, string[] textArray)
         {
             string textToPrint;
             code_part = code_part.TrimStart();
@@ -14,9 +14,14 @@ namespace Easy14_Programming_Language
             if (code_part.StartsWith("Ping("))
             {
                 bool foundUsing = false;
-                string[] someLINEs = null;
-                if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
-                else if (textArray != null && fileloc == null) someLINEs = textArray;
+                string[] someLINEs = textArray;
+                if (textArray == null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: No file or text array was provided to the DeleteFile function.");
+                    Console.ResetColor();
+                    return;
+                }
                 foreach (string x in someLINEs)
                 {
                     if (x.StartsWith("using"))

@@ -29,14 +29,13 @@ namespace Easy14_Programming_Language
             bool foundUsing = false;
             if (code_part.StartsWith("play("))
             {
-                string[] someLINEs = null;
-                if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
-                else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else
+                string[] someLINEs = textArray;
+                if (textArray == null)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Error: No file or text array was provided to the Console.beep function.");
+                    Console.WriteLine("Error: No file or text array was provided to the DeleteFile function.");
                     Console.ResetColor();
+                    return;
                 }
 
                 foreach (string usingStatments in someLINEs)

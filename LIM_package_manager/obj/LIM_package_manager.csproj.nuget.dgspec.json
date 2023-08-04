@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\LIM_package_manager\\LIM_package_manager.csproj": {}
+    "C:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\LIM_package_manager\\LIM_package_manager.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\LIM_package_manager\\LIM_package_manager.csproj": {
+    "C:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\LIM_package_manager\\LIM_package_manager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\LIM_package_manager\\LIM_package_manager.csproj",
+        "projectUniqueName": "C:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\LIM_package_manager\\LIM_package_manager.csproj",
         "projectName": "LIM_package_manager",
-        "projectPath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\LIM_package_manager\\LIM_package_manager.csproj",
+        "projectPath": "C:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\LIM_package_manager\\LIM_package_manager.csproj",
         "packagesPath": "C:\\Users\\mervi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mervi\\repos\\Easy14_Programming_Language\\LIM_package_manager\\obj\\",
+        "outputPath": "C:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\LIM_package_manager\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\mervi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,8 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "C:\\Users\\mervi\\AppData\\Roaming\\Cosmos User Kit\\packages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -61,7 +55,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
         }
       }
     }

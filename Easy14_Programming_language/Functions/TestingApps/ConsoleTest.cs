@@ -5,12 +5,10 @@ namespace Easy14_Programming_Language.Functions.TestingApps
 {
     public static class Easy14_Tester
     {
-        public static void Load()
+        public static void ConsoleTest()
         {
-            static void ConsoleTest()
-            {
-                Console.WriteLine("Loading test for Console Library!");
-                Dictionary<int, string> cv = new Dictionary<int, string>
+            Console.WriteLine("Loading test for Console Library!");
+            Dictionary<int, string> cv = new Dictionary<int, string>
                 {
                     { 0, "Console.Clear();" },
                     { 1, "Console.Beep();" },
@@ -20,10 +18,9 @@ namespace Easy14_Programming_Language.Functions.TestingApps
                  }; //The CV variable means Command value
 
 
-                foreach (KeyValuePair<int, string> kvp in cv)
-                {
-                    Program.CompileCode(null, new string[] { kvp.Value });
-                }
+            foreach (KeyValuePair<int, string> kvp in cv)
+            {
+                Program.CompileCode(new string[] { kvp.Value });
             }
         }
     }

@@ -1,24 +1,21 @@
 using System;
-using System.IO;
 using System.Linq;
 
 namespace Easy14_Programming_Language
 {
     public static class Random_RandomRangeDouble
     {
-        public static string Interperate(string code_part, string[] textArray, string fileloc)
+        public static string Interperate(string code_part, string[] textArray)
         {
             string code_part_unedited = code_part;
             bool foundUsing = false;
             if (code_part.StartsWith("RandomRangeDouble("))
             {
-                string[] someLINEs = null;
-                if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
-                else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else
+                string[] someLINEs = textArray;
+                if (textArray == null)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Error: No file or text array was provided to the RandomRange function.");
+                    Console.WriteLine("Error: No code was provided to the RandomRange function.");
                     Console.ResetColor();
                     return null;
                 }

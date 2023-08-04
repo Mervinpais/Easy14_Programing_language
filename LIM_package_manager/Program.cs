@@ -74,7 +74,8 @@ namespace LIM_package_manager
             while (true)
             {
                 Console.Write(">>>");
-                string? line = Console.ReadLine();
+                string line = "";
+                line = Console.ReadLine();
 
                 if (line == null) { line = "<null>"; }
 

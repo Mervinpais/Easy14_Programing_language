@@ -9,7 +9,7 @@ namespace Easy14_Programming_Language
         static string strWorkPath = System.IO.Path.GetDirectoryName(strExeFilePath);
         static string[] configFile = File.ReadAllLines(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(strWorkPath).FullName).FullName).FullName + "\\Application Code", "options.ini"));
 
-        public string[] Interperate(string code_part, string fileloc, string[] textArray, int line_count)
+        public string[] Interperate(string code_part, string[] textArray)
         {
             string code_part_unedited = code_part;
             string textToPrint;
@@ -20,16 +20,13 @@ namespace Easy14_Programming_Language
             if (code_part.StartsWith($"ReadAllLines("))
             {
                 bool foundUsing = false;
-                string[] someLINEs = null;
-
-                if (textArray == null && fileloc != null) someLINEs = File.ReadAllLines(fileloc);
-                else if (textArray != null && fileloc == null) someLINEs = textArray;
-                else
+                string[] someLINEs = textArray;
+                if (textArray == null)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Error: No file or text array was provided to the ReadAllLines function.");
+                    Console.WriteLine("Error: No file or text array was provided to the DeleteFile function.");
                     Console.ResetColor();
-                    return null;
+                    return new string[] { "" };
                 }
 
                 foreach (string x in someLINEs)

@@ -10,7 +10,7 @@ namespace Easy14_Programming_Language
          * CHANGLE LOG 24/6/2022;
          * Code will/has  be/been refactored for better readablilty and easier to understand
          */
-        public static void Interperate(string code_part, string[] textArray, string[] lines, string fileloc, bool Making_A_Method = false)
+        public static void Interperate(string code_part, string[] textArray, string[] lines, bool Making_A_Method = false)
         {
             Program prog = new Program();
             string code_part_unedited = code_part;
@@ -53,8 +53,11 @@ namespace Easy14_Programming_Language
                 }
 
                 List<string> usingsCode_list = null;
-                if (textArray == null && fileloc != null) usingsCode_list = new List<string>(File.ReadAllLines(fileloc));
-                else if (textArray != null && fileloc == null) usingsCode_list = new List<string>(textArray);
+                if (textArray != null) usingsCode_list = new List<string>(textArray);
+                else
+                {
+                    return;
+                }
                 int usingsCodeList_lineCount = 1;
                 for (int i = 0; i < usingsCode_list.Count; i++)
                 {
@@ -81,7 +84,7 @@ namespace Easy14_Programming_Language
                 File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", string.Join(Environment.NewLine, code_in_method_code.ToArray()));
 
                 //understuff.RemoveRange(0, code_in_method_code.Count);
-                prog.CompileCode_fromOtherFiles(null, understuff.ToArray(), 0, true, methodName);
+                prog.ExternalComplieCode(null, understuff.ToArray(), 0);
             }
             else
             {
@@ -99,7 +102,7 @@ namespace Easy14_Programming_Language
 
                 try
                 {
-                    prog.CompileCode_fromOtherFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", null, 0, true, methodName);
+                    prog.ExternalComplieCode(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", null, 0);
                 }
                 catch
                 {
