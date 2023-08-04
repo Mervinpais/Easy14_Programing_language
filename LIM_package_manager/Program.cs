@@ -255,10 +255,15 @@ namespace LIM_package_manager
                             }
                             else if (command_seperated[1].ToLower() == "help" || command_seperated[1].ToLower() == "?")
                             {
-                                string helpTextFile_str = Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "");
-                                string[] helpTextFile = File.ReadAllLines($"{helpTextFile_str}\\helpContent.txt");
-                                Console.WriteLine(string.Join(Environment.NewLine, helpTextFile));
-                                Console.WriteLine();
+                                try
+                                {
+                                    string[] helpTextFile = File.ReadAllLines($"helpContent.txt");
+                                    Console.WriteLine(string.Join(Environment.NewLine, helpTextFile) + "\n");
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("\nUnable to get help file");
+                                }
                             }
                             else if (command_seperated[1].ToLower() == "version")
                             {

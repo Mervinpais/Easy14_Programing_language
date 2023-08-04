@@ -27,11 +27,9 @@ namespace Easy14_Programming_Language
         private static readonly string optionsPath = "Application Code\\options.ini";
         private static readonly string[] configFile = File.ReadAllLines(Path.Combine(executingAssemblyPath, optionsPath));
         private static readonly string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        private static readonly string tempPath = Path.Combine(desktopPath, "EASY14_Variables_TEMP");
         private static readonly string strExeFilePath = Assembly.GetExecutingAssembly().Location;
         private static readonly string workingDirectoryPath = Path.GetDirectoryName(strExeFilePath);
-        private static readonly string temporaryVariableFolder = tempPath;
-        private static readonly string version = Path.Combine(execAsmParentParentPath, @"Application Code\currentVersion.txt");
+        private static readonly string version = "Application Code\\currentVersion.txt";
 
         static void Main(string[] args)
         {
@@ -41,7 +39,8 @@ namespace Easy14_Programming_Language
             Console.WriteLine($"Easy14 {File.ReadAllLines(version)[1]} ({osName})");
             Console.WriteLine("Type in \"help\" or \"info\" for information");
 
-            if (Directory.Exists(temporaryVariableFolder)) Directory.Delete(temporaryVariableFolder, true);
+            //to get rid of older ways of variable management
+            if (Directory.Exists(Path.Combine(desktopPath, "EASY14_Variables_TEMP"))) Directory.Delete(Path.Combine(desktopPath, "EASY14_Variables_TEMP"), true);
 
             if (!Convert.ToBoolean(Configuration.GetBoolOption("UpdatesDisabled"))) updateChecker.checkLatestVersion();
 
@@ -274,40 +273,42 @@ namespace Easy14_Programming_Language
                     else if (StatementResult.methodName == "RangeDouble")
                     { Random_RandomRangeDouble.Interperate(currentLine, textArray); }
                 }
-                else if (currentLine.StartsWith($"ToString(") && currentLine.EndsWith(");")) ConvertToString.Interperate(currentLine);
-
-                else if (statementSplitDot[0] == "FileSystem")
+                else if (StatementResult.methodName == "ToString")
                 {
-                    if (statementSplitDot[1].StartsWith("MakeFile("))
+                    ConvertToString.Interperate(currentLine);
+                }
+                else if (StatementResult.className[0] == "FileSystem")
+                {
+                    if (StatementResult.methodName == "MakeFile")
                         FileSystem_MakeFile.Interperate(lineCount, codeLines);
-                    else if (statementSplitDot[1].StartsWith("MakeFolder("))
+                    else if (StatementResult.methodName == "MakeFolder(")
                         FileSystem_MakeFolder.Interperate(currentLine, textArray);
-                    else if (statementSplitDot[1].StartsWith("DeleteFile"))
+                    else if (StatementResult.methodName == "DeleteFile")
                         FileSystem_DeleteFile.Interperate(currentLine, textArray);
-                    else if (statementSplitDot[1].StartsWith("DeleteFolder"))
+                    else if (StatementResult.methodName == "DeleteFolder")
                         FileSystem_DeleteFolder.Interperate(currentLine, textArray);
-                    else if (statementSplitDot[1].StartsWith("ReadFile"))
+                    else if (StatementResult.methodName == "ReadFile")
                         FileSystem_ReadFile.Interperate(currentLine, textArray);
-                    else if (statementSplitDot[1].StartsWith("RenameFile"))
+                    else if (StatementResult.methodName == "RenameFile")
                         FileSystem_RenameFile.Interperate(currentLine, textArray);
-                    else if (statementSplitDot[1].StartsWith("WriteFile"))
+                    else if (StatementResult.methodName == "WriteFile")
                         FileSystem_WriteFile.Interperate(currentLine, textArray);
                 }
                 else if (statementSplitDot[0] == "Network")
                 {
-                    if (statementSplitDot[1].StartsWith("Ping"))
+                    if (StatementResult.methodName == "Ping")
                         NetworkPing.Interperate(currentLine, textArray);
                 }
                 else if (statementSplitDot[0] == "Time")
                 {
-                    if (statementSplitDot[1].StartsWith("CurrentTime"))
+                    if (StatementResult.methodName == "CurrentTime")
                         return Time_CurrentTime.Interperate(currentLine, textArray);
-                    else if (statementSplitDot[1].StartsWith("IsLeapYear"))
+                    else if (StatementResult.methodName == "IsLeapYear")
                         return Convert.ToBoolean(Time_IsLeapYear.Interperate(currentLine, textArray));
                 }
                 else if (statementSplitDot[0] == "sdl2")
                 {
-                    if (statementSplitDot[1].StartsWith("makeWindow"))
+                    if (StatementResult.methodName == "makeWindow")
                     {
                         string[] values = currentLine.Replace("sdl2.", "").Replace("makeWindow(", "").TrimEnd(')').Split(",");
                         int sizeX = 200;
@@ -349,7 +350,7 @@ namespace Easy14_Programming_Language
                         Thread.Sleep(100);
                         continue;
                     }
-                    if (statementSplitDot[1].StartsWith("createShape"))
+                    if (StatementResult.methodName == "createShape")
                     {
                         string[] values = currentLine.Replace("sdl2.", "").Replace("createShape(", "").TrimEnd(')').Split(",");
                         long window = 0;
@@ -391,7 +392,7 @@ namespace Easy14_Programming_Language
                         new Task(() => { SDL2_createShape.Interperate(window, xPosition, yPosition, width, height); }).Start();
 
                     }
-                    if (statementSplitDot[1].StartsWith("clearScreen"))
+                    if (StatementResult.methodName == "clearScreen")
                     {
                         string code_line = currentLine.Replace("sdl2.", "").Replace("clearScreen(", "");
                         code_line = code_line.Substring(0, code_line.Length - 2);
@@ -534,24 +535,14 @@ namespace Easy14_Programming_Language
                                         string theFunctionOfTheLine_params = theFunctionOfTheLine;
                                         theFunctionOfTheLine = theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("));
 
-                                        //theFunctionOfTheLine = theFunctionOfTheLine.Replace("(", "").Replace(");", "");
-
-                                        //Older
-                                        /*Type type_ = Type.GetType(theFunctionOfTheLine);
-                                        MethodInfo method = type_.GetMethod("run");
-                                        method.Invoke(null, null);*/
-
-                                        //Old
-                                        //Activator.CreateInstance(Convert.ToString(Assembly.GetExecutingAssembly()), Convert.ToString(Type.GetType(theFunctionOfTheLine)));                            
-
                                         string[] code =
                                         {
-                                        $"Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});"
-                                    };
+                                            $"Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});"
+                                        };
 
                                         try
                                         {
-                                            return "";//CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                                            CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
                                         }
                                         catch (Exception e)
                                         {

@@ -192,3 +192,4 @@ C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_langu
 C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net7.0-windows\Easy14_Programming_Language.pdb
 C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net7.0-windows\Easy14_Programming_Language.genruntimeconfig.cache
 C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net7.0-windows\ref\Easy14_Programming_Language.dll
+C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Debug\net7.0-windows\Application Code\currentVersion.txt

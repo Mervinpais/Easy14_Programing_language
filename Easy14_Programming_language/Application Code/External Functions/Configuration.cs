@@ -12,7 +12,7 @@ namespace Easy14_Programming_Language
 
         static Configuration()
         {
-            string optionsPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(workPath).FullName).FullName).FullName, "Application Code", "options.ini");
+            string optionsPath = "Application Code\\options.ini";
             configFile = File.ReadAllLines(optionsPath);
         }
 

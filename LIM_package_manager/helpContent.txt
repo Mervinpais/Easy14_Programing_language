@@ -1,21 +1,27 @@
-﻿==== HELP =====
-
-- help:
-	Show this help message.
-- version:
-	Shows current version.
-- list:
-	List all packages installed
-
-- lim install <packageURL>:
-	installs the package from the given URL.
-	http://mervin14.epizy.com/data/testDirForEasy14.zip is a test package you can install (Does nothing, just a test.cs and runAuto.config)
-	
-- lim uninstall <packageName>:
-	uninstalls the package with the given name.
-
-- lim update <packageName>:
-	updates the package with the given name.
-	|--- lim update --lim  || lim update --easy14:
-			This command is only for updating specific things, like Easy14 Programming Language or LIM itself! 
-			(You need to manually replace files from update package to the directory of LIM)
+﻿    ╔══════╗
+╔═══╣ HELP ╠═══════════════════════════════
+║   ╚══════╝
+╠════ help
+║       Show this help message.
+╠════ version
+║	    Shows current version.
+╠════ list
+║	    List all packages installed
+║
+╠════ lim install <packageURL>
+║	    installs the package from the given URL.
+║	    "http://mervin14.epizy.com/data/testDirForEasy14.zip" is a test package you can install
+║	
+╠════ lim uninstall <packageName>
+║	    uninstalls the package with the given name.
+║
+╠════ lim update <packageName>:
+║	    updates the package with the given name.
+║	     ║
+║	     ╚═══ "lim update --lim" or lim update "--easy14"
+║				   Only for updating;
+║                     - Easy14 Programming Language 
+║                     - LIM
+║				   (You need to manually replace files from update package to the directory of LIM)
+║
+╚══════

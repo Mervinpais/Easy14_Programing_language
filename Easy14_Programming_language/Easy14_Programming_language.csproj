@@ -68,6 +68,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Application Code\currentVersion.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Application Code\options.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
