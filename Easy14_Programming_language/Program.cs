@@ -479,11 +479,7 @@ namespace Easy14_Programming_Language
                         }
                     }
 
-                    /* The below code is checking to see if the line is not empty, not whitespace, not
-                    a closing bracket, not a break, not a return, not a using statement, and not a
-                    comment. If the line is not any of those things, then it will print out an error
-                    message. */
-                    else if (!string.IsNullOrEmpty(currentLine) && !string.IsNullOrWhiteSpace(currentLine) && currentLine != "}" && currentLine != "break" && currentLine != "return" && !currentLine.StartsWith("using") && !currentLine.StartsWith("var") && !currentLine.StartsWith("//"))
+                    if (IsExecutableCode(currentLine))
                     {
                         string funcLine = null;
                         if (currentLine.Contains("("))
@@ -494,140 +490,134 @@ namespace Easy14_Programming_Language
                             }
                             catch
                             {
-                                ErrorReportor.ConsoleLineReporter.Error($"{currentLine} is not a valid line.");
+                                HandleError($"{currentLine} is not a valid line.");
                                 return "";
                             }
                         }
+
                         if (funcLine != null)
                         {
-                            if (funcLine.Contains("."))
+                            string[] allNamespacesAvailableArray = null;
+                            bool hasNamespace = funcLine.Contains(".");
+
+                            if (hasNamespace)
                             {
-                                try
-                                {
-                                    string functionsDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Functions");
-                                    string[] allNamespacesAvailableArray = Directory.GetDirectories(functionsDirectory);
-
-                                    List<string> allNamespacesList = new List<string>(allNamespacesAvailableArray);
-                                    List<string> mainNamespacesList = new List<string>();
-
-                                    foreach (string item in allNamespacesList)
-                                    {
-                                        mainNamespacesList.Add(item[(item.LastIndexOf("\\") + 1)..]);
-                                    }
-
-                                    allNamespacesAvailableArray = mainNamespacesList.ToArray();
-                                    string theNamespaceOfTheLine = currentLine.Split(".")[0];
-                                    if (allNamespacesAvailableArray.Contains(theNamespaceOfTheLine))
-                                    {
-                                        int index = Array.IndexOf(allNamespacesAvailableArray, theNamespaceOfTheLine);
-                                        string theClassOfTheLine = currentLine.Split(".")[0];
-                                        string theFunctionOfTheLine = currentLine.Split(".")[1];
-                                        string params_str = currentLine.Replace($"{theNamespaceOfTheLine}.{theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("))}(", "");
-                                        params_str = params_str.Substring(0, params_str.Length - 2);
-                                        string[] params_ = { };
-
-                                        try
-                                        {
-                                            params_ = params_str.Split(",");
-                                        }
-                                        catch { /* Now we know this is a method without parameters */}
-
-                                        string theFunctionOfTheLine_params = theFunctionOfTheLine;
-                                        theFunctionOfTheLine = theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("));
-
-                                        string[] code =
-                                        {
-                                            $"Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});"
-                                        };
-
-                                        try
-                                        {
-                                            CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            ErrorReportor.ConsoleLineReporter.Error("The function you are trying to use returned an Error");
-                                            Console.WriteLine($"\n{e.Message}");
-                                        }
-                                        return "";
-                                    }
-                                }
-                                catch (Exception e)
-                                { Console.WriteLine(e.InnerException); }
-                            }
-                            else if (!funcLine.Contains("."))
-                            {
-                                string[] allNamespacesAvaiable_array = Directory.GetDirectories(workingDirectoryPath.Replace("\\bin\\Debug\\net7.0-windows", "").Replace("\\bin\\Release\\net7.0-windows", "") + "\\Functions");
-                                List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
-                                List<string> allNamespacesAvaiable_list_main = new List<string>();
-                                foreach (string item in allNamespacesAvaiable_list)
-                                {
-                                    allNamespacesAvaiable_list_main.Add(item[(item.LastIndexOf("\\") + 1)..]);
-                                }
-                                allNamespacesAvaiable_array = allNamespacesAvaiable_list_main.ToArray();
-                                string theFunctionOfTheLine = currentLine;
-                                int index = Array.IndexOf(allNamespacesAvaiable_array, theFunctionOfTheLine);
-                                string params_str = currentLine.Replace($"{theFunctionOfTheLine}.{theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("))}(", "");
-
-                                params_str = params_str.Substring(1, params_str.Length - 2);
-                                params_str = params_str.Substring(params_str.IndexOf("("), params_str.Length - params_str.IndexOf("("));
-                                params_str = params_str.Substring(1, params_str.Length - 1);
-                                string[] params_ = { };
-
-                                try
-                                {
-                                    params_ = params_str.Split(",");
-                                }
-                                catch { } // Now we know this is a method without parameters
-
-                                string theFunctionOfTheLine_params = theFunctionOfTheLine;
-                                theFunctionOfTheLine = theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("));
-                                string[] code =
-                                {
-                                    $"Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});"
-                                };
-
-                                try
-                                {
-                                    return CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
-                                }
-                                catch (Exception e)
-                                {
-                                    ErrorReportor.ConsoleLineReporter.Error("C# EXCEPTION ERROR; " + e.GetType().Name, e.Message);
-                                    Console.WriteLine("CSHARP_Error");
-                                }
-                                return "";
+                                allNamespacesAvailableArray = GetAvailableNamespacesFromDirectory("Functions");
                             }
                             else
                             {
-                                ErrorReportor.ConsoleLineReporter.Error($"\'{currentLine}\' is not a vaild code statement\n  Error was located on Line {lineCount - 13}");
+                                allNamespacesAvailableArray = GetAvailableNamespacesFromDirectory(workingDirectoryPath.Replace("\\bin\\Debug\\net7.0-windows", "").Replace("\\bin\\Release\\net7.0-windows", "") + "\\Functions");
+                            }
+
+                            if (allNamespacesAvailableArray.Contains(funcLine))
+                            {
+                                if (hasNamespace)
+                                {
+                                    ExecuteFunctionWithNamespace(currentLine);
+                                }
+                                else
+                                {
+                                    ExecuteFunctionWithoutNamespace(currentLine);
+                                    return "";
+                                }
+                            }
+                            else
+                            {
+                                HandleError($"\'{currentLine}\' is not a valid code statement\n  Error was located on Line {lineCount - 13}");
                                 break;
                             }
                         }
                         else
                         {
-                            ErrorReportor.ConsoleLineReporter.Error($"\'{currentLine}\' is not a vaild code statement\n  Error was located on Line {lineCount - 13}");
+                            HandleError($"\'{currentLine}\' is not a valid code statement\n  Error was located on Line {lineCount - 13}");
                             break;
                         }
                     }
-
-                    try
-                    {
-                        if (statementSplitSpace[0] == $"if" && (currentLine.EndsWith("{") || codeLines[lineCount] == "{"))
-                            If_Loop.Interperate(lineCount, codeLines);
-                        else if (statementSplitSpace[0] == $"while" && (currentLine.EndsWith("{") || codeLines[lineCount] == "{"))
-                            While_Loop.Interperate(currentLine, codeLines, textArray);
-                        else if (statementSplitSpace[0] == "func " && (currentLine.EndsWith(") {") || codeLines[lineCount] == "{"))
-                            Method_Code.Interperate(currentLine, textArray, codeLines, true);
-
-                        return "";
-                    }
-                    catch (IndexOutOfRangeException /*indexOutRangeEx*/)
-                    {
-                        ErrorReportor.ConsoleLineReporter.Error("Invalid Syntax", $"Invalid Syntax at line {lineCount}\n{currentLine}\n");
-                    }
                 }
-                lineCount++;
+            }
+            return "";
+        }
+
+        private static bool IsExecutableCode(string currentLine)
+        {
+            return currentLine != "}" &&
+                   currentLine != "break" &&
+                   currentLine != "return" &&
+                   !currentLine.StartsWith("using") &&
+                   !currentLine.StartsWith("var") &&
+                   !currentLine.StartsWith("//");
+        }
+        private static void HandleError(string errorMessage)
+        {
+            ErrorReportor.ConsoleLineReporter.Error(errorMessage);
+        }
+
+        private static string[] GetAvailableNamespacesFromDirectory(string directoryName)
+        {
+            string functionsDirectory = Path.Combine(Directory.GetCurrentDirectory(), directoryName);
+            return Directory.GetDirectories(functionsDirectory)
+                            .Select(item => item[(item.LastIndexOf("\\") + 1)..])
+                            .ToArray();
+        }
+
+        private static void ExecuteFunctionWithNamespace(string currentLine)
+        {
+            string theNamespaceOfTheLine = currentLine.Split(".")[0];
+            string theFunctionOfTheLine = currentLine.Split(".")[1];
+            string params_str = currentLine.Replace($"{theNamespaceOfTheLine}.{theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("))}(", "");
+            params_str = params_str.Substring(0, params_str.Length - 2);
+            string[] params_ = params_str.Split(",");
+
+            string theFunctionOfTheLine_params = theFunctionOfTheLine;
+            theFunctionOfTheLine = theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("));
+
+            string[] code =
+            {
+                $"Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});"
+            };
+
+            try
+            {
+                CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+            }
+            catch (Exception e)
+            {
+                ErrorReportor.ConsoleLineReporter.Error("The function you are trying to use returned an Error");
+                Console.WriteLine($"\n{e.Message}");
+            }
+        }
+
+        private static async Task<string> ExecuteFunctionWithoutNamespace(string currentLine)
+        {
+            string[] allNamespacesAvaiable_array = Directory.GetDirectories(workingDirectoryPath.Replace("\\bin\\Debug\\net7.0-windows", "").Replace("\\bin\\Release\\net7.0-windows", "") + "\\Functions");
+            List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
+            List<string> allNamespacesAvaiable_list_main = new List<string>();
+            foreach (string item in allNamespacesAvaiable_list)
+            {
+                allNamespacesAvaiable_list_main.Add(item[(item.LastIndexOf("\\") + 1)..]);
+            }
+
+            allNamespacesAvaiable_array = allNamespacesAvaiable_list_main.ToArray();
+            string theFunctionOfTheLine = currentLine;
+            int index = Array.IndexOf(allNamespacesAvaiable_array, theFunctionOfTheLine);
+            string params_str = currentLine.Replace($"{theFunctionOfTheLine}.{theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("))}(", "");
+
+            params_str = params_str.Substring(1, params_str.Length - 2);
+            params_str = params_str.Substring(params_str.IndexOf("("), params_str.Length - params_str.IndexOf("("));
+            params_str = params_str.Substring(1, params_str.Length - 1);
+            string[] params_ = params_str.Split(",");
+            theFunctionOfTheLine = theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("));
+            string[] code = { $"Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});" };
+
+            try
+            {
+                var scriptState = await CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
+                return scriptState.ReturnValue?.ToString() ?? ""; // Convert the return value to string or return an empty string if null
+            }
+            catch (Exception e)
+            {
+                ErrorReportor.ConsoleLineReporter.Error("C# EXCEPTION ERROR; " + e.GetType().Name, e.Message);
+                Console.WriteLine("CSHARP_Error");
             }
             return "";
         }

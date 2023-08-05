@@ -25,6 +25,12 @@
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_F41BDC49341A4D548B4074B4DA01C5EC"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -43,6 +49,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -59,6 +73,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -76,6 +98,16 @@
         {
             "LaunchCondition"
             {
+                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_6EEB5AB276C849A4A5358928F6DED616"
+                {
+                "Name" = "8:.NET Core"
+                "Message" = "8:[VSDNETCOREMSG]"
+                "AllowLaterVersions" = "11:FALSE"
+                "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-core/[NetCoreVerMajorDotMinor]"
+                "IsNETCore" = "11:TRUE"
+                "Architecture" = "2:0"
+                "Runtime" = "2:0"
+                }
             }
         }
         "File"
@@ -277,7 +309,21 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_2F17C3A60AC74011AC2F9D232D2AEDEC"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_61855AB3252D4FFBB48AA8CF63E5E459"
+            {
+            "Name" = "8:LIM For Easy14"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_F41BDC49341A4D548B4074B4DA01C5EC"
+            "Folder" = "8:_3201DC74B56E404CA26DA9D1AEDE17D4"
+            "WorkingFolder" = "8:_40C1A5D17A6444FDB1D70EB8DB71AC5F"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_8B46E93CDF5D40E392887499A550A504"
             {
             "Name" = "8:Easy14"
             "Arguments" = "8:"
@@ -291,7 +337,7 @@
             "Icon" = "8:_6C8E69BA71104E46AE80CA36923EA53A"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_8B46E93CDF5D40E392887499A550A504"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_F7BA46DED73742B1BAE6B89E1E9DB27F"
             {
             "Name" = "8:Easy14"
             "Arguments" = "8:"
@@ -302,7 +348,7 @@
             "Target" = "8:_20354BBB385243628D42FF3DBD4AC5F2"
             "Folder" = "8:_3201DC74B56E404CA26DA9D1AEDE17D4"
             "WorkingFolder" = "8:_40C1A5D17A6444FDB1D70EB8DB71AC5F"
-            "Icon" = "8:_6C8E69BA71104E46AE80CA36923EA53A"
+            "Icon" = "8:"
             "Feature" = "8:"
             }
         }
@@ -727,6 +773,34 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:PublishItems"
             "OutputProjectGuid" = "8:{3B3A2AC8-DD5A-487F-8BF5-2478AC5FF623}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_F41BDC49341A4D548B4074B4DA01C5EC"
+            {
+            "SourcePath" = "8:..\\LIM_package_manager\\obj\\Debug\\net7.0\\apphost.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_40C1A5D17A6444FDB1D70EB8DB71AC5F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:PublishItems"
+            "OutputProjectGuid" = "8:{9632C4D5-5126-428F-B079-5DAE98812285}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

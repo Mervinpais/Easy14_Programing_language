@@ -121,14 +121,7 @@ C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_langu
 C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\Microsoft.CodeAnalysis.CSharp.dll
 C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\Microsoft.CodeAnalysis.CSharp.Scripting.dll
 C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\Microsoft.CodeAnalysis.Scripting.dll
-C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
-C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\Microsoft.Extensions.Caching.Memory.dll
-C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\Microsoft.Extensions.Options.dll
-C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\Microsoft.Extensions.Primitives.dll
-C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\Newtonsoft.Json.dll
 C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\Sayers.SDL2.Core.dll
-C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\Z.Expressions.Eval.dll
 C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\cs\Microsoft.CodeAnalysis.resources.dll
 C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\de\Microsoft.CodeAnalysis.resources.dll
 C:\Users\mervi\source\repos\Easy14_Programming_Language\Easy14_Programming_language\bin\Release\net7.0-windows\es\Microsoft.CodeAnalysis.resources.dll
