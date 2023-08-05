@@ -6,30 +6,28 @@ namespace Easy14_Programming_Language.Application_Code
 {
     public class CommandParser
     {
-
         public static (List<string> className, string methodName, List<string> paramItems) SplitCommand(string command)
         {
-            Tuple<List<string>, string, List<string>> statementParts = null;
-            statementParts = SplitCommandPart(command).ToTuple();
-            for (int i = 0; i < statementParts.Item1.Count; i++)
+            var statementParts = SplitCommandPart(command);
+            for (int i = 0; i < statementParts.className.Count; i++)
             {
-                string item = statementParts.Item1[i];
+                string item = statementParts.className[i];
                 Console.WriteLine($"Class {i + 1}: {item}");
             }
-            Console.WriteLine("Method Name: " + statementParts.Item2);
+            Console.WriteLine("Method Name: " + statementParts.methodName);
 
-            if (statementParts.Item3.Count > 0)
+            if (statementParts.paramItems.Count > 0)
             {
-                for (int i = 0; i < statementParts.Item3.Count; i++)
+                for (int i = 0; i < statementParts.paramItems.Count; i++)
                 {
-                    Console.WriteLine($"Parameter {i}: [{ItemChecks.detectType(statementParts.Item3[i])}] {statementParts.Item3[i]}");
+                    Console.WriteLine($"Parameter {i}: [{ItemChecks.detectType(statementParts.paramItems[i])}] {statementParts.paramItems[i]}");
                 }
             }
 
-            return (statementParts.Item1, statementParts.Item2, statementParts.Item3);
+            return (statementParts.className, statementParts.methodName, statementParts.paramItems);
         }
 
-        private static (List<string> className, string methodName, List<string> params_) SplitCommandPart(string commandPart)
+        private static (List<string> className, string methodName, List<string> paramItems) SplitCommandPart(string commandPart)
         {
             if (commandPart.EndsWith(");"))
             {
@@ -45,7 +43,7 @@ namespace Easy14_Programming_Language.Application_Code
                     string className = string.Join(".", parts);
 
                     string paramsPart = commandPart.Substring(openParenIndex + 1, closeParenIndex - openParenIndex - 1).Trim();
-                    List<string> parameters = new List<string> { paramsPart };
+                    List<string> parameters = SplitParameters(paramsPart);
 
                     return (new List<string> { className }, methodName, parameters);
                 }
@@ -64,5 +62,34 @@ namespace Easy14_Programming_Language.Application_Code
             return (new List<string>() { "" }, "", new List<string>() { "" });
         }
 
+        private static List<string> SplitParameters(string paramsPart)
+        {
+            List<string> parameters = new List<string>();
+            int start = 0;
+            int nestingLevel = 0;
+
+            for (int i = 0; i < paramsPart.Length; i++)
+            {
+                char c = paramsPart[i];
+                if (c == ',' && nestingLevel == 0)
+                {
+                    parameters.Add(paramsPart.Substring(start, i - start).Trim());
+                    start = i + 1;
+                }
+                else if (c == '(')
+                {
+                    nestingLevel++;
+                }
+                else if (c == ')')
+                {
+                    nestingLevel--;
+                }
+            }
+
+            // Add the last parameter
+            parameters.Add(paramsPart.Substring(start).Trim());
+
+            return parameters;
+        }
     }
 }

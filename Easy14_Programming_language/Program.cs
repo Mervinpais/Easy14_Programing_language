@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -187,9 +188,6 @@ namespace Easy14_Programming_Language
                 if (currentLine.Trim() == " ")
                 { continue; }
                 var StatementResult = CommandParser.SplitCommand(currentLine);
-                string[] statementSplitSpace = currentLine.Split(" ");
-                string[] statementSplitDot = currentLine.Split(".");
-                List<string> statementListSplit = new List<string>(currentLine.Split(" "));
 
                 if (showStatementsDuringRuntime == true) Console.WriteLine($">>>{currentLine}");
 
@@ -215,8 +213,8 @@ namespace Easy14_Programming_Language
 
                 /* Checking if the user has entered "exit()" or "exit();" and if they have, it will
                 exit the program. */
-                else if (currentLine.ToLower() == "exit()" || currentLine.ToLower() == "exit();") return "";
-                else if (currentLine.ToLower() == "exit")
+                else if (StatementResult.methodName.ToLower() == "exit()" || StatementResult.methodName.ToLower() == "exit();") return "";
+                else if (StatementResult.methodName.ToLower() == "exit")
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("\nPlease use \"exit()\" or Ctrl+C to close the interative console");
@@ -263,19 +261,19 @@ namespace Easy14_Programming_Language
                     {
                         try
                         {
-                            return Random_RandomRange.Interperate(Convert.ToInt32(StatementResult.paramItems[0]), Convert.ToInt32(StatementResult.paramItems[1]));
+                            return Random_RandomRange.Interperate(
+                                Convert.ToInt32(StatementResult.paramItems[0]), 
+                                Convert.ToInt32(StatementResult.paramItems[1])
+                            );
                         }
-                        catch
-                        {
-                            throw new Exception("Not valid Integers");
-                        }
+                        catch { throw new Exception("Not valid Integers"); }
                     }
                     else if (StatementResult.methodName == "RangeDouble")
-                    { Random_RandomRangeDouble.Interperate(currentLine, textArray); }
+                    { return Random_RandomRangeDouble.Interperate(currentLine, textArray); }
                 }
                 else if (StatementResult.methodName == "ToString")
                 {
-                    ConvertToString.Interperate(currentLine);
+                    return ConvertToString.Interperate(currentLine);
                 }
                 else if (StatementResult.className[0] == "FileSystem")
                 {
@@ -294,111 +292,59 @@ namespace Easy14_Programming_Language
                     else if (StatementResult.methodName == "WriteFile")
                         FileSystem_WriteFile.Interperate(currentLine, textArray);
                 }
-                else if (statementSplitDot[0] == "Network")
+                else if (StatementResult.className[0] == "Network")
                 {
                     if (StatementResult.methodName == "Ping")
                         NetworkPing.Interperate(currentLine, textArray);
                 }
-                else if (statementSplitDot[0] == "Time")
+                else if (StatementResult.className[0] == "Time")
                 {
                     if (StatementResult.methodName == "CurrentTime")
                         return Time_CurrentTime.Interperate(currentLine, textArray);
                     else if (StatementResult.methodName == "IsLeapYear")
                         return Convert.ToBoolean(Time_IsLeapYear.Interperate(currentLine, textArray));
                 }
-                else if (statementSplitDot[0] == "sdl2")
+                else if (StatementResult.className[0] == "sdl2")
                 {
                     if (StatementResult.methodName == "makeWindow")
                     {
-                        string[] values = currentLine.Replace("sdl2.", "").Replace("makeWindow(", "").TrimEnd(')').Split(",");
-                        int sizeX = 200;
-                        int sizeY = 200;
-                        int posX = SDL.SDL_WINDOWPOS_UNDEFINED;
-                        int posY = SDL.SDL_WINDOWPOS_UNDEFINED;
-                        string title = "myWindowTitle";
+                        List<string> values = StatementResult.paramItems;
 
-                        if (values.Length >= 1 && int.TryParse(values[0], out sizeX))
-                        {
-                            // sizeX was successfully parsed as an integer
-                        }
+                        int sizeX = values.Count >= 1 && int.TryParse(values[0], out int parsedSizeX) ? parsedSizeX : 200;
+                        int sizeY = values.Count >= 2 && int.TryParse(values[1], out int parsedSizeY) ? parsedSizeY : 200;
+                        int posX = values.Count >= 3 && int.TryParse(values[2], out int parsedPosX) ? parsedPosX : SDL.SDL_WINDOWPOS_UNDEFINED;
+                        int posY = values.Count >= 4 && int.TryParse(values[3], out int parsedPosY) ? parsedPosY : SDL.SDL_WINDOWPOS_UNDEFINED;
+                        string title = values.Count >= 5 ? values[4] : "myWindowTitle";
 
-                        if (values.Length >= 2 && int.TryParse(values[1], out sizeY))
-                        {
-                            // sizeY was successfully parsed as an integer
-                        }
-
-                        if (values.Length >= 3 && int.TryParse(values[2], out posX))
-                        {
-                            // posX was successfully parsed as an integer
-                        }
-
-                        if (values.Length >= 4 && int.TryParse(values[3], out posY))
-                        {
-                            // posY was successfully parsed as an integer
-                        }
-
-                        if (values.Length >= 5)
-                        {
-                            title = values[4];
-                        }
-
-                        IntPtr window = (IntPtr)0;
+                        IntPtr window = IntPtr.Zero;
                         long window_int = -1;
                         new Task(() => { window_int = SDL2_makeWindow.Interperate(sizeX, sizeY, posX, posY, title); }).Start();
-                        //window_int = makeWindow.Interperate(sizeX, sizeY, posX, posY, title);
                         window = (IntPtr)window_int;
-                        Thread.Sleep(100);
                         continue;
                     }
+
                     if (StatementResult.methodName == "createShape")
                     {
-                        string[] values = currentLine.Replace("sdl2.", "").Replace("createShape(", "").TrimEnd(')').Split(",");
+                        List<string> values = StatementResult.paramItems;
                         long window = 0;
-                        int xPosition = 0;
-                        int yPosition = 0;
-                        int width = 0;
-                        int height = 0;
+                        int xPosition = int.MaxValue;
+                        int yPosition = int.MaxValue;
+                        int width = int.MaxValue;
+                        int height = int.MaxValue;
 
-                        if (!long.TryParse(values[0], out window))
-                        {
-                            ErrorReportor.ConsoleLineReporter.Error("Failed to get Window parameter");
-                            return "";
-                        }
+                        if (long.TryParse(values[0], out window) && values.Count >= 2) int.TryParse(values[1], out xPosition);
 
-                        if (values.Length >= 2 && !int.TryParse(values[1], out xPosition))
-                        {
-                            ErrorReportor.ConsoleLineReporter.Warning("Failed to get x (right) position parameter");
-                            xPosition = int.MaxValue;
-                        }
-
-                        if (values.Length >= 3 && !int.TryParse(values[2], out yPosition))
-                        {
-                            ErrorReportor.ConsoleLineReporter.Warning("Failed to get y (up) position parameter");
-                            yPosition = int.MaxValue;
-                        }
-
-                        if (values.Length >= 4 && !int.TryParse(values[3], out width))
-                        {
-                            ErrorReportor.ConsoleLineReporter.Warning("Failed to get w (width) size parameter");
-                            width = int.MaxValue;
-                        }
-
-                        if (values.Length >= 5 && !int.TryParse(values[4], out height))
-                        {
-                            ErrorReportor.ConsoleLineReporter.Warning("Failed to get h (height) size parameter");
-                            height = int.MaxValue;
-                        }
+                        if (values.Count >= 3) int.TryParse(values[2], out yPosition);
+                        if (values.Count >= 4) int.TryParse(values[3], out width);
+                        if (values.Count >= 5) int.TryParse(values[4], out height);
 
                         new Task(() => { SDL2_createShape.Interperate(window, xPosition, yPosition, width, height); }).Start();
-
                     }
                     if (StatementResult.methodName == "clearScreen")
                     {
-                        string code_line = currentLine.Replace("sdl2.", "").Replace("clearScreen(", "");
-                        code_line = code_line.Substring(0, code_line.Length - 2);
                         long window = 0;
                         string color = null;
-                        string[] values = code_line.Split(",");
+                        List<string> values = StatementResult.paramItems;
                         window = Convert.ToInt64(values[0]);
                         color = values[1];
                         SDL2_clearScreen.Interperate(window, color);
@@ -406,132 +352,19 @@ namespace Easy14_Programming_Language
                 }
                 else
                 {
-                    string e14VerTemp_directoryPath = Path.Combine(desktopPath, "EASY14_Variables_TEMP");
-
-                    if (Directory.Exists(e14VerTemp_directoryPath))
-                    {
-                        if (Directory.GetFiles(e14VerTemp_directoryPath).Length > -1)
-                        {
-                            if (currentLine.EndsWith("();"))
-                            {
-                                // Check if the statement ends with "();", indicating it's probably a function
-                                Method_Code.Interperate(currentLine, textArray, codeLines, false);
-                                return "";
-                            }
-                            foreach (string file in Directory.GetFiles($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}\\EASY14_Variables_TEMP"))
-                            {
-                                string supposedVar = file[file.LastIndexOf("\\")..].Substring(1);
-
-                                if (currentLine.StartsWith(supposedVar))
-                                {
-                                    if (currentLine.Contains('=') && currentLine.IndexOf("+") != currentLine.IndexOf("=") - 1 && currentLine.Count(f => f == '=') == 1)
-                                    {
-                                        string filePath = file;
-                                        string partToReplace = $"{file.Substring(file.LastIndexOf("\\") + 1)} = ";
-                                        string content = currentLine.Replace(partToReplace, "");
-
-                                        if (content.Contains('+') && content.Count(f => f == '+') == 1)
-                                        {
-                                            int result = Math_Add.Interperate(content, 0, supposedVar);
-                                        }
-                                        else
-                                        {
-                                            File.WriteAllText(filePath, content);
-                                        }
-
-                                        break;
-                                    }
-
-                                    /* Adding a line to a var. */
-                                    if (currentLine.Contains("+=") && currentLine.Count(f => f == '=') == 1 && currentLine.Count(f => f == '+') == 1)
-                                    {
-                                        string filePath = file;
-                                        string partToReplace = file.Substring(file.LastIndexOf("\\") + 1) + " = ";
-                                        string content = currentLine.Replace(partToReplace, "");
-                                        content = content.Substring(5, content.Length - 6);
-
-                                        string[] fileContents = File.ReadAllLines(filePath);
-                                        List<string> fileContentsList = new List<string>(fileContents);
-                                        fileContentsList.Add(content);
-                                        File.WriteAllText(filePath, string.Join(Environment.NewLine, fileContentsList));
-                                        break;
-                                    }
-
-                                    /* Removing a line from a var. */
-                                    if (currentLine.Contains("-=") && currentLine.Count(f => f == '-') == 2)
-                                    {
-                                        string filePath = file;
-                                        string partToReplace = file.Substring(file.LastIndexOf("\\") + 1) + " = ";
-                                        string content = currentLine.Replace(partToReplace, "");
-                                        content = content.Substring(5, content.Length - 6);
-
-                                        string[] fileContents = File.ReadAllLines(filePath);
-                                        List<string> fileContentsList = new List<string>(fileContents);
-
-                                        fileContentsList.Remove(content);
-
-                                        File.WriteAllText(filePath, string.Join(Environment.NewLine, fileContentsList));
-                                        break;
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-
                     if (IsExecutableCode(currentLine))
                     {
-                        string funcLine = null;
-                        if (currentLine.Contains("("))
-                        {
-                            try
-                            {
-                                funcLine = currentLine.Substring(0, currentLine.IndexOf("("));
-                            }
-                            catch
-                            {
-                                HandleError($"{currentLine} is not a valid line.");
-                                return "";
-                            }
-                        }
-
-                        if (funcLine != null)
-                        {
-                            string[] allNamespacesAvailableArray = null;
-                            bool hasNamespace = funcLine.Contains(".");
-
-                            if (hasNamespace)
-                            {
-                                allNamespacesAvailableArray = GetAvailableNamespacesFromDirectory("Functions");
-                            }
-                            else
-                            {
-                                allNamespacesAvailableArray = GetAvailableNamespacesFromDirectory(workingDirectoryPath.Replace("\\bin\\Debug\\net7.0-windows", "").Replace("\\bin\\Release\\net7.0-windows", "") + "\\Functions");
-                            }
-
-                            if (allNamespacesAvailableArray.Contains(funcLine))
-                            {
-                                if (hasNamespace)
-                                {
-                                    ExecuteFunctionWithNamespace(currentLine);
-                                }
-                                else
-                                {
-                                    ExecuteFunctionWithoutNamespace(currentLine);
-                                    return "";
-                                }
-                            }
-                            else
-                            {
-                                HandleError($"\'{currentLine}\' is not a valid code statement\n  Error was located on Line {lineCount - 13}");
-                                break;
-                            }
-                        }
-                        else
+                        try { ExecuteFunctionWithNamespace(currentLine, StatementResult); }
+                        catch
                         {
                             HandleError($"\'{currentLine}\' is not a valid code statement\n  Error was located on Line {lineCount - 13}");
                             break;
                         }
+                    }
+                    else
+                    {
+                        HandleError($"\'{currentLine}\' is not a valid code statement\n  Error was located on Line {lineCount - 13}");
+                        break;
                     }
                 }
             }
@@ -555,26 +388,19 @@ namespace Easy14_Programming_Language
         private static string[] GetAvailableNamespacesFromDirectory(string directoryName)
         {
             string functionsDirectory = Path.Combine(Directory.GetCurrentDirectory(), directoryName);
-            return Directory.GetDirectories(functionsDirectory)
-                            .Select(item => item[(item.LastIndexOf("\\") + 1)..])
-                            .ToArray();
+            return Directory.GetDirectories(functionsDirectory).Select(item => item[(item.LastIndexOf("\\") + 1)..]).ToArray();
         }
 
-        private static void ExecuteFunctionWithNamespace(string currentLine)
+        private static void ExecuteFunctionWithNamespace(string currentLine, (List<string> classes, string method, List<string> params_) StatementResult)
         {
-            string theNamespaceOfTheLine = currentLine.Split(".")[0];
-            string theFunctionOfTheLine = currentLine.Split(".")[1];
-            string params_str = currentLine.Replace($"{theNamespaceOfTheLine}.{theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("))}(", "");
-            params_str = params_str.Substring(0, params_str.Length - 2);
-            string[] params_ = params_str.Split(",");
+            List<string> theClassesOfTheLine = StatementResult.classes;
+            string theMethodOfTheLine = StatementResult.method;
+            List<string> params_ = StatementResult.params_;
 
-            string theFunctionOfTheLine_params = theFunctionOfTheLine;
-            theFunctionOfTheLine = theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("));
+            string classHierarchy = string.Join(".", theClassesOfTheLine);
 
-            string[] code =
-            {
-                $"Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});"
-            };
+            string codeLine = $"Easy14_Programming_Language.{classHierarchy}.{theMethodOfTheLine}({string.Join(",", StatementResult.params_)});";
+            string[] code = { codeLine };
 
             try
             {
@@ -582,45 +408,9 @@ namespace Easy14_Programming_Language
             }
             catch (Exception e)
             {
-                ErrorReportor.ConsoleLineReporter.Error("The function you are trying to use returned an Error");
+                ErrorReportor.ConsoleLineReporter.Error("An Error Occoured while running the Easy14 Package (C# Error)");
                 Console.WriteLine($"\n{e.Message}");
             }
         }
-
-        private static async Task<string> ExecuteFunctionWithoutNamespace(string currentLine)
-        {
-            string[] allNamespacesAvaiable_array = Directory.GetDirectories(workingDirectoryPath.Replace("\\bin\\Debug\\net7.0-windows", "").Replace("\\bin\\Release\\net7.0-windows", "") + "\\Functions");
-            List<string> allNamespacesAvaiable_list = new List<string>(allNamespacesAvaiable_array);
-            List<string> allNamespacesAvaiable_list_main = new List<string>();
-            foreach (string item in allNamespacesAvaiable_list)
-            {
-                allNamespacesAvaiable_list_main.Add(item[(item.LastIndexOf("\\") + 1)..]);
-            }
-
-            allNamespacesAvaiable_array = allNamespacesAvaiable_list_main.ToArray();
-            string theFunctionOfTheLine = currentLine;
-            int index = Array.IndexOf(allNamespacesAvaiable_array, theFunctionOfTheLine);
-            string params_str = currentLine.Replace($"{theFunctionOfTheLine}.{theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("))}(", "");
-
-            params_str = params_str.Substring(1, params_str.Length - 2);
-            params_str = params_str.Substring(params_str.IndexOf("("), params_str.Length - params_str.IndexOf("("));
-            params_str = params_str.Substring(1, params_str.Length - 1);
-            string[] params_ = params_str.Split(",");
-            theFunctionOfTheLine = theFunctionOfTheLine.Substring(0, theFunctionOfTheLine.IndexOf("("));
-            string[] code = { $"Easy14_Programming_Language.{theFunctionOfTheLine}.Interperate({string.Join(",", params_)});" };
-
-            try
-            {
-                var scriptState = await CSharpScript.RunAsync(string.Join(Environment.NewLine, code), ScriptOptions.Default.WithReferences(Assembly.GetExecutingAssembly()));
-                return scriptState.ReturnValue?.ToString() ?? ""; // Convert the return value to string or return an empty string if null
-            }
-            catch (Exception e)
-            {
-                ErrorReportor.ConsoleLineReporter.Error("C# EXCEPTION ERROR; " + e.GetType().Name, e.Message);
-                Console.WriteLine("CSHARP_Error");
-            }
-            return "";
-        }
-
     }
 }
