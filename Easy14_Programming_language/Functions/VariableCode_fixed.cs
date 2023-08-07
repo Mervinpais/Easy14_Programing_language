@@ -10,14 +10,21 @@ namespace Easy14_Programming_Language
         {
             if (setVariable)
             {
-                variableList.Add(name, value);
+                variableList[name] = value;
                 return null;
             }
             else
             {
-                return variableList.TryGetValue(name, out _);
+                if (variableList.TryGetValue(name, out var storedValue))
+                {
+                    return storedValue;
+                }
+                else
+                {
+                    ErrorReportor.ConsoleLineReporter.Error($"Variable \'{name}\' does not exist!");
+                    return null;
+                }
             }
-            return null;
         }
     }
 }

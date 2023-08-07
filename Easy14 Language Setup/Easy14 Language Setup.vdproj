@@ -56,6 +56,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -80,6 +88,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -170,6 +186,28 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_31D688AFCFEB47CC99FEC1D702B2DF24"
+                    {
+                    "Name" = "8:Easy14"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_9DDAFDDB16774ED7B829F0F0462F5ABD"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_5BD5B73DF9E7461D8D3D4AE30A7CDA35"
+                    {
+                    "Name" = "8:LIM"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_00158D98351F4799A73B6438C0ADDE27"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
         }
@@ -189,7 +227,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Easy14 Language Setup"
         "ProductCode" = "8:{286A0FAD-1ED8-49F8-B2CF-60914D9C9882}"
-        "PackageCode" = "8:{1C07A297-D4F0-4CF8-87D5-EF4881A1AD88}"
+        "PackageCode" = "8:{B13AF240-4A5F-44B4-A624-EF07AAAF1F8F}"
         "UpgradeCode" = "8:{65B10308-DB8E-42EE-ADD9-24502C2EE7D1}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -755,7 +793,7 @@
             "SourcePath" = "8:..\\Easy14_Programming_language\\obj\\Debug\\net7.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_40C1A5D17A6444FDB1D70EB8DB71AC5F"
+            "Folder" = "8:_31D688AFCFEB47CC99FEC1D702B2DF24"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -783,7 +821,7 @@
             "SourcePath" = "8:..\\LIM_package_manager\\obj\\Debug\\net7.0\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_40C1A5D17A6444FDB1D70EB8DB71AC5F"
+            "Folder" = "8:_5BD5B73DF9E7461D8D3D4AE30A7CDA35"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"

@@ -67,12 +67,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Functions\**">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Application Code\currentVersion.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

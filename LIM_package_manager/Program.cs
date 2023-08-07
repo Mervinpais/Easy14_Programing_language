@@ -1,42 +1,49 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using System.Net.Http;
-using static LIM_package_manager.LIM_error_codes;
+﻿using System.Text.RegularExpressions;
 
 namespace LIM_package_manager
 {
     class Program
     {
-        private static readonly HttpClient _httpClient = new HttpClient();
+        static string appDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp");
 
-        // Helper method to extract files from a zip archive
-        public static void ExtractZip(string zipPath, string extractPath)
+        public static string SanitizeFileName(string fileName)
         {
-            ZipFile.ExtractToDirectory(zipPath, extractPath);
+            string invalidCharsRegex = string.Format("[{0}]", Regex.Escape(new string(Path.GetInvalidFileNameChars())));
+            string sanitizedFileName = Regex.Replace(fileName, invalidCharsRegex, "");
+            sanitizedFileName = sanitizedFileName.Replace(":", "-").Replace("~", "-").Replace(".", "_");
+            if (sanitizedFileName.EndsWith("_json")) sanitizedFileName = sanitizedFileName.Replace("_json", ".json");
+
+            return sanitizedFileName;
         }
-
-        public static void DownloadFile(string uri, string outputPath, string nameOfDownload = "<unknown>")
+        public static async Task DownloadFile(string url, string saveFilePath)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"\n===DOWNLOADING {nameOfDownload}===");
-
-            if (!Uri.TryCreate(uri, UriKind.Absolute, out Uri? uriResult))
+            try
             {
-                throw new InvalidOperationException("URI is invalid.");
+                using (var httpClient = new HttpClient())
+                {
+                    // Set the "Accept" header to request JSON content
+                    httpClient.DefaultRequestHeaders.Accept.Clear();
+                    httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                    using (var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
+                    {
+                        response.EnsureSuccessStatusCode();
+
+                        using (var contentStream = await response.Content.ReadAsStreamAsync())
+                        using (var fileStream = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 8192, useAsync: true))
+                        {
+                            await contentStream.CopyToAsync(fileStream);
+                        }
+                    }
+                }
             }
-
-            Console.WriteLine($"    Getting files...");
-            byte[] fileBytes = _httpClient.GetByteArrayAsync(uriResult).Result;
-
-            Console.WriteLine($"    Writing to zip file...");
-            File.WriteAllBytes(outputPath, fileBytes);
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"====={nameOfDownload} COMPLETE=====\n");
-            Console.ResetColor();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while downloading the file: {ex.Message}");
+            }
         }
+
+
 
         public static (List<string> classes, string method, List<string> params_) Parse(string command)
         {
@@ -53,14 +60,14 @@ namespace LIM_package_manager
             {
                 // Case: No parameters provided
                 method = array[array.Length - 1];
-                classes = new List<string>(array.Take(array.Length - 1));
+                classes = new List<string>(array[..^1]);
             }
             else
             {
                 // Case: Parameters provided
                 method = array[firstParamIndex - 1];
-                params_ = new List<string>(array.Skip(firstParamIndex));
-                classes = new List<string>(array.Take(firstParamIndex - 1));
+                params_ = new List<string>(array[firstParamIndex..]);
+                classes = new List<string>(array[..(firstParamIndex - 1)]);
             }
 
             return (classes, method, params_);
@@ -69,18 +76,14 @@ namespace LIM_package_manager
         static void Main()
         {
             Console.WriteLine("=== LIM Package Manager ===\r\n");
-
             while (true)
             {
                 Console.ResetColor();
                 Console.Write("\r\n>>> ");
-                string command = Console.ReadLine() + "";
+                string command = Console.ReadLine() + "\r\n";
                 List<string> classes = Parse(command).classes;
                 List<string> params_ = Parse(command).params_;
                 string method = Parse(command).method;
-                /*Console.WriteLine("Classes: " + string.Join(" ", classes));
-                Console.WriteLine("Method: " + method);
-                Console.WriteLine("Params: " + string.Join(" ", params_));*/
 
                 if (classes.Count == 0) { continue; }
 
@@ -128,7 +131,8 @@ namespace LIM_package_manager
                             {
                                 if (selected == 0)
                                 {
-
+                                    // Implement the quick menu "Install" functionality here
+                                    // (You can prompt the user for package details or options)
                                 }
                                 continue;
                             }
@@ -150,60 +154,150 @@ namespace LIM_package_manager
                             Console.SetCursorPosition(0, topOptionInt);
                         }
                     }
-
-                    if (method == "install")
+                    else if (method == "install")
                     {
-                        
-                    }
-                }    
-            }
-
-            void InstallCommand(List<string> params_)
-            {
-                if (params_.Count == 0) { return; }
-                string downloadUrl = NULL_URL;
-                foreach (string Param in params_)
-                {
-                    Console.ResetColor();
-                    if (Param.StartsWith("--http"))
-                    {
-                        if (Param.StartsWith("--http://"))
-                        {
-                            Console.WriteLine($"PACKAGE: {Param.Substring(9)}");
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("WARNING: You are installing a package over a HTTP connection. Proceed with caution when downloading packages over HTTP.");
-                        }
-                        else if (Param.StartsWith("--https://"))
-                        {
-                            Console.WriteLine($"PACKAGE: {Param.Substring(10)}");
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("INFO: You are installing a package with a secured HTTPS connection");
-                        }
+                        InstallCommand(params_);
+                        continue;
                     }
                 }
-                string zipFilePath = "archive.zip";
-                string extractionPath = "Packages";
-
-                try
-                {
-                    // Download the zip file
-                    DownloadFile(downloadUrl, zipFilePath, "Example Archive");
-
-                    // Extract the files from the zip archive
-                    ExtractZip(zipFilePath, extractionPath);
-
-                    // Cleanup: Delete the downloaded zip file
-                    File.Delete(zipFilePath);
-                }
-                catch (Exception ex)
-                {
-                    // Handle any exceptions that might occur during download or extraction
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"ERROR: {ex.Message}");
-                    Console.ResetColor();
-                }
-
             }
         }
+
+        static async Task InstallCommand(List<string> params_)
+        {
+            if (params_.Count == 0)
+            {
+                Console.WriteLine("No packages specified for installation.");
+                return;
+            }
+
+            string downloadUrl = "";
+            foreach (string param in params_)
+            {
+                if (param.StartsWith("--http"))
+                {
+                    downloadUrl = param.Substring(2);
+                    Console.WriteLine($"PACKAGE: {Path.GetFileName(downloadUrl)}");
+
+                    if (param.StartsWith("--https://"))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("INFO: You are installing a package with a secured HTTPS connection");
+                    }
+                    else if (param.StartsWith("--http://"))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("WARNING: You are installing a package over an insecure HTTP connection. Proceed with caution when downloading packages over HTTP.");
+                    }
+
+                    break;
+                }
+            }
+
+            if (string.IsNullOrEmpty(downloadUrl))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ERROR: No valid download URL provided.");
+                return;
+            }
+
+            string zipFileName = Path.GetFileName(SanitizeFileName(downloadUrl));
+            string zipFilePath_d = Path.Combine(appDataFolder, zipFileName);
+
+            int success = 0;
+            try
+            {
+                // Download the zip file
+                await DownloadFile(downloadUrl, zipFilePath_d);
+                string fp = zipFilePath_d;
+                try
+                {
+                    // Unpack the JSON package
+                    UnpackJsonPackage.file = fp;
+                    UnpackJsonPackage.Unpack();
+
+                    success = 1;
+                }
+                catch
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Package was not a .json, please check Downloaded folder...");
+                    do { Console.WriteLine("Press Enter to continue"); } while (Console.ReadKey().Key != ConsoleKey.Enter);
+                    success = 0;
+                }
+
+                // Cleanup: Delete the downloaded file
+                // ... (Same as before)
+
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that might occur during download, extraction, or unpacking
+                success = -1;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"ERROR: {ex}");
+            }
+
+            if (success == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Package installation finished but some issues occurred during install");
+            }
+            else if (success == 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Package installation completed successfully :)\r\n");
+            }
+            else if (success == -1)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Package installation failed :(");
+            }
+
+            Console.WriteLine("(Pres Enter to continue)");
+            return;
+        }
+
+
+
+        private static string FindParentContainingBothFolders(string folder1, string folder2)
+        {
+            string currentPath = Directory.GetCurrentDirectory();
+            string parentPath = null;
+
+            while (currentPath != null)
+            {
+                string folder1Path = Path.Combine(currentPath, folder1);
+                string folder2Path = Path.Combine(currentPath, folder2);
+
+                if (Directory.Exists(folder1Path) && Directory.Exists(folder2Path))
+                {
+                    parentPath = currentPath;
+                    break;
+                }
+
+                currentPath = Directory.GetParent(currentPath)?.FullName;
+            }
+
+            return parentPath;
+        }
+
+        private static void MoveFilesRecursively(string sourceDir, string destinationDir)
+        {
+            Directory.CreateDirectory(destinationDir);
+
+            foreach (var file in Directory.GetFiles(sourceDir))
+            {
+                string destFile = Path.Combine(destinationDir, Path.GetFileName(file));
+                File.Move(file, destFile);
+            }
+
+            foreach (var directory in Directory.GetDirectories(sourceDir))
+            {
+                string destDir = Path.Combine(destinationDir, Path.GetFileName(directory));
+                MoveFilesRecursively(directory, destDir);
+            }
+        }
+
     }
 }

@@ -6,21 +6,23 @@ namespace Easy14_Programming_Language.Application_Code
 {
     public class CommandParser
     {
+        private static bool Dev_ShowDebugInfo = false;
+
         public static (List<string> className, string methodName, List<string> paramItems) SplitCommand(string command)
         {
             var statementParts = SplitCommandPart(command);
             for (int i = 0; i < statementParts.className.Count; i++)
             {
                 string item = statementParts.className[i];
-                Console.WriteLine($"Class {i + 1}: {item}");
+                if (Dev_ShowDebugInfo) Console.WriteLine($"Class {i + 1}: {item}");
             }
-            Console.WriteLine("Method Name: " + statementParts.methodName);
+            if (Dev_ShowDebugInfo) Console.WriteLine("Method Name: " + statementParts.methodName);
 
             if (statementParts.paramItems.Count > 0)
             {
                 for (int i = 0; i < statementParts.paramItems.Count; i++)
                 {
-                    Console.WriteLine($"Parameter {i}: [{ItemChecks.detectType(statementParts.paramItems[i])}] {statementParts.paramItems[i]}");
+                    if (Dev_ShowDebugInfo) Console.WriteLine($"Parameter {i}: [{ItemChecks.detectType(statementParts.paramItems[i])}] {statementParts.paramItems[i]}");
                 }
             }
 
