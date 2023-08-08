@@ -54,23 +54,29 @@ namespace LIM_package_manager
             string[] array = command.Split(" ");
 
             // Find the index of the first element starting with "--"
-            int firstParamIndex = Array.FindIndex(array, item => item.StartsWith("--"));
+                int firstParamIndex = Array.FindIndex(array, item => item.StartsWith("--"));
 
-            if (firstParamIndex == -1)
+                if (firstParamIndex == -1)
+                {
+                    // Case: No parameters provided
+                    method = array[array.Length - 1];
+                    classes = new List<string>(array[..^1]);
+                }
+                else
+                {
+                    // Case: Parameters provided
+                    method = array[firstParamIndex - 1];
+                    params_ = new List<string>(array[firstParamIndex..]);
+                    classes = new List<string>(array[..(firstParamIndex - 1)]);
+                }
+            if (command.Contains("--"))
             {
-                // Case: No parameters provided
-                method = array[array.Length - 1];
-                classes = new List<string>(array[..^1]);
+                return (classes, method, params_);
             }
             else
             {
-                // Case: Parameters provided
-                method = array[firstParamIndex - 1];
-                params_ = new List<string>(array[firstParamIndex..]);
-                classes = new List<string>(array[..(firstParamIndex - 1)]);
+                return (classes, method, new List<string>());
             }
-
-            return (classes, method, params_);
         }
 
         static void Main()
@@ -80,10 +86,10 @@ namespace LIM_package_manager
             {
                 Console.ResetColor();
                 Console.Write("\r\n>>> ");
-                string command = Console.ReadLine() + "\r\n";
-                List<string> classes = Parse(command).classes;
-                List<string> params_ = Parse(command).params_;
-                string method = Parse(command).method;
+                string command = Console.ReadLine() + "";
+                List<string> classes = Parse(command.Trim()).classes;
+                List<string> params_ = Parse(command.Trim()).params_;
+                string method = Parse(command.Trim()).method;
 
                 if (classes.Count == 0) { continue; }
 
@@ -158,6 +164,10 @@ namespace LIM_package_manager
                     {
                         InstallCommand(params_);
                         continue;
+                    }
+                    else if (method == "help")
+                    {
+                        Console.WriteLine(string.Join(Environment.NewLine, File.ReadAllLines("helpContent.txt")));
                     }
                 }
             }
@@ -257,47 +267,5 @@ namespace LIM_package_manager
             Console.WriteLine("(Pres Enter to continue)");
             return;
         }
-
-
-
-        private static string FindParentContainingBothFolders(string folder1, string folder2)
-        {
-            string currentPath = Directory.GetCurrentDirectory();
-            string parentPath = null;
-
-            while (currentPath != null)
-            {
-                string folder1Path = Path.Combine(currentPath, folder1);
-                string folder2Path = Path.Combine(currentPath, folder2);
-
-                if (Directory.Exists(folder1Path) && Directory.Exists(folder2Path))
-                {
-                    parentPath = currentPath;
-                    break;
-                }
-
-                currentPath = Directory.GetParent(currentPath)?.FullName;
-            }
-
-            return parentPath;
-        }
-
-        private static void MoveFilesRecursively(string sourceDir, string destinationDir)
-        {
-            Directory.CreateDirectory(destinationDir);
-
-            foreach (var file in Directory.GetFiles(sourceDir))
-            {
-                string destFile = Path.Combine(destinationDir, Path.GetFileName(file));
-                File.Move(file, destFile);
-            }
-
-            foreach (var directory in Directory.GetDirectories(sourceDir))
-            {
-                string destDir = Path.Combine(destinationDir, Path.GetFileName(directory));
-                MoveFilesRecursively(directory, destDir);
-            }
-        }
-
     }
 }

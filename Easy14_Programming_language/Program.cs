@@ -24,13 +24,11 @@ namespace Easy14_Programming_Language
 
         // Paths and file-related variables
         private static readonly string executingAssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        private static readonly string execAsmParentParentPath = Path.GetDirectoryName(Directory.GetParent(Directory.GetParent(executingAssemblyPath).FullName).FullName);
-        private static readonly string optionsPath = "Application Code\\options.ini";
+        private static readonly string optionsPath = Path.Combine("Application Code","options.ini");
         private static readonly string[] configFile = File.ReadAllLines(Path.Combine(executingAssemblyPath, optionsPath));
         private static readonly string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         private static readonly string strExeFilePath = Assembly.GetExecutingAssembly().Location;
-        private static readonly string workingDirectoryPath = Path.GetDirectoryName(strExeFilePath);
-        private static readonly string version = "Application Code\\currentVersion.txt";
+        private static readonly string version = Path.Combine("Application Code","currentVersion.txt");
 
         static void Main(string[] args)
         {
@@ -43,7 +41,7 @@ namespace Easy14_Programming_Language
             //to get rid of older ways of variable management
             if (Directory.Exists(Path.Combine(desktopPath, "EASY14_Variables_TEMP"))) Directory.Delete(Path.Combine(desktopPath, "EASY14_Variables_TEMP"), true);
 
-            if (!Convert.ToBoolean(Configuration.GetBoolOption("UpdatesDisabled"))) updateChecker.checkLatestVersion();
+            if (!Convert.ToBoolean(Configuration.GetBoolOption("UpdatesDisabled"))) UpdateChecker.CheckLatestVersion();
 
             foreach (string line in configFile)
             {
