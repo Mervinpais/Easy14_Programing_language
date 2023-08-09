@@ -61,8 +61,7 @@ namespace Easy14_Programming_Language
 
             if (args.Length != 0)
             {
-                if (args[0] == "/help") HelpCommandCode.DisplayDefaultHelpOptions();
-                else if (args[0].ToLower() == "/intro") IntroductionCode.IntroCode();
+                if (args[0].ToLower() == "/intro") IntroductionCode.IntroCode();
                 else if (args[0].ToLower() == "/appinfo") AppInformation.ShowInfo();
                 else if (File.Exists(args[0]) == true) CompileCode(new string[] { args[0] });
             }
@@ -109,7 +108,6 @@ namespace Easy14_Programming_Language
                     Program compiler = new Program();
                     compiler.ExternalComplieCode(line.TrimStart().Substring(4));
                 }
-                else if (line == "/help") HelpCommandCode.DisplayDefaultHelpOptions();
                 else if (line == "/intro") IntroductionCode.IntroCode();
                 else if (line == "/appinfo") AppInformation.ShowInfo();
                 else
@@ -316,9 +314,9 @@ namespace Easy14_Programming_Language
                         AudioStop.Interperate(Convert.ToInt32(StatementResult.paramItems[0]));
                     }
                 }
-                else if (StatementResult.className[0] == "sdl2")
+                else if (StatementResult.className[0] == "SDL2")
                 {
-                    if (StatementResult.methodName == "makeWindow")
+                    if (StatementResult.methodName == "MakeWindow")
                     {
                         List<string> values = StatementResult.paramItems;
 
@@ -326,16 +324,17 @@ namespace Easy14_Programming_Language
                         int sizeY = values.Count >= 2 && int.TryParse(values[1], out int parsedSizeY) ? parsedSizeY : 200;
                         int posX = values.Count >= 3 && int.TryParse(values[2], out int parsedPosX) ? parsedPosX : SDL.SDL_WINDOWPOS_UNDEFINED;
                         int posY = values.Count >= 4 && int.TryParse(values[3], out int parsedPosY) ? parsedPosY : SDL.SDL_WINDOWPOS_UNDEFINED;
-                        string title = values.Count >= 5 ? values[4] : "myWindowTitle";
+                        string title = values.Count >= 5 ? values[4] : "E14 SDL2 Window";
 
                         IntPtr window = IntPtr.Zero;
                         long window_int = -1;
                         new Task(() => { window_int = SDL2_makeWindow.Interperate(sizeX, sizeY, posX, posY, title); }).Start();
                         window = (IntPtr)window_int;
+                        SDL.SDL_SetWindowTitle(window, values.Count >= 5 ? $"{values[4]} - {window}" : $"E14 SDL2 Window - {window}");
                         continue;
                     }
 
-                    if (StatementResult.methodName == "createShape")
+                    if (StatementResult.methodName == "CreateShape")
                     {
                         List<string> values = StatementResult.paramItems;
                         long window = 0;
@@ -352,7 +351,7 @@ namespace Easy14_Programming_Language
 
                         new Task(() => { SDL2_createShape.Interperate(window, xPosition, yPosition, width, height); }).Start();
                     }
-                    if (StatementResult.methodName == "clearScreen")
+                    if (StatementResult.methodName == "ClearScreen")
                     {
                         long window = 0;
                         string color = null;
