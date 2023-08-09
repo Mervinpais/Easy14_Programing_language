@@ -1,3 +1,18 @@
+#THIS BS IS DEPREICATED
+#THIS BS IS DEPREICATED
+#THIS BS IS DEPREICATED
+#THIS BS IS DEPREICATED
+#THIS BS IS DEPREICATED
+#THIS BS IS DEPREICATED
+#THIS BS IS DEPREICATED
+#THIS BS IS DEPREICATED
+#THIS BS IS DEPREICATED
+#THIS BS IS DEPREICATED
+#THIS BS IS DEPREICATED
+#THIS BS IS DEPREICATED
+#THIS BS IS DEPREICATED
+
+"""
 #COPYRIGHT (C) Mervinpaismakeswindows14
 
 # Importing the modules needed for the program to run.
@@ -54,6 +69,8 @@ else:
 # Trying to compare the files in the RepairFiles_Folder to the files in the current working directory.
 # If the files are different, it will copy the files from the RepairFiles_Folder to the current
 # working directory.
+"""
+
 """
 #Application/.net files (apps related to the program files/dll's and not the .exe ex; apphost, APPNAME.dll)
 AppDLLs = bkSlash + "obj" + bkSlash + "Debug" + bkSlash + "net5.0"
