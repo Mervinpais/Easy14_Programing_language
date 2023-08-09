@@ -6,13 +6,11 @@ namespace Easy14_Programming_Language
 {
     public static class Configuration
     {
-        private static readonly string exeFilePath = Assembly.GetExecutingAssembly().Location;
-        private static readonly string workPath = Path.GetDirectoryName(exeFilePath);
         private static string[] configFile;
 
         static Configuration()
         {
-            string optionsPath = "Application Code\\options.ini";
+            string optionsPath = Path.Combine("Application Code","options.ini");
             configFile = File.ReadAllLines(optionsPath);
         }
 

@@ -197,7 +197,10 @@ namespace Easy14_Programming_Language
                 {
                     UsingNamspaceFunction.FromMethod(currentLine, librariesDisabled, lineCount);
                 }
-                else if (currentLine.Contains("+") || currentLine.Contains("-") || currentLine.Contains("*") || currentLine.Contains("/") || currentLine.Contains("%"))
+                
+                //TODO: Fix and make sure to add this back in better
+
+                /*else if (currentLine.Contains("+") || currentLine.Contains("-") || currentLine.Contains("*") || currentLine.Contains("/") || currentLine.Contains("%"))
                 {
                     string expression = string.Join("", currentLine.ToCharArray());
                     try { Console.WriteLine(Convert.ToDouble(new DataTable().Compute(expression, null))); }
@@ -207,7 +210,7 @@ namespace Easy14_Programming_Language
                         if (e.GetType().ToString() == "System.OverflowException") ErrorReportor.ConsoleLineReporter.Error("The Number to calculate is too large! (For Int32), please try a number less than 2147483647");
                         else ErrorReportor.ConsoleLineReporter.Error("Uh oh, the value you wanted to calculate won't work! (check if the value has a string value and change it to an integer)");
                     }
-                }
+                }*/
 
                 /* Checking if the user has entered "exit()" or "exit();" and if they have, it will
                 exit the program. */
@@ -301,6 +304,17 @@ namespace Easy14_Programming_Language
                         return Time_CurrentTime.Interperate(currentLine, textArray);
                     else if (StatementResult.methodName == "IsLeapYear")
                         return Convert.ToBoolean(Time_IsLeapYear.Interperate(currentLine, textArray));
+                }
+                else if (StatementResult.className[0] == "Audio")
+                {
+                    if (StatementResult.methodName == "Play")
+                    {
+                        AudioPlay.Interperate(StatementResult.paramItems[0]);
+                    }
+                    else if (StatementResult.methodName == "Stop")
+                    {
+                        AudioStop.Interperate(Convert.ToInt32(StatementResult.paramItems[0]));
+                    }
                 }
                 else if (StatementResult.className[0] == "sdl2")
                 {
