@@ -195,12 +195,12 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
 
         private void Main_Editor_Load(object sender, EventArgs e)
         {
-            ThemeSetter();
+            //ThemeSetter();
         }
 
         private void Main_Editor_Paint(object sender, PaintEventArgs e)
         {
-            ThemeSetter();
+            //ThemeSetter();
         }
 
         private void ThemeSetter()

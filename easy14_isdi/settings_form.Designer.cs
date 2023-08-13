@@ -143,7 +143,7 @@
             this.Controls.Add(this.button1);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "settings_form";
-            this.Text = "settings_form";
+            this.Text = "Settings";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.settings_form_Paint);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
