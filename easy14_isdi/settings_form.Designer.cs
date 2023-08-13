@@ -32,15 +32,13 @@
             this.title_label = new System.Windows.Forms.Label();
             this.Theme_label = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.MessageLabel = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.ReloadSettingsBTN = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(732, 225);
+            this.button1.Location = new System.Drawing.Point(732, 222);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(165, 57);
@@ -65,7 +63,7 @@
             // 
             this.Theme_label.AutoSize = true;
             this.Theme_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            this.Theme_label.Location = new System.Drawing.Point(69, 228);
+            this.Theme_label.Location = new System.Drawing.Point(76, 232);
             this.Theme_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Theme_label.Name = "Theme_label";
             this.Theme_label.Size = new System.Drawing.Size(107, 32);
@@ -78,56 +76,43 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "Light (Not Avaliable)",
-            "Dark",
-            "Communist"});
+            "Dark"});
             this.comboBox1.Location = new System.Drawing.Point(191, 232);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(382, 37);
+            this.comboBox1.Size = new System.Drawing.Size(533, 37);
             this.comboBox1.TabIndex = 3;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            this.label1.ForeColor = System.Drawing.Color.DarkKhaki;
-            this.label1.Location = new System.Drawing.Point(151, 104);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 32);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "(Beta)";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::easy14_isde.Properties.Resources.keep_calm_its_not_finished_yet;
-            this.pictureBox1.Location = new System.Drawing.Point(15, 523);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(161, 183);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
             // 
             // MessageLabel
             // 
             this.MessageLabel.AutoSize = true;
             this.MessageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            this.MessageLabel.Location = new System.Drawing.Point(544, 604);
+            this.MessageLabel.Location = new System.Drawing.Point(445, 331);
             this.MessageLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.MessageLabel.Name = "MessageLabel";
             this.MessageLabel.Size = new System.Drawing.Size(41, 32);
             this.MessageLabel.TabIndex = 6;
             this.MessageLabel.Text = "...";
             // 
+            // ReloadSettingsBTN
+            // 
+            this.ReloadSettingsBTN.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.ReloadSettingsBTN.Location = new System.Drawing.Point(304, 35);
+            this.ReloadSettingsBTN.Margin = new System.Windows.Forms.Padding(4);
+            this.ReloadSettingsBTN.Name = "ReloadSettingsBTN";
+            this.ReloadSettingsBTN.Size = new System.Drawing.Size(139, 64);
+            this.ReloadSettingsBTN.TabIndex = 7;
+            this.ReloadSettingsBTN.Text = "Reload 🔄️";
+            this.ReloadSettingsBTN.UseVisualStyleBackColor = true;
+            this.ReloadSettingsBTN.Click += new System.EventHandler(this.ReloadSettingsBTN_Click);
+            // 
             // settings_form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(989, 728);
+            this.ClientSize = new System.Drawing.Size(946, 410);
+            this.Controls.Add(this.ReloadSettingsBTN);
             this.Controls.Add(this.MessageLabel);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.Theme_label);
             this.Controls.Add(this.title_label);
@@ -136,7 +121,6 @@
             this.Name = "settings_form";
             this.Text = "settings_form";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.settings_form_Paint);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -148,8 +132,7 @@
         private System.Windows.Forms.Label title_label;
         private System.Windows.Forms.Label Theme_label;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label MessageLabel;
+        private System.Windows.Forms.Button ReloadSettingsBTN;
     }
 }

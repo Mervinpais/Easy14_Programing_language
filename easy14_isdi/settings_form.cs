@@ -1,16 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace easy14_isde
 {
     public partial class settings_form : Form
     {
+        public static string optionsFile = "options.ini";
         public settings_form()
         {
             InitializeComponent();
@@ -47,6 +51,7 @@ namespace easy14_isde
                 File.WriteAllText(settings_file, "theme dark");
                 Debug.WriteLine("Theme set to DARK");
             }
+            else { return; }
             SuccessText();
         }
 
@@ -109,5 +114,36 @@ namespace easy14_isde
             current_theme = lines[0].Substring(6);
             this.Refresh();
         }
+
+        private void ReloadSettingsBTN_Click(object sender, EventArgs e)
+        {
+            LoadSettings();
+        }
+
+        void LoadSettings()
+        {
+            List<string> optionsFileContents = File.ReadAllLines(optionsFile).ToList();
+            string themesFolder = "";
+            foreach (string line in optionsFileContents)
+            {
+                if (line != "")
+                {
+                    string var = line.Trim().Split('=')[0];
+                    string val = line.Trim().Split('=')[1];
+                    if (var == "themesFolder")
+                    {
+                        themesFolder = val.Substring(1, val.Length - 2);
+                    }
+                }
+            }
+
+            List<string> themeFiles = Directory.GetFiles(themesFolder)
+                                               .Where(file => file.EndsWith(".json"))
+                                               .ToList();
+
+            comboBox1.Items.Clear();
+            comboBox1.Items.AddRange(themeFiles.ToArray());
+        }
+
     }
 }

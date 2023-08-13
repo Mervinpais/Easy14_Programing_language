@@ -44,9 +44,10 @@
             this.code_text_area_rtb.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.code_text_area_rtb.Font = new System.Drawing.Font("Lucida Console", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.code_text_area_rtb.ForeColor = System.Drawing.SystemColors.Window;
-            this.code_text_area_rtb.Location = new System.Drawing.Point(12, 86);
+            this.code_text_area_rtb.Location = new System.Drawing.Point(15, 91);
+            this.code_text_area_rtb.Margin = new System.Windows.Forms.Padding(4);
             this.code_text_area_rtb.Name = "code_text_area_rtb";
-            this.code_text_area_rtb.Size = new System.Drawing.Size(1238, 691);
+            this.code_text_area_rtb.Size = new System.Drawing.Size(1513, 841);
             this.code_text_area_rtb.TabIndex = 0;
             this.code_text_area_rtb.Text = " ";
             this.code_text_area_rtb.TextChanged += new System.EventHandler(this.code_text_area_rtb_TextChanged);
@@ -59,9 +60,10 @@
             this.run_code_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.run_code_btn.Font = new System.Drawing.Font("Microsoft YaHei UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.run_code_btn.ForeColor = System.Drawing.Color.Lime;
-            this.run_code_btn.Location = new System.Drawing.Point(12, 12);
+            this.run_code_btn.Location = new System.Drawing.Point(15, 14);
+            this.run_code_btn.Margin = new System.Windows.Forms.Padding(4);
             this.run_code_btn.Name = "run_code_btn";
-            this.run_code_btn.Size = new System.Drawing.Size(77, 68);
+            this.run_code_btn.Size = new System.Drawing.Size(77, 69);
             this.run_code_btn.TabIndex = 1;
             this.run_code_btn.Text = "▶️";
             this.run_code_btn.UseVisualStyleBackColor = false;
@@ -73,9 +75,10 @@
             this.open_file_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.open_file_btn.Font = new System.Drawing.Font("Microsoft YaHei UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.open_file_btn.ForeColor = System.Drawing.Color.Gold;
-            this.open_file_btn.Location = new System.Drawing.Point(95, 12);
+            this.open_file_btn.Location = new System.Drawing.Point(100, 13);
+            this.open_file_btn.Margin = new System.Windows.Forms.Padding(4);
             this.open_file_btn.Name = "open_file_btn";
-            this.open_file_btn.Size = new System.Drawing.Size(77, 68);
+            this.open_file_btn.Size = new System.Drawing.Size(78, 69);
             this.open_file_btn.TabIndex = 2;
             this.open_file_btn.Text = "📂";
             this.open_file_btn.UseVisualStyleBackColor = false;
@@ -85,9 +88,10 @@
             // 
             this.settings_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settings_btn.Font = new System.Drawing.Font("Microsoft YaHei UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.settings_btn.Location = new System.Drawing.Point(1086, 12);
+            this.settings_btn.Location = new System.Drawing.Point(1327, 14);
+            this.settings_btn.Margin = new System.Windows.Forms.Padding(4);
             this.settings_btn.Name = "settings_btn";
-            this.settings_btn.Size = new System.Drawing.Size(155, 68);
+            this.settings_btn.Size = new System.Drawing.Size(189, 69);
             this.settings_btn.TabIndex = 4;
             this.settings_btn.Text = "Settings";
             this.settings_btn.UseVisualStyleBackColor = true;
@@ -100,9 +104,10 @@
             this.save_file_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.save_file_btn.Font = new System.Drawing.Font("Microsoft YaHei UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.save_file_btn.ForeColor = System.Drawing.Color.DarkTurquoise;
-            this.save_file_btn.Location = new System.Drawing.Point(178, 12);
+            this.save_file_btn.Location = new System.Drawing.Point(195, 14);
+            this.save_file_btn.Margin = new System.Windows.Forms.Padding(4);
             this.save_file_btn.Name = "save_file_btn";
-            this.save_file_btn.Size = new System.Drawing.Size(77, 68);
+            this.save_file_btn.Size = new System.Drawing.Size(75, 69);
             this.save_file_btn.TabIndex = 3;
             this.save_file_btn.Text = "💾";
             this.save_file_btn.UseVisualStyleBackColor = false;
@@ -110,15 +115,16 @@
             // 
             // Main_Editor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
-            this.ClientSize = new System.Drawing.Size(1262, 789);
+            this.ClientSize = new System.Drawing.Size(1542, 947);
             this.Controls.Add(this.save_file_btn);
             this.Controls.Add(this.settings_btn);
             this.Controls.Add(this.open_file_btn);
             this.Controls.Add(this.run_code_btn);
             this.Controls.Add(this.code_text_area_rtb);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Main_Editor";
             this.Text = "Easy14 Scripter";
             this.Load += new System.EventHandler(this.Main_Editor_Load);

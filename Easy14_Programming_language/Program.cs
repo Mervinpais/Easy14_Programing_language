@@ -330,7 +330,7 @@ namespace Easy14_Programming_Language
                         long window_int = -1;
                         new Task(() => { window_int = SDL2_makeWindow.Interperate(sizeX, sizeY, posX, posY, title); }).Start();
                         window = (IntPtr)window_int;
-                        SDL.SDL_SetWindowTitle(window, values.Count >= 5 ? $"{values[4]} - {window}" : $"E14 SDL2 Window - {window}");
+                        SDL.SDL_SetWindowTitle(window, values.Count >= 5 ? $"{values[4]} - {window_int}" : $"E14 SDL2 Window - {window_int}");
                         continue;
                     }
 

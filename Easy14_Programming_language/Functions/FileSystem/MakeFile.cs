@@ -11,9 +11,6 @@ namespace Easy14_Programming_Language
         public static void Interperate(int lineCount, string[] lines)
         {
             string line = lines[lineCount].Trim();
-            if (line.StartsWith("FileSystem")) line = line.Substring(10).Trim();
-
-            if (line.StartsWith("MakeFile")) line = line.Substring(8).Trim();
 
             if (!File.Exists(line))
             {

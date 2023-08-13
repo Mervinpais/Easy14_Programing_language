@@ -1,0 +1,10 @@
+{
+  "BackgoundColor": "White",
+  "TextColor": "Black",
+  "ButtonColors": {
+    "Default": "Gray",
+    "Run": "Lime",
+    "Open": "Gold",
+    "Save": "DarkTurquoise"
+  }
+}
