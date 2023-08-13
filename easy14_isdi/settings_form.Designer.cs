@@ -34,11 +34,15 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.MessageLabel = new System.Windows.Forms.Label();
             this.ReloadSettingsBTN = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(732, 222);
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(654, 223);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(165, 57);
@@ -57,7 +61,6 @@
             this.title_label.Size = new System.Drawing.Size(238, 64);
             this.title_label.TabIndex = 1;
             this.title_label.Text = "Settings";
-            this.title_label.Click += new System.EventHandler(this.title_label_Click);
             // 
             // Theme_label
             // 
@@ -80,14 +83,14 @@
             this.comboBox1.Location = new System.Drawing.Point(191, 232);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(533, 37);
+            this.comboBox1.Size = new System.Drawing.Size(455, 37);
             this.comboBox1.TabIndex = 3;
             // 
             // MessageLabel
             // 
             this.MessageLabel.AutoSize = true;
             this.MessageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            this.MessageLabel.Location = new System.Drawing.Point(445, 331);
+            this.MessageLabel.Location = new System.Drawing.Point(402, 374);
             this.MessageLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.MessageLabel.Name = "MessageLabel";
             this.MessageLabel.Size = new System.Drawing.Size(41, 32);
@@ -106,11 +109,32 @@
             this.ReloadSettingsBTN.UseVisualStyleBackColor = true;
             this.ReloadSettingsBTN.Click += new System.EventHandler(this.ReloadSettingsBTN_Click);
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Red;
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Location = new System.Drawing.Point(181, 232);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(638, 37);
+            this.panel1.TabIndex = 8;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(158, -1);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(308, 32);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Disabled (Unfinished)";
+            // 
             // settings_form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(946, 410);
+            this.ClientSize = new System.Drawing.Size(856, 443);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.ReloadSettingsBTN);
             this.Controls.Add(this.MessageLabel);
             this.Controls.Add(this.comboBox1);
@@ -121,6 +145,8 @@
             this.Name = "settings_form";
             this.Text = "settings_form";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.settings_form_Paint);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -134,5 +160,7 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label MessageLabel;
         private System.Windows.Forms.Button ReloadSettingsBTN;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label1;
     }
 }
