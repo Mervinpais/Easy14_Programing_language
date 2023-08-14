@@ -26,3 +26,4 @@ C:\Users\mervi\source\repos\Easy14_Programming_Language\easy14_isdi\bin\Debug\Th
 C:\Users\mervi\source\repos\Easy14_Programming_Language\easy14_isdi\bin\Debug\Newtonsoft.Json.dll
 C:\Users\mervi\source\repos\Easy14_Programming_Language\easy14_isdi\bin\Debug\Newtonsoft.Json.xml
 C:\Users\mervi\source\repos\Easy14_Programming_Language\easy14_isdi\obj\Debug\easy14_isde.csproj.CopyComplete
+C:\Users\mervi\source\repos\Easy14_Programming_Language\easy14_isdi\obj\Debug\easy14_isde.AboutWindow.resources

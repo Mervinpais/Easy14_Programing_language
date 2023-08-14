@@ -250,5 +250,11 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
             current_theme = lines[0].Substring(6);
             this.Refresh();
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutWindow AboutWindow = new AboutWindow();
+            AboutWindow.ShowDialog();
+        }
     }
 }
