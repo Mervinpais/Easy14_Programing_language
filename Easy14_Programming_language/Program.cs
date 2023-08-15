@@ -5,12 +5,10 @@ using Microsoft.CodeAnalysis.Scripting;
 using SDL2;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,18 +22,25 @@ namespace Easy14_Programming_Language
 
         // Paths and file-related variables
         private static readonly string executingAssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        private static readonly string optionsPath = Path.Combine("Application Code","options.ini");
+        private static readonly string optionsPath = Path.Combine("Application Code", "options.ini");
         private static readonly string[] configFile = File.ReadAllLines(Path.Combine(executingAssemblyPath, optionsPath));
         private static readonly string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         private static readonly string strExeFilePath = Assembly.GetExecutingAssembly().Location;
-        private static readonly string version = Path.Combine("Application Code","currentVersion.txt");
+        private static readonly string version = Path.Combine("Application Code", "currentVersion.txt");
 
         static void Main(string[] args)
         {
             Console.WriteLine(string.Join(" ", args));
             string osName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}";
 
-            Console.WriteLine($"Easy14 {File.ReadAllLines(version)[1]} ({osName})");
+            try
+            {
+                Console.WriteLine($"Easy14 {File.ReadAllLines(version)[1]} ({osName})");
+            }
+            catch
+            {
+                Console.WriteLine($"Easy14 ({osName})");
+            }
             Console.WriteLine("Type in \"help\" or \"info\" for information");
 
             //to get rid of older ways of variable management
@@ -59,12 +64,18 @@ namespace Easy14_Programming_Language
                 }
             }
 
+            bool exitOnFinish = false;
             if (args.Length != 0)
             {
                 if (args[0].ToLower() == "/intro") IntroductionCode.IntroCode();
                 else if (args[0].ToLower() == "/appinfo") AppInformation.ShowInfo();
-                else if (File.Exists(args[0]) == true) CompileCode(new string[] { args[0] });
+                else if (File.Exists(args[0]) == true)
+                {
+                    CompileCode(File.ReadAllLines(args[0]), ExitOnFinish: exitOnFinish);
+                    return;
+                }
             }
+
             Console.WriteLine("\n===== Easy14 =====\n");
             foreach (string line in configFile)
             {
@@ -132,33 +143,47 @@ namespace Easy14_Programming_Language
             return CompileCode(textArray, lineIDX);
         }
 
-        public static object CompileCode(string[] textArray = null, int lineIDX = 0)
+        public static object CompileCode(string[] textArray = null, int lineIDX = 0, bool ExitOnFinish = false)
         {
             bool librariesDisabled = false;
-            int windowHeight = Console.WindowHeight;
-            int windowWidth = Console.WindowWidth;
+            int windowHeight = 0;
+            int windowWidth = 0;
             string windowState = "normal";
 
-            librariesDisabled = Convert.ToBoolean(Configuration.GetBoolOption("disableLibraries"));
-
-            windowHeight = (int)Configuration.GetBoolOption("windowHeight", true);
-            windowWidth = (int)Configuration.GetBoolOption("windowWidth", true);
-            windowState = (string)Configuration.GetBoolOption("windowState");
-            if ((string)Configuration.GetBoolOption("showOptionsINI_DataWhenE14_Loads") == "true")
+            try
             {
-                List<string> configFileLIST = new List<string>();
+                librariesDisabled = false;
+                windowHeight = Console.WindowHeight;
+                windowWidth = Console.WindowWidth;
+                windowState = "normal";
 
-                foreach (string currentLine in configFile)
+                librariesDisabled = Convert.ToBoolean(Configuration.GetBoolOption("disableLibraries"));
+
+                windowHeight = (int)Configuration.GetBoolOption("windowHeight", true);
+                windowWidth = (int)Configuration.GetBoolOption("windowWidth", true);
+                windowState = (string)Configuration.GetBoolOption("windowState");
+                if ((string)Configuration.GetBoolOption("showOptionsINI_DataWhenE14_Loads") == "true")
                 {
-                    if (currentLine.StartsWith(";") || currentLine == "" || currentLine == " ") continue;
-                    configFileLIST.Add(currentLine);
+                    List<string> configFileLIST = new List<string>();
+
+                    foreach (string currentLine in configFile)
+                    {
+                        if (currentLine.StartsWith(";") || currentLine == "" || currentLine == " ") continue;
+                        configFileLIST.Add(currentLine);
+                    }
+
+                    string[] configFile_modified = configFileLIST.ToArray();
+
+                    Console.WriteLine(string.Join(Environment.NewLine, configFile_modified));
+                    Console.WriteLine("\n========================\n\n");
                 }
-
-                string[] configFile_modified = configFileLIST.ToArray();
-
-                Console.WriteLine(string.Join(Environment.NewLine, configFile_modified));
-                Console.WriteLine("\n========================\n\n");
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine("THIS IS NOT AN ERROR, Just that Easy14 config couldnt be set, so using defaults\n\n========");
+            }
+
 
             /* Reading the file and storing it in a string array. */
             int lineCount = 0;
@@ -195,7 +220,7 @@ namespace Easy14_Programming_Language
                 {
                     UsingNamspaceFunction.FromMethod(currentLine, librariesDisabled, lineCount);
                 }
-                
+
                 //TODO: Fix and make sure to add this back in better
 
                 /*else if (currentLine.Contains("+") || currentLine.Contains("-") || currentLine.Contains("*") || currentLine.Contains("/") || currentLine.Contains("%"))
@@ -379,6 +404,7 @@ namespace Easy14_Programming_Language
                     }
                 }
             }
+            if (ExitOnFinish == true) { return "exit"; }
             return "";
         }
 

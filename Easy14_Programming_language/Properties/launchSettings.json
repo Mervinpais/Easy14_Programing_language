@@ -2,6 +2,10 @@
   "profiles": {
     "Easy14_Programming_Language": {
       "commandName": "Project"
+    },
+    "Exit Test": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\mervi\\Documents\\test.e14\"\r\n"
     }
   }
 }

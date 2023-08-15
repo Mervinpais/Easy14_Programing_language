@@ -17,17 +17,11 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
             save_BTN_Module();
         }
 
-        private string current_theme_;
-        public string current_theme
-        {
-            get { return current_theme_; }
-            set { current_theme_ = value; }
-        }
         async private void save_BTN_Module()
         {
             while (true)
             {
-                await Task.Delay(250);
+                await Task.Delay(500);
                 if (saveFile != null)
                 {
                     if (saveFile != "")
@@ -109,7 +103,9 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
 
         private void run_code_btn_Click(object sender, System.EventArgs e)
         {
-            if (saveFile == null)
+            OutputRTB.Clear();
+            actionLB.Text = "Running code";
+            if (saveFile == "")
             {
                 DialogResult dialogResult = MessageBox.Show("File needs to be saved to run, continue?", "Unsaved File", MessageBoxButtons.YesNo);
 
@@ -117,27 +113,21 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
 
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.ShowDialog();
-                if (saveFileDialog.FileName != "")
-                {
-                    File.WriteAllText(saveFileDialog.FileName, code_text_area_rtb.Text);
-                }
-                Console.WriteLine(saveFileDialog.FileName);
+                if (saveFileDialog.FileName != "") File.WriteAllText(saveFileDialog.FileName, code_text_area_rtb.Text);
+
                 saveFile = saveFileDialog.FileName;
             }
-            else if (saveFile != null)
+            else if (saveFile != "")
             {
-                saveFile = "2";
-                var w = new Form() { Size = new Size(0, 0) };
+                //saveFile = "2";
+                var w = new Form() {};
                 Task.Delay(TimeSpan.FromSeconds(1))
                     .ContinueWith((t) => w.Close(), TaskScheduler.FromCurrentSynchronizationContext());
-                MessageBox.Show(w, $"Saving code as {saveFile}", $"Saving file {saveFile}");
+                actionLB.Text = $"Saving code in \'{saveFile}\'";
                 try
                 {
                     var savedDialog = new Form() { Size = new Size(0, 0) };
                     File.WriteAllText(saveFile, code_text_area_rtb.Text);
-                    Task.Delay(TimeSpan.FromSeconds(10))
-                    .ContinueWith((t) => savedDialog.Close(), TaskScheduler.FromCurrentSynchronizationContext());
-                    MessageBox.Show(savedDialog, "File Saved");
                 }
                 catch
                 {
@@ -157,25 +147,87 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
             }
             else
             {
-                MessageBox.Show("An Error occured while saving to file " + saveFile);
+                actionLB.Text = $"An Error occured while saving to file {saveFile}";
             }
-            string dir = Directory.GetCurrentDirectory().Replace("easy14_isdi\\bin\\Debug", "") + "\\Easy14_Programming_language\\bin\\Debug\\net6.0-windows\\Easy14_Programming_Language.exe";
-            Console.WriteLine(dir);
-            Console.WriteLine(saveFile);
-            Process.Start(dir, saveFile);
 
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string projectRoot = currentDirectory.Substring(0, currentDirectory.IndexOf("easy14_isdi\\"));
+
+            string exePath = Path.Combine(projectRoot, "Easy14_Programming_language", "bin", "Debug", "net7.0-windows", "Easy14_Programming_Language.exe");
+
+            Process Easy14App = new Process();
+            Easy14App.StartInfo.FileName = exePath;
+            Easy14App.StartInfo.Arguments = saveFile;
+            Easy14App.StartInfo.UseShellExecute = false;
+            Easy14App.StartInfo.RedirectStandardOutput = true;
+            Easy14App.StartInfo.RedirectStandardError = true;
+            Easy14App.StartInfo.CreateNoWindow = true;
+            string exeDirectory = Path.GetDirectoryName(exePath); // Get the directory of the executable
+            Easy14App.StartInfo.WorkingDirectory = exeDirectory;
+
+            // Event handlers to capture the output
+            Easy14App.OutputDataReceived += (s, args) =>
+            {
+                if (!string.IsNullOrEmpty(args.Data))
+                {
+                    UpdateOutputRTB(args.Data);
+                }
+            };
+
+            Easy14App.ErrorDataReceived += (s, args) =>
+            {
+                if (!string.IsNullOrEmpty(args.Data))
+                {
+                    UpdateOutputRTB("Error: " + args.Data);
+                }
+            };
+            actionLB.Text = $"Running code in {saveFile}";
+            Easy14App.Start();
+            Easy14App.BeginOutputReadLine();
+            Easy14App.BeginErrorReadLine();
+            Easy14ProcessOnExit(Easy14App);
+
+        }
+
+        private async void Easy14ProcessOnExit(Process easy14Process)
+        {
+            while (!easy14Process.HasExited)
+            {
+                await Task.Delay(500);
+            }
+
+            OutputRTB.AppendText(Environment.NewLine + "Easy14 exited successfully (Exit Code:" + easy14Process.ExitCode + ")");
+
+            int startIndex = OutputRTB.Text.LastIndexOf("Easy14 exited successfully");
+            int endIndex = OutputRTB.Text.Length;
+
+            OutputRTB.Select(startIndex, endIndex - startIndex);
+            OutputRTB.SelectionBackColor = Color.Green;
+        }
+
+
+        private void UpdateOutputRTB(string text)
+        {
+            if (OutputRTB.InvokeRequired)
+            {
+                OutputRTB.Invoke(new Action<string>(UpdateOutputRTB), text);
+            }
+            else
+            {
+                OutputRTB.AppendText(text + Environment.NewLine);
+            }
         }
 
         private void open_file_btn_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            //openFileDialog.Filter = "Easy14 files(*.e14) | *.e14 |Older Easy14 files(*.easy14) | *.easy14";
             openFileDialog.ShowDialog();
-            saveFile = openFileDialog.FileName;
-            this.Text = openFileDialog.FileName.Substring(openFileDialog.FileName.LastIndexOf("\\") + 1, openFileDialog.FileName.Length - openFileDialog.FileName.LastIndexOf("\\") - 1) + " - Easy14 Scripter";
+
             if (openFileDialog.FileName != "")
             {
-                code_text_area_rtb.Text = string.Join("\n", File.ReadAllLines(openFileDialog.FileName));
+                this.Text = openFileDialog.FileName.Substring(openFileDialog.FileName.LastIndexOf("\\") + 1, openFileDialog.FileName.Length - openFileDialog.FileName.LastIndexOf("\\") - 1) + " - Easy14 Scripter";
+                saveFile = openFileDialog.FileName;
+                code_text_area_rtb.Text = string.Join(Environment.NewLine, File.ReadAllLines(openFileDialog.FileName));
             }
         }
 
@@ -201,54 +253,6 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
         private void Main_Editor_Paint(object sender, PaintEventArgs e)
         {
             //ThemeSetter();
-        }
-
-        private void ThemeSetter()
-        {
-            run_code_btn.FlatStyle = FlatStyle.Flat; run_code_btn.FlatAppearance.BorderSize = 1;
-            save_file_btn.FlatStyle = FlatStyle.Flat; save_file_btn.FlatAppearance.BorderSize = 1;
-            open_file_btn.FlatStyle = FlatStyle.Flat; open_file_btn.FlatAppearance.BorderSize = 1;
-
-            string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
-            dir = dir.Substring(6, dir.Length - 16);
-            /*MessageBox.Show(File.Exists(dir + "\\options.txt").ToString());
-            MessageBox.Show(dir + "\\options.txt".ToString());*/
-            string file = dir + "\\settings.ini";
-            string[] lines = File.ReadAllLines(file);
-
-            if (lines.Length > 0)
-            {
-                if (lines[0] == "theme dark")
-                {
-                    if (current_theme == "dark")
-                    {
-                        return;
-                    }
-                    this.BackColor = SystemColors.WindowFrame;
-                    run_code_btn.BackColor = Color.DimGray;
-                    save_file_btn.BackColor = Color.DimGray;
-                    open_file_btn.BackColor = Color.DimGray;
-                    run_code_btn.ForeColor = Color.Lime;
-                    save_file_btn.ForeColor = Color.DarkTurquoise;
-                    open_file_btn.ForeColor = Color.Gold;
-                }
-                else if (lines[0] == "theme light")
-                {
-                    if (current_theme == "light")
-                    {
-                        return;
-                    }
-                    this.BackColor = Color.White;
-                    run_code_btn.BackColor = Color.Gray;
-                    save_file_btn.BackColor = Color.Gray;
-                    open_file_btn.BackColor = Color.Gray;
-                    run_code_btn.ForeColor = Color.Lime;
-                    save_file_btn.ForeColor = Color.DarkTurquoise;
-                    open_file_btn.ForeColor = Color.Gold;
-                }
-            }
-            current_theme = lines[0].Substring(6);
-            this.Refresh();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

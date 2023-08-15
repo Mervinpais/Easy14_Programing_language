@@ -43,22 +43,27 @@
             this.wordWrapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OutputRTB = new System.Windows.Forms.RichTextBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.actionLB = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // code_text_area_rtb
             // 
-            this.code_text_area_rtb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.code_text_area_rtb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.code_text_area_rtb.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.code_text_area_rtb.Dock = System.Windows.Forms.DockStyle.Fill;
             this.code_text_area_rtb.Font = new System.Drawing.Font("Lucida Console", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.code_text_area_rtb.ForeColor = System.Drawing.SystemColors.Window;
-            this.code_text_area_rtb.Location = new System.Drawing.Point(15, 144);
+            this.code_text_area_rtb.Location = new System.Drawing.Point(0, 0);
             this.code_text_area_rtb.Margin = new System.Windows.Forms.Padding(4);
             this.code_text_area_rtb.Name = "code_text_area_rtb";
-            this.code_text_area_rtb.Size = new System.Drawing.Size(1556, 890);
+            this.code_text_area_rtb.Size = new System.Drawing.Size(782, 831);
             this.code_text_area_rtb.TabIndex = 0;
             this.code_text_area_rtb.Text = " ";
             this.code_text_area_rtb.TextChanged += new System.EventHandler(this.code_text_area_rtb_TextChanged);
@@ -143,7 +148,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1585, 38);
+            this.menuStrip1.Size = new System.Drawing.Size(1585, 42);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -154,25 +159,25 @@
             this.saveToolStripMenuItem,
             this.recentToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(62, 34);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(62, 38);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(194, 40);
             this.openToolStripMenuItem.Text = "Open";
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(194, 40);
             this.saveToolStripMenuItem.Text = "Save";
             // 
             // recentToolStripMenuItem
             // 
             this.recentToolStripMenuItem.Name = "recentToolStripMenuItem";
-            this.recentToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            this.recentToolStripMenuItem.Size = new System.Drawing.Size(194, 40);
             this.recentToolStripMenuItem.Text = "Recent";
             // 
             // editToolStripMenuItem
@@ -180,13 +185,13 @@
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.wordWrapToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(66, 34);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(66, 38);
             this.editToolStripMenuItem.Text = "Edit";
             // 
             // wordWrapToolStripMenuItem
             // 
             this.wordWrapToolStripMenuItem.Name = "wordWrapToolStripMenuItem";
-            this.wordWrapToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            this.wordWrapToolStripMenuItem.Size = new System.Drawing.Size(237, 40);
             this.wordWrapToolStripMenuItem.Text = "Word Wrap";
             // 
             // helpToolStripMenuItem
@@ -194,15 +199,58 @@
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(74, 34);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(74, 38);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(188, 40);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // OutputRTB
+            // 
+            this.OutputRTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.OutputRTB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.OutputRTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.857143F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutputRTB.ForeColor = System.Drawing.Color.White;
+            this.OutputRTB.Location = new System.Drawing.Point(0, 0);
+            this.OutputRTB.Name = "OutputRTB";
+            this.OutputRTB.ReadOnly = true;
+            this.OutputRTB.Size = new System.Drawing.Size(762, 831);
+            this.OutputRTB.TabIndex = 7;
+            this.OutputRTB.Text = "(Waiting for Easy14 Interpertor)";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(25, 134);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.code_text_area_rtb);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.OutputRTB);
+            this.splitContainer1.Size = new System.Drawing.Size(1548, 831);
+            this.splitContainer1.SplitterDistance = 782;
+            this.splitContainer1.TabIndex = 8;
+            // 
+            // actionLB
+            // 
+            this.actionLB.AutoSize = true;
+            this.actionLB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.actionLB.ForeColor = System.Drawing.Color.White;
+            this.actionLB.Location = new System.Drawing.Point(20, 969);
+            this.actionLB.Name = "actionLB";
+            this.actionLB.Size = new System.Drawing.Size(84, 32);
+            this.actionLB.TabIndex = 9;
+            this.actionLB.Text = "(Idle)";
             // 
             // Main_Editor
             // 
@@ -210,12 +258,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(1585, 1049);
+            this.Controls.Add(this.actionLB);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.save_file_btn);
             this.Controls.Add(this.settings_btn);
             this.Controls.Add(this.open_file_btn);
             this.Controls.Add(this.run_code_btn);
-            this.Controls.Add(this.code_text_area_rtb);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -225,6 +274,10 @@
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Main_Editor_Paint);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -247,6 +300,9 @@
         private System.Windows.Forms.ToolStripMenuItem wordWrapToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.RichTextBox OutputRTB;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Label actionLB;
     }
 }
 
