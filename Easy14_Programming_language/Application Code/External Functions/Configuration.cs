@@ -10,7 +10,9 @@ namespace Easy14_Programming_Language
 
         static Configuration()
         {
-            string optionsPath = Path.Combine("Application Code","options.ini");
+            string exeLocation = Assembly.GetExecutingAssembly().Location;
+            string workingDirectory = Path.GetDirectoryName(exeLocation);
+            string optionsPath = Path.Combine(workingDirectory, "Application Code","options.ini");
             configFile = File.ReadAllLines(optionsPath);
         }
 

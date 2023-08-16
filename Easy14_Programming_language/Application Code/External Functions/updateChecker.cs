@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 
 namespace Easy14_Programming_Language
 {
@@ -8,8 +9,9 @@ namespace Easy14_Programming_Language
         public static void CheckLatestVersion()
         {
             string currentVersion = "v0 - Unknown";
-
-            string[] currentVersionFile = File.ReadAllLines(Path.Combine("Application Code", "currentVersion.txt"));
+            string exeLocation = Assembly.GetExecutingAssembly().Location;
+            string workingDirectory = Path.GetDirectoryName(exeLocation);
+            string[] currentVersionFile = File.ReadAllLines(Path.Combine(workingDirectory, "Application Code", "currentVersion.txt"));
 
             try
             {

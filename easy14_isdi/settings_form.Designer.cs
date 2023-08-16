@@ -1,4 +1,4 @@
-﻿namespace easy14_isde
+﻿namespace Easy14_SE
 {
     partial class settings_form
     {

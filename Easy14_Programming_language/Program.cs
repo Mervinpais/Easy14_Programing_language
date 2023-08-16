@@ -22,11 +22,10 @@ namespace Easy14_Programming_Language
 
         // Paths and file-related variables
         private static readonly string executingAssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        private static readonly string optionsPath = Path.Combine("Application Code", "options.ini");
+        private static readonly string optionsPath = Path.Combine(executingAssemblyPath, "Application Code", "options.ini");
         private static readonly string[] configFile = File.ReadAllLines(Path.Combine(executingAssemblyPath, optionsPath));
         private static readonly string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        private static readonly string strExeFilePath = Assembly.GetExecutingAssembly().Location;
-        private static readonly string version = Path.Combine("Application Code", "currentVersion.txt");
+        private static readonly string version = Path.Combine(executingAssemblyPath, "Application Code", "currentVersion.txt");
 
         static void Main(string[] args)
         {
@@ -41,7 +40,7 @@ namespace Easy14_Programming_Language
             {
                 Console.WriteLine($"Easy14 ({osName})");
             }
-            Console.WriteLine("Type in \"help\" or \"info\" for information");
+            Console.WriteLine("Type in \"/help\" or \"/info\" for information");
 
             //to get rid of older ways of variable management
             if (Directory.Exists(Path.Combine(desktopPath, "EASY14_Variables_TEMP"))) Directory.Delete(Path.Combine(desktopPath, "EASY14_Variables_TEMP"), true);
@@ -390,7 +389,7 @@ namespace Easy14_Programming_Language
                 {
                     if (IsExecutableCode(currentLine))
                     {
-                        try { ExecuteFunctionWithNamespace(StatementResult); }
+                        try { return ExecuteFunctionWithNamespace(StatementResult); }
                         catch
                         {
                             HandleError($"\'{currentLine}\' is not a valid code statement\n  Error was located on Line {lineCount - 13}");
@@ -422,7 +421,7 @@ namespace Easy14_Programming_Language
             ErrorReportor.ConsoleLineReporter.Error(errorMessage);
         }
 
-        public static void ExecuteFunctionWithNamespace((List<string> classes, string method, List<string> params_) StatementResult)
+        public static object ExecuteFunctionWithNamespace((List<string> classes, string method, List<string> params_) StatementResult)
         {
             List<string> theClassesOfTheLine = StatementResult.classes;
             string theMethodOfTheLine = StatementResult.method;
@@ -461,7 +460,7 @@ namespace Easy14_Programming_Language
                         {
                             // If params_ has fewer elements than paramNames, print an error
                             Console.WriteLine("Error: Insufficient parameters provided.");
-                            return;
+                            return null;
                         }
 
                         List<string> usings = new List<string>();
@@ -476,6 +475,7 @@ namespace Easy14_Programming_Language
                             {
                                 if (ItemChecks.detectType(StatementResult.params_[i]) == "str") dataType = "string";
                                 if (ItemChecks.detectType(StatementResult.params_[i]) == "int") dataType = "int";
+                                if (ItemChecks.detectType(StatementResult.params_[i]) == "double") dataType = "double";
                                 if (ItemChecks.detectType(StatementResult.params_[i]) == "bool") dataType = "bool";
                             }
                             else { dataType = "string"; value = "null"; }
@@ -506,7 +506,17 @@ namespace Easy14_Programming_Language
 
                     // Compile and run the dynamic C# code
                     var script = CSharpScript.Create(code, options: scriptOptions);
-                    script.RunAsync().Wait();
+                    var result = script.RunAsync().Result;
+
+                    if (result.Exception != null)
+                    {
+                        Console.WriteLine("Error occurred: " + result.Exception);
+                    }
+                    else
+                    {
+                        var returnValue = result.ReturnValue;
+                        return returnValue;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -518,6 +528,8 @@ namespace Easy14_Programming_Language
             {
                 Console.WriteLine($"The method '{theMethodOfTheLine}' for class '{classHierarchy}' was not found.");
             }
+
+            return null;
         }
     }
 }

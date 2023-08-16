@@ -23,7 +23,7 @@ namespace Easy14_Programming_Language //Mental Crash
             }
             else if (IsDouble(data) == true)
             {
-                return "int"; //since int and doubles are same in this language
+                return "double";
             }
             else if (IsCommand(data) == true)
             {

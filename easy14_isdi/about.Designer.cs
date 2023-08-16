@@ -1,4 +1,4 @@
-﻿namespace easy14_isde
+﻿namespace Easy14_SE
 {
     partial class AboutWindow
     {
@@ -30,13 +30,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutWindow));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.okBTN = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -58,6 +58,30 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(972, 446);
             this.panel1.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.BackgroundImage = global::Easy14_SE.Properties.Resources.mervin14_icon_titled;
+            this.pictureBox1.Image = global::Easy14_SE.Properties.Resources.mervin14_icon_titled;
+            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
+            this.pictureBox1.Location = new System.Drawing.Point(284, 309);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(62, 61);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Arial Narrow", 14.14286F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(15, 274);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(278, 80);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Main Developers;\r\n   Mervin14 (Owner)";
             // 
             // okBTN
             // 
@@ -101,7 +125,7 @@
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(277, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(358, 40);
+            this.label1.Size = new System.Drawing.Size(366, 40);
             this.label1.TabIndex = 0;
             this.label1.Text = "Copyright ©️ Mervinpais14\r\n";
             // 
@@ -115,29 +139,6 @@
             this.label2.Size = new System.Drawing.Size(618, 87);
             this.label2.TabIndex = 1;
             this.label2.Text = "What are you doing here?\r\n\r\nDidnt we make sure you couldnt resize this window?\r\n";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Arial Narrow", 14.14286F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(15, 274);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(271, 80);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Main Developers;\r\n   Mervin14 (Owner)";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::easy14_isde.Properties.Resources.mervin14_icon_titled;
-            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(284, 309);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(62, 61);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
             // 
             // AboutWindow
             // 

@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Environment
+namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environment
 {
     public partial class Main_Editor : Form
     {

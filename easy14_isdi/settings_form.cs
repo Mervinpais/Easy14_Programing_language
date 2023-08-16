@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace easy14_isde
+namespace Easy14_SE
 {
     public partial class settings_form : Form
     {

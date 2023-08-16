@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace easy14_isde
+namespace Easy14_SE
 {
     public partial class AboutWindow : Form
     {
