@@ -69,5 +69,15 @@ namespace easy14_isde.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mervin14_icon_titled {
+            get {
+                object obj = ResourceManager.GetObject("mervin14_icon_titled", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

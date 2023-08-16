@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -27,7 +29,7 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
                     if (saveFile != "")
                     {
                         string SavedfileContents = File.ReadAllText(saveFile);
-                        if (SavedfileContents != code_text_area_rtb.Text)
+                        if (SavedfileContents != CodeEditorArea_rtb.Text)
                         {
                             save_file_btn.Enabled = true;
                             save_file_btn.Visible = true;
@@ -95,9 +97,9 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
 
         private void code_text_area_rtb_TextChanged(object sender, System.EventArgs e)
         {
-            if (code_text_area_rtb.Text != null)
+            if (CodeEditorArea_rtb.Text != null)
             {
-                ColourRrbText(code_text_area_rtb);
+                ColourRrbText(CodeEditorArea_rtb);
             }
         }
 
@@ -113,7 +115,7 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
 
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.ShowDialog();
-                if (saveFileDialog.FileName != "") File.WriteAllText(saveFileDialog.FileName, code_text_area_rtb.Text);
+                if (saveFileDialog.FileName != "") File.WriteAllText(saveFileDialog.FileName, CodeEditorArea_rtb.Text);
 
                 saveFile = saveFileDialog.FileName;
             }
@@ -127,7 +129,7 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
                 try
                 {
                     var savedDialog = new Form() { Size = new Size(0, 0) };
-                    File.WriteAllText(saveFile, code_text_area_rtb.Text);
+                    File.WriteAllText(saveFile, CodeEditorArea_rtb.Text);
                 }
                 catch
                 {
@@ -196,7 +198,8 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
                 await Task.Delay(500);
             }
 
-            OutputRTB.AppendText(Environment.NewLine + "Easy14 exited successfully (Exit Code:" + easy14Process.ExitCode + ")");
+            actionLB.Text = $"Process finished in {easy14Process.ExitTime.Millisecond}ms (Exit Code:{easy14Process.ExitCode})";
+            OutputRTB.AppendText($"{Environment.NewLine}Easy14 exited successfully (Exit Code:{easy14Process.ExitCode})");
 
             int startIndex = OutputRTB.Text.LastIndexOf("Easy14 exited successfully");
             int endIndex = OutputRTB.Text.Length;
@@ -227,7 +230,7 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
             {
                 this.Text = openFileDialog.FileName.Substring(openFileDialog.FileName.LastIndexOf("\\") + 1, openFileDialog.FileName.Length - openFileDialog.FileName.LastIndexOf("\\") - 1) + " - Easy14 Scripter";
                 saveFile = openFileDialog.FileName;
-                code_text_area_rtb.Text = string.Join(Environment.NewLine, File.ReadAllLines(openFileDialog.FileName));
+                CodeEditorArea_rtb.Text = string.Join(Environment.NewLine, File.ReadAllLines(openFileDialog.FileName));
             }
         }
 
@@ -241,7 +244,7 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
         {
             if (saveFile != null)
             {
-                File.WriteAllText(saveFile, code_text_area_rtb.Text);
+                File.WriteAllText(saveFile, CodeEditorArea_rtb.Text);
             }
         }
 
@@ -252,13 +255,43 @@ namespace easy14_isde //Stands for Easy14 Integrated Scripting Developent Enviro
 
         private void Main_Editor_Paint(object sender, PaintEventArgs e)
         {
-            //ThemeSetter();
+            List<string> lines = File.ReadAllLines(Directory.GetCurrentDirectory() + "\\options.ini").ToList();
+
+            string fontFamilyLine = lines.FirstOrDefault(val => val.StartsWith("fontFamily"));
+            string fontSizeLine = lines.FirstOrDefault(val => val.StartsWith("fontSize"));
+
+            if (fontFamilyLine != null && fontSizeLine != null)
+            {
+                string fontFamily = fontFamilyLine.Substring("fontFamily=".Length);
+                float fontSize = (float)Convert.ToDouble(fontSizeLine.Substring("fontSize=".Length));
+
+                Font newFont = new Font(fontFamily, fontSize);
+
+                if (CodeEditorArea_rtb.Font != newFont)
+                {
+                    CodeEditorArea_rtb.Font = newFont;
+                    CodeEditorArea_rtb.Refresh();
+                }
+
+                if (OutputRTB.Font != newFont)
+                {
+                    OutputRTB.Font = newFont;
+                    OutputRTB.Refresh();
+                }
+            }
         }
+
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutWindow AboutWindow = new AboutWindow();
             AboutWindow.ShowDialog();
+        }
+
+        private void wordWrapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            wordWrapToolStripMenuItem.Checked = !wordWrapToolStripMenuItem.Checked;
+            CodeEditorArea_rtb.WordWrap = wordWrapToolStripMenuItem.Checked;
         }
     }
 }

@@ -1,20 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 
 namespace easy14_isde
 {
     public partial class settings_form : Form
     {
         public static string optionsFile = "options.ini";
+        Dictionary<string, string> configFile = new Dictionary<string, string>();
         public settings_form()
         {
             InitializeComponent();
@@ -75,28 +73,41 @@ namespace easy14_isde
 
         async void SuccessText()
         {
-            MessageLabel.Text = "";
-            foreach (char c in "Applyed Settings!")
+            try
             {
-                MessageLabel.Text += c;
-                await Task.Delay(10);
+                MessageLabel.Text = "";
+                foreach (char c in "Applyed Settings!")
+                {
+                    MessageLabel.Text += c;
+                    await Task.Delay(10);
+                }
+                await Task.Delay(2000);
+                foreach (char c in "Applyed Settings!")
+                {
+                    MessageLabel.Text = MessageLabel.Text.Substring(0, MessageLabel.Text.Length - 1);
+                    await Task.Delay(10);
+                }
+                foreach (char c in "...")
+                {
+                    MessageLabel.Text += c;
+                    await Task.Delay(100);
+                }
+                MessageLabel.Text = "...";
             }
-            await Task.Delay(2000);
-            foreach (char c in "Applyed Settings!")
+            catch
             {
-                MessageLabel.Text = MessageLabel.Text.Substring(0, MessageLabel.Text.Length -1 );
-                await Task.Delay(10);
+
             }
-            foreach (char c in "...")
-            {
-                MessageLabel.Text += c;
-                await Task.Delay(100);
-            }
-            MessageLabel.Text = "...";
         }
 
         private void settings_form_Paint(object sender, PaintEventArgs e)
         {
+            
+        }
+
+        private void settings_form_Load(object sender, EventArgs e)
+        {
+            LoadSettings();
         }
 
         private void ReloadSettingsBTN_Click(object sender, EventArgs e)
@@ -106,28 +117,76 @@ namespace easy14_isde
 
         void LoadSettings()
         {
+            configFile.Clear();
             List<string> optionsFileContents = File.ReadAllLines(optionsFile).ToList();
             string themesFolder = "";
+            string fontFamily = "";
+            double fontSize = 0;
+            string fontStyle = "";
             foreach (string line in optionsFileContents)
             {
                 if (line != "")
                 {
                     string var = line.Trim().Split('=')[0];
                     string val = line.Trim().Split('=')[1];
-                    if (var == "themesFolder")
-                    {
-                        themesFolder = val.Substring(1, val.Length - 2);
-                    }
+                    configFile.Add(var, val);
                 }
             }
 
-            List<string> themeFiles = Directory.GetFiles(themesFolder)
-                                               .Where(file => file.EndsWith(".json"))
-                                               .ToList();
+            for (int i = 0;i < configFile.Keys.Count; i++)
+            {
+                string var = configFile.Keys.ElementAt(i);
+                string val = configFile.Values.ElementAt(i);
+                if (var == "themesFolder")
+                {
+                    themesFolder = val;
+                }
+                else if (var == "fontFamily")
+                {
+                    fontFamily = val;
+                }
+                else if (var == "fontSize")
+                {
+                    try { fontSize = Convert.ToDouble(val); }
+                    catch { }
+                }
+                else if (var == "fontStyle")
+                {
+                    fontStyle = val;
+                }   
+            }
 
-            comboBox1.Items.Clear();
-            comboBox1.Items.AddRange(themeFiles.ToArray());
+            try
+            {
+                List<string> themeFiles = Directory.GetFiles(themesFolder)
+                                                   .Where(file => file.EndsWith(".json"))
+                                                   .ToList();
+                comboBox1.Items.Clear();
+                comboBox1.Items.AddRange(themeFiles.ToArray());
+            } catch { }
+
+            fontTest_label.Font = new Font(fontFamily, (float)Math.Round(fontSize));
         }
 
+        private void changeFontBTN_Click(object sender, EventArgs e)
+        {
+            FontDialog fontDialog = new FontDialog();
+            fontDialog.Font = new Font(configFile["fontFamily"], (float)(Math.Round(Convert.ToDouble(configFile["fontSize"]))));
+            fontDialog.ShowDialog();
+
+            configFile["fontFamily"] = fontDialog.Font.FontFamily.Name.ToString();
+            configFile["fontSize"] = fontDialog.Font.Size.ToString();
+
+            List<string> mainFileContent = new List<string>();
+
+            for (int i = 0;i < configFile.Keys.Count; i++)
+            {
+                mainFileContent.Add($"{configFile.Keys.ElementAt(i)}={configFile.Values.ElementAt(i)}");
+            }
+
+            File.WriteAllLines(optionsFile, mainFileContent.ToArray());
+            LoadSettings();
+            SuccessText();
+        }
     }
 }

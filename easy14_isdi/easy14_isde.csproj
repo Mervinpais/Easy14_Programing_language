@@ -113,5 +113,8 @@
   <ItemGroup>
     <None Include="Resources\keep-calm-its-not-finished-yet.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mervin14_icon_titled.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
