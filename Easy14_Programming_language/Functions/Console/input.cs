@@ -9,7 +9,7 @@ namespace Easy14_Programming_Language
         {
             if (line == "")
             {
-                ConsolePrint.Interperate("\"> \"", false);
+                Console.Write("> ", false);
                 string returnedInput = "";
                 returnedInput = Console.ReadLine();
                 return returnedInput;
@@ -17,8 +17,8 @@ namespace Easy14_Programming_Language
             else if (ItemChecks.IsString(line))
             {
                 line = line.Substring(1, line.Length - 2);
-                ConsolePrint.Interperate(line);
-                ConsolePrint.Interperate("\"> \"", false);
+                Console.WriteLine(line);
+                Console.Write("> ", false);
                 string returnedInput = "";
                 returnedInput = Console.ReadLine();
                 return returnedInput;
@@ -43,8 +43,8 @@ namespace Easy14_Programming_Language
                 var variable = variable_dir + "\\" + line;
                 if (File.Exists(variable))
                 {
-                    ConsolePrint.Interperate(File.ReadAllText(variable));
-                    ConsolePrint.Interperate("\"> \"", false);
+                    Console.WriteLine(File.ReadAllText(variable));
+                    Console.Write("> ", false);
                     string returnedInput = "";
                     returnedInput = Console.ReadLine();
                     return returnedInput;

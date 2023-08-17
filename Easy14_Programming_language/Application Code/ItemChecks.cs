@@ -33,6 +33,9 @@ namespace Easy14_Programming_Language //Mental Crash
             {
                 return "bool";
             }
+            else if (IsVariable(data, VariableCode.variableList.Keys.ToList())) {
+                return "var";
+            }
             //IsVariable(data);
             return "";
         }
@@ -73,9 +76,9 @@ namespace Easy14_Programming_Language //Mental Crash
         {
             return bool.TryParse((string?)data, out _);
         }
-        public static bool IsVariable(object data, List<string> variables)
+        public static bool IsVariable(object data, List<object> variables)
         {
-            var foundItem = variables.FirstOrDefault(item => item.StartsWith(data.ToString()));
+            var foundItem = variables.FirstOrDefault(item => item.ToString().StartsWith(data.ToString()));
             if (foundItem != null)
             {
                 return true;

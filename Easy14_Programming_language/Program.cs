@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.Scripting;
 using SDL2;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -40,7 +41,7 @@ namespace Easy14_Programming_Language
             {
                 Console.WriteLine($"Easy14 ({osName})");
             }
-            Console.WriteLine("Type in \"/help\" or \"/info\" for information");
+            Console.WriteLine("Type in \"/help\" or \"/info\" for information\n");
 
             //to get rid of older ways of variable management
             if (Directory.Exists(Path.Combine(desktopPath, "EASY14_Variables_TEMP"))) Directory.Delete(Path.Combine(desktopPath, "EASY14_Variables_TEMP"), true);
@@ -203,11 +204,25 @@ namespace Easy14_Programming_Language
                 codeLines = new string[] { "" };
             }
 
-            foreach (string currentLine in textArray)
+            bool IsSkippedWord(string word)
             {
+                List<string> words = new() {
+                    "end", "if"
+                };
+                var result = words.Any(word.StartsWith);
+                return result;
+            }
+            for (int i = 0; i < textArray.Length; i++)
+            {
+                string currentLine = textArray[i];
                 if (currentLine.Trim() == " ")
                 { continue; }
+
                 var StatementResult = CommandParser.SplitCommand(currentLine);
+                if (IsSkippedWord(currentLine))
+                {
+                    StatementResult = CommandParser.SplitCommand("");
+                }
 
                 if (showStatementsDuringRuntime == true) Console.WriteLine($">>>{currentLine}");
 
@@ -243,12 +258,18 @@ namespace Easy14_Programming_Language
                     Console.WriteLine("\nPlease use \"exit()\" or Ctrl+C to close the interative console");
                     Console.ResetColor(); continue;
                 }
+                else if (currentLine.StartsWith("if"))
+                {
+                    textArray = If_Loop.Interperate(i,textArray);
+                    i = 0;
+                    continue;
+                }
                 else if (StatementResult.className[0] == "Console")
                 {
                     if (StatementResult.methodName == "Print")
                     { ConsolePrint.Interperate(StatementResult.paramItems[0]); }
                     else if (StatementResult.methodName == "Input")
-                    { ConsoleInput.Interperate(StatementResult.paramItems[0]); }
+                    { return ConsoleInput.Interperate(StatementResult.paramItems[0]); }
                     else if (StatementResult.methodName == "Clear")
                     { ConsoleClear.Interperate(); }
                     else if (StatementResult.methodName == "Exec")
@@ -264,7 +285,7 @@ namespace Easy14_Programming_Language
                 {
                     if (StatementResult.methodName == "New")
                     {
-                        if (StatementResult.paramItems.Count > 1)
+                        if (StatementResult.paramItems.Count > 1) //does variable include a value to be set?
                         {
                             VariableCode.Interperate(StatementResult.paramItems[0], StatementResult.paramItems[1], true);
                         }
@@ -526,7 +547,7 @@ namespace Easy14_Programming_Language
             }
             else
             {
-                Console.WriteLine($"The method '{theMethodOfTheLine}' for class '{classHierarchy}' was not found.");
+                Debug.WriteLine($"The method '{theMethodOfTheLine}' for class '{classHierarchy}' was not found.");
             }
 
             return null;

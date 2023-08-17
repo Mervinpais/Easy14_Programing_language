@@ -4,46 +4,38 @@ using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    public static class Method_Code_OLD
+    public static class Method_Code
     {
         /*
          * CHANGLE LOG 24/6/2022;
          * Code will/has  be/been refactored for better readablilty and easier to understand
          */
-        public static Dictionary<string, object> methodList = new Dictionary<string, object>();
-
-        public static void Interperate(string code_part, string[] textArray, string[] lines, string fileloc, bool Making_A_Method)
+        public static void Interperate(string code_part, string[] textArray, string[] lines, bool Making_A_Method = false)
         {
             Program prog = new Program();
             string code_part_unedited = code_part;
 
             if (Making_A_Method == true)
             {
-                string[] _lines_ = lines;
-                int last_line_Index = 0;
+                List<string> method_lines_list = new(lines);
 
-                List<string> method_lines_list = new List<string>(_lines_);
-
-                int lines_lineCounter = 1;
-                foreach (string line__ in _lines_)
+                for (int i = 0; i < lines.Length; i++)
                 {
-                    if (line__ == code_part)
+                    if (lines[i] == code_part)
                     {
-                        method_lines_list.RemoveRange(0, lines_lineCounter - 1);
+                        method_lines_list.RemoveRange(0, i - 1);
                         break;
                     }
-                    lines_lineCounter++;
                 }
 
-                int underStuff_lineCounterr = 0;
-                List<string> understuff = new List<string>(method_lines_list);
+                List<string> understuff = new(method_lines_list);
+                int last_line_Index = 0;
 
-                foreach (string line__ in understuff)
+                for (int i = 0; i < understuff.Count; i++)
                 {
-                    underStuff_lineCounterr++;
-                    if (line__ == "}")
+                    if (understuff[i].EndsWith("}"))
                     {
-                        last_line_Index = underStuff_lineCounterr;
+                        last_line_Index = i;
                         if (method_lines_list.Count != last_line_Index)
                         {
                             try
@@ -53,7 +45,7 @@ namespace Easy14_Programming_Language
                             }
                             catch (Exception e)
                             {
-                                Console.WriteLine(e);
+                                ErrorReportor.ConsoleLineReporter.Error(e.Message);
                             }
                         }
                         break;
@@ -61,16 +53,18 @@ namespace Easy14_Programming_Language
                 }
 
                 List<string> usingsCode_list = null;
-                if (textArray == null && fileloc != null) usingsCode_list = new List<string>(File.ReadAllLines(fileloc));
-                else if (textArray != null && fileloc == null) usingsCode_list = new List<string>(textArray);
-                int usingsCodeList_lineCount = 1;
-                foreach (string x in usingsCode_list)
+                if (textArray != null) usingsCode_list = new List<string>(textArray);
+                else
                 {
-                    if (!x.StartsWith("using") || !x.StartsWith("from"))
+                    return;
+                }
+                int usingsCodeList_lineCount = 1;
+                for (int i = 0; i < usingsCode_list.Count; i++)
+                {
+                    if (!usingsCode_list[i].StartsWith("using") || !usingsCode_list[i].StartsWith("from"))
                     {
                         break;
                     }
-                    usingsCodeList_lineCount++;
                 }
 
                 List<string> code_in_method_code = method_lines_list.GetRange(1, last_line_Index - 1);
@@ -86,12 +80,10 @@ namespace Easy14_Programming_Language
                 methodName = methodName.TrimStart();
                 methodName = methodName[..methodName.IndexOf("(")];
 
-                code_in_method_code.RemoveAt(0);
-                code_in_method_code.RemoveAt(code_in_method_code.Count - 1);
                 Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}");
                 File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", string.Join(Environment.NewLine, code_in_method_code.ToArray()));
 
-                understuff.RemoveRange(0, code_in_method_code.Count);
+                //understuff.RemoveRange(0, code_in_method_code.Count);
                 prog.ExternalComplieCode(null, understuff.ToArray(), 0);
             }
             else

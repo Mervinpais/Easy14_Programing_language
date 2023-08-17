@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Easy14_Programming_Language.Application_Code
@@ -10,19 +11,20 @@ namespace Easy14_Programming_Language.Application_Code
 
         public static (List<string> className, string methodName, List<string> paramItems) SplitCommand(string command)
         {
+            if (command == "") { return (new List<string>() { "" }, "", new List<string>() { "" }); }
             var statementParts = SplitCommandPart(command);
             for (int i = 0; i < statementParts.className.Count; i++)
             {
                 string item = statementParts.className[i];
-                if (Dev_ShowDebugInfo) Console.WriteLine($"Class {i + 1}: {item}");
+                if (Dev_ShowDebugInfo) Debug.WriteLine($"Class {i + 1}: {item}");
             }
-            if (Dev_ShowDebugInfo) Console.WriteLine("Method Name: " + statementParts.methodName);
+            if (Dev_ShowDebugInfo) Debug.WriteLine("Method Name: " + statementParts.methodName);
 
             if (statementParts.paramItems.Count > 0)
             {
                 for (int i = 0; i < statementParts.paramItems.Count; i++)
                 {
-                    if (Dev_ShowDebugInfo) Console.WriteLine($"Parameter {i}: [{ItemChecks.detectType(statementParts.paramItems[i])}] {statementParts.paramItems[i]}");
+                    if (Dev_ShowDebugInfo) Debug.WriteLine($"Parameter {i}: [{ItemChecks.detectType(statementParts.paramItems[i])}] {statementParts.paramItems[i]}");
                 }
             }
 
@@ -52,13 +54,13 @@ namespace Easy14_Programming_Language.Application_Code
                 else
                 {
                     // Invalid syntax, parenthesis not found or misplaced
-                    Console.WriteLine("Invalid command syntax: " + commandPart);
+                    Debug.WriteLine("Invalid command syntax: " + commandPart);
                 }
             }
             else
             {
                 // Invalid syntax, command should end with ');'
-                Console.WriteLine("Invalid command syntax: " + commandPart);
+                Debug.WriteLine("Invalid command syntax: " + commandPart);
             }
 
             return (new List<string>() { "" }, "", new List<string>() { "" });
