@@ -10,20 +10,22 @@ namespace Easy14_Programming_Language
             object LHS = line.Split("==")[0].Trim();
             object RHS = line.Split("==")[1].Trim();
 
-            if (ItemChecks.detectType(LHS.ToString()) != ItemChecks.detectType(RHS.ToString())) return false;
+            //if (ItemChecks.detectType(LHS.ToString()) != ItemChecks.detectType(RHS.ToString())) return false;
 
             if (ItemChecks.detectType(LHS.ToString()) == "var")
             {
-                if (VariableCode.variableList.Any(varName => varName.Equals(LHS)))
+                if (VariableCode.variableList.Keys.Any(varName => varName.Equals(LHS)))
                 {
-                    LHS = VariableCode.variableList.TryGetValue(LHS, out LHS);
+                    VariableCode.variableList.TryGetValue(LHS, out var LHS_Var_value);
+                    LHS = LHS_Var_value;
                 }
             }
             if (ItemChecks.detectType(RHS.ToString()) == "var")
             {
-                if (VariableCode.variableList.Any(varName => varName.Equals(RHS)))
+                if (VariableCode.variableList.Keys.Any(varName => varName.Equals(RHS)))
                 {
-                    RHS = VariableCode.variableList.TryGetValue(RHS, out RHS);
+                    VariableCode.variableList.TryGetValue(RHS, out var RHS_Var_value);
+                    RHS = RHS_Var_value;
                 }
             }
             if (LHS.Equals(RHS))
@@ -39,20 +41,22 @@ namespace Easy14_Programming_Language
             object LHS = line.Split("!=")[0].Trim();
             object RHS = line.Split("!=")[1].Trim();
 
-            if (ItemChecks.detectType(LHS.ToString()) != ItemChecks.detectType(RHS.ToString())) return false;
+            //if (ItemChecks.detectType(LHS.ToString()) != ItemChecks.detectType(RHS.ToString())) return false;
 
             if (ItemChecks.detectType(LHS.ToString()) == "var")
             {
-                if (VariableCode.variableList.Any(varName => varName.Equals(LHS)))
+                if (VariableCode.variableList.Keys.Any(varName => varName.Equals(LHS)))
                 {
-                    LHS = VariableCode.variableList.TryGetValue(LHS, out LHS);
+                    VariableCode.variableList.TryGetValue(LHS, out var LHS_Var_value);
+                    LHS = LHS_Var_value;
                 }
             }
             if (ItemChecks.detectType(RHS.ToString()) == "var")
             {
-                if (VariableCode.variableList.Any(varName => varName.Equals(RHS)))
+                if (VariableCode.variableList.Keys.Any(varName => varName.Equals(RHS)))
                 {
-                    RHS = VariableCode.variableList.TryGetValue(RHS, out RHS);
+                    VariableCode.variableList.TryGetValue(RHS, out var RHS_Var_value);
+                    RHS = RHS_Var_value;
                 }
             }
 

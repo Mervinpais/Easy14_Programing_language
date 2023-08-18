@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.Scripting;
 using SDL2;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -68,7 +69,6 @@ namespace Easy14_Programming_Language
             if (args.Length != 0)
             {
                 if (args[0].ToLower() == "/intro") IntroductionCode.IntroCode();
-                else if (args[0].ToLower() == "/appinfo") AppInformation.ShowInfo();
                 else if (File.Exists(args[0]) == true)
                 {
                     CompileCode(File.ReadAllLines(args[0]), ExitOnFinish: exitOnFinish);
@@ -117,10 +117,9 @@ namespace Easy14_Programming_Language
                 else if (line.StartsWith("/run"))
                 {
                     Program compiler = new Program();
-                    compiler.ExternalComplieCode(line.TrimStart().Substring(4));
+                    compiler.ExternalComplieCode(line.Trim().Substring(4));
                 }
                 else if (line == "/intro") IntroductionCode.IntroCode();
-                else if (line == "/appinfo") AppInformation.ShowInfo();
                 else
                 {
                     if (!line.StartsWith("/"))
@@ -152,10 +151,8 @@ namespace Easy14_Programming_Language
 
             try
             {
-                librariesDisabled = false;
                 windowHeight = Console.WindowHeight;
                 windowWidth = Console.WindowWidth;
-                windowState = "normal";
 
                 librariesDisabled = Convert.ToBoolean(Configuration.GetBoolOption("disableLibraries"));
 
@@ -196,61 +193,37 @@ namespace Easy14_Programming_Language
             /* Removing the leading whitespace from each line in the list. */
             List<string> linesListMod = new List<string>();
 
-            if (codeLines != null) codeLines = formatUserCode.format(codeLines);
-            if (textArray != null) textArray = formatUserCode.format(textArray);
-
             if (codeLines == null)
             {
                 codeLines = new string[] { "" };
             }
 
-            bool IsSkippedWord(string word)
-            {
-                List<string> words = new() {
-                    "end", "if"
-                };
-                var result = words.Any(word.StartsWith);
-                return result;
-            }
             for (int i = 0; i < textArray.Length; i++)
             {
                 string currentLine = textArray[i];
-                if (currentLine.Trim() == " ")
+                if (currentLine.Trim() == "")
                 { continue; }
 
                 var StatementResult = CommandParser.SplitCommand(currentLine);
-                if (IsSkippedWord(currentLine))
-                {
-                    StatementResult = CommandParser.SplitCommand("");
-                }
 
                 if (showStatementsDuringRuntime == true) Console.WriteLine($">>>{currentLine}");
 
-                if (currentLine.StartsWith($"using") && currentLine.EndsWith($";"))
+                /*if (currentLine.StartsWith($"using") && currentLine.EndsWith($";"))
                 {
                     UsingNamspaceFunction.UsingMethod(currentLine, librariesDisabled, lineCount);
                 }
                 else if (currentLine.StartsWith($"from") && currentLine.EndsWith($";"))
                 {
                     UsingNamspaceFunction.FromMethod(currentLine, librariesDisabled, lineCount);
-                }
-
-                //TODO: Fix and make sure to add this back in better
-
-                /*else if (currentLine.Contains("+") || currentLine.Contains("-") || currentLine.Contains("*") || currentLine.Contains("/") || currentLine.Contains("%"))
+                }*/
+                if (Double.TryParse(currentLine.ToCharArray(), out _) == true)
                 {
-                    string expression = string.Join("", currentLine.ToCharArray());
-                    try { Console.WriteLine(Convert.ToDouble(new DataTable().Compute(expression, null))); }
+                    try { return Convert.ToDouble(new DataTable().Compute(currentLine, null)); }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.GetType());
-                        if (e.GetType().ToString() == "System.OverflowException") ErrorReportor.ConsoleLineReporter.Error("The Number to calculate is too large! (For Int32), please try a number less than 2147483647");
-                        else ErrorReportor.ConsoleLineReporter.Error("Uh oh, the value you wanted to calculate won't work! (check if the value has a string value and change it to an integer)");
+                        return e.Message;
                     }
-                }*/
-
-                /* Checking if the user has entered "exit()" or "exit();" and if they have, it will
-                exit the program. */
+                }
                 else if (StatementResult.methodName.ToLower() == "exit()" || StatementResult.methodName.ToLower() == "exit();") return "";
                 else if (StatementResult.methodName.ToLower() == "exit")
                 {
@@ -260,7 +233,13 @@ namespace Easy14_Programming_Language
                 }
                 else if (currentLine.StartsWith("if"))
                 {
-                    textArray = If_Loop.Interperate(i,textArray);
+                    textArray = IfLoop.Interperate(i, textArray.ToList());
+                    i = 0;
+                    continue;
+                }
+                else if (currentLine.StartsWith("while"))
+                {
+                    textArray = WhileLoop.Interperate(i, textArray.ToList());
                     i = 0;
                     continue;
                 }
@@ -313,7 +292,7 @@ namespace Easy14_Programming_Language
                         catch { throw new Exception("Not valid Integers"); }
                     }
                     else if (StatementResult.methodName == "RangeDouble")
-                    { return Random_RandomRangeDouble.Interperate(currentLine, textArray); }
+                    { return Random_RandomRangeDouble.Interperate(); }
                 }
                 else if (StatementResult.methodName == "ToString")
                 {
@@ -322,31 +301,31 @@ namespace Easy14_Programming_Language
                 else if (StatementResult.className[0] == "FileSystem")
                 {
                     if (StatementResult.methodName == "MakeFile")
-                        FileSystem_MakeFile.Interperate(lineCount, codeLines);
+                        FileSystem_MakeFile.Interperate(StatementResult.paramItems[0]);
                     else if (StatementResult.methodName == "MakeFolder(")
-                        FileSystem_MakeFolder.Interperate(currentLine, textArray);
+                        FileSystem_MakeFolder.Interperate(StatementResult.paramItems[0]);
                     else if (StatementResult.methodName == "DeleteFile")
-                        FileSystem_DeleteFile.Interperate(currentLine, textArray);
+                        FileSystem_DeleteFile.Interperate(StatementResult.paramItems[0]);
                     else if (StatementResult.methodName == "DeleteFolder")
-                        FileSystem_DeleteFolder.Interperate(currentLine, textArray);
+                        FileSystem_DeleteFolder.Interperate(StatementResult.paramItems[0]);
                     else if (StatementResult.methodName == "ReadFile")
-                        FileSystem_ReadFile.Interperate(currentLine, textArray);
+                        FileSystem_ReadFile.Interperate(StatementResult.paramItems[0]);
                     else if (StatementResult.methodName == "RenameFile")
-                        FileSystem_RenameFile.Interperate(currentLine, textArray);
+                        FileSystem_RenameFile.Interperate(StatementResult.paramItems[0], StatementResult.paramItems[1]);
                     else if (StatementResult.methodName == "WriteFile")
-                        FileSystem_WriteFile.Interperate(currentLine, textArray);
+                        FileSystem_WriteFile.Interperate(StatementResult.paramItems[0], StatementResult.paramItems[1]);
                 }
                 else if (StatementResult.className[0] == "Network")
                 {
                     if (StatementResult.methodName == "Ping")
-                        NetworkPing.Interperate(currentLine, textArray);
+                        NetworkPing.Interperate(StatementResult.paramItems[0]);
                 }
                 else if (StatementResult.className[0] == "Time")
                 {
                     if (StatementResult.methodName == "CurrentTime")
-                        return Time_CurrentTime.Interperate(currentLine, textArray);
+                        return Time_CurrentTime.Interperate();
                     else if (StatementResult.methodName == "IsLeapYear")
-                        return Convert.ToBoolean(Time_IsLeapYear.Interperate(currentLine, textArray));
+                        return Time_IsLeapYear.Interperate(StatementResult.paramItems[0]);
                 }
                 else if (StatementResult.className[0] == "Audio")
                 {

@@ -10,15 +10,22 @@ namespace Easy14_Programming_Language
         {
             if (setVariable)
             {
-                if (value.ToString().StartsWith("() =>"))
+                if (value != null)
                 {
-                    value = value.ToString().Substring("() =>".Length).Trim();
-                    if (!value.ToString().EndsWith(";")) value = value.ToString() + ";";
-                    variableList[name] = Program.CompileCode(new string[] { value.ToString() }); ;
+                    if (value.ToString().StartsWith("() =>"))
+                    {
+                        value = value.ToString().Substring("() =>".Length).Trim();
+                        if (!value.ToString().EndsWith(";")) value = value.ToString() + ";";
+                        variableList[name] = Program.CompileCode(new string[] { value.ToString() }); ;
+                    }
+                    else
+                    {
+                        variableList[name] = value;
+                    }
                 }
                 else
                 {
-                    variableList[name] = value;
+                    variableList[name] = "";
                 }
                 return null;
             }

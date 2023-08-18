@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Easy14_Programming_Language
 {
-    public static class IfLoop
+    public static class WhileLoop
     {
         public static string[] Interperate(int currentLine, List<string> lines)
         {
@@ -52,18 +52,18 @@ namespace Easy14_Programming_Language
                 ifBlock.Add(line.Trim());
             }
 
-            string ifLine = ifBlock[0].Substring(2);
+            string ifLine = ifBlock[0].Substring(5);
 
             ifBlock.RemoveAt(0);
-
+            
             if (ifLine.Contains("=="))
             {
-                if (ComparisonInterperator.IsTrueCompare(ifLine))
+                while (ComparisonInterperator.IsTrueCompare(ifLine))
                     Program.CompileCode(ifBlock.ToArray());
             }
             else if (ifLine.Contains("!="))
             {
-                if (ComparisonInterperator.IsFalseCompare(ifLine))
+                while (ComparisonInterperator.IsFalseCompare(ifLine))
                     Program.CompileCode(ifBlock.ToArray());
             }
 

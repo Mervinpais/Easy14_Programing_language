@@ -9,9 +9,24 @@ namespace Easy14_Programming_Language.Application_Code
     {
         private static bool Dev_ShowDebugInfo = false;
 
+        static bool IsSkippedWord(string word)
+        {
+            List<string> words = new() {
+                    "end", "if", "while"
+                };
+            var result = words.Any(word.StartsWith);
+            return result;
+        }
+
         public static (List<string> className, string methodName, List<string> paramItems) SplitCommand(string command)
         {
             if (command == "") { return (new List<string>() { "" }, "", new List<string>() { "" }); }
+
+            if (IsSkippedWord(command))
+            {
+                return (new List<string>() { "" }, "", new List<string>() { "" });
+            }
+
             var statementParts = SplitCommandPart(command);
             for (int i = 0; i < statementParts.className.Count; i++)
             {
