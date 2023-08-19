@@ -1,50 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿using LIM_package_manager.AppFunctions;
+using System.Text.RegularExpressions;
 
 namespace LIM_package_manager
 {
     class Program
     {
-        static string appDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp");
-
-        public static string SanitizeFileName(string fileName)
-        {
-            string invalidCharsRegex = string.Format("[{0}]", Regex.Escape(new string(Path.GetInvalidFileNameChars())));
-            string sanitizedFileName = Regex.Replace(fileName, invalidCharsRegex, "");
-            sanitizedFileName = sanitizedFileName.Replace(":", "-").Replace("~", "-").Replace(".", "_");
-            if (sanitizedFileName.EndsWith("_json")) sanitizedFileName = sanitizedFileName.Replace("_json", ".json");
-
-            return sanitizedFileName;
-        }
-        public static async Task DownloadFile(string url, string saveFilePath)
-        {
-            try
-            {
-                using (var httpClient = new HttpClient())
-                {
-                    // Set the "Accept" header to request JSON content
-                    httpClient.DefaultRequestHeaders.Accept.Clear();
-                    httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-
-                    using (var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
-                    {
-                        response.EnsureSuccessStatusCode();
-
-                        using (var contentStream = await response.Content.ReadAsStreamAsync())
-                        using (var fileStream = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 8192, useAsync: true))
-                        {
-                            await contentStream.CopyToAsync(fileStream);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred while downloading the file: {ex.Message}");
-            }
-        }
-
-
-
         public static (List<string> classes, string method, List<string> params_) Parse(string command)
         {
             List<string> classes = new List<string>();
@@ -161,12 +121,17 @@ namespace LIM_package_manager
                     }
                     else if (method == "install")
                     {
-                        InstallCommand(params_);
+                        _ = PackageInstall.Install(params_);
                         continue;
                     }
                     else if (method == "uninstall" || method == "remove")
                     {
-                        UnInstallCommand(params_);
+                        _ = PackageUninstall.Uninstall(params_);
+                        continue;
+                    }
+                    else if (method == "list")
+                    {
+                        _ = PackagesList.List();
                         continue;
                     }
                     else if (method == "help")
@@ -175,148 +140,6 @@ namespace LIM_package_manager
                     }
                 }
             }
-        }
-
-        static async Task InstallCommand(List<string> params_)
-        {
-            if (params_.Count == 0)
-            {
-                Console.WriteLine("No packages specified for installation.");
-                return;
-            }
-
-            string downloadUrl = "";
-            foreach (string param in params_)
-            {
-                if (param.StartsWith("--http"))
-                {
-                    downloadUrl = param.Substring(2);
-                    Console.WriteLine($"PACKAGE: {Path.GetFileName(downloadUrl)}");
-
-                    if (param.StartsWith("--https://"))
-                    {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("INFO: You are installing a package with a secured HTTPS connection");
-                    }
-                    else if (param.StartsWith("--http://"))
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("WARNING: You are installing a package over an insecure HTTP connection. Proceed with caution when downloading packages over HTTP.");
-                    }
-
-                    break;
-                }
-            }
-
-            if (string.IsNullOrEmpty(downloadUrl))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("ERROR: No valid download URL provided.");
-                return;
-            }
-
-            string zipFileName = Path.GetFileName(SanitizeFileName(downloadUrl));
-            string zipFilePath_d = Path.Combine(appDataFolder, zipFileName);
-
-            int success = 0;
-            try
-            {
-                // Download the zip file
-                await DownloadFile(downloadUrl, zipFilePath_d);
-                string fp = zipFilePath_d;
-                try
-                {
-                    // Unpack the JSON package
-                    UnpackJsonPackage.file = fp;
-                    UnpackJsonPackage.Unpack();
-
-                    success = 1;
-                }
-                catch
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Package was not a .json, please check Downloaded folder...");
-                    do { Console.WriteLine("Press Enter to continue"); } while (Console.ReadKey().Key != ConsoleKey.Enter);
-                    success = 0;
-                }
-
-                // Cleanup: Delete the downloaded file
-                // ... (Same as before)
-
-            }
-            catch (Exception ex)
-            {
-                // Handle any exceptions that might occur during download, extraction, or unpacking
-                success = -1;
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"ERROR: {ex}");
-            }
-
-            if (success == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Package installation finished but some issues occurred during install");
-            }
-            else if (success == 1)
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Package installation completed successfully :)\r\n");
-            }
-            else if (success == -1)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Package installation failed :(");
-            }
-
-            Console.WriteLine("(Pres Enter to continue)");
-            return;
-        }
-
-        static async Task UnInstallCommand(List<string> params_)
-        {
-            if (params_.Count == 0)
-            {
-                Console.WriteLine("No packages specified for removal.");
-                return;
-            }
-
-            Console.Write($"\nAre you sure you want to remove the following; {Environment.NewLine + string.Join(" ", params_) + Environment.NewLine}(y/n) >");
-            
-            if (Console.ReadKey().Key == ConsoleKey.N) return;
-
-            List<string> packagesSuccessfullyUninstalled = new List<string>();
-            List<string> packagesFailedToUninstalled = new List<string>();
-            foreach (string e in params_)
-            {
-                packagesFailedToUninstalled.Add(e.Trim().Substring(2));
-            }
-
-            params_ = new(packagesFailedToUninstalled.ToArray());
-            foreach (string param in params_)
-            {
-                try
-                {
-                    string folderPath2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages", param);
-                    Directory.Delete(folderPath2, true);
-                    packagesSuccessfullyUninstalled.Add(param);
-                    packagesFailedToUninstalled.Remove(param);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"\nERROR; Failed to remove package {param}");
-                }
-            }
-
-            if (packagesSuccessfullyUninstalled.Count > 0)
-            {
-                Console.WriteLine($"\nThe following packages were removed successfully; {Environment.NewLine + string.Join(" ", packagesSuccessfullyUninstalled.ToArray()) + Environment.NewLine}");
-            }
-            if (packagesFailedToUninstalled.Count > 0)
-            {
-                Console.WriteLine($"\nWARNING; The following packages couldnt be uninstalled; {Environment.NewLine + string.Join(" ", packagesFailedToUninstalled.ToArray()) + Environment.NewLine}");
-            }
-
-            return;
         }
     }
 }
