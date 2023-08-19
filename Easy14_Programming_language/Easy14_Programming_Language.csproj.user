@@ -4,6 +4,6 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>Exit Test</ActiveDebugProfile>
+    <ActiveDebugProfile>Easy14_Programming_Language</ActiveDebugProfile>
   </PropertyGroup>
 </Project>

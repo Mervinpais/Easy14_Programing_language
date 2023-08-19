@@ -216,6 +216,8 @@ namespace Easy14_Programming_Language
                     { ConsoleExec.Interperate(StatementResult.paramItems[0]); }
                     else if (StatementResult.methodName == "Beep")
                     { ConsoleBeep.Interperate(StatementResult.paramItems[0]); }
+                    else if (StatementResult.methodName == "GetKeyPress")
+                    { return ConsoleKeyPress.Interperate(StatementResult.paramItems[0]); }
                 }
                 else if (StatementResult.className[0] == "Time")
                 {
@@ -263,6 +265,8 @@ namespace Easy14_Programming_Language
                 {
                     if (StatementResult.methodName == "MakeFile")
                         FileSystem_MakeFile.Interperate(StatementResult.paramItems[0]);
+                    else if (StatementResult.methodName == "MoveFile")
+                        FileSystem_MoveFile.Interperate(StatementResult.paramItems[0], StatementResult.paramItems[1]);
                     else if (StatementResult.methodName == "MakeFolder(")
                         FileSystem_MakeFolder.Interperate(StatementResult.paramItems[0]);
                     else if (StatementResult.methodName == "DeleteFile")
@@ -353,13 +357,13 @@ namespace Easy14_Programming_Language
                         try { return ExecuteFunctionWithNamespace(StatementResult); }
                         catch
                         {
-                            HandleError($"\'{currentLine}\' is not a valid code statement\n  Error was located on Line {lineCount - 13}");
+                            HandleError($"\'{currentLine}\' is not a valid code statement\n  Error was located on Line {lineCount}");
                             break;
                         }
                     }
                     else
                     {
-                        HandleError($"\'{currentLine}\' is not a valid code statement\n  Error was located on Line {lineCount - 13}");
+                        HandleError($"\'{currentLine}\' is not a valid code statement\n  Error was located on Line {lineCount}");
                         break;
                     }
                 }

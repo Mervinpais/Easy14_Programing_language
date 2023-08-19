@@ -137,8 +137,7 @@ namespace LIM_package_manager
                             {
                                 if (selected == 0)
                                 {
-                                    // Implement the quick menu "Install" functionality here
-                                    // (You can prompt the user for package details or options)
+                                    
                                 }
                                 continue;
                             }
@@ -163,6 +162,11 @@ namespace LIM_package_manager
                     else if (method == "install")
                     {
                         InstallCommand(params_);
+                        continue;
+                    }
+                    else if (method == "uninstall" || method == "remove")
+                    {
+                        UnInstallCommand(params_);
                         continue;
                     }
                     else if (method == "help")
@@ -265,6 +269,53 @@ namespace LIM_package_manager
             }
 
             Console.WriteLine("(Pres Enter to continue)");
+            return;
+        }
+
+        static async Task UnInstallCommand(List<string> params_)
+        {
+            if (params_.Count == 0)
+            {
+                Console.WriteLine("No packages specified for removal.");
+                return;
+            }
+
+            Console.Write($"\nAre you sure you want to remove the following; {Environment.NewLine + string.Join(" ", params_) + Environment.NewLine}(y/n) >");
+            
+            if (Console.ReadKey().Key == ConsoleKey.N) return;
+
+            List<string> packagesSuccessfullyUninstalled = new List<string>();
+            List<string> packagesFailedToUninstalled = new List<string>();
+            foreach (string e in params_)
+            {
+                packagesFailedToUninstalled.Add(e.Trim().Substring(2));
+            }
+
+            params_ = new(packagesFailedToUninstalled.ToArray());
+            foreach (string param in params_)
+            {
+                try
+                {
+                    string folderPath2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages", param);
+                    Directory.Delete(folderPath2, true);
+                    packagesSuccessfullyUninstalled.Add(param);
+                    packagesFailedToUninstalled.Remove(param);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"\nERROR; Failed to remove package {param}");
+                }
+            }
+
+            if (packagesSuccessfullyUninstalled.Count > 0)
+            {
+                Console.WriteLine($"\nThe following packages were removed successfully; {Environment.NewLine + string.Join(" ", packagesSuccessfullyUninstalled.ToArray()) + Environment.NewLine}");
+            }
+            if (packagesFailedToUninstalled.Count > 0)
+            {
+                Console.WriteLine($"\nWARNING; The following packages couldnt be uninstalled; {Environment.NewLine + string.Join(" ", packagesFailedToUninstalled.ToArray()) + Environment.NewLine}");
+            }
+
             return;
         }
     }
