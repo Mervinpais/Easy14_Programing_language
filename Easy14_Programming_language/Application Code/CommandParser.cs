@@ -12,7 +12,7 @@ namespace Easy14_Programming_Language.Application_Code
         static bool IsSkippedWord(string word)
         {
             List<string> words = new() {
-                    "end", "if", "while"
+                    "end", "if", "while", "for"
                 };
             var result = words.Any(word.StartsWith);
             return result;

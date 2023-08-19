@@ -26,7 +26,6 @@ namespace Easy14_Programming_Language
         private static readonly string executingAssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         private static readonly string optionsPath = Path.Combine(executingAssemblyPath, "Application Code", "options.ini");
         private static readonly string[] configFile = File.ReadAllLines(Path.Combine(executingAssemblyPath, optionsPath));
-        private static readonly string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         private static readonly string version = Path.Combine(executingAssemblyPath, "Application Code", "currentVersion.txt");
 
         static void Main(string[] args)
@@ -34,18 +33,8 @@ namespace Easy14_Programming_Language
             Console.WriteLine(string.Join(" ", args));
             string osName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}";
 
-            try
-            {
-                Console.WriteLine($"Easy14 {File.ReadAllLines(version)[1]} ({osName})");
-            }
-            catch
-            {
-                Console.WriteLine($"Easy14 ({osName})");
-            }
-            Console.WriteLine("Type in \"/help\" or \"/info\" for information\n");
-
-            //to get rid of older ways of variable management
-            if (Directory.Exists(Path.Combine(desktopPath, "EASY14_Variables_TEMP"))) Directory.Delete(Path.Combine(desktopPath, "EASY14_Variables_TEMP"), true);
+            try { Console.WriteLine($"Easy14 {File.ReadAllLines(version)[1]} ({osName})"); }
+            catch { Console.WriteLine($"Easy14 ({osName})"); }
 
             if (!Convert.ToBoolean(Configuration.GetBoolOption("UpdatesDisabled"))) UpdateChecker.CheckLatestVersion();
 
@@ -65,44 +54,18 @@ namespace Easy14_Programming_Language
                 }
             }
 
-            bool exitOnFinish = false;
             if (args.Length != 0)
             {
                 if (args[0].ToLower() == "/intro") IntroductionCode.IntroCode();
                 else if (File.Exists(args[0]) == true)
                 {
-                    CompileCode(File.ReadAllLines(args[0]), ExitOnFinish: exitOnFinish);
+                    CompileCode(File.ReadAllLines(args[0]));
                     return;
                 }
             }
 
             Console.WriteLine("\n===== Easy14 =====\n");
-            foreach (string line in configFile)
-            {
-                if (line.StartsWith("turnOnDevOptions"))
-                {
-                    if (line.EndsWith("true"))
-                    {
-                        Console.WriteLine("\nDeveloper Options Enabled\n");
-                        Console.WriteLine("\n========================\n\n");
-                        Console.WriteLine("\nIf you want to turn off developer options, type 'turnOffDeveloperOptions', and press enter.\n");
-                        Console.WriteLine($"Current Buffer Height; {Console.BufferHeight}");
-                        Console.WriteLine($"Current Buffer Width; {Console.BufferWidth}");
-                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                        {
-                            try
-                            {
-                                Console.WriteLine($"Capslock Status; {Console.CapsLock}");
-                            }
-                            catch { }
-                        }
-                        Console.WriteLine($"Foreground Color; {Console.ForegroundColor}");
-                        Console.WriteLine($"Background Color; {Console.BackgroundColor}");
-                        Console.WriteLine("\n========================\n\n");
-                    }
-                    break;
-                }
-            }
+            
             while (true)
             {
                 Console.Write(":>");
@@ -142,7 +105,7 @@ namespace Easy14_Programming_Language
             return CompileCode(textArray, lineIDX);
         }
 
-        public static object CompileCode(string[] textArray = null, int lineIDX = 0, bool ExitOnFinish = false)
+        public static object CompileCode(string[] textArray = null, int lineIDX = 0)
         {
             bool librariesDisabled = false;
             int windowHeight = 0;
@@ -208,15 +171,7 @@ namespace Easy14_Programming_Language
 
                 if (showStatementsDuringRuntime == true) Console.WriteLine($">>>{currentLine}");
 
-                /*if (currentLine.StartsWith($"using") && currentLine.EndsWith($";"))
-                {
-                    UsingNamspaceFunction.UsingMethod(currentLine, librariesDisabled, lineCount);
-                }
-                else if (currentLine.StartsWith($"from") && currentLine.EndsWith($";"))
-                {
-                    UsingNamspaceFunction.FromMethod(currentLine, librariesDisabled, lineCount);
-                }*/
-                if (Double.TryParse(currentLine.ToCharArray(), out _) == true)
+                if (double.TryParse(currentLine.ToCharArray(), out _) == true)
                 {
                     try { return Convert.ToDouble(new DataTable().Compute(currentLine, null)); }
                     catch (Exception e)
@@ -240,6 +195,12 @@ namespace Easy14_Programming_Language
                 else if (currentLine.StartsWith("while"))
                 {
                     textArray = WhileLoop.Interperate(i, textArray.ToList());
+                    i = 0;
+                    continue;
+                }
+                else if (currentLine.StartsWith("for"))
+                {
+                    textArray = ForLoop.Interperate(i, textArray.ToList());
                     i = 0;
                     continue;
                 }
@@ -403,7 +364,6 @@ namespace Easy14_Programming_Language
                     }
                 }
             }
-            if (ExitOnFinish == true) { return "exit"; }
             return "";
         }
 
@@ -412,8 +372,6 @@ namespace Easy14_Programming_Language
             return currentLine != "}" &&
                    currentLine != "break" &&
                    currentLine != "return" &&
-                   !currentLine.StartsWith("using") &&
-                   !currentLine.StartsWith("var") &&
                    !currentLine.StartsWith("//");
         }
         private static void HandleError(string errorMessage)
@@ -478,7 +436,7 @@ namespace Easy14_Programming_Language
                                 if (ItemChecks.detectType(StatementResult.params_[i]) == "double") dataType = "double";
                                 if (ItemChecks.detectType(StatementResult.params_[i]) == "bool") dataType = "bool";
                             }
-                            else { dataType = "string"; value = "null"; }
+                            else { dataType = "object"; value = "null"; }
                             codeSplitIntoLines.Insert(0, $"{dataType} {paramNames[i]} = {value};");
                         }
                         foreach (string line in codeSplitIntoLines)
@@ -522,11 +480,13 @@ namespace Easy14_Programming_Language
                 {
                     ErrorReportor.ConsoleLineReporter.Error("An Error Occurred while running the Easy14 Package (C# Error)");
                     Console.WriteLine($"\n{e.Message}");
+                    throw new Exception("Not valid statement");
                 }
             }
             else
             {
                 Debug.WriteLine($"The method '{theMethodOfTheLine}' for class '{classHierarchy}' was not found.");
+                throw new Exception("Not valid statement");
             }
 
             return null;
