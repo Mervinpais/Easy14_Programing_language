@@ -9,6 +9,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -65,7 +66,7 @@ namespace Easy14_Programming_Language
             }
 
             Console.WriteLine("\n===== Easy14 =====\n");
-            
+
             while (true)
             {
                 Console.Write(":>");
@@ -283,7 +284,11 @@ namespace Easy14_Programming_Language
                 else if (StatementResult.className[0] == "Network")
                 {
                     if (StatementResult.methodName == "Ping")
-                        NetworkPing.Interperate(StatementResult.paramItems[0]);
+                        NetworkPing.Interpret(StatementResult.paramItems[0]);
+                    else if (StatementResult.methodName == "WebSocket")
+                    {
+                        _ = WebSocketActions.Interpret(StatementResult.paramItems[0], StatementResult.paramItems[1]);
+                    }
                 }
                 else if (StatementResult.className[0] == "Time")
                 {

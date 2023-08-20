@@ -7,7 +7,7 @@ namespace Easy14_Programming_Language
 {
     public static class NetworkPing
     {
-        public static IPStatus Interperate(string address)
+        public static IPStatus Interpret(string address)
         {
             try
             {

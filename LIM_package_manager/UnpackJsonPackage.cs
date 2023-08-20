@@ -15,7 +15,7 @@ namespace LIM_package_manager
             }
 
             string jsonContent = File.ReadAllText(file);
-            PackageData packageData = JsonConvert.DeserializeObject<PackageData>(jsonContent);
+            PackageData? packageData = JsonConvert.DeserializeObject<PackageData>(jsonContent);
             string packageName = packageData.PackageName;
             List<FileData> files = packageData.Files;
             string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
@@ -45,15 +45,15 @@ namespace LIM_package_manager
 
         private class PackageData
         {
-            public string PackageName { get; set; }
-            public List<FileData> Files { get; set; }
+            public required string PackageName { get; set; }
+            public required List<FileData> Files { get; set; }
         }
 
         private class FileData
         {
-            public string FileName { get; set; }
-            public string Type { get; set; }
-            public string Content { get; set; }
+            public required string FileName { get; set; }
+            public required string Type { get; set; }
+            public required string Content { get; set; }
         }
     }
 }
