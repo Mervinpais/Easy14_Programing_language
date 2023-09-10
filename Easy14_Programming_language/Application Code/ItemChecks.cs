@@ -11,7 +11,20 @@ namespace Easy14_Programming_Language //Mental Crash
 {
     public static class ItemChecks
     {
-        public static string detectType(string data)
+        /// <summary>
+        /// Detects the datatype of the variable; Possible return values are:
+        /// <list type="">
+        /// <item>- str: String</item>
+        /// <item>- int: Integer type</item>
+        /// <item>- double: Double type</item>
+        /// <item>- cmd: Command type</item>
+        /// <item>- bool: Boolean type</item>
+        /// <item>- var: Variable type</item>
+        /// </list>
+        /// </summary>
+        /// <param name="data">The input data to be analyzed.</param>
+        /// <returns>A string indicating the detected data type. Possible values are "str", "int", "double", "cmd", "bool", or "var".</returns>
+        public static string DetectType(string data)
         {
             if (IsString(data) == true)
             {
@@ -70,7 +83,7 @@ namespace Easy14_Programming_Language //Mental Crash
         }
         public static bool IsCommand(object data)
         {
-            return data.ToString().StartsWith(":") && !(data.ToString().StartsWith(": "));
+            return data.ToString().StartsWith("() =>");
         }
         public static bool IsBoolean(object data)
         {

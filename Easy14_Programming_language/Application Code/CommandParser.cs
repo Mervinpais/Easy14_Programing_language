@@ -39,7 +39,7 @@ namespace Easy14_Programming_Language.Application_Code
             {
                 for (int i = 0; i < statementParts.paramItems.Count; i++)
                 {
-                    if (Dev_ShowDebugInfo) Debug.WriteLine($"Parameter {i}: [{ItemChecks.detectType(statementParts.paramItems[i])}] {statementParts.paramItems[i]}");
+                    if (Dev_ShowDebugInfo) Debug.WriteLine($"Parameter {i}: [{ItemChecks.DetectType(statementParts.paramItems[i])}] {statementParts.paramItems[i]}");
                 }
             }
 

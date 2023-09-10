@@ -14,11 +14,11 @@ namespace LIM_package_manager
                 string command = Console.ReadLine() + "";
                 List<string> classes = Parse(command.Trim()).classes;
                 List<string> params_ = Parse(command.Trim()).params_;
-                string method = Parse(command.Trim()).method;
+                string method = Parse(command.Trim()).method.ToLower();
 
                 if (classes.Count == 0) { continue; }
 
-                if (classes[0] == "LIM")
+                if (classes[0].ToLower() == "lim")
                 {
                     if (method == "install")
                     {
@@ -34,6 +34,15 @@ namespace LIM_package_manager
                     {
                         _ = PackagesList.List();
                         continue;
+                    }
+                    if (method == "make")
+                    {
+                        Tuple<string[],string> package = PackageMaker.Make();
+                        List<string> packageContent = package.Item1.ToList();
+                        string[] lines = packageContent.ToArray();
+                        string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
+
+                        File.WriteAllLines(Path.Combine(appDataPath, package.Item2 + "_Package_File.txt"), lines);
                     }
                     else if (method == "help")
                     {

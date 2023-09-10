@@ -20,7 +20,14 @@ namespace Easy14_Programming_Language
                     }
                     else
                     {
-                        variableList[name] = value;
+                        if (ItemChecks.DetectType(value.ToString()) != "var")
+                        {
+                            variableList[name] = value;
+                        }
+                        else
+                        {
+                            variableList[name] = variableList[value];
+                        }
                     }
                 }
                 else

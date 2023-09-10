@@ -12,7 +12,7 @@ namespace Easy14_Programming_Language
 
             //if (ItemChecks.detectType(LHS.ToString()) != ItemChecks.detectType(RHS.ToString())) return false;
 
-            if (ItemChecks.detectType(LHS.ToString()) == "var")
+            if (ItemChecks.DetectType(LHS.ToString()) == "var")
             {
                 if (VariableCode.variableList.Keys.Any(varName => varName.Equals(LHS)))
                 {
@@ -20,7 +20,7 @@ namespace Easy14_Programming_Language
                     LHS = LHS_Var_value;
                 }
             }
-            if (ItemChecks.detectType(RHS.ToString()) == "var")
+            if (ItemChecks.DetectType(RHS.ToString()) == "var")
             {
                 if (VariableCode.variableList.Keys.Any(varName => varName.Equals(RHS)))
                 {
@@ -43,7 +43,7 @@ namespace Easy14_Programming_Language
 
             //if (ItemChecks.detectType(LHS.ToString()) != ItemChecks.detectType(RHS.ToString())) return false;
 
-            if (ItemChecks.detectType(LHS.ToString()) == "var")
+            if (ItemChecks.DetectType(LHS.ToString()) == "var")
             {
                 if (VariableCode.variableList.Keys.Any(varName => varName.Equals(LHS)))
                 {
@@ -51,7 +51,7 @@ namespace Easy14_Programming_Language
                     LHS = LHS_Var_value;
                 }
             }
-            if (ItemChecks.detectType(RHS.ToString()) == "var")
+            if (ItemChecks.DetectType(RHS.ToString()) == "var")
             {
                 if (VariableCode.variableList.Keys.Any(varName => varName.Equals(RHS)))
                 {
