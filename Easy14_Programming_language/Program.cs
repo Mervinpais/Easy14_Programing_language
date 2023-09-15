@@ -11,7 +11,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -239,7 +238,7 @@ namespace Easy14_Programming_Language
             {
                 codeLines = new string[] { "" };
             }
-            
+
             for (int i = 0; i < textArray.Length; i++)
             {
                 string currentLine = textArray[i];
@@ -254,21 +253,21 @@ namespace Easy14_Programming_Language
                 List<Token> tokens = tokenizer.Tokenize(currentLine);
                 for (int index = 0; index < tokens.Count; index++)
                 {
-                    
+
                     List<(List<string>, string, List<string>)> Statements = new List<(List<string>, string, List<string>)>();
 
-                    Console.WriteLine($"Value: {tokens[index].Value}, Tag: {tokens[index].Tag}");
+                    //Console.WriteLine($"Value: {tokens[index].Value}, Tag: {tokens[index].Tag}");
                     if (tokens[index].Tag == "Class")
                     {
-                        Statements.Add(new (tokens[index].Value.Split(".").ToList(), null, null));
+                        Statements.Add(new(tokens[index].Value.Split(".").ToList(), null, null));
                         index = index + 1;
-                        Console.WriteLine($"Value: {tokens[index].Value}, Tag: {tokens[index].Tag}");
+                        //Console.WriteLine($"Value: {tokens[index].Value}, Tag: {tokens[index].Tag}");
                         if (tokens[index].Tag == "Method")
                         {
                             Statements.Add(new(Statements[0].Item1, tokens[index].Value, null));
                             Statements.RemoveAt(0);
                             index = index + 1;
-                            Console.WriteLine($"Value: {tokens[index].Value}, Tag: {tokens[index].Tag}");
+                            //Console.WriteLine($"Value: {tokens[index].Value}, Tag: {tokens[index].Tag}");
                             if (tokens[index].Tag == "Params")
                             {
                                 Statements.Add(new(Statements[0].Item1, Statements[0].Item2, (tokens[index].Value).Split(",").ToList()));
@@ -276,6 +275,25 @@ namespace Easy14_Programming_Language
                                 index = index + 1;
                                 return ExecuteFunctionWithNamespace(new(Statements[0].Item1, Statements[0].Item2, Statements[0].Item3));
                             }
+                        }
+                    }
+                    else if (tokens[index].Tag == "Number")
+                    {
+                        string expression = "";
+
+                        while (index < tokens.Count && (tokens[index].Tag == "Number" || tokens[index].Tag == "Operator"))
+                        {
+                            expression += tokens[index].Value; // Use += to concatenate strings
+                            index++; // Increment index
+                        }
+
+                        try
+                        {
+                            return Convert.ToDouble(new DataTable().Compute(expression, null));
+                        }
+                        catch (Exception e)
+                        {
+                            return e.Message;
                         }
                     }
                 }
