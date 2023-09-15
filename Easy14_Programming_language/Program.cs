@@ -7,15 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net.WebSockets;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Easy14_Programming_Language
 {
@@ -107,6 +106,84 @@ namespace Easy14_Programming_Language
             return CompileCode(textArray, lineIDX);
         }
 
+        public class Token
+        {
+            public string Value { get; set; }
+            public string Tag { get; set; }
+
+            public Token(string value, string tag)
+            {
+                Value = value;
+                Tag = tag;
+            }
+        }
+
+        public class Tokenizer
+        {
+            public List<Token> Tokenize(string input)
+            {
+                List<Token> tokens = new List<Token>();
+
+                // Define token patterns
+
+                var identifierPattern = @"[a-zA-Z_]\w*";
+                var methodsPattern = @"(.*?\.)([A-Za-z]+)\((.*?)\);";
+                var numberPattern = @"\d+";
+                var operatorPattern = @"\+|-|\*|/"; // Add more operators as needed
+
+                // Create a combined regular expression pattern
+                var combinedPattern = string.Join("|", methodsPattern, identifierPattern, numberPattern, operatorPattern);
+
+                // Tokenize the input
+                var matches = Regex.Matches(input, combinedPattern);
+                foreach (Match match in matches)
+                {
+                    string value = match.Value;
+
+                    var methodMatch = Regex.Match(value, @"(.*?\.)([A-Za-z]+)\((.*?)\);");
+                    if (methodMatch.Success)
+                    {
+                        string classPart = methodMatch.Groups[1].Value;
+                        string methodPart = methodMatch.Groups[2].Value;
+                        string paramsPart = methodMatch.Groups[3].Value;
+
+                        // You can add the extracted class, method, and parameters as tokens here
+                        tokens.Add(new Token(classPart, "Class"));
+                        tokens.Add(new Token(methodPart, "Method"));
+                        tokens.Add(new Token(paramsPart, "Params"));
+                    }
+                    else
+                    {
+                        string tag = DetermineTag(value); // Implement a function to determine the tag based on the matched value
+                        tokens.Add(new Token(value, tag));
+                    }
+                }
+
+                return tokens;
+            }
+
+            private string DetermineTag(string value)
+            {
+                if (Regex.IsMatch(value, @"[a-zA-Z_]\w*"))
+                {
+                    return "Identifier";
+                }
+                else if (Regex.IsMatch(value, @"\d+"))
+                {
+                    return "Number";
+                }
+                else if (Regex.IsMatch(value, @"\+|-|\*|/"))
+                {
+                    return "Operator";
+                }
+                else
+                {
+                    return "Unknown"; // Handle unknown tokens as needed
+                }
+            }
+        }
+
+
         public static object CompileCode(string[] textArray = null, int lineIDX = 0)
         {
             bool librariesDisabled = false;
@@ -162,7 +239,7 @@ namespace Easy14_Programming_Language
             {
                 codeLines = new string[] { "" };
             }
-
+            
             for (int i = 0; i < textArray.Length; i++)
             {
                 string currentLine = textArray[i];
@@ -172,6 +249,36 @@ namespace Easy14_Programming_Language
                 var StatementResult = CommandParser.SplitCommand(currentLine);
 
                 if (showStatementsDuringRuntime == true) Console.WriteLine($">>>{currentLine}");
+
+                Tokenizer tokenizer = new Tokenizer();
+                List<Token> tokens = tokenizer.Tokenize(currentLine);
+                for (int index = 0; index < tokens.Count; index++)
+                {
+                    
+                    List<(List<string>, string, List<string>)> Statements = new List<(List<string>, string, List<string>)>();
+
+                    Console.WriteLine($"Value: {tokens[index].Value}, Tag: {tokens[index].Tag}");
+                    if (tokens[index].Tag == "Class")
+                    {
+                        Statements.Add(new (tokens[index].Value.Split(".").ToList(), null, null));
+                        index = index + 1;
+                        Console.WriteLine($"Value: {tokens[index].Value}, Tag: {tokens[index].Tag}");
+                        if (tokens[index].Tag == "Method")
+                        {
+                            Statements.Add(new(Statements[0].Item1, tokens[index].Value, null));
+                            Statements.RemoveAt(0);
+                            index = index + 1;
+                            Console.WriteLine($"Value: {tokens[index].Value}, Tag: {tokens[index].Tag}");
+                            if (tokens[index].Tag == "Params")
+                            {
+                                Statements.Add(new(Statements[0].Item1, Statements[0].Item2, (tokens[index].Value).Split(",").ToList()));
+                                Statements.RemoveAt(0);
+                                index = index + 1;
+                                return ExecuteFunctionWithNamespace(new(Statements[0].Item1, Statements[0].Item2, Statements[0].Item3));
+                            }
+                        }
+                    }
+                }
 
                 if (double.TryParse(currentLine.ToCharArray(), out _) == true)
                 {
@@ -206,21 +313,6 @@ namespace Easy14_Programming_Language
                     i = 0;
                     continue;
                 }
-                /*else if (StatementResult.className[0] == "Console")
-                {
-                    if (StatementResult.methodName == "Print")
-                    { ConsolePrint.Interperate(StatementResult.paramItems[0]); }
-                    else if (StatementResult.methodName == "Input")
-                    { return ConsoleInput.Interperate(StatementResult.paramItems[0]); }
-                    else if (StatementResult.methodName == "Clear")
-                    { ConsoleClear.Interperate(); }
-                    else if (StatementResult.methodName == "Exec")
-                    { ConsoleExec.Interperate(StatementResult.paramItems[0]); }
-                    else if (StatementResult.methodName == "Beep")
-                    { ConsoleBeep.Interperate(StatementResult.paramItems[0]); }
-                    else if (StatementResult.methodName == "GetKeyPress")
-                    { return ConsoleKeyPress.Interperate(StatementResult.paramItems[0]); }
-                }*/
                 else if (StatementResult.className[0] == "Time")
                 {
                     if (StatementResult.methodName == "Wait") TimeWait.Interperate(StatementResult.paramItems[0]);
@@ -259,55 +351,6 @@ namespace Easy14_Programming_Language
                     else if (StatementResult.methodName == "RangeDouble")
                     { return Random_RandomRangeDouble.Interperate(); }
                 }
-                /*
-                else if (StatementResult.className[0] == "FileSystem")
-                {
-                    if (StatementResult.methodName == "MakeFile")
-                        FileSystem_MakeFile.Interperate(StatementResult.paramItems[0]);
-                    else if (StatementResult.methodName == "MoveFile")
-                        FileSystem_MoveFile.Interperate(StatementResult.paramItems[0], StatementResult.paramItems[1]);
-                    else if (StatementResult.methodName == "MakeFolder(")
-                        FileSystem_MakeFolder.Interperate(StatementResult.paramItems[0]);
-                    else if (StatementResult.methodName == "DeleteFile")
-                        FileSystem_DeleteFile.Interperate(StatementResult.paramItems[0]);
-                    else if (StatementResult.methodName == "DeleteFolder")
-                        FileSystem_DeleteFolder.Interperate(StatementResult.paramItems[0]);
-                    else if (StatementResult.methodName == "ReadFile")
-                        FileSystem_ReadFile.Interperate(StatementResult.paramItems[0]);
-                    else if (StatementResult.methodName == "RenameFile")
-                        FileSystem_RenameFile.Interperate(StatementResult.paramItems[0], StatementResult.paramItems[1]);
-                    else if (StatementResult.methodName == "WriteFile")
-                        FileSystem_WriteFile.Interperate(StatementResult.paramItems[0], StatementResult.paramItems[1]);
-                }*/
-                /*else if (StatementResult.className[0] == "Network")
-                {
-                    if (StatementResult.methodName == "Ping")
-                        NetworkPing.Interpret(StatementResult.paramItems[0]);
-                    else if (StatementResult.methodName == "WebSocket")
-                    {
-                        _ = WebSocketActions.Interpret(StatementResult.paramItems[0], StatementResult.paramItems[1]);
-                    }
-                }*/
-                /*
-                else if (StatementResult.className[0] == "Time")
-                {
-                    if (StatementResult.methodName == "CurrentTime")
-                        return Time_CurrentTime.Interperate();
-                    else if (StatementResult.methodName == "IsLeapYear")
-                        return Time_IsLeapYear.Interperate(StatementResult.paramItems[0]);
-                }*/
-                /*
-                else if (StatementResult.className[0] == "Audio")
-                {
-                    if (StatementResult.methodName == "Play")
-                    {
-                        AudioPlay.Interperate(StatementResult.paramItems[0]);
-                    }
-                    else if (StatementResult.methodName == "Stop")
-                    {
-                        AudioStop.Interperate(Convert.ToInt32(StatementResult.paramItems[0]));
-                    }
-                }*/
                 else if (StatementResult.className[0] == "SDL2")
                 {
                     if (StatementResult.methodName == "MakeWindow")
@@ -491,8 +534,8 @@ namespace Easy14_Programming_Language
 
                     ScriptOptions scriptOptions = ScriptOptions.Default
                         .WithReferences(references)
-                        .WithImports("System", "System.IO", "System.Windows","System.Media", "System.Drawing", "System.Drawing.Point", "System.Windows.Forms", "System.Collections.Generic","System.Net", "System.Net.NetworkInformation", "Easy14_Programming_Language", "Easy14_Programming_Language.UniversalVariables");
-                    
+                        .WithImports("System", "System.IO", "System.Windows", "System.Media", "System.Drawing", "System.Drawing.Point", "System.Windows.Forms", "System.Collections.Generic", "System.Net", "System.Net.NetworkInformation", "Easy14_Programming_Language", "Easy14_Programming_Language.UniversalVariables");
+
                     var script = CSharpScript.Create(code, options: scriptOptions);
                     var result = script.RunAsync().Result;
 
