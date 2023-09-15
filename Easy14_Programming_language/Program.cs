@@ -104,7 +104,6 @@ namespace Easy14_Programming_Language
                 if (fileLoc != null) textArray = File.ReadAllLines(fileLoc.Trim());
                 else textArray = new string[] { "" };
             }
-
             return CompileCode(textArray, lineIDX);
         }
 
