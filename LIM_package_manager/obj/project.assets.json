@@ -788,11 +788,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\LIM_package_manager\\LIM_package_manager.csproj",
+      "projectUniqueName": "c:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\LIM_package_manager\\LIM_package_manager.csproj",
       "projectName": "LIM_package_manager",
-      "projectPath": "C:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\LIM_package_manager\\LIM_package_manager.csproj",
+      "projectPath": "c:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\LIM_package_manager\\LIM_package_manager.csproj",
       "packagesPath": "C:\\Users\\mervi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\LIM_package_manager\\obj\\",
+      "outputPath": "c:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\LIM_package_manager\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -807,6 +807,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

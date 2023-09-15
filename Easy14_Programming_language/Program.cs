@@ -260,10 +260,6 @@ namespace Easy14_Programming_Language
                     else if (StatementResult.methodName == "RangeDouble")
                     { return Random_RandomRangeDouble.Interperate(); }
                 }
-                else if (StatementResult.methodName == "ToString")
-                {
-                    return ConvertToString.Interperate(currentLine);
-                }
                 /*
                 else if (StatementResult.className[0] == "FileSystem")
                 {
@@ -293,13 +289,15 @@ namespace Easy14_Programming_Language
                         _ = WebSocketActions.Interpret(StatementResult.paramItems[0], StatementResult.paramItems[1]);
                     }
                 }*/
+                /*
                 else if (StatementResult.className[0] == "Time")
                 {
                     if (StatementResult.methodName == "CurrentTime")
                         return Time_CurrentTime.Interperate();
                     else if (StatementResult.methodName == "IsLeapYear")
                         return Time_IsLeapYear.Interperate(StatementResult.paramItems[0]);
-                }
+                }*/
+                /*
                 else if (StatementResult.className[0] == "Audio")
                 {
                     if (StatementResult.methodName == "Play")
@@ -310,7 +308,7 @@ namespace Easy14_Programming_Language
                     {
                         AudioStop.Interperate(Convert.ToInt32(StatementResult.paramItems[0]));
                     }
-                }
+                }*/
                 else if (StatementResult.className[0] == "SDL2")
                 {
                     if (StatementResult.methodName == "MakeWindow")
@@ -396,7 +394,7 @@ namespace Easy14_Programming_Language
         {
             List<string> theClassesOfTheLine = StatementResult.classes;
             string theMethodOfTheLine = StatementResult.method;
-            List<string> params_ = StatementResult.params_;
+            List<string> paramsGiven = StatementResult.params_;
 
             string classHierarchy = string.Join("/", theClassesOfTheLine);
 
@@ -422,31 +420,31 @@ namespace Easy14_Programming_Language
                     if (codeSplitIntoLines[0].StartsWith("//_params = "))
                     {
                         string _paramsDeclareLine = codeSplitIntoLines[0];
-                        List<string> paramNames = codeSplitIntoLines[0].Substring("//_params = ".Length).Split(",").ToList();
+                        List<string> paramsRequired = codeSplitIntoLines[0].Substring("//_params = ".Length).Split(",").ToList();
                         // Compare params_ and paramNames count
-                        if (params_.Count > paramNames.Count)
+                        if (paramsGiven.Count > paramsRequired.Count)
                         {
                             // If params_ has more elements than paramNames, truncate the excess
-                            params_ = params_.Take(paramNames.Count).ToList();
+                            paramsGiven = paramsGiven.Take(paramsRequired.Count).ToList();
                         }
-                        else if (params_.Count < paramNames.Count)
+                        else if (paramsGiven.Count < paramsRequired.Count)
                         {
                             // If params_ has fewer elements than paramNames, add in null values
                             //Console.WriteLine("Error: Insufficient parameters provided.");
                             //return null;
-                            params_ = params_.Take(paramNames.Count).ToList();
-                            for (int i = 0; i < (paramNames.Count - params_.Count); i++)
+                            paramsGiven = paramsGiven.Take(paramsRequired.Count).ToList();
+                            for (int i = 0; i < (paramsRequired.Count - paramsGiven.Count); i++)
                             {
-                                params_.Add("\"\"");
+                                paramsGiven.Add("\"\"");
                                 StatementResult.params_.Add("\"\"");
                             }
                         }
 
-                        List<string> usings = new List<string>();
+                        List<string> usingReferences = new List<string>();
                         List<string> restOfCode = new List<string>();
                         codeSplitIntoLines.Remove(_paramsDeclareLine);
 
-                        for (int i = 0; i < paramNames.Count; i++)
+                        for (int i = 0; i < paramsRequired.Count; i++)
                         {
                             string dataType = "var";
                             string value = StatementResult.params_[i];
@@ -461,15 +459,15 @@ namespace Easy14_Programming_Language
                                 { dataType = "string"; value = "\"" + value.Substring("() =>".Length).Trim().Replace("\"", "\\\"") + ";\""; }
                             }
                             else { dataType = "object"; value = "null"; }
-                            codeSplitIntoLines.Insert(0, $"{dataType} {paramNames[i]} = {value};");
+                            codeSplitIntoLines.Insert(0, $"{dataType} {paramsRequired[i]} = {value};");
                         }
                         foreach (string line in codeSplitIntoLines)
                         {
-                            if (line.StartsWith("using ")) usings.Add(line);
+                            if (line.StartsWith("using ")) usingReferences.Add(line);
                             else restOfCode.Add(line);
                         }
-                        usings.AddRange(restOfCode);
-                        codeSplitIntoLines = usings;
+                        usingReferences.AddRange(restOfCode);
+                        codeSplitIntoLines = usingReferences;
                         code = string.Join(Environment.NewLine, codeSplitIntoLines);
                     }
 
@@ -480,17 +478,21 @@ namespace Easy14_Programming_Language
                         MetadataReference.CreateFromFile(typeof(System.Net.NetworkInformation.Ping).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Net.NetworkInformation.IPStatus).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Net.NetworkInformation.IPGlobalProperties).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(System.Media.SoundPlayer).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(System.Media.SystemSound).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(System.Media.SystemSounds).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Drawing.Point).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(Easy14_Programming_Language.Program).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(Easy14_Programming_Language.ItemChecks).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(Easy14_Programming_Language.VariableCode).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(Easy14_Programming_Language.UniversalVariables).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
                     };
 
                     ScriptOptions scriptOptions = ScriptOptions.Default
                         .WithReferences(references)
-                        .WithImports("System", "System.IO", "System.Windows", "System.Drawing", "System.Drawing.Point", "System.Windows.Forms", "System.Collections.Generic","System.Net", "System.Net.NetworkInformation", "Easy14_Programming_Language");
+                        .WithImports("System", "System.IO", "System.Windows","System.Media", "System.Drawing", "System.Drawing.Point", "System.Windows.Forms", "System.Collections.Generic","System.Net", "System.Net.NetworkInformation", "Easy14_Programming_Language", "Easy14_Programming_Language.UniversalVariables");
                     
                     var script = CSharpScript.Create(code, options: scriptOptions);
                     var result = script.RunAsync().Result;
