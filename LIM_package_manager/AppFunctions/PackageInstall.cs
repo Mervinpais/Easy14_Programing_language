@@ -8,7 +8,7 @@ namespace LIM_package_manager.AppFunctions
 {
     public static class PackageInstall
     {
-        public static async Task Install(List<string> params_)
+        public static async Task Install(List<string> params_, bool islocalPackage = false)
         {
             if (params_.Count == 0)
             {
@@ -50,29 +50,12 @@ namespace LIM_package_manager.AppFunctions
             string zipFilePath_d = Path.Combine(folderPath2, zipFileName);
 
             int success = 0;
+            string fp = "";
             try
             {
                 // Download the zip file
                 await Base.DownloadFile(downloadUrl, zipFilePath_d);
-                string fp = zipFilePath_d;
-                try
-                {
-                    // Unpack the JSON package
-                    UnpackJsonPackage.file = fp;
-                    UnpackJsonPackage.Unpack();
-
-                    success = 1;
-                }
-                catch
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Package was not a .json, please check Downloaded folder...");
-                    do { Console.WriteLine("Press Enter to continue"); } while (Console.ReadKey().Key != ConsoleKey.Enter);
-                    success = 0;
-                }
-
-                // Cleanup: Delete the downloaded file
-                // ... (Same as before)
+                fp = zipFilePath_d;
 
             }
             catch (Exception ex)
@@ -82,6 +65,23 @@ namespace LIM_package_manager.AppFunctions
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"ERROR: {ex}");
             }
+
+            try
+            {
+                // Unpack the JSON package
+                UnpackJsonPackage.file = fp;
+                UnpackJsonPackage.Unpack();
+
+                success = 1;
+            }
+            catch
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Package was not a .json, please check Downloaded folder...");
+                do { Console.WriteLine("Press Enter to continue"); } while (Console.ReadKey().Key != ConsoleKey.Enter);
+                success = 0;
+            }
+
 
             if (success == 0)
             {
@@ -99,7 +99,7 @@ namespace LIM_package_manager.AppFunctions
                 Console.WriteLine("Package installation failed :(");
             }
 
-            Console.WriteLine("(Pres Enter to continue)");
+            Console.WriteLine("(Press Enter to continue)");
             return;
         }
     }

@@ -22,8 +22,17 @@ namespace LIM_package_manager
                 {
                     if (method == "install")
                     {
-                        _ = PackageInstall.Install(params_);
-                        continue;
+                        if (params_[0] == "--local")
+                        {
+                            _ = PackageInstall.Install(params_);
+                            continue;
+                        }
+                        else
+                        {
+                            _ = PackageInstall.Install(params_);
+                            continue;
+                        }
+
                     }
                     else if (method == "uninstall" || method == "remove")
                     {
@@ -35,7 +44,7 @@ namespace LIM_package_manager
                         _ = PackagesList.List();
                         continue;
                     }
-                    if (method == "make")
+                    else if (method == "make")
                     {
                         Tuple<string[],string> package = PackageMaker.Make();
                         List<string> packageContent = package.Item1.ToList();
