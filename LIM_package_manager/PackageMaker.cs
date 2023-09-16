@@ -9,9 +9,9 @@ namespace LIM_package_manager
 
         public class FileEntry
         {
-            public string Type { get; set; }
-            public string FileName { get; set; }
-            public string Content { get; set; }
+            public string? Type { get; set; }
+            public string? FileName { get; set; }
+            public string? Content { get; set; }
         }
     }
 
@@ -22,11 +22,11 @@ namespace LIM_package_manager
             Package package = new Package();
 
             Console.Write("\n(1/2) Enter a name for your package/library> ");
-            string userPackageName = Console.ReadLine();
+            string? userPackageName = Console.ReadLine();
             package.PackageName = userPackageName;
 
             Console.Write("\n(2/2) Enter the package directory, Where all the package files are> ");
-            string userPackageDir = Console.ReadLine();
+            string? userPackageDir = Console.ReadLine();
 
             if (userPackageDir == "" && userPackageName == "")
             {
@@ -44,8 +44,10 @@ namespace LIM_package_manager
             {
                 $"{{\r\n  \"packageName\": \"{userPackageName}\",\r\n  \"files\": ["
             };
-            foreach (string filePath in Directory.GetFiles(userPackageDir))
+            string[] array = Directory.GetFiles(userPackageDir);
+            for (int i = 0; i < array.Length; i++)
             {
+                string filePath = array[i];
                 string fileName = Path.GetFileName(filePath);
                 string fileContent = File.ReadAllText(filePath);
 
@@ -60,6 +62,10 @@ namespace LIM_package_manager
                 };
 
                 string jsonString = JsonConvert.SerializeObject(fileEntry, Formatting.Indented);
+                if (i != array.Length - 1)
+                {
+                    jsonString += ",";
+                }
                 jsonStrings.Add(jsonString);
             }
 

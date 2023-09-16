@@ -7,6 +7,7 @@ namespace LIM_package_manager
         static void Main()
         {
             Console.WriteLine("=== LIM Package Manager ===\r\n");
+            DetectMissingPackages.Easy14StandardLibraryAsync();
             while (true)
             {
                 Console.ResetColor();
@@ -24,29 +25,47 @@ namespace LIM_package_manager
                     {
                         if (params_[0] == "--local")
                         {
-                            _ = PackageInstall.Install(params_);
+                            _ = PackageInstall.Install(params_, true, false);
                             continue;
                         }
                         else
                         {
-                            _ = PackageInstall.Install(params_);
+                            _ = PackageInstall.Install(params_, false, false);
                             continue;
                         }
 
                     }
+                    else if (method == "update")
+                    {
+                        if (params_[0] == "--local")
+                        {
+                            _ = PackageInstall.Install(params_, true, true);
+                            continue;
+                        }
+                        else
+                        {
+                            _ = PackageInstall.Install(params_, false, true);
+                            continue;
+                        }
+                    }
+                    else if (method == "search")
+                    {
+                        PackagesSearch.Search();
+                        continue;
+                    }
                     else if (method == "uninstall" || method == "remove")
                     {
-                        _ = PackageUninstall.Uninstall(params_);
+                        PackageUninstall.Uninstall(params_);
                         continue;
                     }
                     else if (method == "list")
                     {
-                        _ = PackagesList.List();
+                        PackagesList.List();
                         continue;
                     }
                     else if (method == "make")
                     {
-                        Tuple<string[],string> package = PackageMaker.Make();
+                        Tuple<string[], string> package = PackageMaker.Make();
                         List<string> packageContent = package.Item1.ToList();
                         string[] lines = packageContent.ToArray();
                         string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");

@@ -2,7 +2,7 @@
 {
     public static class PackagesList
     {
-        public static async Task List()
+        public static void List()
         {
             List<string> packages = Directory.GetDirectories(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages")).ToList();
             Console.WriteLine("List of packages installed;");
@@ -16,7 +16,6 @@
 
             Console.WriteLine(string.Join(Environment.NewLine, packageNames));
             Console.ResetColor();
-            return;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace LIM_package_manager
             Console.WriteLine("<!> This is the old Program.cs file, please use the new one <!>");
 
             return;
-
+            /*
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine();
             if (errorType == 0x01)
@@ -82,6 +82,7 @@ namespace LIM_package_manager
             Console.WriteLine("<!> This is the old Program.cs file, please use the new one <!>");
 
             return;
+            /*
             while (true)
             {
                 Console.Write(">>>");
@@ -343,7 +344,7 @@ namespace LIM_package_manager
 
                     }
                 }
-            }
+            }*/
         }
     }
 }

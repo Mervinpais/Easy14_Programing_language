@@ -8,7 +8,7 @@ namespace LIM_package_manager.AppFunctions
 {
     public static class PackageUninstall
     {
-        public static async Task Uninstall(List<string> params_)
+        public static void Uninstall(List<string> params_)
         {
             if (params_.Count == 0)
             {
@@ -32,8 +32,8 @@ namespace LIM_package_manager.AppFunctions
             {
                 try
                 {
-                    string folderPath2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages", param);
-                    Directory.Delete(folderPath2, true);
+                    string packagesDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages", param);
+                    Directory.Delete(packagesDirectory, true);
                     packagesSuccessfullyUninstalled.Add(param);
                     packagesFailedToUninstalled.Remove(param);
                 }
@@ -51,8 +51,6 @@ namespace LIM_package_manager.AppFunctions
             {
                 Console.WriteLine($"\nWARNING; The following packages couldnt be uninstalled; {Environment.NewLine + string.Join(" ", packagesFailedToUninstalled.ToArray()) + Environment.NewLine}");
             }
-
-            return;
         }
     }
 }
