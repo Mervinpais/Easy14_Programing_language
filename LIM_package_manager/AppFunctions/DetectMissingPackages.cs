@@ -1,4 +1,5 @@
-﻿using System.Net.NetworkInformation;
+﻿using LIM_package_manager.AppFunctions;
+using System.Net.NetworkInformation;
 
 namespace LIM_package_manager
 {
@@ -41,8 +42,12 @@ namespace LIM_package_manager
                 "Time"
             };
 
-            foreach (string requiredPackage in requiredPackages)
+            ProgressBar.Show(0);
+
+            for (int i = 0; i < requiredPackages.Count; i++)
             {
+                ProgressBar.Update(i * 20);
+                string requiredPackage = requiredPackages[i];
                 if (!packages.Any(package => package.EndsWith(requiredPackage)))
                 {
                     Console.WriteLine($"Required Easy14 Base package '{requiredPackage}' is missing.");
@@ -50,6 +55,8 @@ namespace LIM_package_manager
                 }
             }
 
+            ProgressBar.Update(100);
+            ProgressBar.Clear();
             // Check internet availability
             bool isInternetAvailable = NetworkInterface.GetIsNetworkAvailable();
 
@@ -57,26 +64,67 @@ namespace LIM_package_manager
             {
                 Console.WriteLine("Internet is available.");
 
-                // Get the path to the local Console/Print.cs file
-                string localFilePath = Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "Print.cs");
-
-                // Compare local Console/Print.cs with the GitHub version
-                bool areFilesIdentical = await AreFilesIdenticalAsync(localFilePath, "https://raw.githubusercontent.com/Mervinpais/Easy14-BasePackages/main/Console/Print.cs");
-
-                if (areFilesIdentical)
+                // List of local file paths
+                List<string> localFilePaths = new List<string>
                 {
-                    Console.WriteLine("The local Console/Print.cs file is identical to the one on GitHub.");
+                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "Print.cs"),
+                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "Input.cs"),
+                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "Beep.cs"),
+                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "Clear.cs"),
+                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "New.cs"),
+                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "Exec.cs"),
+                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "GetKeyPress.cs"),
+                };
+
+                // List of GitHub raw links
+                List<string> githubRawLinks = new List<string>
+                {
+                    "https://raw.githubusercontent.com/Mervinpais/Easy14-BasePackages/main/Console/Print.cs",
+                    "https://raw.githubusercontent.com/Mervinpais/Easy14-BasePackages/main/Console/Input.cs",
+                    "https://raw.githubusercontent.com/Mervinpais/Easy14-BasePackages/main/Console/Beep.cs",
+                    "https://raw.githubusercontent.com/Mervinpais/Easy14-BasePackages/main/Console/Clear.cs",
+                    "https://raw.githubusercontent.com/Mervinpais/Easy14-BasePackages/main/Console/New.cs",
+                    "https://raw.githubusercontent.com/Mervinpais/Easy14-BasePackages/main/Console/Exec.cs",
+                    "https://raw.githubusercontent.com/Mervinpais/Easy14-BasePackages/main/Console/GetKeyPress.cs",
+                };
+
+                // List to store files with differences or errors
+                List<string> differingFiles = new List<string>();
+
+                // Compare each pair of local files and GitHub links
+                for (int i = 0; i < localFilePaths.Count; i++)
+                {
+                    string localFilePath = localFilePaths[i];
+                    string githubRawLink = githubRawLinks[i];
+
+                    bool areFilesIdentical = await AreFilesIdenticalAsync(localFilePath, githubRawLink);
+
+                    if (!areFilesIdentical)
+                    {
+                        Console.WriteLine($"The local file '{localFilePath}' differs from the one on GitHub.");
+                        differingFiles.Add(localFilePath);
+                        // You can take appropriate action here, such as downloading the updated file.
+                    }
+                }
+
+                if (differingFiles.Count == 0)
+                {
+                    Console.WriteLine("All Base Packages for Easy14 are alright");
                 }
                 else
                 {
-                    Console.WriteLine("The local Console/Print.cs file differs from the one on GitHub.");
-                    // You can take appropriate action here, such as downloading the updated file.
+                    Console.WriteLine("Differences or errors were found in the following files:");
+                    foreach (string differingFile in differingFiles)
+                    {
+                        Console.WriteLine(differingFile);
+                    }
                 }
             }
             else
             {
                 Console.WriteLine("Internet is not available. Cannot perform comparison with GitHub.");
             }
+
 
         }
     }
