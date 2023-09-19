@@ -11,9 +11,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Easy14_Programming_Language
 {
@@ -61,6 +61,38 @@ namespace Easy14_Programming_Language
             }
 
             Console.WriteLine("\n===== Easy14 =====\n");
+            try
+            {
+                int windowHeight = Console.WindowHeight;
+                int windowWidth = Console.WindowWidth;
+
+                bool librariesDisabled = Convert.ToBoolean(Configuration.GetBoolOptionValue("disableLibraries"));
+
+                windowHeight = Configuration.GetIntOptionValue("windowHeight") == -1 ? Console.WindowHeight : Configuration.GetIntOptionValue("windowHeight");
+                windowWidth = Configuration.GetIntOptionValue("windowWidth") == -1 ? Console.WindowWidth : Configuration.GetIntOptionValue("windowWidth");
+                string windowState = Configuration.GetStringOptionValue("windowState");
+                if (Configuration.GetBoolOptionValue("showOptionsINI_DataWhenE14_Loads") == true)
+                {
+                    List<string> configFileLIST = new List<string>();
+
+                    foreach (string currentLine in configFile)
+                    {
+                        if (currentLine.StartsWith(";") || currentLine == "" || currentLine == " ") continue;
+                        configFileLIST.Add(currentLine);
+                    }
+
+                    string[] configFile_modified = configFileLIST.ToArray();
+
+                    Console.WriteLine(string.Join(Environment.NewLine, configFile_modified));
+                    Console.WriteLine("\n========================\n\n");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                ErrorReportor.ConsoleLineReporter.Message("THIS IS NOT AN ERROR, Just that Easy14 config couldnt be set, so using defaults\n\n========");
+            }
+
 
             while (true)
             {
@@ -129,6 +161,7 @@ namespace Easy14_Programming_Language
                 var combinedPattern = string.Join("|", methodsPattern, identifierPattern, numberPattern, operatorPattern);
 
                 // Tokenize the input
+                // Tokenize the input
                 var matches = Regex.Matches(input, combinedPattern);
                 foreach (Match match in matches)
                 {
@@ -141,10 +174,45 @@ namespace Easy14_Programming_Language
                         string methodPart = methodMatch.Groups[2].Value;
                         string paramsPart = methodMatch.Groups[3].Value;
 
+                        // Split the parameters by commas while ignoring commas within parentheses
+                        List<string> parameters = new List<string>();
+                        int parenthesesCount = 0;
+                        StringBuilder currentParameter = new StringBuilder();
+
+                        foreach (char c in paramsPart)
+                        {
+                            if (c == '(')
+                            {
+                                parenthesesCount++;
+                                currentParameter.Append(c);
+                            }
+                            else if (c == ')')
+                            {
+                                parenthesesCount--;
+                                currentParameter.Append(c);
+                            }
+                            else if (c == ',' && parenthesesCount == 0)
+                            {
+                                // Found a comma outside of parentheses, add the current parameter
+                                parameters.Add(currentParameter.ToString().Trim());
+                                currentParameter.Clear();
+                            }
+                            else
+                            {
+                                currentParameter.Append(c);
+                            }
+                        }
+
+                        // Add the last parameter
+                        parameters.Add(currentParameter.ToString().Trim());
+
                         // You can add the extracted class, method, and parameters as tokens here
                         tokens.Add(new Token(classPart, "Class"));
                         tokens.Add(new Token(methodPart, "Method"));
-                        tokens.Add(new Token(paramsPart, "Params"));
+                        foreach (string param in parameters)
+                        {
+                            tokens.Add(new Token(param, "Param"));
+                        }
                     }
                     else
                     {
@@ -180,53 +248,12 @@ namespace Easy14_Programming_Language
 
         public static object CompileCode(string[] textArray = null, int lineIDX = 0)
         {
-            bool librariesDisabled = false;
-            int windowHeight = 0;
-            int windowWidth = 0;
-            string windowState = "normal";
-
-            try
-            {
-                windowHeight = Console.WindowHeight;
-                windowWidth = Console.WindowWidth;
-
-                librariesDisabled = Convert.ToBoolean(Configuration.GetBoolOptionValue("disableLibraries"));
-
-                windowHeight = Configuration.GetIntOptionValue("windowHeight");
-                windowWidth = Configuration.GetIntOptionValue("windowWidth");
-                windowState = Configuration.GetStringOptionValue("windowState");
-                if (Configuration.GetBoolOptionValue("showOptionsINI_DataWhenE14_Loads") == true)
-                {
-                    List<string> configFileLIST = new List<string>();
-
-                    foreach (string currentLine in configFile)
-                    {
-                        if (currentLine.StartsWith(";") || currentLine == "" || currentLine == " ") continue;
-                        configFileLIST.Add(currentLine);
-                    }
-
-                    string[] configFile_modified = configFileLIST.ToArray();
-
-                    Console.WriteLine(string.Join(Environment.NewLine, configFile_modified));
-                    Console.WriteLine("\n========================\n\n");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine("THIS IS NOT AN ERROR, Just that Easy14 config couldnt be set, so using defaults\n\n========");
-            }
-
-
-            /* Reading the file and storing it in a string array. */
             int lineCount = 0;
             string[] codeLines = null;
 
-            /* Removing the first lineIDX lines from the list. */
             List<string> linesList = new List<string>(codeLines != null ? codeLines : new string[] { "" });
             if (lineIDX != 0) linesList.RemoveRange(0, lineIDX);
 
-            /* Removing the leading whitespace from each line in the list. */
             List<string> linesListMod = new List<string>();
 
             if (codeLines == null)
@@ -251,21 +278,18 @@ namespace Easy14_Programming_Language
 
                     List<(List<string>, string, List<string>)> Statements = new List<(List<string>, string, List<string>)>();
 
-                    //Console.WriteLine($"Value: {tokens[index].Value}, Tag: {tokens[index].Tag}");
                     if (tokens[index].Tag == "Class")
                     {
                         Statements.Add(new(tokens[index].Value.Split(".").ToList(), null, null));
                         index = index + 1;
-                        //Console.WriteLine($"Value: {tokens[index].Value}, Tag: {tokens[index].Tag}");
                         if (tokens[index].Tag == "Method")
                         {
                             Statements.Add(new(Statements[0].Item1, tokens[index].Value, null));
                             Statements.RemoveAt(0);
                             index = index + 1;
-                            //Console.WriteLine($"Value: {tokens[index].Value}, Tag: {tokens[index].Tag}");
                             if (tokens[index].Tag == "Params")
                             {
-                                Statements.Add(new(Statements[0].Item1, Statements[0].Item2, (tokens[index].Value).Split(",").ToList()));
+                                Statements.Add(new(Statements[0].Item1, Statements[0].Item2, (tokens[index].Value).Split("|").ToList()));
                                 Statements.RemoveAt(0);
                                 index = index + 1;
                                 return ExecuteFunctionWithNamespace(new(Statements[0].Item1, Statements[0].Item2, Statements[0].Item3));
@@ -326,10 +350,6 @@ namespace Easy14_Programming_Language
                     i = 0;
                     continue;
                 }
-                else if (StatementResult.className[0] == "Time")
-                {
-                    if (StatementResult.methodName == "Wait") TimeWait.Interperate(StatementResult.paramItems[0]);
-                }
                 else if (StatementResult.className[0] == "Var")
                 {
                     if (StatementResult.methodName == "New")
@@ -346,69 +366,6 @@ namespace Easy14_Programming_Language
                     if (StatementResult.methodName == "Get")
                     {
                         return VariableCode.Interperate(StatementResult.paramItems[0], setVariable: false);
-                    }
-                }
-                else if (StatementResult.className[0] == "Random")
-                {
-                    if (StatementResult.methodName == "Range")
-                    {
-                        try
-                        {
-                            return Random_RandomRange.Interperate(
-                                Convert.ToInt32(StatementResult.paramItems[0]),
-                                Convert.ToInt32(StatementResult.paramItems[1])
-                            );
-                        }
-                        catch { throw new Exception("Not valid Integers"); }
-                    }
-                    else if (StatementResult.methodName == "RangeDouble")
-                    { return Random_RandomRangeDouble.Interperate(); }
-                }
-                else if (StatementResult.className[0] == "SDL2")
-                {
-                    if (StatementResult.methodName == "MakeWindow")
-                    {
-                        List<string> values = StatementResult.paramItems;
-
-                        int sizeX = values.Count >= 1 && int.TryParse(values[0], out int parsedSizeX) ? parsedSizeX : 200;
-                        int sizeY = values.Count >= 2 && int.TryParse(values[1], out int parsedSizeY) ? parsedSizeY : 200;
-                        int posX = values.Count >= 3 && int.TryParse(values[2], out int parsedPosX) ? parsedPosX : SDL.SDL_WINDOWPOS_UNDEFINED;
-                        int posY = values.Count >= 4 && int.TryParse(values[3], out int parsedPosY) ? parsedPosY : SDL.SDL_WINDOWPOS_UNDEFINED;
-                        string title = values.Count >= 5 ? values[4] : "E14 SDL2 Window";
-
-                        IntPtr window = IntPtr.Zero;
-                        long window_int = -1;
-                        new Task(() => { window_int = SDL2_makeWindow.Interperate(sizeX, sizeY, posX, posY, title); }).Start();
-                        window = (IntPtr)window_int;
-                        SDL.SDL_SetWindowTitle(window, values.Count >= 5 ? $"{values[4]} - {window_int}" : $"E14 SDL2 Window - {window_int}");
-                        continue;
-                    }
-
-                    if (StatementResult.methodName == "CreateShape")
-                    {
-                        List<string> values = StatementResult.paramItems;
-                        long window = 0;
-                        int xPosition = int.MaxValue;
-                        int yPosition = int.MaxValue;
-                        int width = int.MaxValue;
-                        int height = int.MaxValue;
-
-                        if (long.TryParse(values[0], out window) && values.Count >= 2) int.TryParse(values[1], out xPosition);
-
-                        if (values.Count >= 3) int.TryParse(values[2], out yPosition);
-                        if (values.Count >= 4) int.TryParse(values[3], out width);
-                        if (values.Count >= 5) int.TryParse(values[4], out height);
-
-                        new Task(() => { SDL2_createShape.Interperate(window, xPosition, yPosition, width, height); }).Start();
-                    }
-                    if (StatementResult.methodName == "ClearScreen")
-                    {
-                        long window = 0;
-                        string color = null;
-                        List<string> values = StatementResult.paramItems;
-                        window = Convert.ToInt64(values[0]);
-                        color = values[1];
-                        SDL2_clearScreen.Interperate(window, color);
                     }
                 }
                 else
@@ -505,13 +462,33 @@ namespace Easy14_Programming_Language
                             string value = StatementResult.params_[i];
                             if (value != "")
                             {
-                                if (ItemChecks.DetectType(StatementResult.params_[i]) == "str")
-                                { dataType = "string"; value = "\"\\\"" + value.Substring(1, value.Length - 2) + "\\\"\""; } //this is an abomination but works
-                                if (ItemChecks.DetectType(StatementResult.params_[i]) == "int") dataType = "int";
-                                if (ItemChecks.DetectType(StatementResult.params_[i]) == "double") dataType = "double";
-                                if (ItemChecks.DetectType(StatementResult.params_[i]) == "bool") dataType = "bool";
-                                if (ItemChecks.DetectType(StatementResult.params_[i]) == "cmd")
-                                { dataType = "string"; value = "\"" + value.Substring("() =>".Length).Trim().Replace("\"", "\\\"") + ";\""; }
+                                try
+                                {
+                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "str")
+                                    { dataType = "string"; value = "\"\\\"" + value.Substring(1, value.Length - 2) + "\\\"\""; } //this is an abomination but works
+                                }
+                                catch { }
+                                try
+                                {
+                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "int") dataType = "int";
+                                }
+                                catch { }
+                                try
+                                {
+                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "double") dataType = "double";
+                                }
+                                catch { }
+                                try
+                                {
+                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "bool") dataType = "bool";
+                                }
+                                catch { }
+                                try
+                                {
+                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "cmd")
+                                    { dataType = "string"; value = "\"" + value.Substring("() =>".Length).Trim().Replace("\"", "\\\"") + ";\""; }
+                                }
+                                catch { }
                             }
                             else { dataType = "object"; value = "null"; }
                             codeSplitIntoLines.Insert(0, $"{dataType} {paramsRequired[i]} = {value};");
@@ -529,25 +506,27 @@ namespace Easy14_Programming_Language
                     var references = new List<MetadataReference>
                     {
                         MetadataReference.CreateFromFile(typeof(DataTable).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(SDL).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Windows.Forms.Form).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Net.NetworkInformation.Ping).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Net.NetworkInformation.IPStatus).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Net.NetworkInformation.IPGlobalProperties).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(System.Threading.Tasks.Task).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Media.SoundPlayer).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Media.SystemSound).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Media.SystemSounds).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Drawing.Point).Assembly.Location),
-                        MetadataReference.CreateFromFile(typeof(Easy14_Programming_Language.Program).Assembly.Location),
-                        MetadataReference.CreateFromFile(typeof(Easy14_Programming_Language.ItemChecks).Assembly.Location),
-                        MetadataReference.CreateFromFile(typeof(Easy14_Programming_Language.VariableCode).Assembly.Location),
-                        MetadataReference.CreateFromFile(typeof(Easy14_Programming_Language.UniversalVariables).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(Program).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(ItemChecks).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(VariableCode).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(UniversalVariables).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
                     };
 
                     ScriptOptions scriptOptions = ScriptOptions.Default
                         .WithReferences(references)
-                        .WithImports("System", "System.IO", "System.Windows", "System.Media", "System.Drawing", "System.Drawing.Point", "System.Windows.Forms", "System.Collections.Generic", "System.Net", "System.Net.NetworkInformation", "Easy14_Programming_Language", "Easy14_Programming_Language.UniversalVariables");
+                        .WithImports("System", "SDL2", "System.IO", "System.Threading", "System.Threading.Tasks", "System.Windows", "System.Media", "System.Drawing", "System.Drawing.Point", "System.Windows.Forms", "System.Collections.Generic", "System.Net", "System.Net.NetworkInformation", "Easy14_Programming_Language", "Easy14_Programming_Language.UniversalVariables");
 
                     var script = CSharpScript.Create(code, options: scriptOptions);
                     var result = script.RunAsync().Result;
@@ -566,7 +545,7 @@ namespace Easy14_Programming_Language
                 {
                     ErrorReportor.ConsoleLineReporter.Error("An Error Occurred while running the Easy14 Package (C# Error)");
                     Console.WriteLine($"\n{e.Message}");
-                    throw new Exception("Not valid statement");
+                    throw new Exception($"Not valid statement;\n{e.Message}");
                 }
             }
             else

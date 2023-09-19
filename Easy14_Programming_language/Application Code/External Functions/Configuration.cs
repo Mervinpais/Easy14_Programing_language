@@ -20,8 +20,8 @@ namespace Easy14_Programming_Language
         {
             foreach (string line in configFile)
             {
-                if (line == $"{optionName}:true") { return true; }
-                else if (line == $"{optionName}:false") { return true; }
+                if (line.StartsWith($"{optionName}:true", StringComparison.OrdinalIgnoreCase)) { return true; }
+                else if (line.StartsWith($"{optionName}:false", StringComparison.OrdinalIgnoreCase)) { return false; }
             }
             return false;
         }
@@ -30,9 +30,9 @@ namespace Easy14_Programming_Language
         {
             foreach (string line in configFile)
             {
-                if (line == $"{optionName}:{line.Substring($"{optionName}:".Length).Trim()}")
+                if (line.StartsWith($"{optionName}:", StringComparison.OrdinalIgnoreCase))
                 {
-                    return line.Substring($"{optionName}:".Length).Trim();
+                    return line.Substring(optionName.Length + 1).Trim();
                 }
             }
             return "";
@@ -42,11 +42,18 @@ namespace Easy14_Programming_Language
         {
             foreach (string line in configFile)
             {
-                if (line == $"{optionName}:{line.Substring($"{optionName}:".Length).Trim()}")
+                if (line.StartsWith($"{optionName}:", StringComparison.OrdinalIgnoreCase))
                 {
-                    bool isInt = int.TryParse(line.Substring($"{optionName}:".Length).Trim(), out _);
-                    if (isInt) return Convert.ToInt32(line.Replace($"{optionName}:", "").Trim());
-                    else throw new UnableToConvertException();
+                    string value = line.Substring(optionName.Length + 1).Trim();
+                    if (int.TryParse(value, out int intValue))
+                    {
+                        return intValue;
+                    }
+                    else
+                    {
+                        //throw new UnableToConvertException();
+                        return -1;
+                    }
                 }
             }
             return -1;

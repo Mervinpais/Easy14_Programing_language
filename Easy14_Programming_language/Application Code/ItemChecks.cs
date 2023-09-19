@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace Easy14_Programming_Language //Mental Crash
 {
@@ -52,8 +53,13 @@ namespace Easy14_Programming_Language //Mental Crash
             //IsVariable(data);
             return "";
         }
-        public static bool IsString(object data)
+        public static bool IsString(object? data)
         {
+            try
+            {
+                if (data == null) return false;
+            }
+            catch { return false; }
             try
             {
                 string firstElement = data.ToString();
