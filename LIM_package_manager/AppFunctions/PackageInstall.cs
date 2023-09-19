@@ -50,7 +50,7 @@
                 try
                 {
                     // Download the zip file
-                    await Base.DownloadFile(downloadUrl, mainPackageFileLocation);
+                    await Base.DownloadFileProgress(downloadUrl, mainPackageFileLocation);
                     packageFilePath = mainPackageFileLocation;
 
                 }

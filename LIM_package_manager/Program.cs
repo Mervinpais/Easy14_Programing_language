@@ -7,7 +7,7 @@ namespace LIM_package_manager
         static void Main()
         {
             Console.WriteLine("=== LIM Package Manager ===\r\n");
-            DetectMissingPackages.Easy14StandardLibraryAsync();
+            DetectMissingPackages.Easy14StandardLibrary();
             while (true)
             {
                 Console.ResetColor();

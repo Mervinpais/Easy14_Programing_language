@@ -52,7 +52,7 @@ namespace Easy14_Programming_Language
             {
                 /* It's checking if the user has disabled the update warnings, and if they have, it
                 will not show the warning. */
-                if (!Convert.ToBoolean(Configuration.GetBoolOption("UpdatesWarningsDisabled")))
+                if (!Convert.ToBoolean(Configuration.GetBoolOptionValue("UpdatesWarningsDisabled")))
                 {
                     ErrorReportor.ConsoleLineReporter.Error("Uh oh! We can't find the version file(s)!, using cached version Files...");
                 }
@@ -65,7 +65,7 @@ namespace Easy14_Programming_Language
                 }
                 catch
                 {
-                    if (!Convert.ToBoolean(Configuration.GetBoolOption("UpdatesWarningsDisabled")))
+                    if (!Convert.ToBoolean(Configuration.GetBoolOptionValue("UpdatesWarningsDisabled")))
                         /* It's sending an error message to the user, telling them that we can't find
                         out what version this language is, and telling them to install the latest
                         version for their safety. */
@@ -144,7 +144,7 @@ namespace Easy14_Programming_Language
             }
             catch
             {
-                if (!Convert.ToBoolean(Configuration.GetBoolOption("UpdatesWarningsDisabled")))
+                if (!Convert.ToBoolean(Configuration.GetBoolOptionValue("UpdatesWarningsDisabled")))
                 {
                     ErrorReportor.ConsoleLineReporter.Error("VERSION ERROR", "Uh oh! we can't check if you have the latest version of this language, please make sure you have the latest version yourself");
                 }

@@ -12,41 +12,41 @@ namespace Easy14_Programming_Language
         {
             string exeLocation = Assembly.GetExecutingAssembly().Location;
             string workingDirectory = Path.GetDirectoryName(exeLocation);
-            string optionsPath = Path.Combine(workingDirectory, "Application Code","options.ini");
+            string optionsPath = Path.Combine(workingDirectory, "Application Code", "options.ini");
             configFile = File.ReadAllLines(optionsPath);
         }
 
-        public static object GetBoolOption(string optionName, bool getIntValue = false)
+        public static bool GetBoolOptionValue(string optionName)
         {
-            object returnVal = null;
             foreach (string line in configFile)
             {
-                if (line.StartsWith(optionName))
-                {
-                    if (line.EndsWith("true")) returnVal = true;
-                    else if (line.EndsWith("false")) returnVal = false;
-                    else returnVal = line.Replace($"{optionName} =", "").Trim();
-                }
+                if (line == $"{optionName}:true") { return true; }
+                else if (line == $"{optionName}:false") { return true; }
             }
-            if (getIntValue) returnVal = Convert.ToInt32(returnVal);
-            return returnVal;
+            return false;
         }
 
-        public static object GetIntOption(string optionName, bool getBoolValue = false)
+        public static string GetStringOptionValue(string optionName)
         {
             foreach (string line in configFile)
             {
-                if (line.StartsWith(optionName))
+                if (line == $"{optionName}:{line.Substring($"{optionName}:".Length).Trim()}")
                 {
-                    bool isInt = int.TryParse(line.Replace($"{optionName} =", "").Trim(), out _);
-                    if (isInt)
-                    {
-                        return line.Replace($"{optionName} =", "").Trim();
-                    }
-                    else
-                    {
-                        throw new UnableToConvertException();
-                    }
+                    return line.Substring($"{optionName}:".Length).Trim();
+                }
+            }
+            return "";
+        }
+
+        public static int GetIntOptionValue(string optionName)
+        {
+            foreach (string line in configFile)
+            {
+                if (line == $"{optionName}:{line.Substring($"{optionName}:".Length).Trim()}")
+                {
+                    bool isInt = int.TryParse(line.Substring($"{optionName}:".Length).Trim(), out _);
+                    if (isInt) return Convert.ToInt32(line.Replace($"{optionName}:", "").Trim());
+                    else throw new UnableToConvertException();
                 }
             }
             return -1;

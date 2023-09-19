@@ -34,30 +34,25 @@ namespace Easy14_Programming_Language
             Console.WriteLine(string.Join(" ", args));
             string osName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}";
 
-            try { Console.WriteLine($"Easy14 {File.ReadAllLines(version)[1]} ({osName})"); }
-            catch { Console.WriteLine($"Easy14 ({osName})"); }
-
-            if (!Convert.ToBoolean(Configuration.GetBoolOption("UpdatesDisabled"))) UpdateChecker.CheckLatestVersion();
-
-            foreach (string line in configFile)
+            try
             {
-                if (line.StartsWith("delay"))
-                {
-                    try
-                    {
-                        Thread.Sleep(Convert.ToInt32(line.Replace("delay = ", "").Trim()) * 1000);
-                        break;
-                    }
-                    catch (FormatException formatException)
-                    {
-                        ThrowErrorMessage.sendErrMessage($"{formatException.InnerException}; unable to set delay", null, "warning");
-                    }
-                }
+                Console.WriteLine($"Easy14 {File.ReadAllLines(version)[1]} ({osName})");
             }
+            catch
+            {
+                Console.WriteLine($"Easy14 {{Unknown Version}} ({osName})");
+            }
+
+            if (!Configuration.GetBoolOptionValue("UpdatesDisabled")) { UpdateChecker.CheckLatestVersion(); }
+
+            Thread.Sleep(Configuration.GetIntOptionValue("delay") * 1000);
 
             if (args.Length != 0)
             {
-                if (args[0].ToLower() == "/intro") IntroductionCode.IntroCode();
+                if (args[0].ToLower() == "/intro")
+                {
+                    IntroductionCode.IntroCode();
+                }
                 else if (File.Exists(args[0]) == true)
                 {
                     CompileCode(File.ReadAllLines(args[0]));
@@ -195,12 +190,12 @@ namespace Easy14_Programming_Language
                 windowHeight = Console.WindowHeight;
                 windowWidth = Console.WindowWidth;
 
-                librariesDisabled = Convert.ToBoolean(Configuration.GetBoolOption("disableLibraries"));
+                librariesDisabled = Convert.ToBoolean(Configuration.GetBoolOptionValue("disableLibraries"));
 
-                windowHeight = (int)Configuration.GetBoolOption("windowHeight", true);
-                windowWidth = (int)Configuration.GetBoolOption("windowWidth", true);
-                windowState = (string)Configuration.GetBoolOption("windowState");
-                if ((string)Configuration.GetBoolOption("showOptionsINI_DataWhenE14_Loads") == "true")
+                windowHeight = Configuration.GetIntOptionValue("windowHeight");
+                windowWidth = Configuration.GetIntOptionValue("windowWidth");
+                windowState = Configuration.GetStringOptionValue("windowState");
+                if (Configuration.GetBoolOptionValue("showOptionsINI_DataWhenE14_Loads") == true)
                 {
                     List<string> configFileLIST = new List<string>();
 
@@ -418,7 +413,7 @@ namespace Easy14_Programming_Language
                 }
                 else
                 {
-                    int currentLineLenght = currentLine.Length;
+                    int currentLineLength = currentLine.Length;
                     if (IsExecutableCode(currentLine))
                     {
                         try { return ExecuteFunctionWithNamespace(StatementResult); }

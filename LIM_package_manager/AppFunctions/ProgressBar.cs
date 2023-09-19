@@ -1,55 +1,65 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
 
 namespace LIM_package_manager.AppFunctions
 {
     public static class ProgressBar
     {
-        static int Min = 0;
-        static int Max = 100;
         public static int Current = 0;
 
         static int CursorYPos = 0;
 
-        public static void Show(int value)
+        public static void Show(string text = "")
         {
-            Current = value;
-            CursorYPos = Console.GetCursorPosition().Top + 1;
+            CursorYPos = Console.CursorTop;
             Console.SetCursorPosition(0, CursorYPos);
-            string progrssBarIncrements = "";
-            for (int i = 0; i < Math.Round((decimal)Current / 10); i++)
+
+            // Display the text before the progress bar
+            Console.Write($"{text}: ");
+
+            int numHashes = (int)Math.Round((decimal)Current / 10);
+            int numSpaces = (100 / 10) - numHashes;
+
+            Console.Write("[");
+            for (int i = 0; i < numHashes; i++)
             {
-                progrssBarIncrements += "#";
+                Console.Write("#");
             }
-            for (int i = 0; i < ((Max / 10) - Math.Round((decimal)Current / 10)); i++)
+
+            if (numHashes > 0)
             {
-                progrssBarIncrements += " ";
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("#");
+                Console.ResetColor();
             }
-            Console.WriteLine($"[{progrssBarIncrements}]");
+
+            for (int i = 0; i < numSpaces; i++)
+            {
+                Console.Write(" ");
+            }
+
+            Console.Write("]");
+            Console.Write(new string(' ', Console.WindowWidth - 12)); // Adjusted for the length of the progress bar
+            Console.SetCursorPosition(0, CursorYPos);
         }
 
         public static void Update(int value)
         {
             Current = value;
-            CursorYPos = Console.GetCursorPosition().Top - 1;
-            Console.SetCursorPosition(0, CursorYPos);
-            string progrssBarIncrements = "";
-            for (int i = 0; i < Math.Round((decimal)Current / 10); i++)
-            {
-                progrssBarIncrements += "#";
-            }
-            for (int i = 0; i < ((Max / 10) - Math.Round((decimal)Current / 10)); i++)
-            {
-                progrssBarIncrements += " ";
-            }
-            Console.WriteLine($"[{progrssBarIncrements}]");
+            Show(); // Call the Show method without text to update the progress bar
         }
+
+        public static void Update(int value, string text)
+        {
+            Current = value;
+            Show(text);
+        }
+
         public static void Clear()
         {
-            CursorYPos = Console.GetCursorPosition().Top - 1;
+            CursorYPos = Console.CursorTop;
             Console.SetCursorPosition(0, CursorYPos);
-            Console.Write("                                ");
+            Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, CursorYPos);
-
             Current = 0;
         }
     }

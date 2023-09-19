@@ -31,7 +31,7 @@ namespace LIM_package_manager
             }
 
         }
-        public static async Task Easy14StandardLibraryAsync()
+        public static void Easy14StandardLibrary()
         {
             List<string> requiredPackages = new List<string>
             {
@@ -42,11 +42,12 @@ namespace LIM_package_manager
                 "Time"
             };
 
-            ProgressBar.Show(0);
+            ProgressBar.Show("Searching If All Base Packages Avaliable");
 
             for (int i = 0; i < requiredPackages.Count; i++)
             {
-                ProgressBar.Update(i * 20);
+                ProgressBar.Update(i * 20, "Searching If All Base Packages Avaliable");
+                Thread.Sleep(100);
                 string requiredPackage = requiredPackages[i];
                 if (!packages.Any(package => package.EndsWith(requiredPackage)))
                 {
@@ -56,28 +57,32 @@ namespace LIM_package_manager
             }
 
             ProgressBar.Update(100);
+            Thread.Sleep(100);
+
             ProgressBar.Clear();
+            ProgressBar.Show("Checking and Getting Update for Base");
             // Check internet availability
             bool isInternetAvailable = NetworkInterface.GetIsNetworkAvailable();
 
             if (isInternetAvailable)
             {
-                Console.WriteLine("Internet is available.");
+                //Console.WriteLine("Internet is available.");
 
                 // List of local file paths
+                string? ConsoleFolder = packages.FirstOrDefault(package => package.EndsWith("Console"));
                 List<string> localFilePaths = new List<string>
                 {
-                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "Print.cs"),
-                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "Input.cs"),
-                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "Beep.cs"),
-                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "Clear.cs"),
-                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "New.cs"),
-                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "Exec.cs"),
-                    Path.Combine(packages.FirstOrDefault(package => package.EndsWith("Console")), "GetKeyPress.cs"),
+                    Path.Combine(ConsoleFolder, "Print.cs"),
+                    Path.Combine(ConsoleFolder, "Input.cs"),
+                    Path.Combine(ConsoleFolder, "Beep.cs"),
+                    Path.Combine(ConsoleFolder, "Clear.cs"),
+                    Path.Combine(ConsoleFolder, "New.cs"),
+                    Path.Combine(ConsoleFolder, "Exec.cs"),
+                    Path.Combine(ConsoleFolder, "GetKeyPress.cs"),
                 };
 
                 // List of GitHub raw links
-                List<string> githubRawLinks = new List<string>
+                List<string> GitHubRawLinks = new List<string>
                 {
                     "https://raw.githubusercontent.com/Mervinpais/Easy14-BasePackages/main/Console/Print.cs",
                     "https://raw.githubusercontent.com/Mervinpais/Easy14-BasePackages/main/Console/Input.cs",
@@ -95,9 +100,9 @@ namespace LIM_package_manager
                 for (int i = 0; i < localFilePaths.Count; i++)
                 {
                     string localFilePath = localFilePaths[i];
-                    string githubRawLink = githubRawLinks[i];
+                    string githubRawLink = GitHubRawLinks[i];
 
-                    bool areFilesIdentical = await AreFilesIdenticalAsync(localFilePath, githubRawLink);
+                    bool areFilesIdentical = AreFilesIdentical(localFilePath, githubRawLink);
 
                     if (!areFilesIdentical)
                     {
@@ -105,11 +110,17 @@ namespace LIM_package_manager
                         differingFiles.Add(localFilePath);
                         // You can take appropriate action here, such as downloading the updated file.
                     }
+                    ProgressBar.Update((i + 1) * 100 / localFilePaths.Count, "Checking and Getting Update for Base");
                 }
+
+                ProgressBar.Clear();
 
                 if (differingFiles.Count == 0)
                 {
-                    Console.WriteLine("All Base Packages for Easy14 are alright");
+                    Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+                    Console.Write("                                               ");
+                    Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
+                    Console.Write("All Base Packages for Easy14 are alright");
                 }
                 else
                 {
@@ -124,8 +135,33 @@ namespace LIM_package_manager
             {
                 Console.WriteLine("Internet is not available. Cannot perform comparison with GitHub.");
             }
-
-
         }
+
+        // Synchronous method to compare files
+        public static bool AreFilesIdentical(string localFilePath, string remoteFileUrl)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    // Fetch the remote file content
+                    string remoteFileContent = client.GetStringAsync(remoteFileUrl).Result;
+
+                    // Read the local file's content
+                    string localFileContent = File.ReadAllText(localFilePath);
+
+                    // Compare the two content strings
+                    return string.Equals(localFileContent, remoteFileContent, StringComparison.OrdinalIgnoreCase);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions (e.g., network error, file not found)
+                Console.WriteLine($"Error comparing files: {ex.Message}");
+                return false;
+            }
+        }
+
+
     }
 }
