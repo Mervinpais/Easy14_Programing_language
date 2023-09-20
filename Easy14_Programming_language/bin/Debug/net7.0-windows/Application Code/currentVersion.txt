@@ -1,5 +1,5 @@
 [CURRENT VERSION]
-1.0.0 Fixed
+V1 - Whale
 
 [DATE OF UPDATE]
 7-13-23

@@ -18,7 +18,7 @@ public static class ExceptionSender
         string Message = null;
         const string unknownException = "UNKNOWN EXCEPTION";
         const string noException = "NO EXCEPTION";
-        const string ErrorException = "ERROR EXCEPTION"; //what
+        //const string ErrorException = "ERROR EXCEPTION"; //what
         switch (typeOfException)
         {
             case noException: Message = $"{typeOfException}; Non-Error Exception"; break;

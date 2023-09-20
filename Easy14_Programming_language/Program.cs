@@ -90,7 +90,7 @@ namespace Easy14_Programming_Language
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                ErrorReportor.ConsoleLineReporter.Message("THIS IS NOT AN ERROR, Just that Easy14 config couldnt be set, so using defaults\n\n========");
+                ErrorReportor.ConsoleLineReporter.Message("THIS IS NOT AN ERROR, Just that Easy14 config couldn't be set, so using defaults\n\n========");
             }
 
 
@@ -249,17 +249,10 @@ namespace Easy14_Programming_Language
         public static object CompileCode(string[] textArray = null, int lineIDX = 0)
         {
             int lineCount = 0;
-            string[] codeLines = null;
+            string[] codeLines = new string[] { "" };
 
             List<string> linesList = new List<string>(codeLines != null ? codeLines : new string[] { "" });
             if (lineIDX != 0) linesList.RemoveRange(0, lineIDX);
-
-            List<string> linesListMod = new List<string>();
-
-            if (codeLines == null)
-            {
-                codeLines = new string[] { "" };
-            }
 
             for (int i = 0; i < textArray.Length; i++)
             {
@@ -276,7 +269,7 @@ namespace Easy14_Programming_Language
                 for (int index = 0; index < tokens.Count; index++)
                 {
 
-                    List<(List<string>, string, List<string>)> Statements = new List<(List<string>, string, List<string>)>();
+                    List<(List<string>, string, List<string>)> Statements = new();
 
                     if (tokens[index].Tag == "Class")
                     {
@@ -329,7 +322,7 @@ namespace Easy14_Programming_Language
                 else if (StatementResult.methodName.ToLower() == "exit")
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("\nPlease use \"exit()\" or Ctrl+C to close the interative console");
+                    Console.WriteLine("\nPlease use \"exit()\" or Ctrl+C to close the interactive console");
                     Console.ResetColor(); continue;
                 }
                 else if (currentLine.StartsWith("if"))
@@ -354,7 +347,7 @@ namespace Easy14_Programming_Language
                 {
                     if (StatementResult.methodName == "New")
                     {
-                        if (StatementResult.paramItems.Count > 1) //does variable include a value to be set?
+                        if (StatementResult.paramItems.Count > 1)
                         {
                             VariableCode.Interperate(StatementResult.paramItems[0], StatementResult.paramItems[1], true);
                         }
@@ -370,7 +363,6 @@ namespace Easy14_Programming_Language
                 }
                 else
                 {
-                    int currentLineLength = currentLine.Length;
                     if (IsExecutableCode(currentLine))
                     {
                         try { return ExecuteFunctionWithNamespace(StatementResult); }
@@ -452,8 +444,8 @@ namespace Easy14_Programming_Language
                             }
                         }
 
-                        List<string> usingReferences = new List<string>();
-                        List<string> restOfCode = new List<string>();
+                        List<string> usingReferences = new();
+                        List<string> restOfCode = new();
                         codeSplitIntoLines.Remove(_paramsDeclareLine);
 
                         for (int i = 0; i < paramsRequired.Count; i++)
