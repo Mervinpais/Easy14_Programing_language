@@ -1,64 +1,54 @@
+using System;
 using System.Collections.Generic;
 
 namespace Easy14_Programming_Language
 {
-    public static class Method_Code
+    public static class MethodCode
     {
-        public static void Interperate(int currentLine, List<string> lines, bool newMethod = false)
-        {
-            List<string> methodBlock = new List<string>(lines);
+        public static Dictionary<object, object> methodList = new Dictionary<object, object>();
 
-            int indention = 0;
-            foreach (char c in methodBlock[currentLine])
+        public static object Interperate(object name, object value = null, bool setVariable = false)
+        {
+            if (setVariable)
             {
-                if (c == ' ')
+                if (value != null)
                 {
-                    indention = indention + 1;
+                    if (value.ToString().StartsWith("() =>"))
+                    {
+                        value = value.ToString().Substring("() =>".Length).Trim();
+                        if (!value.ToString().EndsWith(";")) value = value.ToString() + ";";
+                        methodList[name] = Program.CompileCode(new string[] { value.ToString() }); ;
+                    }
+                    else
+                    {
+                        if (ItemChecks.DetectType(value.ToString()) != "var")
+                        {
+                            methodList[name] = value;
+                        }
+                        else
+                        {
+                            methodList[name] = methodList[value];
+                        }
+                    }
                 }
                 else
                 {
-                    break;
+                    methodList[name] = "";
                 }
+                return null;
             }
-
-            string indent = "";
-            for (int i = 0; i < indention; i++)
+            else
             {
-                indent += " ";
-            }
-
-            methodBlock.RemoveRange(0, currentLine);
-
-            int endBlock = 0;
-
-            for (int i = 0; i < methodBlock.Count; i++)
-            {
-                if (methodBlock[i] == indent + "end")
+                if (methodList.TryGetValue(name, out var storedValue))
                 {
-                    endBlock = i;
-                    break;
+                    return Program.CompileCode(storedValue.ToString().Split(Environment.NewLine));
+                }
+                else
+                {
+                    ErrorReportor.ConsoleLineReporter.Error($"Variable \'{name}\' does not exist!");
+                    return null;
                 }
             }
-
-            methodBlock.RemoveRange(endBlock, methodBlock.Count - endBlock);
-            List<string> methodBlockUntrimmed = new List<string>(methodBlock);
-            methodBlock.Clear();
-
-            foreach (string line in methodBlockUntrimmed)
-            {
-                methodBlock.Add(line.Trim());
-            }
-
-            string methodHeaderLine = methodBlock[0].Substring(2);
-
-            methodBlock.RemoveAt(0);
-
-            // Process the method block here
-
-            List<string> lines_ = new List<string>(lines);
-            lines_.RemoveRange(0, currentLine);
-            lines_.RemoveRange(0, methodBlock.Count + 2);
-            lines = lines_;
         }
     }
 }
