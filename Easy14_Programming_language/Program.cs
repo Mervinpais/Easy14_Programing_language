@@ -342,6 +342,30 @@ namespace Easy14_Programming_Language
                     i = 0;
                     continue;
                 }
+                else if (currentLine.StartsWith("method"))
+                {
+                    string methodName = currentLine.Substring("method".Length); // Implement GetMethodName to extract the method name
+                    List<string> methodCode = new List<string>();
+                    int startIndex = i; // Remember the starting index
+
+                    for (int j = i + 1; j < textArray.Length - 1; j++)
+                    {
+                        string line = textArray[j];
+
+                        if (line.Trim() == "end")
+                        {
+                            // Found the end of the method, add it to the methods dictionary
+                            MethodHandler.DefineMethod(methodName, methodCode);
+                            i = j; // Update the current line index
+                            break;
+                        }
+
+                        methodCode.Add(line);
+                    }
+
+                    continue;
+                }
+
                 else if (StatementResult.className[0] == "Var")
                 {
                     if (StatementResult.methodName == "New")
@@ -382,7 +406,11 @@ namespace Easy14_Programming_Language
                 {
                     if (IsExecutableCode(currentLine))
                     {
-                        try { return ExecuteFunctionWithNamespace(StatementResult); }
+                        try
+                        {
+                            ExecuteFunctionWithNamespace(StatementResult);
+                            continue;
+                        }
                         catch
                         {
                             HandleError($"\'{currentLine}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {lineCount}");
