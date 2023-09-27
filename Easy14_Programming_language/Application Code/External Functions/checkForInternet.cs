@@ -8,26 +8,19 @@ namespace Easy14_Programming_Language
         public static bool IsConnectedToInternet()
         {
             string host = "www.google.com";
-            bool result = false;
             Ping p = new Ping();
-            for (int i = 0; i < 3; i++)
+            try
             {
-                try
-                {
-                    PingReply reply = p.Send(host, 2000);
-                    if (reply.Status == IPStatus.Success)
-                    {
-                        return true;
-                    }
-                    else { return false; }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Error occured while checking internet...\n\n {e.InnerException}\n");
+                if (p.Send(host, 3000).Status == IPStatus.Success) 
+                    return true;
+                else
                     return false;
-                }
             }
-            return result;
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error occured while checking internet...\n\n {e.InnerException}\n");
+                return false;
+            }
         }
     }
 }

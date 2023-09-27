@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace easy14_isde
+namespace Easy14_SE
 {
     internal static class Program
     {

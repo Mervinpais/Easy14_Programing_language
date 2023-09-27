@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "LIM_package_manager": {
+      "commandName": "Project"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    }
+  }
+}

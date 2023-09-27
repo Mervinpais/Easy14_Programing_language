@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 
 namespace Easy14_Programming_Language
@@ -8,14 +9,8 @@ namespace Easy14_Programming_Language
         readonly static string strExeFilePath = Assembly.GetExecutingAssembly().Location;
         readonly static string strWorkPath = Path.GetDirectoryName(strExeFilePath);
 
-        public static void UsingFunction(string line, bool disableLibraries, int lineCount)
+        public static void UsingMethod(string line, bool disableLibraries, int lineCount)
         {
-            if (disableLibraries)
-            {
-                ErrorReportor.ConsoleLineReporter.Warning("You have disabled libraries in options.ini, if you want to use libraries, please change the true to false at line 10 in options.ini");
-                return;
-            }
-
             if (line == "using _easy14_;")
             {
                 ErrorReportor.ConsoleLineReporter.Warning("You already are :)");
@@ -40,45 +35,29 @@ namespace Easy14_Programming_Language
             }
         }
 
-        public static void ForFunction(string line, bool disableLibraries, int lineCount)
+        public static void FromMethod(string line, bool disableLibraries, int lineCount)
         {
-            if (disableLibraries)
+            if (line == "from Easy14 get easy14;")
             {
-                ErrorReportor.ConsoleLineReporter.Warning("You have disabled libraries in options.ini, if you want to use libraries, please change the true to false at line 10 in options.ini");
-                return;
-            }
-            if (line == "from _easy14_ get _use_;")
-            {
-                ErrorReportor.ConsoleLineReporter.Warning("You already are :)");
+                ErrorReportor.ConsoleLineReporter.Message("You already are using Easy14 :)");
                 return;
             }
 
-            string theSupposedNamespace = strWorkPath.Replace("\\bin\\Debug\\net7.0-windows", "") + "\\Functions\\";
-            theSupposedNamespace = theSupposedNamespace + line.Substring(line.IndexOf("from"), line.Length - (line.IndexOf("get") - 2)).Substring(4).TrimStart().TrimEnd();
-            theSupposedNamespace = theSupposedNamespace.TrimStart().TrimEnd();
-            string theSupposedClass = theSupposedNamespace;
-            theSupposedClass = theSupposedClass + "\\" + line.Substring(line.IndexOf("get") + 3).TrimStart();
-            theSupposedClass = theSupposedClass.Substring(0, theSupposedClass.Length - 1) + ".cs";
+            // Extract the namespace and class names from the input line
+            string[] parts = line.Split(new string[] { "from ", " get " }, StringSplitOptions.RemoveEmptyEntries);
+            string theSupposedNamespace = parts[0].Trim();
+            string theSupposedClass = parts[1].TrimEnd(';') + ".cs";
 
-            /* Checking if the using exists. */
-            bool doesUsingExist = Directory.Exists(theSupposedNamespace);
-            if (doesUsingExist)
-            {
-                bool doesClassExist = File.Exists(theSupposedClass);
-                if (doesClassExist)
-                {
-                    return;
-                }
-                else
-                {
-                    ErrorReportor.ConsoleLineReporter.Error($"The Using class \"{theSupposedClass}\" Mentioned on line {lineCount}, (Line: {line}) is not found!");
-                    return;
-                }
-            }
+            // Check if the directory and file exist
+            string fullPath = Path.Combine(strWorkPath, "Functions", theSupposedNamespace, theSupposedClass);
+            if (File.Exists(fullPath)) return;
             else
             {
-                ErrorReportor.ConsoleLineReporter.Error($"The Using \"{theSupposedNamespace}\" Mentioned on line {lineCount}, (Line: {line}) is not found!");
-                return;
+                string errorMessage = File.Exists(Path.GetDirectoryName(fullPath))
+                    ? $"The Using class \"{theSupposedClass}\" Mentioned on line {lineCount}, (Line: {line}) is not found!"
+                    : $"The Using \"{theSupposedNamespace}\" Mentioned on line {lineCount}, (Line: {line}) is not found!";
+
+                ErrorReportor.ConsoleLineReporter.Error(errorMessage);
             }
         }
     }

@@ -1,51 +1,13 @@
 ﻿# Easy14 Programing Language
----
-![](Easy14_Programming_language/Images/repo%20github%20thumnail.png)
-## Finally an *ok-ish* language made with C#
-Basically a mashup of Python + C#
-<!---
-![](Easy14_Programming_language/Images/hand_heart_donate_icon.png)
-### Donations can help me improve this language :)
-#### Note; Can't donate yet
--->
----
+## v1 - Whale 🐋
 
-### Summary
+![Thumbnail](Easy14_Programming_language/Images/repo%20github%20thumnail.png)
 
-* Maybe General purpose?
-* Runs on C# (+ Roslyn for C#)
-* Python for other stuff
+## What is it?
+#### Funny C# code go boom boom
 
----
+### Being serious, This language is just a fun language if you wanna try something only OOP, based on C#, and (maybe) slow, and also simple, and clean
 
-# Version 3.1
+## Why?
 
-## New stuff;
-
-* Replaced the old "if (keyword) then keyword_function" with a basic AST
-* Fixed Bugs 🪲🛠️
-* Better Syntax
-  - Before
-    ```
-    Console.print("Hello world!");
-    ```
-  - After
-    ```
-    Console Print "Hello world!";
-    ```
-
-    It may look like a downgrade but it's best to keep the code simpler to remeber (and easier to fix bugs with 🥲)
----
-
-## Known Issues
-
-- None
-## Fixed Bugs
-
-> Fixed Console Namespace functions
-
-before any Console._myfunction()_ would not work due to older code compatibilty
-
-Now they have been (mostly) fixed
-
----
+#### You see kids, when you have too much free time, and wanna do that top 5 dreams every programer has, you CAN do it, with the right programming language of course

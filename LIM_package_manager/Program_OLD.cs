@@ -1,12 +1,17 @@
 ﻿using System.Diagnostics;
 using System.IO.Compression;
+using System.Reflection;
 
 namespace LIM_package_manager
 {
     class Program_OLD
     {
-        static void SendError(int errorType, string command)
+        static void SendError(int errorType, string command) //
         {
+            Console.WriteLine("<!> This is the old Program.cs file, please use the new one <!>");
+
+            return;
+            /*
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine();
             if (errorType == 0x01)
@@ -44,6 +49,10 @@ namespace LIM_package_manager
 
         public static void DownloadFile_Async(string uri, string outputPath, string nameOfDownload = "<unknown>")
         {
+            Console.WriteLine("<!> This is the old Program.cs file, please use the new one <!>");
+
+            return;
+
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"\n===DOWNLOADING {nameOfDownload}===");
             Console.WriteLine($"    Finding URL to get files from...");
@@ -65,18 +74,27 @@ namespace LIM_package_manager
             Console.ResetColor();
         }
 
-        static void Main_OLD()
+        static void OldMain()
         {
             Console.ResetColor();
             Console.WriteLine(" = LIM Package Manager Console =\n");
 
+            Console.WriteLine("<!> This is the old Program.cs file, please use the new one <!>");
+
+            return;
+            /*
             while (true)
             {
-                Console.Write("(LIM) >>>");
-                string? command = Console.ReadLine();
-                if (command != null)
+                Console.Write(">>>");
+                string line = "";
+                line = Console.ReadLine();
+
+                if (line == null) { line = "<null>"; }
+
+                string[] command_seperated = line.Split(" ");
+
+                if (line != null)
                 {
-                    string[] command_seperated = command.Split(" ");
                     if (command_seperated[0].ToUpper() == "LIM")
                     {
                         if (command_seperated.Length > 1)
@@ -85,18 +103,23 @@ namespace LIM_package_manager
                             {
                                 try
                                 {
-                                    Console.ForegroundColor = ConsoleColor.Yellow;
-                                    Console.Write($"\nINSTALLING PACKAGE(S).");
-                                    string download_URL = command.Split(" ")[2];
-                                    Console.Write(".");
-                                    Console.Write(".");
+                                    line = line.Split(" ")[2];
+                                    //Checks for HTTP/HTTPS string
+                                    if (!line.StartsWith("http://") && !line.StartsWith("https://"))
+                                    {
+                                        throw new LIM_Exceptions.InvalidURL(line);
+                                        //Console.WriteLine("\nIt seems that \"" + command + "\" is not a real URL (to download from) and the current operation shall be cancelled");
+                                        continue;
+                                    }
+
+                                    string download_URL = line;
                                     // download zip file from http://mervin14.epizy.com/data/testDirForEasy14.zip 
                                     //DownloadFileAsync(download_URL, Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_LIM_Update\\update.zip", "update.zip");
                                     string DownloadsFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads\\";
-                                    string easy14_dir = Directory.GetCurrentDirectory().Replace("\\LIM_package_manager\\bin\\Debug\\net6.0", "");
-                                    easy14_dir = $"{easy14_dir}\\Easy14_Programming_language\\Functions\\";
+                                    string? Easy14Directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+                                    Easy14Directory = $"{Easy14Directory.Substring(6, Easy14Directory.Length - 43)}\\Easy14_Programming_language\\Functions\\";
                                     string downloadedZIP = download_URL.Substring(download_URL.LastIndexOf("/") + 1, download_URL.Length - download_URL.LastIndexOf("/") - 1);
-                                    string file = easy14_dir + $"{download_URL.Substring(download_URL.LastIndexOf("/") + 1, download_URL.Length - download_URL.LastIndexOf("/") - 5)}";
+                                    string file = Easy14Directory + $"{download_URL.Substring(download_URL.LastIndexOf("/") + 1, download_URL.Length - download_URL.LastIndexOf("/") - 5)}";
                                     if (Directory.Exists(file))
                                     {
                                         Console.WriteLine("\nIt seems you have already installed \"" +
@@ -109,7 +132,7 @@ namespace LIM_package_manager
                                         {
                                             if (userInput.ToLower() == "y")
                                             {
-                                                Directory.Delete(easy14_dir + $"\\{download_URL.Substring(download_URL.LastIndexOf("/") + 1, download_URL.Length - download_URL.LastIndexOf("/") - 5)}", true);
+                                                Directory.Delete(Easy14Directory + $"\\{download_URL.Substring(download_URL.LastIndexOf("/") + 1, download_URL.Length - download_URL.LastIndexOf("/") - 5)}", true);
                                             }
                                             else
                                             {
@@ -120,6 +143,9 @@ namespace LIM_package_manager
                                             }
                                         }
                                     }
+
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    Console.Write($"\nINSTALLING PACKAGE(S).");
 
                                     Process.Start(new ProcessStartInfo
                                     {
@@ -138,7 +164,7 @@ namespace LIM_package_manager
                                     //unzip the update.zip and place it in the Functions folder
                                     Console.WriteLine("Unzipping the " + downloadedZIP + "...");
 
-                                    ZipFile.ExtractToDirectory(DownloadsFolder + downloadedZIP, easy14_dir + download_URL.Substring(download_URL.LastIndexOf("/") + 1, download_URL.Length - download_URL.LastIndexOf("/") - 5));
+                                    ZipFile.ExtractToDirectory(DownloadsFolder + downloadedZIP, Easy14Directory + download_URL.Substring(download_URL.LastIndexOf("/") + 1, download_URL.Length - download_URL.LastIndexOf("/") - 5));
                                     File.Delete(DownloadsFolder + downloadedZIP);
                                     Console.WriteLine("Unzipping complete.");
                                     //delete the update.zip
@@ -150,7 +176,7 @@ namespace LIM_package_manager
                                     Console.ForegroundColor = ConsoleColor.Green;
                                     Console.WriteLine($"\nPACKAGE {download_URL.Substring(download_URL.LastIndexOf(" / ") + 1, download_URL.Length - download_URL.LastIndexOf(" / ") - 5)} INSTALLATION COMPLETE.");
                                     Console.WriteLine($"Checking for runAuto.config...");
-                                    string runAutoFile = easy14_dir + download_URL.Substring(download_URL.LastIndexOf("/") + 1, download_URL.Length - download_URL.LastIndexOf("/") - 5) + "\\runAuto.config";
+                                    string runAutoFile = Easy14Directory + download_URL.Substring(download_URL.LastIndexOf("/") + 1, download_URL.Length - download_URL.LastIndexOf("/") - 5) + "\\runAuto.config";
                                     if (File.Exists(runAutoFile))
                                     {
                                         Process.Start(runAutoFile);
@@ -158,36 +184,34 @@ namespace LIM_package_manager
 
                                     Console.ResetColor();
                                 }
-                                catch (Exception e)
+                                catch (Exception)
                                 {
-                                    SendError(0x06, command);
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine(e.Message);
-                                    Console.ResetColor();
+                                    throw new LIM_Exceptions.UnknownOrInvalidPackage($"{line.Replace("LIM install ", "")}");
+                                    //SendError(0x06, $"{command.Replace("LIM install ", "")}");
                                 }
                             }
                             else if (command_seperated[1].ToLower() == "uninstall")
                             {
                                 string easy14_dir = Directory.GetCurrentDirectory().Replace("\\LIM_package_manager\\bin\\Debug\\net6.0", "");
                                 easy14_dir = $"{easy14_dir}\\Easy14_Programming_language\\Functions\\";
-                                if (command.Split(" ").Length > 1)
+                                if (line.Split(" ").Length > 1)
                                 {
-                                    string TheitemToBeUninstalled = easy14_dir + "\\" + command.Split(" ")[2].ToLower();
+                                    string TheitemToBeUninstalled = easy14_dir + "\\" + line.Split(" ")[2].ToLower();
                                     if (Directory.Exists(TheitemToBeUninstalled))
                                     {
                                         Console.ForegroundColor = ConsoleColor.Yellow;
-                                        Console.WriteLine("\nAre you sure you want to uninstall " + command.Split(" ")[2].ToLower() + "? (y/n)");
+                                        Console.WriteLine("\nAre you sure you want to uninstall " + line.Split(" ")[2].ToLower() + "? (y/n)");
                                         Console.Write(">");
                                         if (Console.ReadLine() == "y")
                                         {
                                             Console.ForegroundColor = ConsoleColor.Red;
-                                            Console.WriteLine("\nAre you SURE SURE you want to uninstall " + command.Split(" ")[2].ToLower() + "? (y/n)");
+                                            Console.WriteLine("\nAre you SURE SURE you want to uninstall " + line.Split(" ")[2].ToLower() + "? (y/n)");
                                             Console.Write(">");
                                             if (Console.ReadLine() == "y")
                                             {
                                                 Console.ForegroundColor = ConsoleColor.Green;
-                                                Directory.Delete(easy14_dir + "\\" + command.Split(" ")[2].ToLower(), true);
-                                                Console.WriteLine("Successfully uninstalled " + command.Split(" ")[2].ToLower());
+                                                Directory.Delete(easy14_dir + "\\" + line.Split(" ")[2].ToLower(), true);
+                                                Console.WriteLine("Successfully uninstalled " + line.Split(" ")[2].ToLower());
                                                 Console.ResetColor();
                                             }
                                             else
@@ -207,7 +231,7 @@ namespace LIM_package_manager
                                     else
                                     {
                                         Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.WriteLine("Can't Uninstall " + command.Split(" ")[2].ToLower() + " because it doesn't exist");
+                                        Console.WriteLine("Can't Uninstall " + line.Split(" ")[2].ToLower() + " because it doesn't exist");
                                         Console.ResetColor();
                                     }
                                 }
@@ -243,10 +267,15 @@ namespace LIM_package_manager
                             }
                             else if (command_seperated[1].ToLower() == "help" || command_seperated[1].ToLower() == "?")
                             {
-                                string helpTextFile_str = Directory.GetCurrentDirectory().Replace("\\bin\\Debug\\net6.0", "");
-                                string[] helpTextFile = File.ReadAllLines($"{helpTextFile_str}\\helpContent.txt");
-                                Console.WriteLine(string.Join(Environment.NewLine, helpTextFile));
-                                Console.WriteLine();
+                                try
+                                {
+                                    string[] helpTextFile = File.ReadAllLines($"helpContent.txt");
+                                    Console.WriteLine(string.Join(Environment.NewLine, helpTextFile) + "\n");
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("\nUnable to get help file");
+                                }
                             }
                             else if (command_seperated[1].ToLower() == "version")
                             {
@@ -270,10 +299,10 @@ namespace LIM_package_manager
                                 //Console.WriteLine(Directory.GetCurrentDirectory());
                                 string easy14_dir = Directory.GetCurrentDirectory().Replace("\\LIM_package_manager\\bin\\Debug\\net6.0", "");
                                 easy14_dir = $"{easy14_dir}\\Easy14_Programming_language\\Functions\\";
-                                string[] command_Arr = command.Split(" ");
+                                string[] command_Arr = line.Split(" ");
                                 if (command_Arr.Length > 2)
                                 {
-                                    if (command.Split(" ")[2].ToLower() == "--full")
+                                    if (line.Split(" ")[2].ToLower() == "--full")
                                     {
                                         Console.WriteLine(string.Join(Environment.NewLine, Directory.GetDirectories(easy14_dir)));
                                     }
@@ -293,7 +322,8 @@ namespace LIM_package_manager
                             }
                             else
                             {
-                                SendError(0x01, command);
+                                throw new LIM_Exceptions.LIM_UnknownError(line);
+                                //SendError(0x01, command);
                             }
                         }
                         else if (command_seperated[0].ToLower() == "help" || command_seperated[0].ToLower() == "?")
@@ -305,11 +335,16 @@ namespace LIM_package_manager
                         }
                         else
                         {
-                            SendError(0x01, command);
+                            throw new LIM_Exceptions.LIM_UnknownError(line);
+                            //SendError(0x01, command);
                         }
                     }
+                    else
+                    {
+
+                    }
                 }
-            }
+            }*/
         }
     }
 }

@@ -3,9 +3,9 @@
     "Easy14_Programming_Language": {
       "commandName": "Project"
     },
-    "App Test'": {
+    "Exit Test": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\mervi\\Desktop\\stuff.e14"
+      "commandLineArgs": "\"C:\\Users\\mervi\\Desktop\\for test.e14\""
     }
   }
 }

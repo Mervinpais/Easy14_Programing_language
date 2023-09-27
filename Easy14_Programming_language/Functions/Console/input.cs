@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 
 namespace Easy14_Programming_Language
 {
@@ -7,64 +6,39 @@ namespace Easy14_Programming_Language
     {
         public static string Interperate(string line = null)
         {
-            line = line.Substring("Input".Length);
-
-            if (line.EndsWith(";"))
-            {
-                line = line.Substring(0, line.Length - 1);    //SYNTAX CHECK 1
-            }
-            else
-            {
-                return "";
-            }
-
-            if (line.StartsWith("(") && line.EndsWith(")"))
-            {
-                line = line.Substring(1, line.Length - 2);    //SYNTAX CHECK 2
-            }
-            else
-            {
-                return "";
-            }
-
-
             if (line == "")
             {
-                ConsolePrint.Interperate(">", false);
+                Console.Write("> ", false);
                 string returnedInput = Console.ReadLine();
+
+                if (!returnedInput.StartsWith("\"")) returnedInput = "\"" + returnedInput;
+                if (!returnedInput.EndsWith("\"")) returnedInput = returnedInput + "\"";
+
                 return returnedInput;
             }
-            else if (line.StartsWith("\"") && line.EndsWith("\""))
+            else if (ItemChecks.IsString(line))
             {
                 line = line.Substring(1, line.Length - 2);
-                ConsolePrint.Interperate(line);
-                ConsolePrint.Interperate(">", false);
+                Console.WriteLine(line);
+                Console.Write("> ", false);
                 string returnedInput = Console.ReadLine();
+
+                if (!returnedInput.StartsWith("\"")) returnedInput = "\"" + returnedInput;
+                if (!returnedInput.EndsWith("\"")) returnedInput = returnedInput + "\"";
+
                 return returnedInput;
             }
             else
             {
-                string dir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                string variable_dir = dir + "\\EASY14_Variables_TEMP";
-                if (!Directory.Exists(variable_dir))
+                if (VariableCode.variableList.TryGetValue(line, out var val))
                 {
-                    ErrorReportor.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
-                    return "";
-                }
-
-                var files = Directory.GetFiles(variable_dir);
-                if (!(files.Length > 0))
-                {
-                    ErrorReportor.ConsoleLineReporter.Error("Failed to get variable \'" + line + "\', make sure variable exists.");
-                    return "";
-                }
-
-                var variable = variable_dir + "\\" + line;
-                if (File.Exists(variable))
-                {
-                    ConsolePrint.Interperate(File.ReadAllText(variable));
-                    ConsolePrint.Interperate(">", false);
+                    Console.WriteLine(val);
+                    Console.Write("> ", false);
                     string returnedInput = Console.ReadLine();
+
+                    if (!returnedInput.StartsWith("\"")) returnedInput = "\"" + returnedInput;
+                    if (!returnedInput.EndsWith("\"")) returnedInput = returnedInput + "\"";
+
                     return returnedInput;
                 }
                 else

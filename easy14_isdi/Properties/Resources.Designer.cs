@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace easy14_isde.Properties {
+namespace Easy14_SE.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace easy14_isde.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("easy14_isde.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Easy14_SE.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -66,6 +66,16 @@ namespace easy14_isde.Properties {
         internal static System.Drawing.Bitmap keep_calm_its_not_finished_yet {
             get {
                 object obj = ResourceManager.GetObject("keep-calm-its-not-finished-yet", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mervin14_icon_titled {
+            get {
+                object obj = ResourceManager.GetObject("mervin14_icon_titled", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

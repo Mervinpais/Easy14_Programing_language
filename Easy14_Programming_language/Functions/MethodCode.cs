@@ -1,125 +1,53 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace Easy14_Programming_Language
 {
-    public static class Method_Code_OLD
+    public static class MethodCode
     {
-        /*
-         * CHANGLE LOG 24/6/2022;
-         * Code will/has  be/been refactored for better readablilty and easier to understand
-         */
-        public static Dictionary<string, object> methodList = new Dictionary<string, object>();
+        public static Dictionary<object, object> methodList = new Dictionary<object, object>();
 
-        public static void Interperate(string code_part, string[] textArray, string[] lines, string fileloc, bool Making_A_Method)
+        public static object Interperate(object name, object value = null, bool setVariable = false)
         {
-            Program prog = new Program();
-            string code_part_unedited = code_part;
-
-            if (Making_A_Method == true)
+            if (setVariable)
             {
-                string[] _lines_ = lines;
-                int last_line_Index = 0;
-
-                List<string> method_lines_list = new List<string>(_lines_);
-
-                int lines_lineCounter = 1;
-                foreach (string line__ in _lines_)
+                if (value != null)
                 {
-                    if (line__ == code_part)
+                    if (value.ToString().StartsWith("() =>"))
                     {
-                        method_lines_list.RemoveRange(0, lines_lineCounter - 1);
-                        break;
+                        value = value.ToString().Substring("() =>".Length).Trim();
+                        if (!value.ToString().EndsWith(";")) value = value.ToString() + ";";
+                        methodList[name] = Program.CompileCode(new string[] { value.ToString() }); ;
                     }
-                    lines_lineCounter++;
-                }
-
-                int underStuff_lineCounterr = 0;
-                List<string> understuff = new List<string>(method_lines_list);
-
-                foreach (string line__ in understuff)
-                {
-                    underStuff_lineCounterr++;
-                    if (line__ == "}")
+                    else
                     {
-                        last_line_Index = underStuff_lineCounterr;
-                        if (method_lines_list.Count != last_line_Index)
+                        if (ItemChecks.DetectType(value.ToString()) != "var")
                         {
-                            try
-                            {
-                                method_lines_list.RemoveRange(last_line_Index, method_lines_list.Count - last_line_Index);
-                                understuff.RemoveRange(0, last_line_Index);
-                            }
-                            catch (Exception e)
-                            {
-                                Console.WriteLine(e);
-                            }
+                            methodList[name] = value;
                         }
-                        break;
+                        else
+                        {
+                            methodList[name] = methodList[value];
+                        }
                     }
                 }
-
-                List<string> usingsCode_list = null;
-                if (textArray == null && fileloc != null) usingsCode_list = new List<string>(File.ReadAllLines(fileloc));
-                else if (textArray != null && fileloc == null) usingsCode_list = new List<string>(textArray);
-                int usingsCodeList_lineCount = 1;
-                foreach (string x in usingsCode_list)
+                else
                 {
-                    if (!x.StartsWith("using") || !x.StartsWith("from"))
-                    {
-                        break;
-                    }
-                    usingsCodeList_lineCount++;
+                    methodList[name] = "";
                 }
-
-                List<string> code_in_method_code = method_lines_list.GetRange(1, last_line_Index - 1);
-                List<string> usings_code = usingsCode_list.GetRange(0, usingsCodeList_lineCount);
-                // This \/ is just something i added and it just fixes everything
-                List<string> usings_code_undercode = usingsCode_list.GetRange(0, usingsCodeList_lineCount);
-                usings_code.AddRange(code_in_method_code);
-                usings_code_undercode.AddRange(understuff);
-                code_in_method_code = usings_code;
-
-                string methodName = code_part_unedited;
-                methodName = methodName.Replace("func", "");
-                methodName = methodName.TrimStart();
-                methodName = methodName[..methodName.IndexOf("(")];
-
-                code_in_method_code.RemoveAt(0);
-                code_in_method_code.RemoveAt(code_in_method_code.Count - 1);
-                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}");
-                File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", string.Join(Environment.NewLine, code_in_method_code.ToArray()));
-
-                understuff.RemoveRange(0, code_in_method_code.Count);
-                prog.CompileCode_fromOtherFiles(null, understuff.ToArray(), 0, true, methodName);
+                return null;
             }
             else
             {
-                string methodName = code_part_unedited;
-                methodName = methodName.Replace("func", "");
-                methodName = methodName.TrimStart();
-                methodName = methodName[..methodName.IndexOf("(")];
-
-                if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}"))
+                if (methodList.TryGetValue(name, out var storedValue))
                 {
-                    Console.WriteLine("ERROR; Can't Find method, make sure you made the method in your code");
-                    return;
+                    return Program.CompileCode(storedValue.ToString().Split(Environment.NewLine));
                 }
-                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}");
-
-                try
+                else
                 {
-                    prog.CompileCode_fromOtherFiles(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + $"\\EASY14_Variables_TEMP\\{methodName}\\INSTRUCTIONS.txt", null, 0, true, methodName);
+                    ErrorReportor.ConsoleLineReporter.Error($"Variable \'{name}\' does not exist!");
+                    return null;
                 }
-                catch
-                {
-                    Console.WriteLine("");
-                    return;
-                }
-                List<string> understuff = new List<string>(lines);
-                understuff.RemoveRange(understuff.IndexOf(code_part), 1);
-                // The Reason why the Above /\ needs to have a "+ 1" at the end is because it will get stuck in a loop, example (CHECK LINE 126);
             }
         }
     }
