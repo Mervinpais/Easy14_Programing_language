@@ -46,6 +46,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.actionLB = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.inputTB = new System.Windows.Forms.RichTextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -183,7 +184,7 @@
             // wordWrapToolStripMenuItem
             // 
             this.wordWrapToolStripMenuItem.Name = "wordWrapToolStripMenuItem";
-            this.wordWrapToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            this.wordWrapToolStripMenuItem.Size = new System.Drawing.Size(231, 40);
             this.wordWrapToolStripMenuItem.Text = "Word Wrap";
             this.wordWrapToolStripMenuItem.Click += new System.EventHandler(this.wordWrapToolStripMenuItem_Click);
             // 
@@ -205,7 +206,7 @@
             // OutputRTB
             // 
             this.OutputRTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.OutputRTB.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.OutputRTB.Dock = System.Windows.Forms.DockStyle.Top;
             this.OutputRTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.857143F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.OutputRTB.ForeColor = System.Drawing.Color.White;
             this.OutputRTB.Location = new System.Drawing.Point(0, 0);
@@ -213,7 +214,7 @@
             this.OutputRTB.ReadOnly = true;
             this.OutputRTB.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.OutputRTB.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
-            this.OutputRTB.Size = new System.Drawing.Size(762, 817);
+            this.OutputRTB.Size = new System.Drawing.Size(762, 761);
             this.OutputRTB.TabIndex = 7;
             this.OutputRTB.Text = "(Waiting for Easy14 Interpertor)";
             // 
@@ -231,6 +232,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.inputTB);
             this.splitContainer1.Panel2.Controls.Add(this.OutputRTB);
             this.splitContainer1.Size = new System.Drawing.Size(1548, 817);
             this.splitContainer1.SplitterDistance = 782;
@@ -258,6 +260,18 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Themes have been disabled for being unfinished until next update\r\n";
             // 
+            // inputTB
+            // 
+            this.inputTB.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.inputTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.inputTB.Location = new System.Drawing.Point(0, 762);
+            this.inputTB.Multiline = false;
+            this.inputTB.Name = "inputTB";
+            this.inputTB.Size = new System.Drawing.Size(762, 55);
+            this.inputTB.TabIndex = 8;
+            this.inputTB.Text = "";
+            this.inputTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTB_KeyDown);
+            // 
             // Main_Editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -276,6 +290,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Main_Editor";
             this.Text = "Easy14 Scripter";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_Editor_FormClosing);
             this.Load += new System.EventHandler(this.Main_Editor_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Main_Editor_Paint);
             this.menuStrip1.ResumeLayout(false);
@@ -309,6 +324,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label actionLB;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.RichTextBox inputTB;
     }
 }
 

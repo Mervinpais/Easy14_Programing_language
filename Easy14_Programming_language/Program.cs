@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.CSharp.RuntimeBinder;
 using SDL2;
 using System;
 using System.Collections.Generic;
@@ -245,6 +246,7 @@ namespace Easy14_Programming_Language
             }
         }
 
+
         public static object CompileCode(string[] textArray = null, int lineIDX = 0)
         {
             int lineCount = 0;
@@ -252,6 +254,8 @@ namespace Easy14_Programming_Language
 
             List<string> linesList = new List<string>(codeLines != null ? codeLines : new string[] { "" });
             if (lineIDX != 0) linesList.RemoveRange(0, lineIDX);
+
+            object result = "";
 
             for (int i = 0; i < textArray.Length; i++)
             {
@@ -408,8 +412,7 @@ namespace Easy14_Programming_Language
                     {
                         try
                         {
-                            ExecuteFunctionWithNamespace(StatementResult);
-                            continue;
+                            result = ExecuteFunctionWithNamespace(StatementResult);
                         }
                         catch
                         {
@@ -424,7 +427,7 @@ namespace Easy14_Programming_Language
                     }
                 }
             }
-            return "";
+            return result;
         }
 
         private static bool IsExecutableCode(string currentLine)

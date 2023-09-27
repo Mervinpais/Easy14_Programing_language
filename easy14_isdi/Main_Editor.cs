@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,6 +12,8 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
 {
     public partial class Main_Editor : Form
     {
+        Process Easy14Process = new Process();
+
         public Main_Editor()
         {
             InitializeComponent();
@@ -122,7 +123,7 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
             else if (saveFile != "")
             {
                 //saveFile = "2";
-                var w = new Form() {};
+                var w = new Form() { };
                 Task.Delay(TimeSpan.FromSeconds(1))
                     .ContinueWith((t) => w.Close(), TaskScheduler.FromCurrentSynchronizationContext());
                 actionLB.Text = $"Saving code in \'{saveFile}\'";
@@ -157,18 +158,19 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
 
             string exePath = Path.Combine(projectRoot, "Easy14_Programming_language", "bin", "Debug", "net7.0-windows", "Easy14_Programming_Language.exe");
 
-            Process Easy14App = new Process();
-            Easy14App.StartInfo.FileName = exePath;
-            Easy14App.StartInfo.Arguments = saveFile;
-            Easy14App.StartInfo.UseShellExecute = false;
-            Easy14App.StartInfo.RedirectStandardOutput = true;
-            Easy14App.StartInfo.RedirectStandardError = true;
-            Easy14App.StartInfo.CreateNoWindow = true;
+            Easy14Process.StartInfo.FileName = exePath;
+            Easy14Process.StartInfo.Arguments = saveFile;
+            Easy14Process.StartInfo.UseShellExecute = false;
+            Easy14Process.StartInfo.RedirectStandardInput = true; // Enable input redirection
+            Easy14Process.StartInfo.RedirectStandardOutput = true;
+            Easy14Process.StartInfo.RedirectStandardError = true;
+            Easy14Process.StartInfo.CreateNoWindow = true;
+
             string exeDirectory = Path.GetDirectoryName(exePath); // Get the directory of the executable
-            Easy14App.StartInfo.WorkingDirectory = exeDirectory;
+            Easy14Process.StartInfo.WorkingDirectory = exeDirectory;
 
             // Event handlers to capture the output
-            Easy14App.OutputDataReceived += (s, args) =>
+            Easy14Process.OutputDataReceived += (s, args) =>
             {
                 if (!string.IsNullOrEmpty(args.Data))
                 {
@@ -176,36 +178,42 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
                 }
             };
 
-            Easy14App.ErrorDataReceived += (s, args) =>
+            Easy14Process.ErrorDataReceived += (s, args) =>
             {
                 if (!string.IsNullOrEmpty(args.Data))
                 {
                     UpdateOutputRTB("Error: " + args.Data);
                 }
             };
+
+            // Update the label to indicate that code is running
             actionLB.Text = $"Running code in {saveFile}";
-            Easy14App.Start();
-            Easy14App.BeginOutputReadLine();
-            Easy14App.BeginErrorReadLine();
-            Easy14ProcessOnExit(Easy14App);
+
+            // Start the process and begin reading its output and errors
+            Easy14Process.Start();
+            Easy14Process.BeginOutputReadLine();
+            Easy14Process.BeginErrorReadLine();
+            Easy14ProcessOnExit(Easy14Process);
 
         }
 
-        private async void Easy14ProcessOnExit(Process easy14Process)
+        private async void Easy14ProcessOnExit(Process Easy14Process)
         {
-            while (!easy14Process.HasExited)
+            while (!Easy14Process.HasExited)
             {
                 await Task.Delay(500);
             }
 
-            actionLB.Text = $"Process finished in {easy14Process.ExitTime.Millisecond}ms (Exit Code:{easy14Process.ExitCode})";
-            OutputRTB.AppendText($"{Environment.NewLine}Easy14 exited successfully (Exit Code:{easy14Process.ExitCode})");
+            actionLB.Text = $"Process finished in {Easy14Process.ExitTime.Millisecond}ms (Exit Code:{Easy14Process.ExitCode})";
+            OutputRTB.AppendText($"{Environment.NewLine}Easy14 exited successfully (Exit Code:{Easy14Process.ExitCode})");
 
             int startIndex = OutputRTB.Text.LastIndexOf("Easy14 exited successfully");
             int endIndex = OutputRTB.Text.Length;
 
             OutputRTB.Select(startIndex, endIndex - startIndex);
             OutputRTB.SelectionBackColor = Color.Green;
+
+            Easy14Process.Close();
         }
 
 
@@ -292,6 +300,27 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
         {
             wordWrapToolStripMenuItem.Checked = !wordWrapToolStripMenuItem.Checked;
             CodeEditorArea_rtb.WordWrap = wordWrapToolStripMenuItem.Checked;
+        }
+
+        private void Main_Editor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                Easy14Process.Close();
+                Easy14Process.Kill();
+            }
+            catch { }
+        }
+
+        private void inputTB_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                string userInput = inputTB.Text;
+                // Send the user input to the process's standard input stream.
+                Easy14Process.StandardInput.WriteLine(userInput);
+                inputTB.Clear();
+            }
         }
     }
 }

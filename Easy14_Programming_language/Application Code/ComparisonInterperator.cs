@@ -28,6 +28,16 @@ namespace Easy14_Programming_Language
                     RHS = RHS_Var_value;
                 }
             }
+
+            if (ItemChecks.DetectType(LHS.ToString()) == "string")
+            {
+                LHS = LHS.ToString().Substring(1, LHS.ToString().Length - 2);
+            }
+            if (ItemChecks.DetectType(RHS.ToString()) == "string")
+            {
+                RHS = RHS.ToString().Substring(1, RHS.ToString().Length - 2);
+            }
+
             if (LHS.Equals(RHS))
             {
                 return true;

@@ -41,7 +41,7 @@ namespace Easy14_Programming_Language
 
         public static bool IsVariable(string data, List<object> variables)
         {
-            return variables.Any(item => item.ToString().StartsWith(data));
+            return variables.Any(item => item.ToString() == data);
         }
 
         public static bool IsInt(string data)
