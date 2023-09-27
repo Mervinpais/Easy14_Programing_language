@@ -1,15 +1,13 @@
 ﻿# Easy14 Programing Language
-# v1 - Whale 🐋
----
-![](Easy14_Programming_language/Images/repo%20github%20thumnail.png)
-<!---
-![](Easy14_Programming_language/Images/hand_heart_donate_icon.png)
-### Donations can help me improve this language :)
-#### Note; Can't donate yet
--->
----
+## v1 - Whale 🐋
 
-### What
-* It is a Bridging-Scripting like Language, Not a programming language, which means this runs upon C# and it 
+![Thumbnail](Easy14_Programming_language/Images/repo%20github%20thumnail.png)
 
----
+## What is it?
+#### Funny C# code go boom boom
+
+### Being serious, This language is just a fun language if you wanna try something only OOP, based on C#, and (maybe) slow, and also simple, and clean
+
+## Why?
+
+#### You see kids, when you have too much free time, and wanna do that top 5 dreams every programer has, you CAN do it, with the right programming language of course
