@@ -12,7 +12,7 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
 {
     public partial class Main_Editor : Form
     {
-        Process Easy14Process = new Process();
+        List<Process> Easy14Process = new List<Process>();
 
         public Main_Editor()
         {
@@ -158,19 +158,21 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
 
             string exePath = Path.Combine(projectRoot, "Easy14_Programming_language", "bin", "Debug", "net7.0-windows", "Easy14_Programming_Language.exe");
 
-            Easy14Process.StartInfo.FileName = exePath;
-            Easy14Process.StartInfo.Arguments = saveFile;
-            Easy14Process.StartInfo.UseShellExecute = false;
-            Easy14Process.StartInfo.RedirectStandardInput = true; // Enable input redirection
-            Easy14Process.StartInfo.RedirectStandardOutput = true;
-            Easy14Process.StartInfo.RedirectStandardError = true;
-            Easy14Process.StartInfo.CreateNoWindow = true;
+            Easy14Process.Clear();
+            Easy14Process.Add(new Process());
+            Easy14Process[0].StartInfo.FileName = exePath;
+            Easy14Process[0].StartInfo.Arguments = saveFile;
+            Easy14Process[0].StartInfo.UseShellExecute = false;
+            Easy14Process[0].StartInfo.RedirectStandardInput = true; // Enable input redirection
+            Easy14Process[0].StartInfo.RedirectStandardOutput = true;
+            Easy14Process[0].StartInfo.RedirectStandardError = true;
+            Easy14Process[0].StartInfo.CreateNoWindow = true;
 
             string exeDirectory = Path.GetDirectoryName(exePath); // Get the directory of the executable
-            Easy14Process.StartInfo.WorkingDirectory = exeDirectory;
+            Easy14Process[0].StartInfo.WorkingDirectory = exeDirectory;
 
             // Event handlers to capture the output
-            Easy14Process.OutputDataReceived += (s, args) =>
+            Easy14Process[0].OutputDataReceived += (s, args) =>
             {
                 if (!string.IsNullOrEmpty(args.Data))
                 {
@@ -178,7 +180,7 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
                 }
             };
 
-            Easy14Process.ErrorDataReceived += (s, args) =>
+            Easy14Process[0].ErrorDataReceived += (s, args) =>
             {
                 if (!string.IsNullOrEmpty(args.Data))
                 {
@@ -190,10 +192,10 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
             actionLB.Text = $"Running code in {saveFile}";
 
             // Start the process and begin reading its output and errors
-            Easy14Process.Start();
-            Easy14Process.BeginOutputReadLine();
-            Easy14Process.BeginErrorReadLine();
-            Easy14ProcessOnExit(Easy14Process);
+            Easy14Process[0].Start();
+            Easy14Process[0].BeginOutputReadLine();
+            Easy14Process[0].BeginErrorReadLine();
+            Easy14ProcessOnExit(Easy14Process[0]);
 
         }
 
@@ -213,6 +215,8 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
             OutputRTB.Select(startIndex, endIndex - startIndex);
             OutputRTB.SelectionBackColor = Color.Green;
 
+            Easy14Process.CancelOutputRead();
+            Easy14Process.CancelErrorRead();
             Easy14Process.Close();
         }
 
@@ -306,8 +310,8 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
         {
             try
             {
-                Easy14Process.Close();
-                Easy14Process.Kill();
+                Easy14Process[0].Close();
+                Easy14Process.Clear();
             }
             catch { }
         }
@@ -318,7 +322,7 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
             {
                 string userInput = inputTB.Text;
                 // Send the user input to the process's standard input stream.
-                Easy14Process.StandardInput.WriteLine(userInput);
+                Easy14Process[0].StandardInput.WriteLine(userInput);
                 inputTB.Clear();
             }
         }
