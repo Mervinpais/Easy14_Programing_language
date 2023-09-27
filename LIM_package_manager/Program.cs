@@ -82,8 +82,8 @@ namespace LIM_package_manager
 
         public static (List<string> classes, string method, List<string> params_) Parse(string command)
         {
-            List<string> classes = new List<string>();
             string method = "";
+            List<string> classes = new List<string>();
             List<string> params_ = new List<string>();
 
             string[] array = command.Split(" ");
