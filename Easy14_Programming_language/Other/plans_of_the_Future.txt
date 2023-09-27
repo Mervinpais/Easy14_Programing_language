@@ -1,6 +1,0 @@
-﻿======PLANS======	
-
-- () in for loops
-- () in functions
-
-- method code fix
