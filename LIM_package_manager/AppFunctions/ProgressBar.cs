@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LIM_package_manager.AppFunctions
+﻿namespace LIM_package_manager.AppFunctions
 {
     public static class ProgressBar
     {
@@ -8,7 +6,13 @@ namespace LIM_package_manager.AppFunctions
 
         static int CursorYPos = 0;
 
-        public static void Show(string text = "")
+        static int keyFrame = 0;
+        static public List<string> spinningSymbols = new()
+        { 
+            "#"
+        };
+
+        public static void Show(string text = "", ConsoleColor color = ConsoleColor.Green)
         {
             CursorYPos = Console.CursorTop;
             Console.SetCursorPosition(0, CursorYPos);
@@ -27,11 +31,16 @@ namespace LIM_package_manager.AppFunctions
 
             if (numHashes > 0)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("#");
+                Console.ForegroundColor = color;
+                Console.Write(spinningSymbols[keyFrame]);
                 Console.ResetColor();
             }
 
+            keyFrame++;
+            if (keyFrame > spinningSymbols.Count - 1)
+            {
+                keyFrame = 0;
+            }
             for (int i = 0; i < numSpaces; i++)
             {
                 Console.Write(" ");
@@ -52,6 +61,12 @@ namespace LIM_package_manager.AppFunctions
         {
             Current = value;
             Show(text);
+        }
+
+        public static void Update(int value, string text, ConsoleColor color)
+        {
+            Current = value;
+            Show(text, color);
         }
 
         public static void Clear()

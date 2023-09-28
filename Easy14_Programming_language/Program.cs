@@ -2,7 +2,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using Microsoft.CSharp.RuntimeBinder;
 using SDL2;
 using System;
 using System.Collections.Generic;
@@ -15,6 +14,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using static System.Windows.Forms.LinkLabel;
 
 namespace Easy14_Programming_Language
 {
@@ -328,7 +328,7 @@ namespace Easy14_Programming_Language
                     Console.WriteLine("\nPlease use \"exit()\" or Ctrl+C to close the interactive console");
                     Console.ResetColor(); continue;
                 }
-                else if (currentLine.StartsWith("if"))
+                else if (currentLine.Trim().StartsWith("if"))
                 {
                     textArray = IfLoop.Interperate(i, textArray.ToList());
                     i = 0;
@@ -346,28 +346,78 @@ namespace Easy14_Programming_Language
                     i = 0;
                     continue;
                 }
-                else if (currentLine.StartsWith("method"))
+                else if (currentLine.Trim().StartsWith("method"))
                 {
-                    string methodName = currentLine.Substring("method".Length); // Implement GetMethodName to extract the method name
-                    List<string> methodCode = new List<string>();
-                    int startIndex = i; // Remember the starting index
-
-                    for (int j = i + 1; j < textArray.Length - 1; j++)
+                    int indention = 0;
+                    foreach (char c in currentLine)
                     {
-                        string line = textArray[j];
-
-                        if (line.Trim() == "end")
+                        if (c == ' ')
                         {
-                            // Found the end of the method, add it to the methods dictionary
-                            MethodHandler.DefineMethod(methodName, methodCode);
-                            i = j; // Update the current line index
+                            indention = indention + 1;
+                        }
+                        else if (c == '\t')
+                        {
+                            indention = indention + 3;
+                        }
+                        else
+                        {
                             break;
                         }
-
-                        methodCode.Add(line);
                     }
 
-                    continue;
+                    string indent = "";
+                    for (int i_ = 0; i_ < indention; i_++)
+                    {
+                        indent += " ";
+                    }
+
+                    if (!currentLine.EndsWith("();"))
+                    {
+                        string methodName = currentLine.Substring(indent.Length - 1 + "method".Length); // Implement GetMethodName to extract the method name
+                        if (methodName.Contains(" "))
+                        {
+                            methodName = methodName.Substring(methodName.IndexOf(" "));
+                        }
+                        List<string> methodCode = new List<string>();
+                        int startIndex = i; // Remember the starting index
+
+                        for (int j = i + 1; j < textArray.Length; j++)
+                        {
+                            string line = "";
+                            foreach (char code in textArray[j])
+                            {
+                                if (code == '\t')
+                                {
+                                    line += "   ";
+                                }
+                                else
+                                {
+                                    line += code;
+                                }
+                            }
+
+                            string endWord = (indent + "end");
+                            if (line == endWord)
+                            {
+                                // Found the end of the method, add it to the methods dictionary
+                                MethodHandler.DefineMethod(methodName.Trim(), methodCode);
+                                i = j; // Update the current line index
+                                break;
+                            }
+
+                            methodCode.Add(line);
+                        }
+                        i = i + 1;
+                        continue;
+                    }
+                    else if(currentLine.EndsWith("();"))
+                    {
+                        string methodName = currentLine.Substring(indent.Length + "method".Length, currentLine.Length - (indent.Length + "method".Length + "();".Length)).Trim();
+                        if (MethodHandler.MethodExists(methodName))
+                        {
+                            MethodHandler.ExecuteMethod(methodName);
+                        }
+                    }
                 }
 
                 else if (StatementResult.className[0] == "Var")
@@ -388,24 +438,7 @@ namespace Easy14_Programming_Language
                         return VariableCode.Interperate(StatementResult.paramItems[0], setVariable: false);
                     }
                 }
-                else if (StatementResult.className[0] == "Method")
-                {
-                    if (StatementResult.methodName == "New")
-                    {
-                        if (StatementResult.paramItems.Count > 1)
-                        {
-                            MethodCode.Interperate(StatementResult.paramItems[0], StatementResult.paramItems[1], true);
-                        }
-                        else
-                        {
-                            MethodCode.Interperate(StatementResult.paramItems[0], setVariable: true);
-                        }
-                    }
-                    if (StatementResult.methodName == "Run")
-                    {
-                        return MethodCode.Interperate(StatementResult.paramItems[0], setVariable: false);
-                    }
-                }
+
                 else
                 {
                     if (IsExecutableCode(currentLine))
@@ -426,243 +459,244 @@ namespace Easy14_Programming_Language
                         break;
                     }
                 }
-            }
-            return result;
-        }
-
-        private static bool IsExecutableCode(string currentLine)
-        {
-            return currentLine != "}" &&
-                   currentLine != "break" &&
-                   currentLine != "return" &&
-                   !currentLine.StartsWith("//");
-        }
-        private static void HandleError(string errorMessage)
-        {
-            ErrorReportor.ConsoleLineReporter.Error(errorMessage);
-        }
-
-        public static object ExecuteFunctionFromFile(string directoryName, (List<string> classes, string method, List<string> params_) StatementResult)
-        {
-            List<string> theClassesOfTheLine = StatementResult.classes;
-            string theMethodOfTheLine = StatementResult.method;
-            List<string> paramsGiven = StatementResult.params_;
-
-            string classHierarchy = string.Join("/", theClassesOfTheLine);
-
-            // Create the folder path for Easy14 packages within AppData Local
-            string appDataPath = directoryName;
-
-            // Construct the path for the method's C# file
-            string methodFolderPath = "";
-            string codeFilePath = $"{theMethodOfTheLine}.e14";
-            if (StatementResult.classes[0] != "")
-            {
-                methodFolderPath = Path.Combine(appDataPath, classHierarchy);
-                codeFilePath = Path.Combine(methodFolderPath, $"{theMethodOfTheLine}.e14");
-            }
-
-            if (File.Exists(codeFilePath))
-            {
-                string code = File.ReadAllText(codeFilePath);
-                List<string> codeSplitIntoLines = File.ReadAllLines(codeFilePath).ToList();
-                try
-                {
-                    // Create a wrapper class containing the dynamic method
-                    if (codeSplitIntoLines[0].StartsWith("//_params = "))
-                    {
-                        string _paramsDeclareLine = codeSplitIntoLines[0];
-                        List<string> paramsRequired = codeSplitIntoLines[0].Substring("//_params = ".Length).Split(",").ToList();
-                        // Compare params_ and paramNames count
-                        if (paramsGiven.Count > paramsRequired.Count)
-                        {
-                            // If params_ has more elements than paramNames, truncate the excess
-                            paramsGiven = paramsGiven.Take(paramsRequired.Count).ToList();
-                        }
-                        else if (paramsGiven.Count < paramsRequired.Count)
-                        {
-                            // If params_ has fewer elements than paramNames, add in null values
-                            //Console.WriteLine("Error: Insufficient parameters provided.");
-                            //return null;
-                            paramsGiven = paramsGiven.Take(paramsRequired.Count).ToList();
-                            for (int i = 0; i < (paramsRequired.Count - paramsGiven.Count); i++)
-                            {
-                                paramsGiven.Add("\"\"");
-                                StatementResult.params_.Add("\"\"");
-                            }
-                        }
-
-                        List<string> usingReferences = new();
-                        List<string> restOfCode = new();
-                        codeSplitIntoLines.Remove(_paramsDeclareLine);
-
-                        for (int i = 0; i < paramsRequired.Count; i++)
-                        {
-                            string dataType = "var";
-                            string value = StatementResult.params_[i];
-                            if (value != "")
-                            {
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "str")
-                                    { dataType = "string"; value = "\"\\\"" + value.Substring(1, value.Length - 2) + "\\\"\""; } //this is an abomination but works
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "int") dataType = "int";
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "double") dataType = "double";
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "bool") dataType = "bool";
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "cmd")
-                                    { dataType = "string"; value = "\"" + value.Substring("() =>".Length).Trim().Replace("\"", "\\\"") + ";\""; }
-                                }
-                                catch { }
-                            }
-                            else { dataType = "object"; value = "null"; }
-                            codeSplitIntoLines.Insert(0, $"{dataType} {paramsRequired[i]} = {value};");
-                        }
-                        foreach (string line in codeSplitIntoLines)
-                        {
-                            if (line.StartsWith("using ")) usingReferences.Add(line);
-                            else restOfCode.Add(line);
-                        }
-                        usingReferences.AddRange(restOfCode);
-                        codeSplitIntoLines = usingReferences;
-                        code = string.Join(Environment.NewLine, codeSplitIntoLines);
-                    }
-
-                    CompileCode(code.Split(Environment.NewLine));
                 }
-                catch (Exception e)
+                return result;
+            }
+
+            private static bool IsExecutableCode(string currentLine)
+            {
+                return currentLine != "}" &&
+                       currentLine != "break" &&
+                       currentLine != "return" &&
+                       !currentLine.StartsWith("//");
+            }
+            private static void HandleError(string errorMessage)
+            {
+                ErrorReportor.ConsoleLineReporter.Error(errorMessage);
+            }
+
+            public static object ExecuteFunctionFromFile(string directoryName, (List<string> classes, string method, List<string> params_) StatementResult)
+            {
+                List<string> theClassesOfTheLine = StatementResult.classes;
+                string theMethodOfTheLine = StatementResult.method;
+                List<string> paramsGiven = StatementResult.params_;
+
+                string classHierarchy = string.Join("/", theClassesOfTheLine);
+
+                // Create the folder path for Easy14 packages within AppData Local
+                string appDataPath = directoryName;
+
+                // Construct the path for the method's C# file
+                string methodFolderPath = "";
+                string codeFilePath = $"{theMethodOfTheLine}.e14";
+                if (StatementResult.classes[0] != "")
                 {
-                    ErrorReportor.ConsoleLineReporter.Error("An Error Occurred while running the Easy14 Package (C# Error)");
-                    Console.WriteLine($"\n{e.Message}");
-                    throw new Exception($"Not valid statement;\n{e.Message}");
+                    methodFolderPath = Path.Combine(appDataPath, classHierarchy);
+                    codeFilePath = Path.Combine(methodFolderPath, $"{theMethodOfTheLine}.e14");
                 }
-            }
-            else
-            {
-                Debug.WriteLine($"The method '{theMethodOfTheLine}' for class '{classHierarchy}' was not found.");
-                throw new Exception("Not valid statement");
-            }
 
-            return null;
-        }
-
-        public static object ExecuteFunctionWithNamespace((List<string> classes, string method, List<string> params_) StatementResult)
-        {
-            List<string> theClassesOfTheLine = StatementResult.classes;
-            string theMethodOfTheLine = StatementResult.method;
-            List<string> paramsGiven = StatementResult.params_;
-
-            string classHierarchy = string.Join("/", theClassesOfTheLine);
-
-            // Create the folder path for Easy14 packages within AppData Local
-            string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
-            if (!Directory.Exists(appDataPath))
-            {
-                Directory.CreateDirectory(appDataPath);
-            }
-
-            // Construct the path for the method's C# file
-            string methodFolderPath = Path.Combine(appDataPath, classHierarchy);
-            string codeFilePath = Path.Combine(methodFolderPath, $"{theMethodOfTheLine}.cs");
-
-            if (File.Exists(codeFilePath))
-            {
-                string code = File.ReadAllText(codeFilePath);
-                List<string> codeSplitIntoLines = File.ReadAllLines(codeFilePath).ToList();
-
-                try
+                if (File.Exists(codeFilePath))
                 {
-                    // Create a wrapper class containing the dynamic method
-                    if (codeSplitIntoLines[0].StartsWith("//_params = "))
+                    string code = File.ReadAllText(codeFilePath);
+                    List<string> codeSplitIntoLines = File.ReadAllLines(codeFilePath).ToList();
+                    try
                     {
-                        string _paramsDeclareLine = codeSplitIntoLines[0];
-                        List<string> paramsRequired = codeSplitIntoLines[0].Substring("//_params = ".Length).Split(",").ToList();
-                        // Compare params_ and paramNames count
-                        if (paramsGiven.Count > paramsRequired.Count)
+                        // Create a wrapper class containing the dynamic method
+                        if (codeSplitIntoLines[0].StartsWith("//_params = "))
                         {
-                            // If params_ has more elements than paramNames, truncate the excess
-                            paramsGiven = paramsGiven.Take(paramsRequired.Count).ToList();
-                        }
-                        else if (paramsGiven.Count < paramsRequired.Count)
-                        {
-                            // If params_ has fewer elements than paramNames, add in null values
-                            //Console.WriteLine("Error: Insufficient parameters provided.");
-                            //return null;
-                            paramsGiven = paramsGiven.Take(paramsRequired.Count).ToList();
-                            for (int i = 0; i < (paramsRequired.Count - paramsGiven.Count); i++)
+                            string _paramsDeclareLine = codeSplitIntoLines[0];
+                            List<string> paramsRequired = codeSplitIntoLines[0].Substring("//_params = ".Length).Split(",").ToList();
+                            // Compare params_ and paramNames count
+                            if (paramsGiven.Count > paramsRequired.Count)
                             {
-                                paramsGiven.Add("\"\"");
-                                StatementResult.params_.Add("\"\"");
+                                // If params_ has more elements than paramNames, truncate the excess
+                                paramsGiven = paramsGiven.Take(paramsRequired.Count).ToList();
                             }
+                            else if (paramsGiven.Count < paramsRequired.Count)
+                            {
+                                // If params_ has fewer elements than paramNames, add in null values
+                                //Console.WriteLine("Error: Insufficient parameters provided.");
+                                //return null;
+                                paramsGiven = paramsGiven.Take(paramsRequired.Count).ToList();
+                                for (int i = 0; i < (paramsRequired.Count - paramsGiven.Count); i++)
+                                {
+                                    paramsGiven.Add("\"\"");
+                                    StatementResult.params_.Add("\"\"");
+                                }
+                            }
+
+                            List<string> usingReferences = new();
+                            List<string> restOfCode = new();
+                            codeSplitIntoLines.Remove(_paramsDeclareLine);
+
+                            for (int i = 0; i < paramsRequired.Count; i++)
+                            {
+                                string dataType = "var";
+                                string value = StatementResult.params_[i];
+                                if (value != "")
+                                {
+                                    try
+                                    {
+                                        if (ItemChecks.DetectType(StatementResult.params_[i]) == "str")
+                                        { dataType = "string"; value = "\"\\\"" + value.Substring(1, value.Length - 2) + "\\\"\""; } //this is an abomination but works
+                                    }
+                                    catch { }
+
+                                    try
+                                    {
+                                        if (ItemChecks.DetectType(StatementResult.params_[i]) == "int") dataType = "int";
+                                    }
+                                    catch { }
+                                    try
+                                    {
+                                        if (ItemChecks.DetectType(StatementResult.params_[i]) == "double") dataType = "double";
+                                    }
+                                    catch { }
+                                    try
+                                    {
+                                        if (ItemChecks.DetectType(StatementResult.params_[i]) == "bool") dataType = "bool";
+                                    }
+                                    catch { }
+                                    try
+                                    {
+                                        if (ItemChecks.DetectType(StatementResult.params_[i]) == "cmd")
+                                        { dataType = "string"; value = "\"" + value.Substring("() =>".Length).Trim().Replace("\"", "\\\"") + ";\""; }
+                                    }
+                                    catch { }
+                                }
+                                else { dataType = "object"; value = "null"; }
+                                codeSplitIntoLines.Insert(0, $"{dataType} {paramsRequired[i]} = {value};");
+                            }
+                            foreach (string line in codeSplitIntoLines)
+                            {
+                                if (line.StartsWith("using ")) usingReferences.Add(line);
+                                else restOfCode.Add(line);
+                            }
+                            usingReferences.AddRange(restOfCode);
+                            codeSplitIntoLines = usingReferences;
+                            code = string.Join(Environment.NewLine, codeSplitIntoLines);
                         }
 
-                        List<string> usingReferences = new();
-                        List<string> restOfCode = new();
-                        codeSplitIntoLines.Remove(_paramsDeclareLine);
-
-                        for (int i = 0; i < paramsRequired.Count; i++)
-                        {
-                            string dataType = "var";
-                            string value = StatementResult.params_[i];
-                            if (value != "")
-                            {
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "str")
-                                    { dataType = "string"; value = "\"\\\"" + value.Substring(1, value.Length - 2) + "\\\"\""; } //this is an abomination but works
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "int") dataType = "int";
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "double") dataType = "double";
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "bool") dataType = "bool";
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "cmd")
-                                    { dataType = "string"; value = "\"" + value.Substring("() =>".Length).Trim().Replace("\"", "\\\"") + ";\""; }
-                                }
-                                catch { }
-                            }
-                            else { dataType = "object"; value = "null"; }
-                            codeSplitIntoLines.Insert(0, $"{dataType} {paramsRequired[i]} = {value};");
-                        }
-                        foreach (string line in codeSplitIntoLines)
-                        {
-                            if (line.StartsWith("using ")) usingReferences.Add(line);
-                            else restOfCode.Add(line);
-                        }
-                        usingReferences.AddRange(restOfCode);
-                        codeSplitIntoLines = usingReferences;
-                        code = string.Join(Environment.NewLine, codeSplitIntoLines);
+                        CompileCode(code.Split(Environment.NewLine));
                     }
+                    catch (Exception e)
+                    {
+                        ErrorReportor.ConsoleLineReporter.Error("An Error Occurred while running the Easy14 Package (C# Error)");
+                        Console.WriteLine($"\n{e.Message}");
+                        throw new Exception($"Not valid statement;\n{e.Message}");
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine($"The method '{theMethodOfTheLine}' for class '{classHierarchy}' was not found.");
+                    throw new Exception("Not valid statement");
+                }
 
-                    var references = new List<MetadataReference>
+                return null;
+            }
+
+            public static object ExecuteFunctionWithNamespace((List<string> classes, string method, List<string> params_) StatementResult)
+            {
+                List<string> theClassesOfTheLine = StatementResult.classes;
+                string theMethodOfTheLine = StatementResult.method;
+                List<string> paramsGiven = StatementResult.params_;
+
+                string classHierarchy = string.Join("/", theClassesOfTheLine);
+
+                // Create the folder path for Easy14 packages within AppData Local
+                string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
+                if (!Directory.Exists(appDataPath))
+                {
+                    Directory.CreateDirectory(appDataPath);
+                }
+
+                // Construct the path for the method's C# file
+                string methodFolderPath = Path.Combine(appDataPath, classHierarchy);
+                string codeFilePath = Path.Combine(methodFolderPath, $"{theMethodOfTheLine}.cs");
+
+                if (File.Exists(codeFilePath))
+                {
+                    string code = File.ReadAllText(codeFilePath);
+                    List<string> codeSplitIntoLines = File.ReadAllLines(codeFilePath).ToList();
+
+                    try
+                    {
+                        // Create a wrapper class containing the dynamic method
+                        if (codeSplitIntoLines[0].StartsWith("//_params = "))
+                        {
+                            string _paramsDeclareLine = codeSplitIntoLines[0];
+                            List<string> paramsRequired = codeSplitIntoLines[0].Substring("//_params = ".Length).Split(",").ToList();
+                            // Compare params_ and paramNames count
+                            if (paramsGiven.Count > paramsRequired.Count)
+                            {
+                                // If params_ has more elements than paramNames, truncate the excess
+                                paramsGiven = paramsGiven.Take(paramsRequired.Count).ToList();
+                            }
+                            else if (paramsGiven.Count < paramsRequired.Count)
+                            {
+                                // If params_ has fewer elements than paramNames, add in null values
+                                //Console.WriteLine("Error: Insufficient parameters provided.");
+                                //return null;
+                                paramsGiven = paramsGiven.Take(paramsRequired.Count).ToList();
+                                for (int i = 0; i < (paramsRequired.Count - paramsGiven.Count); i++)
+                                {
+                                    paramsGiven.Add("\"\"");
+                                    StatementResult.params_.Add("\"\"");
+                                }
+                            }
+
+                            List<string> usingReferences = new();
+                            List<string> restOfCode = new();
+                            codeSplitIntoLines.Remove(_paramsDeclareLine);
+
+                            for (int i = 0; i < paramsRequired.Count; i++)
+                            {
+                                string dataType = "var";
+                                string value = StatementResult.params_[i];
+                                if (value != "")
+                                {
+                                    try
+                                    {
+                                        if (ItemChecks.DetectType(StatementResult.params_[i]) == "str")
+                                        { dataType = "string"; value = "\"\\\"" + value.Substring(1, value.Length - 2) + "\\\"\""; } //this is an abomination but works
+                                    }
+                                    catch { }
+                                    try
+                                    {
+                                        if (ItemChecks.DetectType(StatementResult.params_[i]) == "int") dataType = "int";
+                                    }
+                                    catch { }
+                                    try
+                                    {
+                                        if (ItemChecks.DetectType(StatementResult.params_[i]) == "double") dataType = "double";
+                                    }
+                                    catch { }
+                                    try
+                                    {
+                                        if (ItemChecks.DetectType(StatementResult.params_[i]) == "bool") dataType = "bool";
+                                    }
+                                    catch { }
+                                    try
+                                    {
+                                        if (ItemChecks.DetectType(StatementResult.params_[i]) == "cmd")
+                                        { dataType = "string"; value = "\"" + value.Substring("() =>".Length).Trim().Replace("\"", "\\\"") + ";\""; }
+                                    }
+                                    catch { }
+                                }
+                                else { dataType = "object"; value = "null"; }
+                                codeSplitIntoLines.Insert(0, $"{dataType} {paramsRequired[i]} = {value};");
+                            }
+                            foreach (string line in codeSplitIntoLines)
+                            {
+                                if (line.StartsWith("using ")) usingReferences.Add(line);
+                                else restOfCode.Add(line);
+                            }
+                            usingReferences.AddRange(restOfCode);
+                            codeSplitIntoLines = usingReferences;
+                            code = string.Join(Environment.NewLine, codeSplitIntoLines);
+                        }
+
+                        var references = new List<MetadataReference>
                     {
                         MetadataReference.CreateFromFile(typeof(DataTable).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(SDL).Assembly.Location),
@@ -683,37 +717,37 @@ namespace Easy14_Programming_Language
                         MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
                     };
 
-                    ScriptOptions scriptOptions = ScriptOptions.Default
-                        .WithReferences(references)
-                        .WithImports("System", "SDL2", "System.IO", "System.Threading", "System.Threading.Tasks", "System.Windows", "System.Media", "System.Drawing", "System.Drawing.Point", "System.Windows.Forms", "System.Collections.Generic", "System.Net", "System.Net.NetworkInformation", "Easy14_Programming_Language", "Easy14_Programming_Language.UniversalVariables");
+                        ScriptOptions scriptOptions = ScriptOptions.Default
+                            .WithReferences(references)
+                            .WithImports("System", "SDL2", "System.IO", "System.Threading", "System.Threading.Tasks", "System.Windows", "System.Media", "System.Drawing", "System.Drawing.Point", "System.Windows.Forms", "System.Collections.Generic", "System.Net", "System.Net.NetworkInformation", "Easy14_Programming_Language", "Easy14_Programming_Language.UniversalVariables");
 
-                    var script = CSharpScript.Create(code, options: scriptOptions);
-                    var result = script.RunAsync().Result;
+                        var script = CSharpScript.Create(code, options: scriptOptions);
+                        var result = script.RunAsync().Result;
 
-                    if (result.Exception != null)
-                    {
-                        Console.WriteLine("Error occurred: " + result.Exception);
+                        if (result.Exception != null)
+                        {
+                            Console.WriteLine("Error occurred: " + result.Exception);
+                        }
+                        else
+                        {
+                            var returnValue = result.ReturnValue;
+                            return returnValue;
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        var returnValue = result.ReturnValue;
-                        return returnValue;
+                        ErrorReportor.ConsoleLineReporter.Error("An Error Occurred while running the Easy14 Package (C# Error)");
+                        Console.WriteLine($"\n{e.Message}");
+                        throw new Exception($"Not valid statement;\n{e.Message}");
                     }
                 }
-                catch (Exception e)
+                else
                 {
-                    ErrorReportor.ConsoleLineReporter.Error("An Error Occurred while running the Easy14 Package (C# Error)");
-                    Console.WriteLine($"\n{e.Message}");
-                    throw new Exception($"Not valid statement;\n{e.Message}");
+                    Debug.WriteLine($"The method '{theMethodOfTheLine}' for class '{classHierarchy}' was not found.");
+                    throw new Exception("Not valid statement");
                 }
-            }
-            else
-            {
-                Debug.WriteLine($"The method '{theMethodOfTheLine}' for class '{classHierarchy}' was not found.");
-                throw new Exception("Not valid statement");
-            }
 
-            return null;
+                return null;
+            }
         }
     }
-}

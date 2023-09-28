@@ -83,8 +83,8 @@ namespace LIM_package_manager
         public static (List<string> classes, string method, List<string> params_) Parse(string command)
         {
             string method = "";
-            List<string> classes = new List<string>();
-            List<string> params_ = new List<string>();
+            List<string> classes = new();
+            List<string> params_ = new();
 
             string[] array = command.Split(" ");
 
@@ -94,7 +94,7 @@ namespace LIM_package_manager
             if (firstParamIndex == -1)
             {
                 // Case: No parameters provided
-                method = array[array.Length - 1];
+                method = array[^1];
                 classes = new List<string>(array[..^1]);
             }
             else
