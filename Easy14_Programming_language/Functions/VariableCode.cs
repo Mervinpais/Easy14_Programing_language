@@ -44,7 +44,7 @@ namespace Easy14_Programming_Language
                 }
                 else
                 {
-                    ErrorReportor.ConsoleLineReporter.Error($"Variable \'{name}\' does not exist!");
+                    ErrorReportor.ReportError("Variable not found!", $"Variable \'{name}\' does not exist!");
                     return null;
                 }
             }

@@ -1,2 +1,2 @@
 [CURRENT VERSION]
-V1 - Whale
+V1P1 - Whale Patch 1

@@ -34,7 +34,7 @@ namespace Easy14_Programming_Language
                         Console.WriteLine("A new update is available!");
                         Console.WriteLine($"Current version: {currentVersion}");
                         Console.WriteLine($"Latest version: {latestVersion}");
-                        ErrorReportor.ConsoleLineReporter.Message("Use LIM to install this update");
+                        ErrorReportor.ReportError("EASY14 Update Message", "Use LIM to install this update");
                     }
                     else
                     {

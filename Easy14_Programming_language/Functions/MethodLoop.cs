@@ -6,10 +6,10 @@ using static System.Windows.Forms.LinkLabel;
 
 namespace Easy14_Programming_Language
 {
-    public static class MethodHandler
+    public static class MethodLoop
     {
         // Define a dictionary to store method names and their contents
-        private static readonly Dictionary<string, List<string>> methods = new Dictionary<string, List<string>>();
+        private static Dictionary<string, List<string>> methods = new Dictionary<string, List<string>>();
 
         // Method to define a new method
         public static void DefineMethod(string methodName, List<string> methodContents)
