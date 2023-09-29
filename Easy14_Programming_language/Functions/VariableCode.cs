@@ -1,53 +1,38 @@
+using Easy14_Programming_Language.Application_Code;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using static System.Windows.Forms.LinkLabel;
 
 namespace Easy14_Programming_Language
 {
     public static class VariableCode
     {
-        public static Dictionary<object, object> variableList = new Dictionary<object, object>();
+        public static Dictionary<string, string> variables = new Dictionary<string, string>();
 
-        public static object Interperate(object name, object value = null, bool setVariable = false)
+        // Method to define a new method
+        public static void DefineVariable(string variableName, string variableContents)
         {
-            if (setVariable)
+            variables[variableName] = variableContents;
+        }
+
+        public static string ReturnString(string variableName)
+        {
+            if (variables.ContainsKey(variableName))
             {
-                if (value != null)
-                {
-                    if (value.ToString().StartsWith("() =>"))
-                    {
-                        value = value.ToString().Substring("() =>".Length).Trim();
-                        if (!value.ToString().EndsWith(";")) value = value.ToString() + ";";
-                        variableList[name] = Program.CompileCode(new string[] { value.ToString() }); ;
-                    }
-                    else
-                    {
-                        if (ItemChecks.DetectType(value.ToString()) != "var")
-                        {
-                            variableList[name] = value;
-                        }
-                        else
-                        {
-                            variableList[name] = variableList[value];
-                        }
-                    }
-                }
-                else
-                {
-                    variableList[name] = "";
-                }
-                return null;
+                return variables[variableName];
             }
             else
             {
-                if (variableList.TryGetValue(name, out var storedValue))
-                {
-                    return storedValue;
-                }
-                else
-                {
-                    ErrorReportor.ReportError("Variable not found!", $"Variable \'{name}\' does not exist!");
-                    return null;
-                }
+                Console.WriteLine($"Method '{variableName}' not found.");
             }
+            return null;
+        }
+
+
+        public static bool VariableExists(string methodName)
+        {
+            return variables.ContainsKey(methodName);
         }
     }
 }

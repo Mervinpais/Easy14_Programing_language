@@ -14,17 +14,17 @@ namespace Easy14_Programming_Language
 
             if (ItemChecks.DetectType(LHS.ToString()) == "var")
             {
-                if (VariableCode.variableList.Keys.Any(varName => varName.Equals(LHS)))
+                if (VariableCode.variables.Keys.Any(varName => varName.Equals(LHS)))
                 {
-                    VariableCode.variableList.TryGetValue(LHS, out var LHS_Var_value);
+                    VariableCode.variables.TryGetValue(LHS.ToString(), out var LHS_Var_value);
                     LHS = LHS_Var_value;
                 }
             }
             if (ItemChecks.DetectType(RHS.ToString()) == "var")
             {
-                if (VariableCode.variableList.Keys.Any(varName => varName.Equals(RHS)))
+                if (VariableCode.variables.Keys.Any(varName => varName.Equals(RHS)))
                 {
-                    VariableCode.variableList.TryGetValue(RHS, out var RHS_Var_value);
+                    VariableCode.variables.TryGetValue(RHS.ToString(), out var RHS_Var_value);
                     RHS = RHS_Var_value;
                 }
             }
@@ -55,17 +55,17 @@ namespace Easy14_Programming_Language
 
             if (ItemChecks.DetectType(LHS.ToString()) == "var")
             {
-                if (VariableCode.variableList.Keys.Any(varName => varName.Equals(LHS)))
+                if (VariableCode.variables.Keys.Any(varName => varName.Equals(LHS)))
                 {
-                    VariableCode.variableList.TryGetValue(LHS, out var LHS_Var_value);
+                    VariableCode.variables.TryGetValue(LHS.ToString(), out var LHS_Var_value);
                     LHS = LHS_Var_value;
                 }
             }
             if (ItemChecks.DetectType(RHS.ToString()) == "var")
             {
-                if (VariableCode.variableList.Keys.Any(varName => varName.Equals(RHS)))
+                if (VariableCode.variables.Keys.Any(varName => varName.Equals(RHS)))
                 {
-                    VariableCode.variableList.TryGetValue(RHS, out var RHS_Var_value);
+                    VariableCode.variables.TryGetValue(RHS.ToString(), out var RHS_Var_value);
                     RHS = RHS_Var_value;
                 }
             }

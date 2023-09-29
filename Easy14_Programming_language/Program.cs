@@ -467,13 +467,13 @@ namespace Easy14_Programming_Language
 
                     if (currentLine.Contains("="))
                     {
-                        BVariableCode.DefineVariable(variableName, variableContents);
+                        VariableCode.DefineVariable(variableName, variableContents);
                     }
                     else
                     {
-                        if (BVariableCode.VariableExists(variableName))
+                        if (VariableCode.VariableExists(variableName))
                         {
-                            result = BVariableCode.variables[variableName];
+                            result = VariableCode.variables[variableName];
                         }
                         else
                         {
@@ -750,7 +750,7 @@ namespace Easy14_Programming_Language
                         MetadataReference.CreateFromFile(typeof(Program).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(ItemChecks).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(VariableCode).Assembly.Location),
-                        MetadataReference.CreateFromFile(typeof(BVariableCode).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(VariableCode).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(UniversalVariables).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
