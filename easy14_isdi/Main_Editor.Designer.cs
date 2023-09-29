@@ -44,9 +44,10 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OutputRTB = new System.Windows.Forms.RichTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.inputTB = new System.Windows.Forms.RichTextBox();
             this.actionLB = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.inputTB = new System.Windows.Forms.RichTextBox();
+            this.noteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -64,7 +65,7 @@
             this.CodeEditorArea_rtb.Location = new System.Drawing.Point(0, 0);
             this.CodeEditorArea_rtb.Margin = new System.Windows.Forms.Padding(4);
             this.CodeEditorArea_rtb.Name = "CodeEditorArea_rtb";
-            this.CodeEditorArea_rtb.Size = new System.Drawing.Size(782, 817);
+            this.CodeEditorArea_rtb.Size = new System.Drawing.Size(782, 845);
             this.CodeEditorArea_rtb.TabIndex = 0;
             this.CodeEditorArea_rtb.Text = " ";
             this.CodeEditorArea_rtb.TextChanged += new System.EventHandler(this.code_text_area_rtb_TextChanged);
@@ -138,10 +139,11 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
-            this.helpToolStripMenuItem});
+            this.helpToolStripMenuItem,
+            this.noteToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1585, 36);
+            this.menuStrip1.Size = new System.Drawing.Size(1585, 42);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -152,7 +154,7 @@
             this.saveToolStripMenuItem,
             this.recentToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(60, 32);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(60, 33);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem
@@ -178,7 +180,7 @@
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.wordWrapToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(64, 32);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(64, 33);
             this.editToolStripMenuItem.Text = "Edit";
             // 
             // wordWrapToolStripMenuItem
@@ -193,7 +195,7 @@
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(71, 32);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(71, 33);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
@@ -206,7 +208,7 @@
             // OutputRTB
             // 
             this.OutputRTB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.OutputRTB.Dock = System.Windows.Forms.DockStyle.Top;
+            this.OutputRTB.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OutputRTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.857143F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.OutputRTB.ForeColor = System.Drawing.Color.White;
             this.OutputRTB.Location = new System.Drawing.Point(0, 0);
@@ -214,7 +216,7 @@
             this.OutputRTB.ReadOnly = true;
             this.OutputRTB.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.OutputRTB.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
-            this.OutputRTB.Size = new System.Drawing.Size(762, 761);
+            this.OutputRTB.Size = new System.Drawing.Size(762, 845);
             this.OutputRTB.TabIndex = 7;
             this.OutputRTB.Text = "(Waiting for Easy14 Interpertor)";
             // 
@@ -234,16 +236,29 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.inputTB);
             this.splitContainer1.Panel2.Controls.Add(this.OutputRTB);
-            this.splitContainer1.Size = new System.Drawing.Size(1548, 817);
+            this.splitContainer1.Size = new System.Drawing.Size(1548, 845);
             this.splitContainer1.SplitterDistance = 782;
             this.splitContainer1.TabIndex = 8;
+            // 
+            // inputTB
+            // 
+            this.inputTB.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.inputTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.inputTB.Location = new System.Drawing.Point(0, 790);
+            this.inputTB.Multiline = false;
+            this.inputTB.Name = "inputTB";
+            this.inputTB.Size = new System.Drawing.Size(762, 55);
+            this.inputTB.TabIndex = 8;
+            this.inputTB.Text = "";
+            this.inputTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTB_KeyDown);
             // 
             // actionLB
             // 
             this.actionLB.AutoSize = true;
+            this.actionLB.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.actionLB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.actionLB.ForeColor = System.Drawing.Color.White;
-            this.actionLB.Location = new System.Drawing.Point(20, 969);
+            this.actionLB.Location = new System.Drawing.Point(0, 993);
             this.actionLB.Name = "actionLB";
             this.actionLB.Size = new System.Drawing.Size(84, 32);
             this.actionLB.TabIndex = 9;
@@ -260,17 +275,12 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Themes have been disabled for being unfinished until next update\r\n";
             // 
-            // inputTB
+            // noteToolStripMenuItem
             // 
-            this.inputTB.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.inputTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.inputTB.Location = new System.Drawing.Point(0, 762);
-            this.inputTB.Multiline = false;
-            this.inputTB.Name = "inputTB";
-            this.inputTB.Size = new System.Drawing.Size(762, 55);
-            this.inputTB.TabIndex = 8;
-            this.inputTB.Text = "";
-            this.inputTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTB_KeyDown);
+            this.noteToolStripMenuItem.Name = "noteToolStripMenuItem";
+            this.noteToolStripMenuItem.Size = new System.Drawing.Size(352, 34);
+            this.noteToolStripMenuItem.Text = "Note: This SE might get discontinued";
+            this.noteToolStripMenuItem.Click += new System.EventHandler(this.noteToolStripMenuItem_Click);
             // 
             // Main_Editor
             // 
@@ -325,6 +335,7 @@
         private System.Windows.Forms.Label actionLB;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox inputTB;
+        private System.Windows.Forms.ToolStripMenuItem noteToolStripMenuItem;
     }
 }
 

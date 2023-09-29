@@ -47,7 +47,7 @@ namespace Easy14_Programming_Language
 
             try
             {
-                Console.WriteLine($"Easy14 {File.ReadAllLines(version)[1]} ({osName})");
+                Console.WriteLine($"Easy14 {File.ReadAllLines(version)[0]} ({osName})");
             }
             catch
             {
@@ -57,6 +57,9 @@ namespace Easy14_Programming_Language
             if (!Configuration.GetBoolOptionValue("UpdatesDisabled")) { UpdateChecker.CheckLatestVersion(); }
 
             Thread.Sleep(Configuration.GetIntOptionValue("delay") * 1000);
+
+            Console.WriteLine("\n===== Easy14 =====\n");
+
 
             if (args.Length != 0)
             {
@@ -71,7 +74,6 @@ namespace Easy14_Programming_Language
                 }
             }
 
-            Console.WriteLine("\n===== Easy14 =====\n");
             try
             {
                 int windowHeight = Console.WindowHeight;
@@ -101,39 +103,49 @@ namespace Easy14_Programming_Language
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                ErrorReportor.ReportWarning("Config Setting Error", "THIS IS NOT AN ERROR, Just that Easy14 config couldn't be set, so using defaults\n\n========");
+                ErrorReportor.ReportWarning("Configuration Setting", "No error occurred; Easy14 is using default settings.\n\n========");
             }
 
 
             while (true)
             {
                 Console.Write(":>");
-                string line = "";
-                line = Console.ReadLine();
-                if (line == "") continue;
-                else if (line == "exit();") return;
-                else if (line == "exit")
+                string input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
                 {
-                    ErrorReportor.ReportWarning("Exit Warning", "\nPlease use \"exit();\" or Ctrl+C to close the interative console"); continue;
+                    // Skip empty lines
+                    continue;
                 }
-                else if (line.StartsWith("/run"))
+
+                switch (input)
                 {
-                    Program compiler = new Program();
-                    compiler.ExternalComplieCode(line.Trim().Substring(4));
-                }
-                else if (line == "/intro") IntroductionCode.IntroCode();
-                else
-                {
-                    if (!line.StartsWith("/"))
-                    {
-                        Program prog = new Program();
-                        prog.ExternalComplieCode(null, new string[] { line }, 0);
-                    }
+                    case "exit();":
+                        return;
+
+                    case "exit":
+                        ErrorReportor.ReportWarning("Exit Warning", "Please use \"exit();\" or Ctrl+C to close the interactive console");
+                        continue;
+
+                    case "/intro":
+                        // Handle "/intro" command
+                        IntroductionCode.IntroCode();
+                        break;
+
+                    default:
+                        // Handle other input as code to compile and execute
+                        if (!input.StartsWith("/"))
+                        {
+                            Program compiler = new Program();
+                            compiler.ExternalCompileCode(null, new string[] { input }, 0);
+                        }
+                        break;
                 }
             }
+
         }
 
-        public object ExternalComplieCode(string fileLoc = null, string[] textArray = null, int lineIDX = 0)
+        public object ExternalCompileCode(string fileLoc = null, string[] textArray = null, int lineIDX = 0)
         {
             if (textArray == null)
             {
@@ -247,7 +259,6 @@ namespace Easy14_Programming_Language
             }
         }
 
-
         public static object CompileCode(string[] textArray = null, int lineIDX = 0)
         {
             int lineCount = 0;
@@ -262,6 +273,7 @@ namespace Easy14_Programming_Language
             {
                 if (ProgramStatus.HasFlag(Status.CODE_ERROR) || ProgramStatus.HasFlag(Status.CODE_ERROR))
                 {
+                    ProgramStatus = Status.NORMAL;
                     return "";
                 }
 
@@ -435,26 +447,40 @@ namespace Easy14_Programming_Language
                         }
                     }
                 }
-
-                else if (StatementResult.className[0] == "Var")
+                else if (currentLine.Trim().StartsWith("var"))
                 {
-                    if (StatementResult.methodName == "New")
+                    string variableName = "";
+                    string variableContents = "";
+
+                    try
                     {
-                        if (StatementResult.paramItems.Count > 1)
+                        variableName = currentLine.Trim().Split("=")[0];
+                        variableName = variableName.Substring(3).Trim();
+                        variableContents = currentLine.Trim().Split("=")[1].Trim();
+                        variableContents = variableContents.Substring(0, variableContents.Length - 1);
+                    }
+                    catch
+                    {
+                        variableName = currentLine.Substring(3).Trim();
+                        variableName = variableName.Substring(0, variableName.Length - 1);
+                    }
+
+                    if (currentLine.Contains("="))
+                    {
+                        BVariableCode.DefineVariable(variableName, variableContents);
+                    }
+                    else
+                    {
+                        if (BVariableCode.VariableExists(variableName))
                         {
-                            VariableCode.Interperate(StatementResult.paramItems[0], StatementResult.paramItems[1], true);
+                            result = BVariableCode.variables[variableName];
                         }
                         else
                         {
-                            VariableCode.Interperate(StatementResult.paramItems[0], setVariable: true);
+
                         }
                     }
-                    if (StatementResult.methodName == "Get")
-                    {
-                        return VariableCode.Interperate(StatementResult.paramItems[0], setVariable: false);
-                    }
                 }
-
                 else
                 {
                     if (IsExecutableCode(currentLine))
@@ -724,6 +750,7 @@ namespace Easy14_Programming_Language
                         MetadataReference.CreateFromFile(typeof(Program).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(ItemChecks).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(VariableCode).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(BVariableCode).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(UniversalVariables).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),

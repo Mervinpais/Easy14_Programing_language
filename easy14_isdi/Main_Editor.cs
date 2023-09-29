@@ -54,47 +54,63 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
                 }
             }
         }
-        public static string saveFile = null;
-
+        public static string saveFile = "";
         private void ColourRrbText(RichTextBox rtb)
         {
             int i = rtb.SelectionStart;
-
             rtb.Select(0, rtb.Text.Length);
-            rtb.SelectionColor = Color.White;
+            rtb.SelectionColor = Color.White; // Set the default color to white
             rtb.SelectionStart = i;
-            //Resets after coloring everything for next text
+
             void SetBackToNormalColor()
             {
                 rtb.Select(i, 0);
-                rtb.SelectionColor = Color.Black;
+                rtb.SelectionColor = Color.White;
             }
 
-            void ChangeColorOfWord(string Regex_str, string color_name)
+            // Match and colorize method calls like myClass.XYZ.myMethod();
+            void ChangeColorOfMethodCalls()
+            {
+                string text = rtb.Text;
+                int currentIndex = 0;
+                while (currentIndex < text.Length)
+                {
+                    int startIndex = text.IndexOf('.', currentIndex);
+                    if (startIndex == -1)
+                        break;
+
+                    int endIndex = text.IndexOf(')', startIndex);
+
+                    if (endIndex == -1)
+                        break;
+
+                    rtb.Select(startIndex, endIndex - startIndex + 1);
+                    rtb.SelectionColor = Color.CornflowerBlue;
+
+                    currentIndex = endIndex + 1;
+                }
+            }
+
+            // Match and colorize keywords and identifiers
+            void ChangeColorOfWord(string Regex_str, Color color)
             {
                 i = rtb.SelectionStart;
                 Regex regExp = new Regex(Regex_str);
                 foreach (Match match in regExp.Matches(rtb.Text))
                 {
                     rtb.Select(match.Index, match.Length);
-                    rtb.SelectionColor = Color.FromName(color_name);
-                    if (rtb.Text.Length >= i)
-                    {
-                        i = i++;
-                    }
-                    else if (rtb.Text.Length <= i)
-                    {
-                        i = i--;
-                    }
+                    rtb.SelectionColor = color;
                 }
                 SetBackToNormalColor();
             }
 
-            ChangeColorOfWord("if|else|while", "Teal");
-            ChangeColorOfWord("using", "Orange");
-            ChangeColorOfWord("\"", "LightGreen");
-            ChangeColorOfWord("Console", "LightBlue");
+            ChangeColorOfMethodCalls();
+            ChangeColorOfWord("\"[^\"]*\"", Color.LightGreen);
+            ChangeColorOfWord("\\b(if|for|while)\\b", Color.CornflowerBlue);
+            ChangeColorOfWord("\\b(import|method)\\b", Color.Orange);
         }
+
+
 
         private void code_text_area_rtb_TextChanged(object sender, System.EventArgs e)
         {
@@ -106,8 +122,6 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
 
         private void run_code_btn_Click(object sender, System.EventArgs e)
         {
-            OutputRTB.Clear();
-            actionLB.Text = "Running code";
             if (saveFile == "")
             {
                 DialogResult dialogResult = MessageBox.Show("File needs to be saved to run, continue?", "Unsaved File", MessageBoxButtons.YesNo);
@@ -152,6 +166,9 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
             {
                 actionLB.Text = $"An Error occured while saving to file {saveFile}";
             }
+
+            OutputRTB.Clear();
+            actionLB.Text = "Running code";
 
             string currentDirectory = Directory.GetCurrentDirectory();
             string projectRoot = currentDirectory.Substring(0, currentDirectory.IndexOf("easy14_isdi\\"));
@@ -248,7 +265,7 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
 
         private void settings_btn_Click(object sender, EventArgs e)
         {
-            settings_form settings_Form = new settings_form();
+            Settings settings_Form = new Settings();
             settings_Form.Show();
         }
 
@@ -325,6 +342,11 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
                 Easy14Process[0].StandardInput.WriteLine(userInput);
                 inputTB.Clear();
             }
+        }
+
+        private void noteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

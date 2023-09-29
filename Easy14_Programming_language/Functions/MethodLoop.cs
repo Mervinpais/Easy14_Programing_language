@@ -9,7 +9,7 @@ namespace Easy14_Programming_Language
     public static class MethodLoop
     {
         // Define a dictionary to store method names and their contents
-        private static Dictionary<string, List<string>> methods = new Dictionary<string, List<string>>();
+        public static Dictionary<string, List<string>> methods = new Dictionary<string, List<string>>();
 
         // Method to define a new method
         public static void DefineMethod(string methodName, List<string> methodContents)
