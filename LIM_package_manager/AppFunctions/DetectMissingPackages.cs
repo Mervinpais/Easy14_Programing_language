@@ -33,17 +33,46 @@ namespace LIM_package_manager
         }
         public static void Easy14StandardLibrary()
         {
-            ProgressBar.spinningSymbols = new() { "\\", "|", "/", "-"};
+            ProgressBar.spinningSymbols = new() { "\\", "|", "/", "-" };
             List<string> requiredPackages = new()
-            {
-                "Audio",
-                "Console",
-                "FileSystem",
-                "Network",
-                "Time"
-            };
+    {
+        "Audio",
+        "Console",
+        "FileSystem",
+        "Network",
+        "Time"
+    };
 
             ProgressBar.Show("Searching If All Base Packages Available");
+
+            string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string cacheFilePath = Path.Combine(appdataPath, "lim_easy14_base_files_cache.txt");
+
+            if (File.Exists(cacheFilePath))
+            {
+                DateTime cacheFileLastWriteTime = File.GetLastWriteTime(cacheFilePath);
+                DateTime currentDateTime = DateTime.Now;
+                TimeSpan timeDifference = currentDateTime - cacheFileLastWriteTime;
+
+                // Check if the cache file is older than 3 hours (3 * 60 minutes * 60 seconds)
+                if (timeDifference.TotalSeconds > (3 * 60 * 60))
+                {
+                    // Cache file is older than 3 hours, delete it
+                    File.Delete(cacheFilePath);
+                }
+                else
+                {
+                    // Cache file is recent, read and return
+                    Console.WriteLine("\nUsing cached data...");
+                    Console.WriteLine("Differences or errors were found in the following files:");
+                    foreach (string differingFile in File.ReadAllLines(cacheFilePath))
+                    {
+                        Console.WriteLine(differingFile);
+                    }
+                    Console.WriteLine($"NOTE: This file was cached, if you want to recheck, remove the file at \"{cacheFilePath}\"");
+                    return;
+                }
+            }
 
             for (int i = 0; i < requiredPackages.Count; i++)
             {
@@ -121,7 +150,7 @@ namespace LIM_package_manager
                     Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
                     Console.Write("                                               ");
                     Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
-                    Console.Write("All Base Packages for Easy14 are alright");
+                    Console.Write("All Base Packages for Easy14 are verified");
                 }
                 else
                 {
@@ -130,6 +159,7 @@ namespace LIM_package_manager
                     {
                         Console.WriteLine(differingFile);
                     }
+                    File.WriteAllLines(Path.Combine(appdataPath, "lim_easy14_base_files_cache.txt"), differingFiles);
                 }
             }
             else

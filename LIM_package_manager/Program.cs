@@ -1,4 +1,6 @@
 ﻿using LIM_package_manager.AppFunctions;
+using System.Diagnostics;
+using System.Net;
 
 namespace LIM_package_manager
 {
@@ -42,6 +44,28 @@ namespace LIM_package_manager
                             _ = PackageInstall.Install(params_, true, true);
                             continue;
                         }
+                        else if (params_[0] == "--easy14")
+                        {
+                            Console.WriteLine("Downloading File(s);");
+                            using (var client = new WebClient())
+                            {
+                                client.DownloadFile("https://pastebin.com/raw/hrXXZVyj", "E14downloadLink.txt");
+                            }
+                            using (var client = new WebClient())
+                            {
+                                client.DownloadFile(File.ReadAllLines("E14downloadLink.txt")[0], "easy14setup.exe");
+                            }
+                            Console.WriteLine("Opening Setup.exe...");
+                            try
+                            {
+                                Process.Start("easy14setup.exe");
+                            }
+                            catch
+                            {
+
+                            }
+                            continue;
+                        }
                         else
                         {
                             _ = PackageInstall.Install(params_, false, true);
@@ -76,6 +100,14 @@ namespace LIM_package_manager
                     {
                         Console.WriteLine(string.Join(Environment.NewLine, File.ReadAllLines("helpContent.txt")));
                     }
+                    else
+                    {
+                        Console.WriteLine($"Unknown command method {method}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Unknown command class {string.Join(" ", classes)}");
                 }
             }
         }
