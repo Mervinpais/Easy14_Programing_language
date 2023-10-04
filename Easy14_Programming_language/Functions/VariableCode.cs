@@ -13,6 +13,11 @@ namespace Easy14_Programming_Language
         // Method to define a new method
         public static void DefineVariable(string variableName, string variableContents)
         {
+            if (variableContents.StartsWith("() => "))
+            {
+                variableContents = variableContents.Substring(6).Trim();
+                variableContents = Program.CompileCode(textArray: new string[] { variableContents + ";" }).ToString();
+            }
             variables[variableName] = variableContents;
         }
 
