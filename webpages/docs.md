@@ -1,7 +1,5 @@
 # Documentation
 
-## Here are the tutorials i currently offer for the language
-
 1.  [Basic Functions](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/basicFunctions.html)
 2.  [Console](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/console.html)
 3.  [Variables](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/variables.html)

@@ -4,11 +4,23 @@ A Bridging language between C# and the common user
 
 ```csharp
 Console.Print("Hello world!");
+var hello = "Goodbye";
+if hello == "Goodbye"
+    Console.Print("noooo");
+end
 ```
 ---
 ## FAQ
 
-im gonna update this later
+### Versioning system?
+V1 - Whale 🐳
+V2 - Cat 🐈
+V3 - Lamb 🐑
+V4 and after - ???
+
+"VxPy - ABC Animal Name"``
+
+is the versioning system
 
 ## Links
 

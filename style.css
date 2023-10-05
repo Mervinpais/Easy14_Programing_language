@@ -13,38 +13,6 @@
     background-color: #ffffff;
     color: #000000;
 }
-
-head1,
-head2,
-head3,
-head4,
-head5,
-head6,
-para {
-    font-family: monospace;
-}
-
-head1 {
-    font-size: 37px;
-}
-head2 {
-    font-size: 33px;
-}
-head3 {
-    font-size: 26px;
-}
-head4 {
-    font-size: 22px;
-}
-head5 {
-    font-size: 18px;
-}
-head6 {
-    font-size: 15px;
-}
-para {
-    font-size: 17px;
-}
 .code {
     background-color: #101010;
     color: white;
