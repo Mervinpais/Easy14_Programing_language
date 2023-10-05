@@ -10,11 +10,11 @@
 2.  [If Statements](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/ifStatements.html)
 3.  [Loops](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/loops.html)
 
-Upcoming Documentation (Half Documented)
+    Upcoming Documentation (Half Documented)
 1.  [Arrays](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/arrays.html)
 2.  [Functions](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/functions.html)
 
-Upcoming Documentation (Currently Unavailable)
+    Upcoming Documentation (Currently Unavailable)
 1.  [Classes](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/classes.html)
 2.  [Objects](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/objects.html)
 3.   [Files](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/files.html)
