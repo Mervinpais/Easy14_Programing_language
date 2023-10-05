@@ -5,10 +5,12 @@
 2.  [Console](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/console.html)
 3.  [Variables](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/variables.html)
 
+## In need of more info
+4.  [If Statements](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/ifStatements.html)
+
 ## Older Documentation (To be updated to the latest version)
 
-1.  [If Statements](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/ifStatements.html)
-2.  [Loops](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/loops.html)
+1.  [Loops](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/loops.html)
 
     Upcoming Documentation (Half Documented)
 1.  [Arrays](https://mervinpais.github.io/Easy14_Programing_language/webpages/tutorials/arrays.html)
