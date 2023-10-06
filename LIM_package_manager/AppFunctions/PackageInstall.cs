@@ -65,6 +65,8 @@
 
             try
             {
+                if (packageFilePath.StartsWith("--")) { packageFilePath = packageFilePath.Substring(2); } 
+                    
                 UnpackJsonPackage.file = packageFilePath; UnpackJsonPackage.Unpack(); success = 1;
             }
             catch (Exception)

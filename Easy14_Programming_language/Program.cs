@@ -23,6 +23,7 @@ namespace Easy14_Programming_Language
         // Configuration flags
         public static bool showStatementsDuringRuntime = false;
         public static bool DisplayFileContentsBeforeRuntime = false;
+        public static string PathOfPackages = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 Packages");
 
         // Paths and file-related variables
         private static readonly string executingAssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -506,15 +507,7 @@ namespace Easy14_Programming_Language
 
             string classHierarchy = string.Join("/", theClassesOfTheLine);
 
-            // Create the folder path for Easy14 packages within AppData Local
-            string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
-            if (!Directory.Exists(appDataPath))
-            {
-                Directory.CreateDirectory(appDataPath);
-            }
-
-            // Construct the path for the method's C# file
-            string methodFolderPath = Path.Combine(appDataPath, classHierarchy);
+            string methodFolderPath = Path.Combine(PathOfPackages, classHierarchy);
             string codeFilePath = Path.Combine(methodFolderPath, $"{theMethodOfTheLine}.cs");
 
             if (File.Exists(codeFilePath))
@@ -524,22 +517,16 @@ namespace Easy14_Programming_Language
 
                 try
                 {
-                    // Create a wrapper class containing the dynamic method
                     if (codeSplitIntoLines[0].StartsWith("//_params = "))
                     {
                         string _paramsDeclareLine = codeSplitIntoLines[0];
                         List<string> paramsRequired = codeSplitIntoLines[0].Substring("//_params = ".Length).Split(",").ToList();
-                        // Compare params_ and paramNames count
                         if (paramsGiven.Count > paramsRequired.Count)
                         {
-                            // If params_ has more elements than paramNames, truncate the excess
                             paramsGiven = paramsGiven.Take(paramsRequired.Count).ToList();
                         }
                         else if (paramsGiven.Count < paramsRequired.Count)
                         {
-                            // If params_ has fewer elements than paramNames, add in null values
-                            //Console.WriteLine("Error: Insufficient parameters provided.");
-                            //return null;
                             paramsGiven = paramsGiven.Take(paramsRequired.Count).ToList();
                             for (int i = 0; i < (paramsRequired.Count - paramsGiven.Count); i++)
                             {
@@ -558,6 +545,18 @@ namespace Easy14_Programming_Language
                             string value = StatementResult.params_[i];
                             if (value != "")
                             {
+                                dataType = ItemChecks.DetectType(StatementResult.params_[i]);
+                                if (dataType == "str")
+                                {
+                                    dataType = "string";
+                                    value = "\"\\\"" + value.Substring(1, value.Length - 2) + "\\\"\"";
+                                }
+                                else if (dataType == "cmd")
+                                {
+                                    dataType = "string"; 
+                                    value = "\"" + value.Substring("() =>".Length).Trim().Replace("\"", "\\\"") + ";\"";
+                                }
+                                /*
                                 try
                                 {
                                     if (ItemChecks.DetectType(StatementResult.params_[i]) == "str")
@@ -584,7 +583,7 @@ namespace Easy14_Programming_Language
                                     if (ItemChecks.DetectType(StatementResult.params_[i]) == "cmd")
                                     { dataType = "string"; value = "\"" + value.Substring("() =>".Length).Trim().Replace("\"", "\\\"") + ";\""; }
                                 }
-                                catch { }
+                                catch { }*/
                             }
                             else { dataType = "object"; value = "null"; }
                             codeSplitIntoLines.Insert(0, $"{dataType} {paramsRequired[i]} = {value};");
@@ -625,9 +624,9 @@ namespace Easy14_Programming_Language
                         .WithReferences(references)
                         .WithImports("System", "SDL2", "System.IO", "System.Threading", "System.Threading.Tasks", "System.Windows", "System.Media", "System.Drawing", "System.Drawing.Point", "System.Windows.Forms", "System.Collections.Generic", "System.Net", "System.Net.NetworkInformation", "Easy14_Programming_Language", "Easy14_Programming_Language.UniversalVariables");
 
+                    code = code + $"{Environment.NewLine}Environment.Exit(0);";
                     var script = CSharpScript.Create(code, options: scriptOptions);
                     var result = script.RunAsync().Result;
-
                     if (result.Exception != null)
                     {
                         Console.WriteLine("Error occurred: " + result.Exception);

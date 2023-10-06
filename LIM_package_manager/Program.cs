@@ -6,7 +6,7 @@ namespace LIM_package_manager
 {
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
             Console.WriteLine("=== LIM Package Manager ===\r\n");
             DetectMissingPackages.Easy14StandardLibrary();
@@ -14,7 +14,15 @@ namespace LIM_package_manager
             {
                 Console.ResetColor();
                 Console.Write("\r\n>>> ");
-                string command = Console.ReadLine() + "";
+                string command = "";
+                if (args.Length > 0)
+                {
+                    command = string.Join(" ", args[0..]);
+                    args = new string[] { };
+                }
+                else {
+                    command = Console.ReadLine() + "";
+                }
                 List<string> classes = Parse(command.Trim()).classes;
                 List<string> params_ = Parse(command.Trim()).params_;
                 string method = Parse(command.Trim()).method.ToLower();
@@ -23,7 +31,11 @@ namespace LIM_package_manager
 
                 if (classes[0].ToLower() == "lim")
                 {
-                    if (method == "install")
+                    if (method == "exit")
+                    {
+                        return;
+                    }
+                    else if (method == "install")
                     {
                         if (params_[0] == "--local")
                         {
