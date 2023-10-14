@@ -45,15 +45,11 @@ namespace Easy14_Programming_Language
         {
             Console.WriteLine(string.Join(" ", args));
             string osName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}";
-
-            try
-            {
-                Console.WriteLine($"Easy14 {File.ReadAllLines(version)[0]} ({osName})");
-            }
-            catch
-            {
-                Console.WriteLine($"Easy14 {{Unknown Version}} ({osName})");
-            }
+            string versionName = "{Unknown Version}";
+            
+            try { versionName = File.ReadAllLines(version)[0]; } catch {}
+            
+            Console.WriteLine($"Easy14 {versionName} ({osName})");
 
             if (!Configuration.GetBoolOptionValue("UpdatesDisabled")) { UpdateChecker.CheckLatestVersion(); }
 
@@ -553,39 +549,11 @@ namespace Easy14_Programming_Language
                                 }
                                 else if (dataType == "cmd")
                                 {
-                                    dataType = "string"; 
+                                    dataType = "string";
                                     value = "\"" + value.Substring("() =>".Length).Trim().Replace("\"", "\\\"") + ";\"";
                                 }
-                                /*
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "str")
-                                    { dataType = "string"; value = "\"\\\"" + value.Substring(1, value.Length - 2) + "\\\"\""; } //this is an abomination but works
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "int") dataType = "int";
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "double") dataType = "double";
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "bool") dataType = "bool";
-                                }
-                                catch { }
-                                try
-                                {
-                                    if (ItemChecks.DetectType(StatementResult.params_[i]) == "cmd")
-                                    { dataType = "string"; value = "\"" + value.Substring("() =>".Length).Trim().Replace("\"", "\\\"") + ";\""; }
-                                }
-                                catch { }*/
                             }
-                            else { dataType = "object"; value = "null"; }
+                            else { dataType = "var"; value = "null"; }
                             codeSplitIntoLines.Insert(0, $"{dataType} {paramsRequired[i]} = {value};");
                         }
                         foreach (string line in codeSplitIntoLines)
