@@ -105,21 +105,21 @@ namespace Easy14_Programming_Language
                         return;
 
                     default:
-                        compiler.ExternalCompileCode(null, new string[] { input }, 0);
+                        compiler.ExternalCompileCode(null, new string[] { input });
                         break;
                 }
             }
 
         }
 
-        public object ExternalCompileCode(string fileLoc = null, string[] textArray = null, int lineIDX = 0)
+        public object ExternalCompileCode(string fileLoc = null, string[] textArray = null)
         {
             if (textArray == null)
             {
                 if (fileLoc != null) textArray = File.ReadAllLines(fileLoc.Trim());
                 else textArray = new string[] { "" };
             }
-            return CompileCode(textArray, lineIDX);
+            return CompileCode(textArray);
         }
 
 
@@ -232,10 +232,9 @@ namespace Easy14_Programming_Language
             }
         }
 
-        public static object CompileCode(string[] textArray = null, int lineIDX = 0)
+        public static List<object> CompileCode(string[] textArray = null)
         {
-            int lineCount = 0;
-            object result = "";
+            List<object> results = new List<object>() {};
 
             for (int i = 0; i < textArray.Length; i++)
             {
@@ -245,10 +244,10 @@ namespace Easy14_Programming_Language
 
                 if (double.TryParse(textArray[i].ToCharArray(), out _) == true)
                 {
-                    try { return Convert.ToDouble(new DataTable().Compute(textArray[i], null)); }
+                    try { results.Add(Convert.ToDouble(new DataTable().Compute(textArray[i], null))); }
                     catch (Exception e)
                     {
-                        return e.Message;
+                        results.Add(e.Message);
                     }
                 }
                 else if (textArray[i].Trim().StartsWith("//"))
@@ -290,7 +289,7 @@ namespace Easy14_Programming_Language
                                     index++;
 
                                     // Execute the function with namespace
-                                    return ExecuteFunctionWithNamespace(Statements[0]);
+                                    object result = ExecuteFunctionWithNamespace(Statements[0]);
                                 }
                             }
                         }
@@ -308,11 +307,11 @@ namespace Easy14_Programming_Language
                             try
                             {
                                 // Evaluate the numeric expression
-                                return Convert.ToDouble(new DataTable().Compute(expression, null));
+                                results.Add(Convert.ToDouble(new DataTable().Compute(expression, null)));
                             }
                             catch (Exception e)
                             {
-                                return e.Message;
+                                results.Add(e.Message);
                             }
                         }
                     }
@@ -449,7 +448,7 @@ namespace Easy14_Programming_Language
                     {
                         if (VariableCode.VariableExists(variableName))
                         {
-                            result = VariableCode.variables[variableName];
+                            results.Add(VariableCode.variables[variableName]);
                         }
                         else
                         {
@@ -457,13 +456,14 @@ namespace Easy14_Programming_Language
                         }
                     }
                 }
+                /*
                 else
                 {
                     if (IsExecutableCode(textArray[i]))
                     {
                         try
                         {
-                            result = ExecuteFunctionWithNamespace(StatementResult);
+                            result = ExecuteFunctionWithNamespace(T);
                         }
                         catch
                         {
@@ -481,9 +481,9 @@ namespace Easy14_Programming_Language
                 {
                     ProgramStatus = Status.NORMAL;
                     return "";
-                }
+                }*/
             }
-            return result;
+            return results;
         }
 
         private static bool IsExecutableCode(string currentLine)
