@@ -55,8 +55,7 @@
               }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -122,7 +121,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "LIM/Introduction.md",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -139,7 +138,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "LIM/Introduction.md",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -162,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "LIM/Introduction.md"
+                "file": "README.md"
               }
             }
           }
@@ -183,11 +182,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "20c32d7d30cd00d6",
+  "active": "0d78ca23b4860cfb",
   "lastOpenFiles": [
-    "README.md",
     "LIM/Introduction.md",
     "Easy14/Introduction.md",
+    "README.md",
     "LIM",
     "Easy14/Basics/SDL2.md",
     "Easy14/Basics/Audio.md",

@@ -21,8 +21,6 @@ namespace Easy14_Programming_Language
     public class Program
     {
         // Configuration flags
-        public static bool showStatementsDuringRuntime = false;
-        public static bool DisplayFileContentsBeforeRuntime = false;
         public static string PathOfPackages = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 Packages");
 
         // Paths and file-related variables
@@ -46,12 +44,20 @@ namespace Easy14_Programming_Language
             Console.WriteLine(string.Join(" ", args));
             string osName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}";
             string versionName = "{Unknown Version}";
-            
-            try { versionName = File.ReadAllLines(version)[0]; } catch {}
-            
+
+            try { versionName = File.ReadAllLines(version)[0]; } catch { }
+
             Console.WriteLine($"Easy14 {versionName} ({osName})");
 
-            if (!Configuration.GetBoolOptionValue("UpdatesDisabled")) { UpdateChecker.CheckLatestVersion(); }
+            if (!Configuration.GetBoolOptionValue("UpdatesDisabled"))
+            {
+                UpdateChecker.CheckLatestVersion();
+            }
+
+            if (!string.IsNullOrEmpty(Configuration.GetStringOptionValue("packagePath")))
+            {
+                PathOfPackages = Configuration.GetStringOptionValue("packagePath");
+            }
 
             Thread.Sleep(Configuration.GetIntOptionValue("delay") * 1000);
 
@@ -64,9 +70,9 @@ namespace Easy14_Programming_Language
                 {
                     IntroductionCode.IntroCode();
                 }
-                else if (File.Exists(args[0]) == true)
+                else if (File.Exists(string.Join(" ", args[0..])) == true)
                 {
-                    CompileCode(File.ReadAllLines(args[0]));
+                    CompileCode(File.ReadAllLines(string.Join(" ", args[0..])));
                     return;
                 }
             }
@@ -77,38 +83,21 @@ namespace Easy14_Programming_Language
                 int windowWidth = Console.WindowWidth;
 
                 bool librariesDisabled = Convert.ToBoolean(Configuration.GetBoolOptionValue("disableLibraries"));
-
-                if (Configuration.GetBoolOptionValue("showOptionsINI_DataWhenE14_Loads") == true)
-                {
-                    List<string> configFileLIST = new List<string>();
-
-                    foreach (string currentLine in configFile)
-                    {
-                        if (currentLine.StartsWith(";") || currentLine == "" || currentLine == " ") continue;
-                        configFileLIST.Add(currentLine);
-                    }
-
-                    string[] configFile_modified = configFileLIST.ToArray();
-
-                    Console.WriteLine(string.Join(Environment.NewLine, configFile_modified));
-                    Console.WriteLine("\n========================\n\n");
-                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                ErrorReportor.ReportWarning("Configuration Setting", "No error occurred; Easy14 is using default settings.\n\n========");
+                ErrorReportor.ReportWarning("Configuration Setting", "Easy14 is using default settings, as it cant find options.ini file, or some other error.\n\n========");
             }
+
+            Program compiler = new Program();
 
             while (true)
             {
                 Console.Write(":>");
                 string input = Console.ReadLine();
 
-                if (string.IsNullOrWhiteSpace(input))
-                {
-                    continue;
-                }
+                if (string.IsNullOrWhiteSpace(input)) { continue; }
 
                 switch (input)
                 {
@@ -116,7 +105,6 @@ namespace Easy14_Programming_Language
                         return;
 
                     default:
-                        Program compiler = new Program();
                         compiler.ExternalCompileCode(null, new string[] { input }, 0);
                         break;
                 }
@@ -134,12 +122,24 @@ namespace Easy14_Programming_Language
             return CompileCode(textArray, lineIDX);
         }
 
+
+        public enum TokenType
+        {
+            Class,
+            Method,
+            Params,
+            Number,
+            Operator,
+            Identifier,
+            Unknown
+        }
+
         public class Token
         {
             public string Value { get; set; }
-            public string Tag { get; set; }
+            public TokenType Tag { get; set; }
 
-            public Token(string value, string tag)
+            public Token(string value, TokenType tag)
             {
                 Value = value;
                 Tag = tag;
@@ -200,16 +200,16 @@ namespace Easy14_Programming_Language
 
                         parameters.Add(currentParameter.ToString().Trim());
 
-                        tokens.Add(new Token(classPart, "Class"));
-                        tokens.Add(new Token(methodPart, "Method"));
+                        tokens.Add(new Token(classPart, TokenType.Class));
+                        tokens.Add(new Token(methodPart, TokenType.Method));
                         foreach (string param in parameters)
                         {
-                            tokens.Add(new Token(param, "Param"));
+                            tokens.Add(new Token(param, TokenType.Params));
                         }
                     }
                     else
                     {
-                        string tag = DetermineTag(value); // Implement a function to determine the tag based on the matched value
+                        TokenType tag = DetermineTag(value); // Implement a function to determine the tag based on the matched value
                         tokens.Add(new Token(value, tag));
                     }
                 }
@@ -217,144 +217,144 @@ namespace Easy14_Programming_Language
                 return tokens;
             }
 
-            private string DetermineTag(string value)
+            private TokenType DetermineTag(string value)
             {
                 if (Regex.IsMatch(value, @"[a-zA-Z_]\w*"))
-                {
-                    return "Identifier";
-                }
+                { return TokenType.Identifier; }
+
                 else if (Regex.IsMatch(value, @"\d+"))
-                {
-                    return "Number";
-                }
+                { return TokenType.Number; }
+
                 else if (Regex.IsMatch(value, @"\+|-|\*|/"))
-                {
-                    return "Operator";
-                }
-                else
-                {
-                    return "Unknown"; // Handle unknown tokens as needed
-                }
+                { return TokenType.Operator; }
+
+                else { return TokenType.Unknown; }
             }
         }
 
         public static object CompileCode(string[] textArray = null, int lineIDX = 0)
         {
             int lineCount = 0;
-            string[] codeLines = new string[] { "" };
-
-            List<string> linesList = new List<string>(codeLines != null ? codeLines : new string[] { "" });
-            if (lineIDX != 0) linesList.RemoveRange(0, lineIDX);
-
             object result = "";
 
             for (int i = 0; i < textArray.Length; i++)
             {
-                string currentLine = textArray[i];
-                if (currentLine.Trim() == "")
-                { continue; }
+                if (string.IsNullOrEmpty(textArray[i].Trim())) { continue; }
 
-                var StatementResult = CommandParser.SplitCommand(currentLine);
+                //var StatementResult = CommandParser.SplitCommand(textArray[i]);
 
-                if (showStatementsDuringRuntime == true) Console.WriteLine($">>>{currentLine}");
-
-                Tokenizer tokenizer = new Tokenizer();
-                List<Token> tokens = tokenizer.Tokenize(currentLine);
-                for (int index = 0; index < tokens.Count; index++)
+                if (double.TryParse(textArray[i].ToCharArray(), out _) == true)
                 {
-
-                    List<(List<string>, string, List<string>)> Statements = new();
-
-                    if (tokens[index].Tag == "Class")
-                    {
-                        Statements.Add(new(tokens[index].Value.Split(".").ToList(), null, null));
-                        index = index + 1;
-                        if (tokens[index].Tag == "Method")
-                        {
-                            Statements.Add(new(Statements[0].Item1, tokens[index].Value, null));
-                            Statements.RemoveAt(0);
-                            index = index + 1;
-                            if (tokens[index].Tag == "Params")
-                            {
-                                Statements.Add(new(Statements[0].Item1, Statements[0].Item2, (tokens[index].Value).Split("|").ToList()));
-                                Statements.RemoveAt(0);
-                                index = index + 1;
-                                return ExecuteFunctionWithNamespace(new(Statements[0].Item1, Statements[0].Item2, Statements[0].Item3));
-                            }
-                        }
-                    }
-                    else if (tokens[index].Tag == "Number")
-                    {
-                        string expression = "";
-
-                        while (index < tokens.Count && (tokens[index].Tag == "Number" || tokens[index].Tag == "Operator"))
-                        {
-                            expression += tokens[index].Value; // Use += to concatenate strings
-                            index++; // Increment index
-                        }
-
-                        try
-                        {
-                            return Convert.ToDouble(new DataTable().Compute(expression, null));
-                        }
-                        catch (Exception e)
-                        {
-                            return e.Message;
-                        }
-                    }
-                }
-
-
-                if (double.TryParse(currentLine.ToCharArray(), out _) == true)
-                {
-                    try { return Convert.ToDouble(new DataTable().Compute(currentLine, null)); }
+                    try { return Convert.ToDouble(new DataTable().Compute(textArray[i], null)); }
                     catch (Exception e)
                     {
                         return e.Message;
                     }
                 }
-                else if (StatementResult.methodName.ToLower() == "exit()" || StatementResult.methodName.ToLower() == "exit();") return "";
-                else if (StatementResult.methodName.ToLower() == "exit")
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("\nPlease use \"exit()\" or Ctrl+C to close the interactive console");
-                    Console.ResetColor(); continue;
-                }
-                else if (currentLine.Trim().StartsWith("//"))
+                else if (textArray[i].Trim().StartsWith("//"))
                 {
                     continue;
                 }
-                else if (currentLine.Trim().StartsWith("if"))
+                else {
+                    Tokenizer tokenizer = new Tokenizer();
+                    List<Token> tokens = tokenizer.Tokenize(textArray[i]);
+
+                    for (int index = 0; index < tokens.Count; index++)
+                    {
+                        List<(List<string>, string, List<string>)> Statements = new();
+
+                        if (tokens[index].Tag == TokenType.Class)
+                        {
+                            // Parsing a Class
+                            var className = tokens[index].Value.Split(".").ToList();
+                            Statements.Add((className, null, null));
+
+                            index++;
+
+                            if (tokens[index].Tag == TokenType.Method)
+                            {
+                                // Parsing a Method inside a Class
+                                var method = tokens[index].Value;
+                                Statements.Add((className, method, null));
+                                Statements.RemoveAt(0); // Remove the class info as it's now part of the method
+
+                                index++;
+
+                                if (tokens[index].Tag == TokenType.Params)
+                                {
+                                    // Parsing Method Parameters
+                                    var parameters = tokens[index].Value.Split("|").ToList();
+                                    Statements.Add((className, method, parameters));
+                                    Statements.RemoveAt(0);
+
+                                    index++;
+
+                                    // Execute the function with namespace
+                                    return ExecuteFunctionWithNamespace(Statements[0]);
+                                }
+                            }
+                        }
+                        else if (tokens[index].Tag == TokenType.Number)
+                        {
+                            // Parsing a numeric expression
+                            string expression = "";
+
+                            while (index < tokens.Count && (tokens[index].Tag == TokenType.Number || tokens[index].Tag == TokenType.Operator))
+                            {
+                                expression += tokens[index].Value; // Concatenate strings
+                                index++; // Increment index
+                            }
+
+                            try
+                            {
+                                // Evaluate the numeric expression
+                                return Convert.ToDouble(new DataTable().Compute(expression, null));
+                            }
+                            catch (Exception e)
+                            {
+                                return e.Message;
+                            }
+                        }
+                    }
+                }
+                if (textArray[i].StartsWith("/*"))
+                {
+                    if (textArray[i].EndsWith("*/")) continue;
+                    textArray = CommentCode.Interperate(i, textArray.ToList());
+                    i = 0;
+                    continue;
+                }
+                else if (textArray[i].StartsWith("if"))
                 {
                     textArray = IfLoop.Interperate(i, textArray.ToList());
                     i = 0;
                     continue;
                 }
-                else if (currentLine.StartsWith("while"))
+                else if (textArray[i].StartsWith("while"))
                 {
                     textArray = WhileLoop.Interperate(i, textArray.ToList());
                     i = 0;
                     continue;
                 }
-                else if (currentLine.StartsWith("for"))
+                else if (textArray[i].StartsWith("for"))
                 {
                     textArray = RepeatLoop.Interperate(i, textArray.ToList());
                     i = 0;
                     continue;
                 }
-                else if (currentLine.Trim().StartsWith("import"))
+                else if (textArray[i].Trim().StartsWith("import"))
                 {
                     List<string> mainCode = new List<string>();
-                    mainCode.AddRange(ImportFileStatement.Interpret(currentLine));
+                    mainCode.AddRange(ImportFileStatement.Interpret(textArray[i]));
                     mainCode.AddRange(textArray.ToList().GetRange(1, textArray.ToList().Count - 1));
                     textArray = mainCode.ToArray();
                     i = i - 1;
                     continue;
                 }
-                else if (currentLine.Trim().StartsWith("method"))
+                else if (textArray[i].Trim().StartsWith("method"))
                 {
                     int indention = 0;
-                    foreach (char c in currentLine)
+                    foreach (char c in textArray[i])
                     {
                         if (c == ' ')
                         {
@@ -376,9 +376,9 @@ namespace Easy14_Programming_Language
                         indent += " ";
                     }
 
-                    if (!currentLine.EndsWith("();"))
+                    if (!textArray[i].EndsWith("();"))
                     {
-                        string methodName = currentLine.Substring(indent.Length - 1 + "method".Length); // Implement GetMethodName to extract the method name
+                        string methodName = textArray[i].Substring(indent.Length - 1 + "method".Length); // Implement GetMethodName to extract the method name
                         if (methodName.Contains(" "))
                         {
                             methodName = methodName.Substring(methodName.IndexOf(" "));
@@ -415,34 +415,33 @@ namespace Easy14_Programming_Language
                         i = i + 1;
                         continue;
                     }
-                    else if (currentLine.EndsWith("();"))
+                    else if (textArray[i].EndsWith("();"))
                     {
-                        string methodName = currentLine.Substring(indent.Length + "method".Length, currentLine.Length - (indent.Length + "method".Length + "();".Length)).Trim();
+                        string methodName = textArray[i].Substring(indent.Length + "method".Length, textArray[i].Length - (indent.Length + "method".Length + "();".Length)).Trim();
                         if (MethodLoop.MethodExists(methodName))
                         {
                             MethodLoop.ExecuteMethod(methodName);
                         }
                     }
                 }
-                else if (currentLine.Trim().StartsWith("var"))
+                else if (textArray[i].Trim().StartsWith("var"))
                 {
-                    string variableName = "";
+                    string variableName;
                     string variableContents = "";
-
                     try
                     {
-                        variableName = currentLine.Trim().Split("=")[0];
+                        variableName = textArray[i].Trim().Split("=")[0];
                         variableName = variableName.Substring(3).Trim();
-                        variableContents = string.Join("=", currentLine.Trim().Split("=")[1..]).Trim();
+                        variableContents = string.Join("=", textArray[i].Trim().Split("=")[1..]).Trim();
                         variableContents = variableContents.Substring(0, variableContents.Length - 1);
                     }
                     catch
                     {
-                        variableName = currentLine.Substring(3).Trim();
+                        variableName = textArray[i].Substring(3).Trim();
                         variableName = variableName.Substring(0, variableName.Length - 1);
                     }
 
-                    if (currentLine.Contains("="))
+                    if (textArray[i].Contains("="))
                     {
                         VariableCode.DefineVariable(variableName, variableContents);
                     }
@@ -460,7 +459,7 @@ namespace Easy14_Programming_Language
                 }
                 else
                 {
-                    if (IsExecutableCode(currentLine))
+                    if (IsExecutableCode(textArray[i]))
                     {
                         try
                         {
@@ -468,13 +467,13 @@ namespace Easy14_Programming_Language
                         }
                         catch
                         {
-                            ErrorReportor.ReportError("Code Not Valid!", $"\'{currentLine}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {lineCount}");
+                            ErrorReportor.ReportError("Code Not Valid!", $"\'{textArray[i]}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {lineCount}");
                             break;
                         }
                     }
                     else
                     {
-                        ErrorReportor.ReportError("Code Not Valid!", $"\'{currentLine}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {lineCount}");
+                        ErrorReportor.ReportError("Code Not Valid!", $"\'{textArray[i]}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {lineCount}");
                         break;
                     }
                 }
@@ -579,27 +578,29 @@ namespace Easy14_Programming_Language
                         MetadataReference.CreateFromFile(typeof(System.Media.SystemSound).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Media.SystemSounds).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Drawing.Point).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
+
+                        MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+
                         MetadataReference.CreateFromFile(typeof(Program).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(ItemChecks).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(VariableCode).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(VariableCode).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(UniversalVariables).Assembly.Location),
-                        MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                        MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
                     };
 
                     ScriptOptions scriptOptions = ScriptOptions.Default
                         .WithReferences(references)
                         .WithImports("System", "SDL2", "System.IO", "System.Threading", "System.Threading.Tasks", "System.Windows", "System.Media", "System.Drawing", "System.Drawing.Point", "System.Windows.Forms", "System.Collections.Generic", "System.Net", "System.Net.NetworkInformation", "Easy14_Programming_Language", "Easy14_Programming_Language.UniversalVariables");
 
-                    code = code + $"{Environment.NewLine}Environment.Exit(0);";
+                    //code = code + $"{Environment.NewLine}Environment.Exit(0);";
                     var script = CSharpScript.Create(code, options: scriptOptions);
                     var result = script.RunAsync().Result;
                     if (result.Exception != null)
                     {
                         Console.WriteLine("Error occurred: " + result.Exception);
                     }
-                    else
+                    if (result.ReturnValue != null)
                     {
                         var returnValue = result.ReturnValue;
                         return returnValue;

@@ -1,31 +1,26 @@
-23/Mar/2023;
+14/Oct/2023
 
-# The Systax Update (Reforms) (During Version 3.1's Development)
+# ChangeLog
 
-## 1. Reintroducing Parenthesises!
+### I shouldnt be writing this on my birthday, but oh well.. there is work that has to be done
 
-### The New and "Improved" syntax during the early stages of 3.1's Development were.. weird to say the least, just a take a look for a print statement with old and new syntax
-<br>
+### Main Point(s)
 
-## Old 😀👍
+(1  Removed old shitty code from yesteryear
+```csharp
+if (Configuration.GetBoolOptionValue("showOptionsINI_DataWhenE14_Loads") == true)
+{
+    List<string> configFileLIST = new List<string>();
 
-```C#
-    Console.print("Hello world!"); //Similer to C# and easier to understand for other programmers :D
-```
-<br>
+    foreach (string currentLine in configFile)
+    {
+        if (currentLine.StartsWith(";") || currentLine == "" || currentLine == " ") continue;
+        configFileLIST.Add(currentLine);
+    }
 
-## (Proposed) New 🤢🤮
+    string[] configFile_modified = configFileLIST.ToArray();
 
-```C#
-    Console Print "Hello";
-    //WHAT THE HECK IS THIS?!?!?
-```
-
-### Now below I have remade the "New" syntax into a better version of the Old syntax while being less worse than the New syntax
-<br>
-
-## (Updated) Final 🤔
-
-```C#
-    Console.Print("Hello world!");
+    Console.WriteLine(string.Join(Environment.NewLine, configFile_modified));
+    Console.WriteLine("\n========================\n\n");
+}
 ```

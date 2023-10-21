@@ -32,7 +32,15 @@ namespace Easy14_Programming_Language
             {
                 if (line.StartsWith($"{optionName}:", StringComparison.OrdinalIgnoreCase))
                 {
-                    return line.Substring(optionName.Length + 1).Trim();
+                    string returnVal = line.Substring(optionName.Length + 1).Trim();
+                    if (returnVal.StartsWith("\"") && returnVal.EndsWith("\""))
+                    {
+                        return returnVal.Substring(1, returnVal.Length - 2);
+                    }
+                    else
+                    {
+                        return returnVal;
+                    }
                 }
             }
             return "";

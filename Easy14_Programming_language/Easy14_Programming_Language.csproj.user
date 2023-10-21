@@ -4,6 +4,6 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>Easy14_Programming_Language</ActiveDebugProfile>
+    <ActiveDebugProfile>Test with cool.e14</ActiveDebugProfile>
   </PropertyGroup>
 </Project>
