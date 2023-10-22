@@ -1,7 +1,4 @@
 ﻿using LIM_package_manager.AppFunctions;
-using System.Diagnostics;
-using System.Net;
-
 namespace LIM_package_manager
 {
     class Program
@@ -10,112 +7,20 @@ namespace LIM_package_manager
         {
             Console.WriteLine("=== LIM Package Manager ===\r\n");
             DetectMissingPackages.Easy14StandardLibrary();
+
             while (true)
             {
                 Console.ResetColor();
                 Console.Write("\r\n>>> ");
-                string command = "";
-                if (args.Length > 0)
-                {
-                    command = string.Join(" ", args[0..]);
-                    args = new string[] { };
-                }
-                else {
-                    command = Console.ReadLine() + "";
-                }
-                List<string> classes = Parse(command.Trim()).classes;
-                List<string> params_ = Parse(command.Trim()).params_;
-                string method = Parse(command.Trim()).method.ToLower();
+                string command = args.Length > 0 ? string.Join(" ", args) : Console.ReadLine() ?? "";
 
-                if (classes.Count == 0) { continue; }
+                (List<string> classes, string method, List<string> parameters) = ParseCommand(command);
+
+                if (classes.Count == 0) continue;
 
                 if (classes[0].ToLower() == "lim")
                 {
-                    if (method == "exit")
-                    {
-                        return;
-                    }
-                    else if (method == "install")
-                    {
-                        if (params_[0] == "--local")
-                        {
-                            _ = PackageInstall.Install(params_, true, false);
-                            continue;
-                        }
-                        else
-                        {
-                            _ = PackageInstall.Install(params_, false, false);
-                            continue;
-                        }
-
-                    }
-                    else if (method == "update")
-                    {
-                        if (params_[0] == "--local")
-                        {
-                            _ = PackageInstall.Install(params_, true, true);
-                            continue;
-                        }
-                        else if (params_[0] == "--easy14")
-                        {
-                            Console.WriteLine("Downloading File(s);");
-                            using (var client = new WebClient())
-                            {
-                                client.DownloadFile("https://pastebin.com/raw/hrXXZVyj", "E14downloadLink.txt");
-                            }
-                            using (var client = new WebClient())
-                            {
-                                client.DownloadFile(File.ReadAllLines("E14downloadLink.txt")[0], "easy14setup.exe");
-                            }
-                            Console.WriteLine("Opening Setup.exe...");
-                            try
-                            {
-                                Process.Start("easy14setup.exe");
-                            }
-                            catch
-                            {
-
-                            }
-                            continue;
-                        }
-                        else
-                        {
-                            _ = PackageInstall.Install(params_, false, true);
-                            continue;
-                        }
-                    }
-                    else if (method == "search")
-                    {
-                        PackagesSearch.Search();
-                        continue;
-                    }
-                    else if (method == "uninstall" || method == "remove")
-                    {
-                        PackageUninstall.Uninstall(params_);
-                        continue;
-                    }
-                    else if (method == "list")
-                    {
-                        PackagesList.List();
-                        continue;
-                    }
-                    else if (method == "make")
-                    {
-                        Tuple<string[], string> package = PackageMaker.Make();
-                        List<string> packageContent = package.Item1.ToList();
-                        string[] lines = packageContent.ToArray();
-                        string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
-
-                        File.WriteAllLines(Path.Combine(appDataPath, package.Item2 + "_Package_File.txt"), lines);
-                    }
-                    else if (method == "help")
-                    {
-                        Console.WriteLine(string.Join(Environment.NewLine, File.ReadAllLines("helpContent.txt")));
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Unknown command method {method}");
-                    }
+                    HandleLIMCommand(method, parameters);
                 }
                 else
                 {
@@ -124,38 +29,78 @@ namespace LIM_package_manager
             }
         }
 
-        public static (List<string> classes, string method, List<string> params_) Parse(string command)
+        static void HandleLIMCommand(string method, List<string> parameters)
         {
+            switch (method.ToLower())
+            {
+                case "exit":
+                    Environment.Exit(0);
+                    break;
+
+                case "install":
+                case "update":
+                    bool isLocal = parameters.Contains("--local");
+                    bool isUpdate = method.ToLower() == "update";
+
+                    _ = PackageInstall.Install(parameters, isLocal, isUpdate);
+                    break;
+
+                case "search":
+                    PackagesSearch.Search();
+                    break;
+
+                case "uninstall":
+                case "remove":
+                    PackageUninstall.Uninstall(parameters);
+                    break;
+
+                case "list":
+                    PackagesList.List();
+                    break;
+
+                case "make":
+                    Tuple<string[], string> package = PackageMaker.Make();
+                    List<string> packageContent = package.Item1.ToList();
+                    string[] lines = packageContent.ToArray();
+                    string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
+                    File.WriteAllLines(Path.Combine(appDataPath, package.Item2 + "_Package_File.txt"), lines);
+                    break;
+
+                case "help":
+                    Console.WriteLine(string.Join(Environment.NewLine, File.ReadAllLines("helpContent.txt")));
+                    break;
+
+                default:
+                    Console.WriteLine($"Unknown command method {method}");
+                    break;
+            }
+        }
+
+        static (List<string> classes, string method, List<string> parameters) ParseCommand(string command)
+        {
+            string[] parts = command.Split(" ");
+            List<string> classes = new List<string>();
+            List<string> parameters = new List<string>();
             string method = "";
-            List<string> classes = new();
-            List<string> params_ = new();
 
-            string[] array = command.Split(" ");
+            for (int i = 0; i < parts.Length; i++)
+            {
+                string part = parts[i];
+                if (part.StartsWith("--"))
+                {
+                    parameters.Add(part);
+                }
+                else if (parts[i+1].StartsWith("--") && (!part.StartsWith("--")))
+                {
+                    method = part;
+                }
+                else
+                {
+                    classes.Add(part);
+                }
+            }
 
-            // Find the index of the first element starting with "--"
-            int firstParamIndex = Array.FindIndex(array, item => item.StartsWith("--"));
-
-            if (firstParamIndex == -1)
-            {
-                // Case: No parameters provided
-                method = array[^1];
-                classes = new List<string>(array[..^1]);
-            }
-            else
-            {
-                // Case: Parameters provided
-                method = array[firstParamIndex - 1];
-                params_ = new List<string>(array[firstParamIndex..]);
-                classes = new List<string>(array[..(firstParamIndex - 1)]);
-            }
-            if (command.Contains("--"))
-            {
-                return (classes, method, params_);
-            }
-            else
-            {
-                return (classes, method, new List<string>());
-            }
+            return (classes, method, parameters);
         }
     }
 }
