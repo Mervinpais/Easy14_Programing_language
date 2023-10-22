@@ -289,7 +289,8 @@ namespace Easy14_Programming_Language
                                     index++;
 
                                     // Execute the function with namespace
-                                    object result = ExecuteFunctionWithNamespace(Statements[0]);
+                                    results.Add(ExecuteFunctionWithNamespace(Statements[0]));
+                                    break;
                                 }
                             }
                         }
@@ -313,9 +314,13 @@ namespace Easy14_Programming_Language
                             {
                                 results.Add(e.Message);
                             }
+                            break;
                         }
                     }
                 }
+
+                if (results.Count !> 0) continue;
+
                 if (textArray[i].StartsWith("/*"))
                 {
                     if (textArray[i].EndsWith("*/")) continue;
@@ -421,6 +426,7 @@ namespace Easy14_Programming_Language
                         {
                             MethodLoop.ExecuteMethod(methodName);
                         }
+                        continue;
                     }
                 }
                 else if (textArray[i].Trim().StartsWith("var"))
@@ -456,32 +462,16 @@ namespace Easy14_Programming_Language
                         }
                     }
                 }
-                /*
                 else
                 {
-                    if (IsExecutableCode(textArray[i]))
-                    {
-                        try
-                        {
-                            result = ExecuteFunctionWithNamespace(T);
-                        }
-                        catch
-                        {
-                            ErrorReportor.ReportError("Code Not Valid!", $"\'{textArray[i]}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {lineCount}");
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        ErrorReportor.ReportError("Code Not Valid!", $"\'{textArray[i]}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {lineCount}");
-                        break;
-                    }
+                    ErrorReportor.ReportError("Code Not Valid!", $"\'{textArray[i]}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {i+1}");
                 }
-                if (ProgramStatus.HasFlag(Status.CODE_ERROR) || ProgramStatus.HasFlag(Status.CODE_ERROR))
+
+                if (ProgramStatus.HasFlag(Status.CODE_ERROR) || ProgramStatus.HasFlag(Status.CSHARP_ERROR))
                 {
                     ProgramStatus = Status.NORMAL;
-                    return "";
-                }*/
+                    continue;
+                }
             }
             return results;
         }
