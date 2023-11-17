@@ -6,6 +6,10 @@
     "Test with cool.e14": {
       "commandName": "Project",
       "commandLineArgs": "\"C:\\Users\\mervi\\Desktop\\cool.e14\""
+    },
+    "IntroTest": {
+      "commandName": "Project",
+      "commandLineArgs": "/intro"
     }
   }
 }

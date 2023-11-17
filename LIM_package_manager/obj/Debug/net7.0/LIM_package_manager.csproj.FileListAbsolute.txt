@@ -105,3 +105,4 @@ D:\Repos and Projects\Easy14_Programming_Language\LIM_package_manager\obj\Debug\
 D:\Repos and Projects\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net7.0\LIM_package_manager.pdb
 D:\Repos and Projects\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net7.0\LIM_package_manager.genruntimeconfig.cache
 D:\Repos and Projects\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net7.0\ref\LIM_package_manager.dll
+D:\Repos and Projects\Easy14_Programming_Language\LIM_package_manager\obj\Debug\net7.0\LIM_package_manager.sourcelink.json

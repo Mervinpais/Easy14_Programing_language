@@ -16,7 +16,7 @@ namespace Easy14_Programming_Language
             if (variableContents.StartsWith("() => "))
             {
                 variableContents = variableContents.Substring(6).Trim();
-                variableContents = Program.CompileCode(textArray: new string[] { variableContents + ";" }).ToString();
+                variableContents = Program.CompileCode(codeToExecute: new string[] { variableContents + ";" }).ToString();
             }
             variables[variableName] = variableContents;
         }
