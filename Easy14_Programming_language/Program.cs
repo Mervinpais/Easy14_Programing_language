@@ -112,7 +112,7 @@ namespace Easy14_Programming_Language
 
         }
 
-        public object ExternalCompileCode(string fileLoc = null, string[] textArray = null)
+        public object ExternalCompileCode(string fileLoc = "", string[] textArray = null)
         {
             if (textArray == null)
             {

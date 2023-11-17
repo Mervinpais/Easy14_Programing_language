@@ -42,12 +42,12 @@
             this.wordWrapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OutputRTB = new System.Windows.Forms.RichTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.inputTB = new System.Windows.Forms.RichTextBox();
             this.actionLB = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.noteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -143,7 +143,7 @@
             this.noteToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1585, 42);
+            this.menuStrip1.Size = new System.Drawing.Size(1585, 37);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -154,7 +154,7 @@
             this.saveToolStripMenuItem,
             this.recentToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(60, 33);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(60, 32);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem
@@ -180,7 +180,7 @@
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.wordWrapToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(64, 33);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(64, 32);
             this.editToolStripMenuItem.Text = "Edit";
             // 
             // wordWrapToolStripMenuItem
@@ -195,7 +195,7 @@
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(71, 33);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(71, 32);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
@@ -204,6 +204,13 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(184, 40);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // noteToolStripMenuItem
+            // 
+            this.noteToolStripMenuItem.Name = "noteToolStripMenuItem";
+            this.noteToolStripMenuItem.Size = new System.Drawing.Size(352, 32);
+            this.noteToolStripMenuItem.Text = "Note: This SE might get discontinued";
+            this.noteToolStripMenuItem.Click += new System.EventHandler(this.noteToolStripMenuItem_Click);
             // 
             // OutputRTB
             // 
@@ -264,23 +271,17 @@
             this.actionLB.TabIndex = 9;
             this.actionLB.Text = "(Idle)";
             // 
-            // label1
+            // label2
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.142858F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(459, 57);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(644, 25);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Themes have been disabled for being unfinished until next update\r\n";
-            // 
-            // noteToolStripMenuItem
-            // 
-            this.noteToolStripMenuItem.Name = "noteToolStripMenuItem";
-            this.noteToolStripMenuItem.Size = new System.Drawing.Size(352, 34);
-            this.noteToolStripMenuItem.Text = "Note: This SE might get discontinued";
-            this.noteToolStripMenuItem.Click += new System.EventHandler(this.noteToolStripMenuItem_Click);
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.142858F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.Control;
+            this.label2.Location = new System.Drawing.Point(451, 52);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(576, 75);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "SE has and will probably not be worked on, the last\r\nUpdate will be on the 28th o" +
+    "f October, 2023\r\n(also, this is 14 days aways from my birthday.. on the 14th)";
             // 
             // Main_Editor
             // 
@@ -288,9 +289,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DimGray;
             this.ClientSize = new System.Drawing.Size(1585, 1025);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.actionLB);
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.save_file_btn);
             this.Controls.Add(this.settings_btn);
             this.Controls.Add(this.open_file_btn);
@@ -333,9 +334,9 @@
         private System.Windows.Forms.RichTextBox OutputRTB;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label actionLB;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox inputTB;
         private System.Windows.Forms.ToolStripMenuItem noteToolStripMenuItem;
+        private System.Windows.Forms.Label label2;
     }
 }
 

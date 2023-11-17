@@ -1,59 +1,71 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace LIM_package_manager
 {
     public static class UnpackJsonPackage
     {
-        public static string file = "";
-
-        public static void Unpack()
+        public static void Unpack(string filePath)
         {
-            if (file == "")
+            if (string.IsNullOrEmpty(filePath))
             {
-                Console.WriteLine("No File specified");
+                Console.WriteLine("No file specified.");
                 return;
             }
 
-            string jsonContent = File.ReadAllText(file);
-            PackageData? packageData = JsonConvert.DeserializeObject<PackageData>(jsonContent);
+            string jsonContent = File.ReadAllText(filePath);
+            var packageData = JsonConvert.DeserializeObject<PackageData>(jsonContent);
+
+            if (packageData == null)
+            {
+                Console.WriteLine("Failed to deserialize package data.");
+                return;
+            }
+
             string packageName = packageData.PackageName;
             List<FileData> files = packageData.Files;
-            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
-            folderPath = Path.Combine(folderPath, packageName);
+            string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages", packageName);
+
             Directory.CreateDirectory(folderPath);
-            foreach (FileData fileData in files)
+
+            foreach (var fileData in files)
             {
                 string fileType = fileData.Type;
                 string fileName = fileData.FileName;
-                string[] fileContent = fileData.Content.Split(@"\r\n");
+                string[] fileContent = fileData.Content.Split(new[] { "\\r\\n" }, StringSplitOptions.None);
 
                 // If the file type is "~", create a folder with the given name
                 if (fileType == "~")
                 {
                     string folderPath2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages", fileName);
-                    Directory.CreateDirectory(folderPath);
+                    Directory.CreateDirectory(folderPath2);
                     continue;
                 }
 
                 // Otherwise, save the file to the specified folder with the given name and content
-                string filePath = Path.Combine(folderPath, fileName);
+                filePath = Path.Combine(folderPath, fileName);
+                if (!filePath.EndsWith(fileType))
+                {
+                    filePath = filePath + "." + fileType;
+                }
 
-                if (!filePath.EndsWith(fileType)) filePath = filePath + "." + fileType;
                 File.WriteAllLines(filePath, fileContent);
             }
         }
 
         private class PackageData
         {
-            public required string PackageName { get; set; }
-            public required List<FileData> Files { get; set; }
+            public string PackageName { get; set; } = string.Empty;
+            public List<FileData> Files { get; set; } = new List<FileData>();
         }
 
         private class FileData
         {
-            public required string FileName { get; set; }
-            public required string Type { get; set; }
-            public required string Content { get; set; }
+            public string FileName { get; set; } = string.Empty;
+            public string Type { get; set; } = string.Empty;
+            public string Content { get; set; } = string.Empty;
         }
     }
 }

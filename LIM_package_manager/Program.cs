@@ -5,14 +5,22 @@ namespace LIM_package_manager
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("=== LIM Package Manager ===\r\n");
+            Console.ResetColor();
+            Console.WriteLine("=== LIM Package Manager ===" + Environment.NewLine);
             DetectMissingPackages.Easy14StandardLibrary();
-
             while (true)
             {
                 Console.ResetColor();
-                Console.Write("\r\n>>> ");
-                string command = args.Length > 0 ? string.Join(" ", args) : Console.ReadLine() ?? "";
+                Console.Write($"{Environment.NewLine}>>> ");
+                string command = "";
+                if (args.Length > 0)
+                {
+                    command = string.Join(" ", args);
+                }
+                else
+                {
+                    command = Console.ReadLine();
+                }
 
                 (List<string> classes, string method, List<string> parameters) = ParseCommand(command);
 

@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Mervinpaismakeswindows14")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a75cd9df662aafc56fac3c966784d8b8edbe96ba")]
 [assembly: System.Reflection.AssemblyProductAttribute("Easy14_Programming_Language")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Easy14_Programming_Language")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

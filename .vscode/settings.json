@@ -1,3 +1,4 @@
 {
-    "dotnet.defaultSolution": "Easy14_Programming_language.sln"
+    "dotnet.defaultSolution": "Easy14_Programming_language.sln",
+    "dotnet.preferCSharpExtension": true
 }

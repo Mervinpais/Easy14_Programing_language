@@ -277,3 +277,4 @@ D:\Repos and Projects\Easy14_Programming_Language\Easy14_Programming_language\ob
 D:\Repos and Projects\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net7.0-windows\Easy14_Programming_Language.pdb
 D:\Repos and Projects\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net7.0-windows\Easy14_Programming_Language.genruntimeconfig.cache
 D:\Repos and Projects\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net7.0-windows\ref\Easy14_Programming_Language.dll
+D:\Repos and Projects\Easy14_Programming_Language\Easy14_Programming_language\obj\Debug\net7.0-windows\Easy14_Programming_Language.sourcelink.json

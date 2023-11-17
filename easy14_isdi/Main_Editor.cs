@@ -346,7 +346,23 @@ namespace Easy14_SE //Stands for Easy14 Integrated Scripting Developent Environm
 
         private void noteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("", string.Join(Environment.NewLine, new string[]
+            {
+                "From; Mervin",
+                "To; You",
+                "",
+                "   Dear User,",
+                "       I am Unable to keep up with school and working on this, and so i cant work on 3 things at once, and so i will probably never fix any bugs that occur in Easy14 SE (Scripting Environment) and will only patch any security issues, i hope you understand, and if you want, You, yes, YOU can support me by working on SE for me, but please, do it out of your own love for this Project, i dont want to force any of my brothers and sisters to be forced to do something i cant do due to my problems",
+                "",
+                "       And now, i guess i have to end this message",
+                "",
+                "       but yes, i hope you are well, your family is well etc. etc.",
+                "       Thank you, for reading this.. <3",
+                "",
+                "   Yours truly,",
+                "",
+                "Mervin14"
+            }));
         }
     }
 }

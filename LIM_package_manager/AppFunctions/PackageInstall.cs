@@ -59,8 +59,7 @@ namespace LIM_package_manager.AppFunctions
                     packageFilePath = packageFilePath.Substring(2);
                 }
 
-                UnpackJsonPackage.file = packageFilePath;
-                UnpackJsonPackage.Unpack();
+                UnpackJsonPackage.Unpack(packageFilePath);
                 success = 1;
             }
             catch (Exception)
