@@ -13,7 +13,7 @@ namespace Easy14_SE
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main_Editor());
+            Application.Run(new MainUI_Output());
         }
     }
 }
