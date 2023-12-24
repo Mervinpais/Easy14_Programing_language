@@ -367,9 +367,6 @@ namespace Easy14_Programming_Language
             }
         }
 
-
-
-
         static (string[] codeToExecute, int i, List<object> results) BaseFunctionParser(string[] codeToExecute, int i, List<object> results)
         {
             if (codeToExecute[i].StartsWith("/*"))
