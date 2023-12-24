@@ -14,17 +14,17 @@ namespace Easy14_Programming_Language
 
             if (ItemChecks.DetectType(LHS.ToString()) == "var")
             {
-                if (VariableCode.variables.Keys.Any(varName => varName.Equals(LHS)))
+                if (VariableCode.variables.Any(varName => varName.Equals(LHS)))
                 {
-                    VariableCode.variables.TryGetValue(LHS.ToString(), out var LHS_Var_value);
+                    var LHS_Var_value = VariableCode.variables.FirstOrDefault(v => v.Name == LHS.ToString())?.Contents;
                     LHS = LHS_Var_value;
                 }
             }
             if (ItemChecks.DetectType(RHS.ToString()) == "var")
             {
-                if (VariableCode.variables.Keys.Any(varName => varName.Equals(RHS)))
+                if (VariableCode.variables.Any(varName => varName.Equals(RHS)))
                 {
-                    VariableCode.variables.TryGetValue(RHS.ToString(), out var RHS_Var_value);
+                    var RHS_Var_value = VariableCode.variables.FirstOrDefault(v => v.Name == RHS.ToString())?.Contents;
                     RHS = RHS_Var_value;
                 }
             }
@@ -55,17 +55,17 @@ namespace Easy14_Programming_Language
 
             if (ItemChecks.DetectType(LHS.ToString()) == "var")
             {
-                if (VariableCode.variables.Keys.Any(varName => varName.Equals(LHS)))
+                if (VariableCode.variables.Any(varName => varName.Equals(LHS)))
                 {
-                    VariableCode.variables.TryGetValue(LHS.ToString(), out var LHS_Var_value);
+                    var LHS_Var_value = VariableCode.variables.FirstOrDefault(v => v.Name == LHS.ToString())?.Contents;
                     LHS = LHS_Var_value;
                 }
             }
             if (ItemChecks.DetectType(RHS.ToString()) == "var")
             {
-                if (VariableCode.variables.Keys.Any(varName => varName.Equals(RHS)))
+                if (VariableCode.variables.Any(varName => varName.Equals(RHS)))
                 {
-                    VariableCode.variables.TryGetValue(RHS.ToString(), out var RHS_Var_value);
+                    var RHS_Var_value = VariableCode.variables.FirstOrDefault(v => v.Name == RHS.ToString())?.Contents;
                     RHS = RHS_Var_value;
                 }
             }

@@ -8,7 +8,23 @@ namespace Easy14_Programming_Language
 {
     public static class VariableCode
     {
-        public static Dictionary<string, string> variables = new Dictionary<string, string>();
+        public enum VariableType
+        {
+            @unknown,
+            str,
+            @int,
+            @bool,
+            cmd
+        }
+
+        public class Variable
+        {
+            public string Name { get; set; }
+            public VariableType Type { get; set; }
+            public string Contents { get; set; }
+        }
+
+        public static List<Variable> variables = new List<Variable>();
 
         // Method to define a new method
         public static void DefineVariable(string variableName, string variableContents)
@@ -18,26 +34,29 @@ namespace Easy14_Programming_Language
                 variableContents = variableContents.Substring(6).Trim();
                 variableContents = Program.CompileCode(codeToExecute: new string[] { variableContents + ";" }).ToString();
             }
-            variables[variableName] = variableContents;
+
+            // Add a new Variable to the list
+            variables.Add(new Variable { Name = variableName, Type = VariableType.unknown, Contents = variableContents });
         }
 
         public static string ReturnString(string variableName)
         {
-            if (variables.ContainsKey(variableName))
+            var variable = variables.FirstOrDefault(v => v.Name == variableName);
+
+            if (variable != null)
             {
-                return variables[variableName];
+                return variable.Contents;
             }
             else
             {
-                Console.WriteLine($"Method '{variableName}' not found.");
+                Console.WriteLine($"Variable '{variableName}' not found.");
+                return null;
             }
-            return null;
         }
 
-
-        public static bool VariableExists(string methodName)
+        public static bool VariableExists(string variableName)
         {
-            return variables.ContainsKey(methodName);
+            return variables.Any(v => v.Name == variableName);
         }
     }
 }

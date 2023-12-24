@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Easy14_Programming_Language
 {
@@ -57,15 +58,26 @@ namespace Easy14_Programming_Language
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine("Pre-compiling Base code... (Note: This will be optimised later)");
-                CompileCode(["Console.Print(\"\");"]);
-                CompileCode(["Console.Input(\"\\\\x\");"]);
+                //Dec 2 2023
+                Action a = () =>
+                {
+                    Task.Run(() =>
+                    {
+                        CompileCode(["Console.Print(\"\");"]);
+                        CompileCode(["Console.Input(\"\\\\x\");"]);
+                    });
+                };
+                Task precompileStuff = new Task(a);
+                precompileStuff.Start();
             }
         }
+
         static void Main(string[] args)
         {
             Checks();
             Console.ResetColor();
-            Console.Clear();            
+            Console.Clear();
+
             Console.WriteLine("args: " + string.Join(" ", args));
             string osName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}";
             string versionName = "{Unknown Version}";
@@ -108,7 +120,7 @@ namespace Easy14_Programming_Language
             Program compiler = new Program();
             while (true)
             {
-                Console.Write(":>");
+                Console.Write(">");
                 string input = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(input)) { continue; }
@@ -116,8 +128,43 @@ namespace Easy14_Programming_Language
                 switch (input)
                 {
                     case "help":
-                        throw new NotImplementedException("DEVNOTE: I really forgot to implement this");
-                        return;
+                        //throw new NotImplementedException("DEVNOTE: I really forgot to implement this");
+                        compiler.ExternalCompileCode(null, new string[] {
+                            "Console.Print(\"Help Guide!\");",
+                            "Console.Print(\"\");",
+                            "Console.Print(\"   - help: Get this help guide \");",
+                            "Console.Print(\"   - copyright: Copyright rights to this product \");",
+                            "Console.Print(\"   - credits: Credits :) \");",
+                            "Console.Print(\"   - *anything else* : runs the code through the Easy14 Interpreter \");",
+                        } );
+                        break;
+
+                    case "*anything else*":
+                        compiler.ExternalCompileCode(null, new string[] {
+                            "Console.Print(\"\");",
+                            "Console.Print(\"You got bored huh? me too :) \");",
+                            "Console.Print(\"\");",
+                        });
+                        break;
+
+                    case "copyright":
+                        compiler.ExternalCompileCode(null, new string[] {
+                            "Console.Print(\"\");",
+                            "Console.Print(\"Copyright (C) Mervinpais14 (formerly Mervinpaismakeswindows14) \");",
+                            "Console.Print(\"   * MervinpaismakesWINDOWS14 is NOT affiliated with Microsoft or the Windows(TM) product\");",
+                            "Console.Print(\"\");",
+                        });
+                        break;
+                        
+                    case "credits":
+                        compiler.ExternalCompileCode(null, new string[] {
+                            "Console.Print(\"\");",
+                            "Console.Print(\" Thanks to;\");",
+                            "Console.Print(\"   Github for letting me host this project :>\");",
+                            "Console.Print(\"\");",
+                        });
+                        break;
+
 
                     default:
                         compiler.ExternalCompileCode(null, new string[] { input });
@@ -320,6 +367,9 @@ namespace Easy14_Programming_Language
             }
         }
 
+
+
+
         static (string[] codeToExecute, int i, List<object> results) BaseFunctionParser(string[] codeToExecute, int i, List<object> results)
         {
             if (codeToExecute[i].StartsWith("/*"))
@@ -457,7 +507,7 @@ namespace Easy14_Programming_Language
                 {
                     if (VariableCode.VariableExists(variableName))
                     {
-                        results.Add(VariableCode.variables[variableName]);
+                        results.Add(VariableCode.variables.FirstOrDefault(v => v.Name == variableName));
                         return (codeToExecute, i, results);
                     }
                     else
@@ -591,6 +641,7 @@ namespace Easy14_Programming_Language
                 Code = code
             };
         }
+
         public static object ExecuteFunctionWithNamespace((List<string> classes, string method, List<string> params_) StatementResult)
         {
             List<string> theClassesOfTheLine = StatementResult.classes;
@@ -622,6 +673,9 @@ namespace Easy14_Programming_Language
                     {
                         MetadataReference.CreateFromFile(typeof(DataTable).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(SDL).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(System.Linq.EnumerableQuery).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(System.Linq.Enumerable).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(System.Linq.Queryable).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Windows.Forms.Form).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Net.NetworkInformation.Ping).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Net.NetworkInformation.IPStatus).Assembly.Location),
@@ -653,6 +707,7 @@ namespace Easy14_Programming_Language
                         "System.Drawing",
                         "System.Drawing.Point",
                         "System.Windows.Forms",
+                        "System.Linq",
                         "System.Collections.Generic",
                         "System.Net",
                         "System.Net.NetworkInformation",

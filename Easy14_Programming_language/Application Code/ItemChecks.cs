@@ -18,7 +18,7 @@ namespace Easy14_Programming_Language
                 return "cmd";
             else if (IsBoolean(data))
                 return "bool";
-            else if (IsVariable(data, VariableCode.variables.Keys.ToList<object>()))
+            else if (IsVariable(data, VariableCode.variables.ToList<object>()))
                 return "var";
 
             return "";
