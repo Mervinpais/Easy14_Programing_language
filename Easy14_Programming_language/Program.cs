@@ -1,4 +1,5 @@
-﻿using Easy14_Programming_Language.Functions;
+﻿using Easy14_Programming_Language.Application_Code;
+using Easy14_Programming_Language.Functions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
@@ -58,17 +59,11 @@ namespace Easy14_Programming_Language
                 Console.BackgroundColor = ConsoleColor.White;
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine("Pre-compiling Base code... (Note: This will be optimised later)");
-                //Dec 2 2023
-                Action a = () =>
-                {
-                    Task.Run(() =>
-                    {
-                        CompileCode(["Console.Print(\"\");"]);
-                        CompileCode(["Console.Input(\"\\\\x\");"]);
-                    });
-                };
-                Task precompileStuff = new Task(a);
-                precompileStuff.Start();
+                //Dec 25 2023
+                //CompileCode(["Console Print { \"\" };"]);
+                //CompileCode(["Console Input { \"\\\\x\" };"]);
+
+                PreCompileCodeClass.PrecompileCode();
             }
         }
 
@@ -130,38 +125,41 @@ namespace Easy14_Programming_Language
                     case "help":
                         //throw new NotImplementedException("DEVNOTE: I really forgot to implement this");
                         compiler.ExternalCompileCode(null, new string[] {
-                            "Console.Print(\"Help Guide!\");",
-                            "Console.Print(\"\");",
-                            "Console.Print(\"   - help: Get this help guide \");",
-                            "Console.Print(\"   - copyright: Copyright rights to this product \");",
-                            "Console.Print(\"   - credits: Credits :) \");",
-                            "Console.Print(\"   - *anything else* : runs the code through the Easy14 Interpreter \");",
-                        } );
+                            "Console Print { \"Help Guide!\" };",
+                            "Console Print { \"\" };",
+                            "Console Print { \"   - help: Get this help guide \" };",
+                            "Console Print { \"   - copyright: Copyright rights to this product \" };",
+                            "Console Print { \"   - credits: Credits :) \" };",
+                            "Console Print { \"   - *anything else* : runs the code through the Easy14 Interpreter \" };",
+                        });
                         break;
 
                     case "*anything else*":
                         compiler.ExternalCompileCode(null, new string[] {
-                            "Console.Print(\"\");",
-                            "Console.Print(\"You got bored huh? me too :) \");",
-                            "Console.Print(\"\");",
+                            "Console Print { \"\" };",
+                            "Console Print { \"You got bored huh? me too :) \" };",
+                            "Console Print { \"\" };",
                         });
+                        Debug.WriteLine($"The method '*anything else*' for class '' was not found.");
+                        throw new Exception("Not valid statement");
                         break;
 
                     case "copyright":
                         compiler.ExternalCompileCode(null, new string[] {
-                            "Console.Print(\"\");",
-                            "Console.Print(\"Copyright (C) Mervinpais14 (formerly Mervinpaismakeswindows14) \");",
-                            "Console.Print(\"   * MervinpaismakesWINDOWS14 is NOT affiliated with Microsoft or the Windows(TM) product\");",
-                            "Console.Print(\"\");",
+                            "Console Print { \"\" };",
+                            "Console Print { \"Copyright (C) Mervinpais14 (formerly Mervinpaismakeswindows14) \" };",
+                            "Console Print { \"   * MervinpaismakesWINDOWS14 is NOT affiliated with Microsoft or the Windows(TM) product\" };",
+                            "Console Print { \"\" };",
                         });
                         break;
-                        
+
                     case "credits":
                         compiler.ExternalCompileCode(null, new string[] {
-                            "Console.Print(\"\");",
-                            "Console.Print(\" Thanks to;\");",
-                            "Console.Print(\"   Github for letting me host this project :>\");",
-                            "Console.Print(\"\");",
+                            "Console Print { \"\" };",
+                            "Console Print { \" Thanks to;\" };",
+                            "Console Print { \"   Mervin14 for the Easy14 Language Project\" };",
+                            //"Console.Print(\"   Github for letting me host this project :>\");", too cringy i guess, plus this is an Open source project not personal one.. i mean it is, but people should be able to say what they want instead of what i want.. Please note that Mervin wrote this note not anyone else as to not confuse anything if someone forks my project and someone else sees this
+                            "Console Print { \"\" };",
                         });
                         break;
 
@@ -207,6 +205,24 @@ namespace Easy14_Programming_Language
             }
         }
 
+        static List<string> SplitByComma(string input)
+        {
+            // Use regex to match commas outside quotes
+            string pattern = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
+            string[] result = Regex.Split(input, pattern);
+
+            // Trim spaces from each element
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = result[i].Trim();
+            }
+
+            // Convert the string array to an object array
+            List<string> objectArray = result.ToList();
+
+            return objectArray;
+        }
+
         /// <summary>
         /// Uhh self-explanatory
         /// </summary>
@@ -217,7 +233,7 @@ namespace Easy14_Programming_Language
                 List<Token> tokens = new List<Token>();
 
                 var identifierPattern = @"[a-zA-Z_]\w*";
-                var methodsPattern = @"(.*?\.)([A-Za-z]+)\((.*?)\);";
+                var methodsPattern = @"(.*?\ )([A-Za-z]+)\ \{ (.*?) \};";
                 var numberPattern = @"\d+";
                 var operatorPattern = @"\+|-|\*|/";
 
@@ -228,39 +244,17 @@ namespace Easy14_Programming_Language
                 {
                     string value = match.Value;
 
-                    var methodMatch = Regex.Match(value, @"(.*?\.)([A-Za-z]+)\((.*?)\);");
+                    var methodMatch = Regex.Match(value, methodsPattern);
                     if (methodMatch.Success)
                     {
-                        string classPart = methodMatch.Groups[1].Value;
+                        string classPart = methodMatch.Groups[1].Value.TrimEnd();
                         string methodPart = methodMatch.Groups[2].Value;
                         string paramsPart = methodMatch.Groups[3].Value;
 
                         List<string> parameters = new List<string>();
-                        int parenthesesCount = 0;
                         StringBuilder currentParameter = new StringBuilder();
 
-                        foreach (char c in paramsPart)
-                        {
-                            if (c == '(')
-                            {
-                                parenthesesCount++;
-                                currentParameter.Append(c);
-                            }
-                            else if (c == ')')
-                            {
-                                parenthesesCount--;
-                                currentParameter.Append(c);
-                            }
-                            else if (c == ',' && parenthesesCount == 0)
-                            {
-                                parameters.Add(currentParameter.ToString().Trim());
-                                currentParameter.Clear();
-                            }
-                            else
-                            {
-                                currentParameter.Append(c);
-                            }
-                        }
+                        parameters = SplitByComma(paramsPart);
 
                         parameters.Add(currentParameter.ToString().Trim());
 
@@ -709,7 +703,8 @@ namespace Easy14_Programming_Language
                         "System.Net",
                         "System.Net.NetworkInformation",
                         "Easy14_Programming_Language",
-                        "Easy14_Programming_Language.UniversalVariables" };
+                        "Easy14_Programming_Language.UniversalVariables"
+                    };
 
                     ScriptOptions scriptOptions = ScriptOptions.Default
                         .WithReferences(references)
