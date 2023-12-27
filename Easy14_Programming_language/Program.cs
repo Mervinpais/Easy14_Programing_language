@@ -25,7 +25,7 @@ namespace Easy14_Programming_Language
         private static readonly string executingAssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         private static readonly string optionsPath = Path.Combine(executingAssemblyPath, "Application Code", "options.ini");
         private static readonly string[] configFile = File.ReadAllLines(Path.Combine(executingAssemblyPath, optionsPath));
-        private static readonly string version = Path.Combine(executingAssemblyPath, "Application Code", "currentVersion.txt");
+        private static readonly string version = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(executingAssemblyPath).FullName).FullName).FullName).FullName, ".git", "HEAD");
 
         public enum Status
         {
@@ -73,11 +73,11 @@ namespace Easy14_Programming_Language
             Console.ResetColor();
             Console.Clear();
 
-            Console.WriteLine("args: " + string.Join(" ", args));
             string osName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}";
             string versionName = "{Unknown Version}";
-            try { versionName = File.ReadAllLines(version)[0]; } catch { }
+            try { versionName = File.ReadAllLines(version)[0].Split("/")[2]; } catch { }
             Console.WriteLine($"Easy14 {versionName} ({osName})");
+            Console.WriteLine("args: " + string.Join(" ", args));
 
             Console.WriteLine("\n===== Easy14 =====\n");
 
@@ -115,7 +115,7 @@ namespace Easy14_Programming_Language
             Program compiler = new Program();
             while (true)
             {
-                Console.Write(">");
+                Console.Write(">>>");
                 string input = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(input)) { continue; }

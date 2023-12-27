@@ -8,12 +8,12 @@ namespace Easy14_Programming_Language
     public static class UpdateChecker
     {
         private static readonly string executingAssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        private static readonly string version = Path.Combine(executingAssemblyPath, "Application Code", "currentVersion.txt");
+        private static readonly string version = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(executingAssemblyPath).FullName).FullName).FullName).FullName, ".git", "HEAD");
         public static void CheckLatestVersion()
         {
             string currentVersion = "V0 - Unknown";
 
-            if (File.ReadAllLines(version).Length > 0) currentVersion = File.ReadAllLines(version)[0]; // Read the first line
+            if (File.ReadAllLines(version).Length > 0) currentVersion = File.ReadAllLines(version)[0].Split("/")[2]; // Read the first line
 
             string exeLocation = Assembly.GetExecutingAssembly().Location;
             string workingDirectory = Path.GetDirectoryName(exeLocation);
