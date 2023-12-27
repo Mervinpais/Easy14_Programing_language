@@ -11,12 +11,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Easy14_Programming_Language.Program;
+using System.Reflection;
 
 namespace Easy14_Programming_Language.Application_Code
 {
     public static class PreCompileCodeClass
     {
         public static string pathOfPackages = Program.pathOfPackages;
+        private static readonly string executingAssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
         public static void PrecompileCode()
         {
             List<(List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven)> statementResult = new List<(List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven)>();
@@ -24,6 +27,11 @@ namespace Easy14_Programming_Language.Application_Code
                 (new List<string> { "Console" }, "Print", new List<string> { "\"\"" }),
                 (new List<string> { "Console" }, "Input", new List<string> { "\"\\\\x\"" })
             };
+
+            if (!Directory.Exists(Path.Combine(executingAssemblyPath, "Precompiled")))
+            {
+                Directory.CreateDirectory(Path.Combine(executingAssemblyPath, "Precompiled"));
+            }
 
             foreach ((List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven) e in statementResult)
             {
@@ -106,15 +114,73 @@ namespace Easy14_Programming_Language.Application_Code
 
                         //code = code + $"{Environment.NewLine}Environment.Exit(0);";
                         var script = CSharpScript.Create(code, scriptOptions);
-                        var result = script.RunAsync().Result;
-                        if (result.Exception != null)
+                        //var result = script.RunAsync().Result;
+                        //if (result.Exception != null)
+                        //{
+                        //    Console.WriteLine("Error occurred: " + result.Exception);
+                        //}
+                        //if (result.ReturnValue != null)
+                        //{
+                        //    var returnValue = result.ReturnValue;
+                        //}
+                        
+                        if (!File.Exists(Path.Combine(executingAssemblyPath, "Precompiled", theMethodOfTheLine + ".dll")))
                         {
-                            Console.WriteLine("Error occurred: " + result.Exception);
+                            var compilation = script.GetCompilation();
+                            using (var stream = new MemoryStream())
+                            {
+                                var emitResult = compilation.Emit(stream);
+                                if (emitResult.Success)
+                                {
+                                    File.WriteAllBytes(Path.Combine("Precompiled", theMethodOfTheLine + ".dll"), stream.ToArray());
+                                }
+                                else
+                                {
+                                    // Handle compilation errors
+                                    foreach (var diagnostic in emitResult.Diagnostics)
+                                    {
+                                        Console.WriteLine(diagnostic);
+                                    }
+                                }
+                            }
                         }
-                        if (result.ReturnValue != null)
-                        {
-                            var returnValue = result.ReturnValue;
-                        }
+                        //var assembly = Assembly.LoadFile($"{executingAssemblyPath}\\{theMethodOfTheLine}.dll");
+
+                        //foreach (var loadedType in assembly.GetTypes())
+                        //{
+                        //    Console.WriteLine(loadedType.FullName);
+                        //}
+
+
+                        //// Find the type containing the method
+                        //var type = assembly.GetType("Submission#0+MyClass"); // No need for the namespace in this case
+
+                        //var methods = type.GetMethods();
+
+                        //// Create an instance of the type (assuming it's a static class)
+                        //var instance = Activator.CreateInstance(type);
+
+                        //// Find the PrintLine method
+                        //var method = type.GetMethod(methods[0].Name);
+
+                        //var parameters = method.GetParameters();
+                        //if (parameters.Length > 0)
+                        //{
+                        //    // Collect input for each parameter
+                        //    var inputValues = parameters.Select(param =>
+                        //    {
+                        //        Console.Write($"Enter value for parameter '{param.Name}' ({param.ParameterType}): ");
+                        //        return Convert.ChangeType(Console.ReadLine(), param.ParameterType);
+                        //    }).ToArray();
+
+                        //    // Call the method with the collected parameters
+                        //    method.Invoke(instance, inputValues);
+                        //}
+                        //else
+                        //{
+                        //    // Call the method with no parameters
+                        //    method.Invoke(instance, null);
+                        //}
                     }
                     catch (Exception e)
                     {
