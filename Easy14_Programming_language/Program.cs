@@ -713,16 +713,50 @@ namespace Easy14_Programming_Language
 
                     //code = code + $"{Environment.NewLine}Environment.Exit(0);";
                     var script = CSharpScript.Create(code, options: scriptOptions);
-                    var result = script.RunAsync().Result;
-                    if (result.Exception != null)
+                    //var result = script.RunAsync().Result;
+                    //if (result.Exception != null)
+                    //{
+                    //    Console.WriteLine("Error occurred: " + result.Exception);
+                    //}
+                    //if (result.ReturnValue != null)
+                    //{
+                    //    var returnValue = result.ReturnValue;
+                    //    return returnValue;
+                    //}
+
+                    var assembly = Assembly.LoadFile($"{executingAssemblyPath}\\Precompiled\\{theMethodOfTheLine}.dll");
+
+                    //foreach (var loadedType in assembly.GetTypes())
+                    //{
+                    //    Console.WriteLine(loadedType.FullName);
+                    //}
+
+
+                    // Find the type containing the method
+                    var type = assembly.GetType("Submission#0+MyClass"); // No need for the namespace in this case
+
+                    var methods = type.GetMethods();
+
+                    // Create an instance of the type (assuming it's a static class)
+                    var instance = Activator.CreateInstance(type);
+
+                    // Find the PrintLine method
+                    var method = type.GetMethod(methods[0].Name);
+
+                    var parameters = method.GetParameters();
+                    if (parameters.Length > 0)
                     {
-                        Console.WriteLine("Error occurred: " + result.Exception);
+                        List<object> inputValues = new List<object>(StatementResult.params_);
+
+                        // Call the method with the collected parameters
+                        method.Invoke(instance, inputValues.ToArray());
                     }
-                    if (result.ReturnValue != null)
+                    else
                     {
-                        var returnValue = result.ReturnValue;
-                        return returnValue;
+                        // Call the method with no parameters
+                        method.Invoke(instance, null);
                     }
+
                 }
                 catch (Exception e)
                 {

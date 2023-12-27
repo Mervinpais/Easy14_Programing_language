@@ -144,43 +144,7 @@ namespace Easy14_Programming_Language.Application_Code
                                 }
                             }
                         }
-                        //var assembly = Assembly.LoadFile($"{executingAssemblyPath}\\{theMethodOfTheLine}.dll");
-
-                        //foreach (var loadedType in assembly.GetTypes())
-                        //{
-                        //    Console.WriteLine(loadedType.FullName);
-                        //}
-
-
-                        //// Find the type containing the method
-                        //var type = assembly.GetType("Submission#0+MyClass"); // No need for the namespace in this case
-
-                        //var methods = type.GetMethods();
-
-                        //// Create an instance of the type (assuming it's a static class)
-                        //var instance = Activator.CreateInstance(type);
-
-                        //// Find the PrintLine method
-                        //var method = type.GetMethod(methods[0].Name);
-
-                        //var parameters = method.GetParameters();
-                        //if (parameters.Length > 0)
-                        //{
-                        //    // Collect input for each parameter
-                        //    var inputValues = parameters.Select(param =>
-                        //    {
-                        //        Console.Write($"Enter value for parameter '{param.Name}' ({param.ParameterType}): ");
-                        //        return Convert.ChangeType(Console.ReadLine(), param.ParameterType);
-                        //    }).ToArray();
-
-                        //    // Call the method with the collected parameters
-                        //    method.Invoke(instance, inputValues);
-                        //}
-                        //else
-                        //{
-                        //    // Call the method with no parameters
-                        //    method.Invoke(instance, null);
-                        //}
+                        
                     }
                     catch (Exception e)
                     {
