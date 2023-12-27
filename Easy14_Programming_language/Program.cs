@@ -77,10 +77,11 @@ namespace Easy14_Programming_Language
             string versionName = "{Unknown Version}";
             try { versionName = File.ReadAllLines(version)[0].Split("/")[2]; } catch { }
             Console.WriteLine($"Easy14 {versionName} ({osName})");
-            Console.WriteLine("args: " + string.Join(" ", args));
-
-            Console.WriteLine("\n===== Easy14 =====\n");
-
+            if (args.Length != 0)
+            {
+                Console.WriteLine("args: " + string.Join(" ", args));
+            }
+            Console.WriteLine();
             if (args.Length != 0)
             {
                 if (args[0].ToLower() == "/intro")
