@@ -684,7 +684,6 @@ namespace Easy14_Programming_Language
                         MetadataReference.CreateFromFile(typeof(Program).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(ItemChecks).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(VariableCode).Assembly.Location),
-                        MetadataReference.CreateFromFile(typeof(VariableCode).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(UniversalVariables).Assembly.Location),
                     };
 
@@ -704,7 +703,6 @@ namespace Easy14_Programming_Language
                         "System.Net",
                         "System.Net.NetworkInformation",
                         "Easy14_Programming_Language",
-                        "Easy14_Programming_Language.UniversalVariables"
                     };
 
                     ScriptOptions scriptOptions = ScriptOptions.Default

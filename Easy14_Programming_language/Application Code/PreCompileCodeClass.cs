@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Easy14_Programming_Language.Program;
 using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace Easy14_Programming_Language.Application_Code
 {
@@ -24,8 +25,11 @@ namespace Easy14_Programming_Language.Application_Code
         {
             List<(List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven)> statementResult = new List<(List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven)>();
             statementResult = new List<(List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven)>() {
-                (new List<string> { "Console" }, "Print", new List<string> { "\"\"" }),
-                (new List<string> { "Console" }, "Input", new List<string> { "\"\\\\x\"" })
+                (new List<string> { "Console" }, "Print", new List<string> { }),
+                (new List<string> { "Console" }, "Input", new List<string> { }),
+                (new List<string> { "Console" }, "Beep", new List<string> { }),
+                (new List<string> { "Console" }, "Clear", new List<string> { }),
+                (new List<string> { "Console" }, "Exec", new List<string> { }),
             };
 
             if (!Directory.Exists(Path.Combine(executingAssemblyPath, "Precompiled")))
@@ -79,6 +83,7 @@ namespace Easy14_Programming_Language.Application_Code
                         MetadataReference.CreateFromFile(typeof(System.Media.SystemSounds).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(System.Drawing.Point).Assembly.Location),
                         MetadataReference.CreateFromFile(typeof(Console).Assembly.Location),
+                        MetadataReference.CreateFromFile(typeof(System.Text.RegularExpressions.Regex).Assembly.Location),
 
                         MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
 
@@ -93,6 +98,8 @@ namespace Easy14_Programming_Language.Application_Code
                         "System",
                         "SDL2",
                         "System.IO",
+                        "System.Text",
+                        "System.Text.RegularExpressions",
                         "System.Threading",
                         "System.Threading.Tasks",
                         "System.Windows",
@@ -123,8 +130,18 @@ namespace Easy14_Programming_Language.Application_Code
                         //{
                         //    var returnValue = result.ReturnValue;
                         //}
-                        
-                        if (!File.Exists(Path.Combine(executingAssemblyPath, "Precompiled", theMethodOfTheLine + ".dll")))
+
+                        string currPath = Path.Combine(executingAssemblyPath, "Precompiled");
+                        foreach (string @class in theClassesOfTheLine)
+                        { 
+                            if (!Directory.Exists(Path.Combine(currPath, @class)))
+                            {
+                                Directory.CreateDirectory(Path.Combine(currPath, @class));
+                            }
+                            currPath = Path.Combine(currPath, @class);
+                        }
+
+                        if (!File.Exists(Path.Combine(currPath, theMethodOfTheLine + ".dll")))
                         {
                             var compilation = script.GetCompilation();
                             using (var stream = new MemoryStream())
@@ -132,7 +149,7 @@ namespace Easy14_Programming_Language.Application_Code
                                 var emitResult = compilation.Emit(stream);
                                 if (emitResult.Success)
                                 {
-                                    File.WriteAllBytes(Path.Combine("Precompiled", theMethodOfTheLine + ".dll"), stream.ToArray());
+                                    File.WriteAllBytes(Path.Combine(currPath, theMethodOfTheLine + ".dll"), stream.ToArray());
                                 }
                                 else
                                 {
@@ -140,6 +157,15 @@ namespace Easy14_Programming_Language.Application_Code
                                     foreach (var diagnostic in emitResult.Diagnostics)
                                     {
                                         Console.WriteLine(diagnostic);
+                                    }
+                                    Console.BackgroundColor = ConsoleColor.Red;
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Console.WriteLine($"1 or More errors occured while pre-compiling code, this package [\"{theMethodOfTheLine}\"] of class(s) [\"{string.Join("", theClassesOfTheLine)}\"] has errors, want to continue with the remaining packages?");
+                                    Console.ResetColor();
+                                    Console.Write("(y/n)> ");
+                                    if (Console.ReadLine() == "n")
+                                    {
+                                        Environment.Exit(-1);
                                     }
                                 }
                             }
