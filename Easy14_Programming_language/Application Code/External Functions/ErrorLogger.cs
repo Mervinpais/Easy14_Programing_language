@@ -64,7 +64,8 @@ namespace Easy14_Programming_Language
 
             Console.ForegroundColor = textColor;
             Console.BackgroundColor = bgColor;
-            Console.WriteLine($"{errorLevel.ToString().ToUpper()}:> {message}", title);
+            Console.WriteLine($"{errorLevel.ToString().ToUpper()}:> {message} \n {title}");
+
             Console.ResetColor();
 
             // Throw a custom exception

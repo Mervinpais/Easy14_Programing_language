@@ -24,13 +24,51 @@ namespace Easy14_Programming_Language.Application_Code
         public static void PrecompileCode()
         {
             List<(List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven)> statementResult = new List<(List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven)>();
-            statementResult = new List<(List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven)>() {
-                (new List<string> { "Console" }, "Print", new List<string> { }),
-                (new List<string> { "Console" }, "Input", new List<string> { }),
-                (new List<string> { "Console" }, "Beep", new List<string> { }),
-                (new List<string> { "Console" }, "Clear", new List<string> { }),
-                (new List<string> { "Console" }, "Exec", new List<string> { }),
-            };
+
+            bool alreadyPrecomp = true;
+            List<string> precompDirs = (from string e in Directory.GetDirectories(Path.Combine(executingAssemblyPath, "Precompiled"))
+                                        select e.Split("\\")[e.Split("\\").Length - 1]).ToList();
+
+            foreach (string dir in Directory.GetDirectories(pathOfPackages))
+            {
+                string dir_ = dir.Split("\\")[dir.Split("\\").Length - 1];
+                if (dir_.StartsWith(".")) continue;
+                if (!precompDirs.Contains(dir_))
+                {
+                    alreadyPrecomp = false;
+                    break;
+                }
+
+                // Check if the same files are there between the two subfolders
+                string precompiledDirPath = Path.Combine(executingAssemblyPath, "Precompiled", dir_);
+                string currentDirPath = Path.Combine(pathOfPackages, dir_);
+
+                string[] precompiledFiles = Directory.GetFiles(precompiledDirPath).Select(Path.GetFileNameWithoutExtension).ToArray();
+                string[] currentFiles = Directory.GetFiles(currentDirPath).Select(Path.GetFileNameWithoutExtension).ToArray();
+
+                if (!precompiledFiles.SequenceEqual(currentFiles))
+                {
+                    alreadyPrecomp = false;
+                    break;
+                }
+            }
+
+            if (alreadyPrecomp)
+            {
+                return;
+            }
+
+            foreach (string pathOfPackage in Directory.GetDirectories(pathOfPackages))
+            {
+                if (pathOfPackage.Split("\\")[pathOfPackage.Split("\\").Length-1].StartsWith(".")) continue;
+                foreach (string files in Directory.GetFiles(pathOfPackage))
+                {
+                    if (files.EndsWith(".cs"))
+                    {
+                        statementResult.Add((new List<string> { pathOfPackage }, files.Substring(0, files.Length - 3), new List<string> { }));
+                    }
+                }
+            }
 
             if (!Directory.Exists(Path.Combine(executingAssemblyPath, "Precompiled")))
             {
@@ -56,15 +94,15 @@ namespace Easy14_Programming_Language.Application_Code
 
                     try
                     {
-                        if (codeSplitIntoLines[0].StartsWith("//_params = "))
-                        {
-                            (List<string> classes, string method, List<string> params_) statementResult = (theClassesOfTheLine, theMethodOfTheLine, paramsGiven);
-                            var ParamParserResult = NamespaceFunctionParamParser(paramsGiven, statementResult, codeSplitIntoLines, code);
-                            paramsGiven = ParamParserResult.ParamsGiven;
-                            statementResult = ParamParserResult.StatementResult;
-                            codeSplitIntoLines = ParamParserResult.CodeSplitIntoLines;
-                            code = ParamParserResult.Code;
-                        }
+                        //if (codeSplitIntoLines[0].StartsWith("//_params = "))
+                        //{
+                        //    (List<string> classes, string method, List<string> params_) statementResult = (theClassesOfTheLine, theMethodOfTheLine, paramsGiven);
+                        //    var ParamParserResult = NamespaceFunctionParamParser(paramsGiven, statementResult, codeSplitIntoLines, code);
+                        //    paramsGiven = ParamParserResult.ParamsGiven;
+                        //    statementResult = ParamParserResult.StatementResult;
+                        //    codeSplitIntoLines = ParamParserResult.CodeSplitIntoLines;
+                        //    code = ParamParserResult.Code;
+                        //}
 
                         var references = new List<MetadataReference>
                     {
@@ -133,12 +171,12 @@ namespace Easy14_Programming_Language.Application_Code
 
                         string currPath = Path.Combine(executingAssemblyPath, "Precompiled");
                         foreach (string @class in theClassesOfTheLine)
-                        { 
-                            if (!Directory.Exists(Path.Combine(currPath, @class)))
+                        {
+                            if (!Directory.Exists(Path.Combine(currPath, @class.Split("\\")[@class.Split("\\").Length-1])))
                             {
-                                Directory.CreateDirectory(Path.Combine(currPath, @class));
+                                Directory.CreateDirectory(Path.Combine(currPath, @class.Split("\\")[@class.Split("\\").Length - 1]));
                             }
-                            currPath = Path.Combine(currPath, @class);
+                            currPath = Path.Combine(currPath, @class.Split("\\")[@class.Split("\\").Length - 1]);
                         }
 
                         if (!File.Exists(Path.Combine(currPath, theMethodOfTheLine + ".dll")))
@@ -149,7 +187,7 @@ namespace Easy14_Programming_Language.Application_Code
                                 var emitResult = compilation.Emit(stream);
                                 if (emitResult.Success)
                                 {
-                                    File.WriteAllBytes(Path.Combine(currPath, theMethodOfTheLine + ".dll"), stream.ToArray());
+                                    File.WriteAllBytes(Path.Combine(currPath, theMethodOfTheLine.Split("\\")[theMethodOfTheLine.Split("\\").Length - 1] + ".dll"), stream.ToArray());
                                 }
                                 else
                                 {
@@ -181,7 +219,7 @@ namespace Easy14_Programming_Language.Application_Code
                 }
                 else
                 {
-                    Debug.WriteLine($"The method '{theMethodOfTheLine}' for class '{classHierarchy}' was not found.");
+                    Debug.WriteLine($"The method '{theMethodOfTheLine.Split("\\")[theMethodOfTheLine.Split("\\").Length - 1]}' for class '{classHierarchy}' was not found.");
                     throw new Exception("Not valid statement");
                 }
             }

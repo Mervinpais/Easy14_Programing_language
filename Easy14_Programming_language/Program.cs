@@ -234,7 +234,7 @@ namespace Easy14_Programming_Language
                 List<Token> tokens = new List<Token>();
 
                 var identifierPattern = @"[a-zA-Z_]\w*";
-                var methodsPattern = @"(.*?\ )([A-Za-z]+)\ \{ (.*?) \};";
+                var methodsPattern = @"(.*?\ )([A-Za-z]+)\ \{(.*?)\};";
                 var numberPattern = @"\d+";
                 var operatorPattern = @"\+|-|\*|/";
 
@@ -325,7 +325,7 @@ namespace Easy14_Programming_Language
                         if (tokens[index].Tag == TokenType.Params)
                         {
                             // Parsing Method Parameters
-                            var parameters = tokens[index].Value.Split("|").ToList();
+                            var parameters = tokens[index].Value.Split(",").ToList();
                             Statements.Add((className, method, parameters));
                             Statements.RemoveAt(0);
 
@@ -722,7 +722,8 @@ namespace Easy14_Programming_Language
                     //    return returnValue;
                     //}
 
-                    var assembly = Assembly.LoadFile($"{executingAssemblyPath}\\Precompiled\\{theMethodOfTheLine}.dll");
+                    string fileToLoad = $"{executingAssemblyPath}\\Precompiled\\{string.Join("\\", theClassesOfTheLine)}\\{theMethodOfTheLine}.dll";
+                    var assembly = Assembly.LoadFile(fileToLoad);
 
                     //foreach (var loadedType in assembly.GetTypes())
                     //{
