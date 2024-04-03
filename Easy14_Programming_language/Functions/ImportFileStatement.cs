@@ -20,7 +20,7 @@ namespace Easy14_Programming_Language.Functions
             }
             else
             {
-                ErrorReportor.ReportError("Importing File Error", $"Error; Importing file \'{code}\' does not exist!");
+                Debugger.Error("Importing File Error", $"Error; Importing file \'{code}\' does not exist!");
             }
             return new();
         }

@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace LIM_package_manager.AppFunctions
 {
@@ -32,7 +33,21 @@ namespace LIM_package_manager.AppFunctions
                     return;
                 }
 
-                string packagesFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
+                string optionsIniFile = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(Path.GetFullPath(Assembly.GetExecutingAssembly().Location)).FullName).FullName).FullName).FullName).FullName, "Easy14_Programming_language", "Application Code", "options.ini");
+                string[] optionsFileContents = File.ReadAllLines(optionsIniFile);
+                string packagePathLineOptionsINIFile = "";
+                foreach (string line in optionsFileContents)
+                {
+                    if (line.StartsWith("packagePath:"))
+                    {
+                        packagePathLineOptionsINIFile = line;
+                    }
+                }
+                string packagesFolderPath = packagePathLineOptionsINIFile.Split(":")[1].Trim();
+                if (packagesFolderPath == "")
+                {
+                    packagesFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
+                }
                 string mainPackageFile = Base.SanitizeFileName(Path.GetFileName(downloadUrl));
                 string mainPackageFileLocation = Path.Combine(packagesFolderPath, mainPackageFile);
 
@@ -54,13 +69,15 @@ namespace LIM_package_manager.AppFunctions
 
             try
             {
-                if (packageFilePath.StartsWith("--"))
+                if (success != -1)
                 {
-                    packageFilePath = packageFilePath.Substring(2);
+                    if (packageFilePath.StartsWith("--"))
+                    {
+                        packageFilePath = packageFilePath.Substring(2);
+                    }
+                    UnpackJsonPackage.Unpack(packageFilePath);
+                    success = 1;
                 }
-
-                UnpackJsonPackage.Unpack(packageFilePath);
-                success = 1;
             }
             catch (Exception)
             {
@@ -78,23 +95,27 @@ namespace LIM_package_manager.AppFunctions
         {
             foreach (string param in params_)
             {
-                if (param.StartsWith("--http"))
+                if (param.StartsWith("--"))
                 {
                     string downloadUrl = param.Substring(2);
                     Console.WriteLine($"PACKAGE: {Path.GetFileName(downloadUrl)}");
 
-                    if (param.StartsWith("--https://"))
+                    if (Uri.TryCreate(downloadUrl, UriKind.Absolute, out Uri uri))
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("INFO: You are installing a package with a secured HTTPS connection");
-                    }
-                    else if (param.StartsWith("--http://"))
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("WARNING: You are installing a package over an insecure HTTP connection. Proceed with caution when downloading packages over HTTP.");
-                    }
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine($"INFO: You are installing a package with a {uri.Scheme.ToUpper()} connection");
 
-                    return downloadUrl;
+                        // You can add more specific checks or handling based on the scheme if needed.
+
+                        return downloadUrl;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("ERROR: Invalid URL format.");
+                        // You might want to handle this error accordingly, for example, continue the loop or return an error code.
+                        return string.Empty;
+                    }
                 }
             }
 
@@ -123,6 +144,7 @@ namespace LIM_package_manager.AppFunctions
 
             Console.WriteLine("(Press Enter to continue)");
             Console.ReadKey();
+            Console.ResetColor();
         }
     }
 }

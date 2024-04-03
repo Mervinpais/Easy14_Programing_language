@@ -7,7 +7,7 @@ namespace Easy14_Programming_Language
         public Easy14Exception(string message) : base(message) { }
     }
 
-    public static class ErrorReportor
+    public static class Debugger
     {
         public enum ErrorLevel
         {
@@ -17,22 +17,22 @@ namespace Easy14_Programming_Language
             Message
         }
 
-        public static void ReportCSharpError(string title, string message)
+        public static void CS_Error(string title, string message)
         {
             ReportError(ErrorLevel.CSharpError, title, message);
         }
 
-        public static void ReportError(string title, string message)
+        public static void Error(string title, string message)
         {
             ReportError(ErrorLevel.Error, title, message);
         }
 
-        public static void ReportWarning(string title, string message)
+        public static void Warning(string title, string message)
         {
             ReportError(ErrorLevel.Warning, title, message);
         }
 
-        public static void ReportMessage(string title, string message)
+        public static void Message(string title, string message)
         {
             ReportError(ErrorLevel.Message, title, message);
         }

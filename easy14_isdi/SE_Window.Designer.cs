@@ -43,11 +43,12 @@
             this.CodeEditorRTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.857143F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CodeEditorRTB.ForeColor = System.Drawing.Color.White;
             this.CodeEditorRTB.Location = new System.Drawing.Point(0, 0);
+            this.CodeEditorRTB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.CodeEditorRTB.Name = "CodeEditorRTB";
             this.CodeEditorRTB.ReadOnly = true;
             this.CodeEditorRTB.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.CodeEditorRTB.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
-            this.CodeEditorRTB.Size = new System.Drawing.Size(1501, 894);
+            this.CodeEditorRTB.Size = new System.Drawing.Size(1228, 745);
             this.CodeEditorRTB.TabIndex = 8;
             this.CodeEditorRTB.Text = "(Waiting for Easy14 Interpertor)";
             // 
@@ -59,7 +60,7 @@
             this.toolStripButton2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1501, 38);
+            this.toolStrip1.Size = new System.Drawing.Size(1228, 37);
             this.toolStrip1.TabIndex = 9;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -69,7 +70,7 @@
             this.OpenBTN.Image = ((System.Drawing.Image)(resources.GetObject("OpenBTN.Image")));
             this.OpenBTN.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OpenBTN.Name = "OpenBTN";
-            this.OpenBTN.Size = new System.Drawing.Size(40, 32);
+            this.OpenBTN.Size = new System.Drawing.Size(34, 32);
             this.OpenBTN.Text = "toolStripButton1";
             this.OpenBTN.Click += new System.EventHandler(this.OpenBTN_Click);
             // 
@@ -79,16 +80,18 @@
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(40, 32);
+            this.toolStripButton2.Size = new System.Drawing.Size(34, 32);
             this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // SE_Window
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1501, 894);
+            this.ClientSize = new System.Drawing.Size(1228, 745);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.CodeEditorRTB);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "SE_Window";
             this.Text = "SE_Window";
             this.toolStrip1.ResumeLayout(false);

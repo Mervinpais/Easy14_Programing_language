@@ -28,5 +28,10 @@ namespace Easy14_SE
         {
 
         }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

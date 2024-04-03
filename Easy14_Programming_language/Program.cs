@@ -15,7 +15,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Easy14_Programming_Language
 {
@@ -88,10 +87,17 @@ namespace Easy14_Programming_Language
                 {
                     IntroductionCode.IntroCode();
                 }
-                else if (File.Exists(string.Join(" ", args[0..])) == true)
+                else
                 {
-                    CompileCode(File.ReadAllLines(string.Join(" ", args[0..])));
-                    return;
+                    if (File.Exists(string.Join(" ", args[0..])) == true)
+                    {
+                        CompileCode(File.ReadAllLines(string.Join(" ", args[0..])));
+                        return;
+                    }
+                    else
+                    {
+                        Debugger.Error("File not found", $"File \'{string.Join("", args[0..])}\' is not found!");
+                    }
                 }
             }
 
@@ -105,7 +111,7 @@ namespace Easy14_Programming_Language
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                ErrorReportor.ReportWarning("Configuration Setting", "Easy14 is using default settings, as it cant find options.ini file, or some other error.\n\n========");
+                Debugger.Warning("Configuration Setting", "Easy14 is using default settings, as it cant find options.ini file, or some other error.\n\n========");
             }
 
             InterpreterLoop();
@@ -114,13 +120,15 @@ namespace Easy14_Programming_Language
         public static void InterpreterLoop()
         {
             Program compiler = new Program();
+            bool debugMode = false;
             while (true)
             {
+
                 Console.Write(">>>");
                 string input = Console.ReadLine();
 
                 if (string.IsNullOrWhiteSpace(input)) { continue; }
-
+                if (debugMode) { DebugStats();  }
                 switch (input)
                 {
                     case "help":
@@ -163,7 +171,12 @@ namespace Easy14_Programming_Language
                             "Console Print { \"\" };",
                         });
                         break;
-
+                    case "debugMode":
+                        debugMode = !debugMode;
+                        compiler.ExternalCompileCode(null, new string[] {
+                            $"Console Print {{ \" Debug mode is now set to: {debugMode} \" }};",
+                        });
+                        break;
 
                     default:
                         compiler.ExternalCompileCode(null, new string[] { input });
@@ -182,6 +195,23 @@ namespace Easy14_Programming_Language
             return CompileCode(textArray);
         }
 
+        static public async void DebugStats()
+        {
+            try
+            {
+                int xpos = Console.CursorLeft; int ypos = Console.CursorTop;
+                Console.BackgroundColor = ConsoleColor.Gray;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.SetCursorPosition(0, 0);
+                Console.Write($"{RuntimeInformation.FrameworkDescription}");
+                Console.SetCursorPosition(xpos, ypos);
+                Console.ResetColor();
+            }
+            catch
+            {
+                Console.Write("AN ERROR OCCURED CALL BACK! CALL BACK!");
+            }
+        }
 
         public enum TokenType
         {
@@ -504,14 +534,14 @@ namespace Easy14_Programming_Language
                     }
                     else
                     {
-                        ErrorReportor.ReportError("", $"Variable {variableName} doesnt exist!");
+                        Debugger.Error("", $"Variable {variableName} doesnt exist!");
                         return (codeToExecute, i, results);
                     }
                 }
             }
             else
             {
-                ErrorReportor.ReportError("Code Not Valid!", $"\'{codeToExecute[i]}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {i + 1}");
+                Debugger.Error("Code Not Valid!", $"\'{codeToExecute[i]}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {i + 1}");
                 return (codeToExecute, i, results);
             }
         }
@@ -759,7 +789,7 @@ namespace Easy14_Programming_Language
                 }
                 catch (Exception e)
                 {
-                    ErrorReportor.ReportCSharpError("Package Running Error", "An Error Occurred while running the Easy14 Package (C# Error)");
+                    Debugger.CS_Error("Package Running Error", "An Error Occurred while running the Easy14 Package (C# Error)");
                     Console.WriteLine($"\n{e.Message}");
                     throw new Exception($"Not valid statement;\n{e.Message}");
                 }

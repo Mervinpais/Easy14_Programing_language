@@ -58,7 +58,7 @@ namespace Easy14_Programming_Language
                         Console.WriteLine("A new update is available!");
                         Console.WriteLine($"Current version: {currentVersion}");
                         Console.WriteLine($"Latest version: {latestVersion}");
-                        ErrorReportor.ReportWarning("EASY14 Update Message", "Use LIM to install this update");
+                        Debugger.Warning("EASY14 Update Message", "Use LIM to install this update");
                     }
                     else if (mainVersionComparison == 0)
                     {
@@ -71,7 +71,7 @@ namespace Easy14_Programming_Language
                                 Console.WriteLine("A new patch update is available!");
                                 Console.WriteLine($"Current version: {currentVersion}");
                                 Console.WriteLine($"Latest version: {latestVersion}");
-                                ErrorReportor.ReportWarning("EASY14 Update Message", "Use LIM to install this patch update");
+                                Debugger.Warning("EASY14 Update Message", "Use LIM to install this patch update");
                             }
                             else if (patchVersionComparison == 0)
                             {

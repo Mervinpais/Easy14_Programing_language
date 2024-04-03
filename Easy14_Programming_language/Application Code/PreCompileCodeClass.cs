@@ -212,7 +212,7 @@ namespace Easy14_Programming_Language.Application_Code
                     }
                     catch (Exception e)
                     {
-                        ErrorReportor.ReportCSharpError("Package Running Error", "An Error Occurred while running the Easy14 Package (C# Error)");
+                        Debugger.CS_Error("Package Running Error", "An Error Occurred while running the Easy14 Package (C# Error)");
                         Console.WriteLine($"\n{e.Message}");
                         throw new Exception($"Not valid statement;\n{e.Message}");
                     }
