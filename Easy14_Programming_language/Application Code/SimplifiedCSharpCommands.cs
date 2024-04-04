@@ -30,5 +30,10 @@ namespace Easy14_Programming_Language
         {
             Console.ForegroundColor = newForeGroundColor;
         }
+
+        public static void CursorPos(int x, int y)
+        {
+            Console.SetCursorPosition(x, y);
+        }
     }
 }

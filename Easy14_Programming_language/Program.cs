@@ -35,10 +35,10 @@ namespace Easy14_Programming_Language
 
         static void RunChecks()
         {
-            if (!Configuration.GetBoolOptionValue("UpdatesDisabled")) 
+            if (!Configuration.GetBoolOptionValue("UpdatesDisabled"))
                 UpdateChecker.CheckLatestVersion();
 
-            if (!string.IsNullOrEmpty(Configuration.GetStringOptionValue("packagePath"))) 
+            if (!string.IsNullOrEmpty(Configuration.GetStringOptionValue("packagePath")))
                 pathOfPackages = Configuration.GetStringOptionValue("packagePath");
 
             if (Configuration.GetIntOptionValue("delay") != -1)
@@ -59,45 +59,31 @@ namespace Easy14_Programming_Language
         {
             RunChecks(); Console.ResetColor(); Console.Clear();
 
-            string osName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}";
+
             string versionName = "{Unknown Version}";
             try 
-            {
-                versionName = File.ReadAllLines(version)[0].Split("/")[2];
-            }
-            catch (Exception ex)
-            {
-                Debugger.Error("Version File not found, please confirm the file is avaliable for read");
-            }
-            Console.WriteLine($"Easy14 {versionName} ({osName})");
-            if (args.Length != 0)
-            {
-                Console.WriteLine("args: " + string.Join(" ", args));
+                {   versionName = File.ReadAllLines(version)[0].Split("/")[2];   }
+            catch (Exception ex) 
+                {   Debugger.Error(message: $"{ex.Message}");   }
 
-                if (args[0].ToLower() == "/intro") IntroductionCode.IntroCode();
-                else
+            Console.WriteLine($"{$"{RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}"}\nEasy14 {versionName}");
+
+            if (args.Length > 0)
+            {
+                string filePath = string.Join(" ", args[0..]);
+                if (File.Exists(filePath))
                 {
-                    if (File.Exists(string.Join(" ", args[0..])) == true)
-                    {
-                        CompileCode(File.ReadAllLines(string.Join(" ", args[0..]))); 
-                        return;
-                    }
-                    else Debugger.Error("File not found", $"File \'{string.Join("", args[0..])}\' is not found!");
+                    CompileCode(File.ReadAllLines(filePath));
+                    return;
                 }
+                else Debugger.Error("File not found", $"File \'{filePath}\' is not found!");
             }
 
             try
-            {
-                int windowHeight = Console.WindowHeight;
-                int windowWidth = Console.WindowWidth;
-
-                bool librariesDisabled = Convert.ToBoolean(Configuration.GetBoolOptionValue("disableLibraries"));
-            }
+                {   bool librariesDisabled = Configuration.GetBoolOptionValue("disableLibraries");   }
             catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Debugger.Warning("Configuration Setting", "Easy14 is using default settings, as it cant find options.ini file, or some other error.\n\n========");
-            }
+                {   Console.WriteLine(e.Message);
+                    Debugger.Warning(message: "Easy14 is using default settings due to error\n");   }
 
             InterpreterLoop();
         }
@@ -112,33 +98,24 @@ namespace Easy14_Programming_Language
                 Console.Write(">>>");
                 string input = Console.ReadLine();
 
-                if (string.IsNullOrWhiteSpace(input)) { continue; }
-                if (debugMode) { DebugStats();  }
+                if (string.IsNullOrWhiteSpace(input)) continue;
+
+                if (debugMode) DebugStats();
+
                 switch (input)
                 {
-                    case "help":
-                        //throw new NotImplementedException("DEVNOTE: I really forgot to implement this");
+                    case "$help":
                         compiler.ExternalCompileCode(null, new string[] {
                             "Console Print { \"Help Guide!\" };",
                             "Console Print { \"\" };",
-                            "Console Print { \"   - help: Get this help guide \" };",
-                            "Console Print { \"   - copyright: Copyright rights to this product \" };",
-                            "Console Print { \"   - credits: Credits :) \" };",
-                            "Console Print { \"   - *anything else* : runs the code through the Easy14 Interpreter \" };",
+                            "Console Print { \"   - $help: Print this help guide \" };",
+                            "Console Print { \"   - $copyright: Copyright rights to this product \" };",
+                            "Console Print { \"   - $credits: Credits \" };",
+                            "Console Print { \"   - debugMode: debugging stuff \" };",
                         });
                         break;
 
-                    case "*anything else*":
-                        compiler.ExternalCompileCode(null, new string[] {
-                            "Console Print { \"\" };",
-                            "Console Print { \"You got bored huh? me too :) \" };",
-                            "Console Print { \"\" };",
-                        });
-                        Debug.WriteLine($"The method '*anything else*' for class '' was not found.");
-                        throw new Exception("Not valid statement");
-                        break;
-
-                    case "copyright":
+                    case "$copyright":
                         compiler.ExternalCompileCode(null, new string[] {
                             "Console Print { \"\" };",
                             "Console Print { \"Copyright (C) Mervinpais14 (formerly Mervinpaismakeswindows14) \" };",
@@ -147,7 +124,7 @@ namespace Easy14_Programming_Language
                         });
                         break;
 
-                    case "credits":
+                    case "$credits":
                         compiler.ExternalCompileCode(null, new string[] {
                             "Console Print { \"\" };",
                             "Console Print { \" Thanks to;\" };",
@@ -155,68 +132,55 @@ namespace Easy14_Programming_Language
                             "Console Print { \"\" };",
                         });
                         break;
-                    case "debugMode":
+                    case "$debugMode":
                         debugMode = !debugMode;
-                        compiler.ExternalCompileCode(null, new string[] {
-                            $"Console Print {{ \" Debug mode is now set to: {debugMode} \" }};",
-                        });
+                        compiler.ExternalCompileCode(textArray: [$"Console Print {{ \" Debug mode is now set to: {debugMode} \" }};"]);
                         break;
 
                     default:
-                        compiler.ExternalCompileCode(null, new string[] { input });
+                        compiler.ExternalCompileCode(textArray: [input]);
                         break;
                 }
             }
         }
 
-        public object ExternalCompileCode(string fileLoc = "", string[] textArray = null)
+        public object ExternalCompileCode(string fileLoc = null, string[] textArray = null)
         {
-            if (textArray == null)
-            {
-                if (fileLoc != null) textArray = File.ReadAllLines(fileLoc.Trim());
-                else textArray = new string[] { "" };
-            }
+            if (textArray == null && fileLoc != null)
+                textArray = File.ReadAllLines(fileLoc.Trim()); 
+            else if (textArray == null && fileLoc == null)
+                textArray = [""];
+
             return CompileCode(textArray);
         }
 
-        static public async void DebugStats()
+        static public void DebugStats()
         {
             try
             {
                 int xpos = Console.CursorLeft; int ypos = Console.CursorTop;
-                Change.BackgroundColor(ConsoleColor.Gray);
-                Change.ForegroundColor(ConsoleColor.Black);
-                Console.SetCursorPosition(0, 0);
-                Console.Write($"{RuntimeInformation.FrameworkDescription}");
-                Console.SetCursorPosition(xpos, ypos);
+                Change.BackgroundColor(ConsoleColor.Gray); Change.ForegroundColor(ConsoleColor.Black);
+                Change.CursorPos(0, 0); Console.Write(RuntimeInformation.FrameworkDescription); Change.CursorPos(xpos, ypos);
                 Console.ResetColor();
             }
-            catch
-            {
-                Console.Write("AN ERROR OCCURED CALL BACK! CALL BACK!");
-            }
+            catch (Exception ex) { Console.Write($"Failed to get debug info; crash details below;\n {ex.Message}"); }
         }
 
         public enum TokenType
         {
-            Class,
-            Method,
-            Params,
-            Number,
-            Operator,
-            Identifier,
-            Unknown
+            Class, Method, Params, Number, Operator, Identifier, Unknown
         }
 
         public class Token
         {
             public string Value { get; set; }
             public TokenType Tag { get; set; }
+            public int Position { get; set; }
 
-            public Token(string value, TokenType tag)
-            {
+            public Token(string value, TokenType tag, int position) { 
                 Value = value;
                 Tag = tag;
+                Position = position;
             }
         }
 
@@ -270,18 +234,21 @@ namespace Easy14_Programming_Language
                         parameters = SplitByComma(paramsPart);
 
                         parameters.Add(currentParameter.ToString().Trim());
+                        parameters.RemoveAt(parameters.Count-1);
 
-                        tokens.Add(new Token(classPart, TokenType.Class));
-                        tokens.Add(new Token(methodPart, TokenType.Method));
-                        foreach (string param in parameters)
+                        tokens.Add(new Token(classPart, TokenType.Class, 1));
+                        tokens.Add(new Token(methodPart, TokenType.Method, 2));
+
+                        for (int i = 0; i < parameters.Count; i++)
                         {
-                            tokens.Add(new Token(param, TokenType.Params));
+                            string param = parameters[i];
+                            tokens.Add(new Token(param, TokenType.Params, 3+i));
                         }
                     }
                     else
                     {
                         TokenType tag = DetermineTag(value); // Implement a function to determine the tag based on the matched value
-                        tokens.Add(new Token(value, tag));
+                        tokens.Add(new Token(value, tag, 1));
                     }
                 }
 
@@ -291,21 +258,22 @@ namespace Easy14_Programming_Language
             private TokenType DetermineTag(string value)
             {
                 if (Regex.IsMatch(value, identifierPattern))
-                { return TokenType.Identifier; }
+                    return TokenType.Identifier;
 
                 else if (Regex.IsMatch(value, numberPattern))
-                { return TokenType.Number; }
+                    return TokenType.Number;
 
                 else if (Regex.IsMatch(value, operatorPattern))
-                { return TokenType.Operator; }
+                    return TokenType.Operator;
 
-                else { return TokenType.Unknown; }
+                else 
+                    return TokenType.Unknown;
             }
         }
 
         static void FunctionParser(string[] codeToExecute, int i, List<object> results)
         {
-            Tokenizer tokenizer = new Tokenizer();
+            Tokenizer tokenizer = new();
             List<Token> tokens = tokenizer.Tokenize(codeToExecute[i]);
 
             for (int index = 0; index < tokens.Count; index++)
@@ -398,9 +366,11 @@ namespace Easy14_Programming_Language
             }
             else if (codeToExecute[i].Trim().StartsWith("import"))
             {
-                List<string> mainCode = new List<string>();
-                mainCode.AddRange(ImportFileStatement.Interpret(codeToExecute[i]));
-                mainCode.AddRange(codeToExecute.ToList().GetRange(1, codeToExecute.ToList().Count - 1));
+                List<string> mainCode =
+                [
+                    .. ImportFileStatement.Interpret(codeToExecute[i]),
+                    .. codeToExecute.ToList().GetRange(1, codeToExecute.ToList().Count - 1),
+                ];
                 codeToExecute = mainCode.ToArray();
                 i = i - 1;
                 return (codeToExecute, i, results);
@@ -408,20 +378,17 @@ namespace Easy14_Programming_Language
             else if (codeToExecute[i].Trim().StartsWith("method"))
             {
                 int indention = 0;
+
                 foreach (char c in codeToExecute[i])
                 {
                     if (c == ' ')
-                    {
                         indention = indention + 1;
-                    }
+
                     else if (c == '\t')
-                    {
                         indention = indention + 3;
-                    }
+
                     else
-                    {
                         break;
-                    }
                 }
 
                 string indent = "";
@@ -518,13 +485,13 @@ namespace Easy14_Programming_Language
             }
             else
             {
-                Debugger.Error("Code Not Valid!", $"\'{codeToExecute[i]}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {i + 1}");
-                return (codeToExecute, i, results);
+                //Debugger.Error("Code Not Valid!", $"\'{codeToExecute[i]}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {i + 1}");
+                return (null, -1, null);
             }
         }
 
         /// <summary>
-        /// CompileCode is the Main Interpreter method (as of commit 22 in V1P1 4PM on Nov 17 2023)
+        /// Main Way to compile code, All Code will run through this, from easy14 to c#
         /// </summary>
         /// <returns>The Return value of whatever code was executed</returns>
         public static List<object> CompileCode(string[] codeToExecute = null)
@@ -551,16 +518,20 @@ namespace Easy14_Programming_Language
                 else if (codeToExecute[i].Trim().StartsWith("//")) { continue; }
                 else
                 {
-                    FunctionParser(codeToExecute, i, results);
+                    var parserResult = BaseFunctionParser(codeToExecute, i, results);
+                    if (parserResult.i == -1)
+                    {
+                        FunctionParser(codeToExecute, i, results);
+                    }
+                    else
+                    {
+                        codeToExecute = parserResult.codeToExecute;
+                        i = parserResult.i;
+                        results = parserResult.results;
+                    }
                 }
 
                 if (results.Count! > 0) continue;
-
-                var parserResult = BaseFunctionParser(codeToExecute, i, results);
-                codeToExecute = parserResult.codeToExecute;
-                i = parserResult.i;
-                results = parserResult.results;
-
 
                 if (ProgramStatus.HasFlag(Status.CODE_ERROR) || ProgramStatus.HasFlag(Status.CSHARP_ERROR))
                 {

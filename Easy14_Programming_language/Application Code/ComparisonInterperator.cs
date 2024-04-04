@@ -1,20 +1,29 @@
 ﻿using System.Linq;
+using static Easy14_Programming_Language.VariableCode;
 
 namespace Easy14_Programming_Language
 {
     public static class ComparisonInterperator
     {
-        public static bool IsTrueCompare(string line)
+        public static (object, object) ConvertToLHS_RHS(string line)
         {
             line = line.Trim();
             object LHS = line.Split("==")[0].Trim();
             object RHS = line.Split("==")[1].Trim();
 
-            //if (ItemChecks.detectType(LHS.ToString()) != ItemChecks.detectType(RHS.ToString())) return false;
-
             if (ItemChecks.DetectType(LHS.ToString()) == "var")
             {
-                if (VariableCode.variables.Any(varName => varName.Equals(LHS)))
+                Variable variable = null;
+                foreach (var item in VariableCode.variables)
+                {
+                    if (item.Name == (string)LHS)
+                    {
+                        variable = item;
+                        break;
+                    }
+                }
+
+                if (variable != null)
                 {
                     var LHS_Var_value = VariableCode.variables.FirstOrDefault(v => v.Name == LHS.ToString())?.Contents;
                     LHS = LHS_Var_value;
@@ -22,7 +31,17 @@ namespace Easy14_Programming_Language
             }
             if (ItemChecks.DetectType(RHS.ToString()) == "var")
             {
-                if (VariableCode.variables.Any(varName => varName.Equals(RHS)))
+                Variable variable = null;
+                foreach (var item in VariableCode.variables)
+                {
+                    if (item.Name == (string)RHS)
+                    {
+                        variable = item;
+                        break;
+                    }
+                }
+
+                if (variable != null)
                 {
                     var RHS_Var_value = VariableCode.variables.FirstOrDefault(v => v.Name == RHS.ToString())?.Contents;
                     RHS = RHS_Var_value;
@@ -38,6 +57,16 @@ namespace Easy14_Programming_Language
                 RHS = RHS.ToString().Substring(1, RHS.ToString().Length - 2);
             }
 
+            return (LHS, RHS);
+        }
+
+
+
+        public static bool IsTrueCompare(string line)
+        {
+            object LHS = ConvertToLHS_RHS(line).Item1;
+            object RHS = ConvertToLHS_RHS(line).Item2;
+
             if (LHS.Equals(RHS))
             {
                 return true;
@@ -47,28 +76,8 @@ namespace Easy14_Programming_Language
 
         public static bool IsFalseCompare(string line)
         {
-            line = line.Trim();
-            object LHS = line.Split("!=")[0].Trim();
-            object RHS = line.Split("!=")[1].Trim();
-
-            //if (ItemChecks.detectType(LHS.ToString()) != ItemChecks.detectType(RHS.ToString())) return false;
-
-            if (ItemChecks.DetectType(LHS.ToString()) == "var")
-            {
-                if (VariableCode.variables.Any(varName => varName.Equals(LHS)))
-                {
-                    var LHS_Var_value = VariableCode.variables.FirstOrDefault(v => v.Name == LHS.ToString())?.Contents;
-                    LHS = LHS_Var_value;
-                }
-            }
-            if (ItemChecks.DetectType(RHS.ToString()) == "var")
-            {
-                if (VariableCode.variables.Any(varName => varName.Equals(RHS)))
-                {
-                    var RHS_Var_value = VariableCode.variables.FirstOrDefault(v => v.Name == RHS.ToString())?.Contents;
-                    RHS = RHS_Var_value;
-                }
-            }
+            object LHS = ConvertToLHS_RHS(line).Item1;
+            object RHS = ConvertToLHS_RHS(line).Item2;
 
             if (!LHS.Equals(RHS))
             {

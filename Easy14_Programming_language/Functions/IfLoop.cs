@@ -9,27 +9,14 @@ namespace Easy14_Programming_Language
     {
         public static string[] Interperate(int currentLine, List<string> lines)
         {
-            List<string> ifBlock = new List<string>();
-            foreach (string code in lines)
-            {
-                string r = code;
-                if (code.Contains('\t'))
-                {
-                    r = code.Replace("\t", "   ");
-                }
-                ifBlock.Add(r);
-            }
+            List<string> ifBlock = (from string code in lines
+                                    select code.Contains('\t') == true ? code.Replace("\t", "   ") : code).ToList();
+
             int indention = 0;
             foreach (char c in ifBlock[currentLine])
             {
-                if (c == ' ')
-                {
-                    indention = indention + 1;
-                }
-                else
-                {
-                    break;
-                }
+                if (c == ' ') indention = indention++;
+                else break;
             }
 
             string indent = "";

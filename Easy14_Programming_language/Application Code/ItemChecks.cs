@@ -18,10 +18,10 @@ namespace Easy14_Programming_Language
                 return "cmd";
             else if (IsBoolean(data))
                 return "bool";
-            else if (IsVariable(data, VariableCode.variables.ToList<object>()))
+            else if (IsVariable(data, VariableCode.variables))
                 return "var";
 
-            return "";
+            return "unkwn";
         }
 
         public static bool IsString(string data)
@@ -39,9 +39,9 @@ namespace Easy14_Programming_Language
             return bool.TryParse(data, out _);
         }
 
-        public static bool IsVariable(string data, List<object> variables)
+        public static bool IsVariable(string data, List<VariableCode.Variable> variables)
         {
-            return variables.Any(item => item.ToString() == data);
+            return variables.FirstOrDefault(item => item.Name == data) != null;
         }
 
         public static bool IsInt(string data)
