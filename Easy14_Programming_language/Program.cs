@@ -14,7 +14,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace Easy14_Programming_Language
 {
@@ -28,39 +28,28 @@ namespace Easy14_Programming_Language
 
         public enum Status
         {
-            CSHARP_ERROR,
-            CODE_ERROR,
-            NORMAL,
-            UNKNOWN
+            CSHARP_ERROR, CODE_ERROR, NORMAL, UNKNOWN
         }
 
         public static Status ProgramStatus = Status.NORMAL;
 
-        static void Checks()
+        static void RunChecks()
         {
-            if (!Configuration.GetBoolOptionValue("UpdatesDisabled"))
-            {
+            if (!Configuration.GetBoolOptionValue("UpdatesDisabled")) 
                 UpdateChecker.CheckLatestVersion();
-            }
 
-            if (!string.IsNullOrEmpty(Configuration.GetStringOptionValue("packagePath")))
-            {
+            if (!string.IsNullOrEmpty(Configuration.GetStringOptionValue("packagePath"))) 
                 pathOfPackages = Configuration.GetStringOptionValue("packagePath");
-            }
 
             if (Configuration.GetIntOptionValue("delay") != -1)
-            {
-                Thread.Sleep(Configuration.GetIntOptionValue("delay") * 1000);
-            }
+                Task.Delay(Configuration.GetIntOptionValue("delay") * 1000).Wait();
 
             if (Configuration.GetStringOptionValue("PreCompBaseCode") == "true")
             {
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor = ConsoleColor.Black;
+                Change.BackgroundColor(ConsoleColor.White);
+                Change.ForegroundColor(ConsoleColor.Black);
+
                 Console.WriteLine("Pre-compiling Base code... (Note: This will be optimised later)");
-                //Dec 25 2023
-                //CompileCode(["Console Print { \"\" };"]);
-                //CompileCode(["Console Input { \"\\\\x\" };"]);
 
                 PreCompileCodeClass.PrecompileCode();
             }
@@ -68,36 +57,32 @@ namespace Easy14_Programming_Language
 
         static void Main(string[] args)
         {
-            Checks();
-            Console.ResetColor();
-            Console.Clear();
+            RunChecks(); Console.ResetColor(); Console.Clear();
 
             string osName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}";
             string versionName = "{Unknown Version}";
-            try { versionName = File.ReadAllLines(version)[0].Split("/")[2]; } catch { }
+            try 
+            {
+                versionName = File.ReadAllLines(version)[0].Split("/")[2];
+            }
+            catch (Exception ex)
+            {
+                Debugger.Error("Version File not found, please confirm the file is avaliable for read");
+            }
             Console.WriteLine($"Easy14 {versionName} ({osName})");
             if (args.Length != 0)
             {
                 Console.WriteLine("args: " + string.Join(" ", args));
-            }
-            Console.WriteLine();
-            if (args.Length != 0)
-            {
-                if (args[0].ToLower() == "/intro")
-                {
-                    IntroductionCode.IntroCode();
-                }
+
+                if (args[0].ToLower() == "/intro") IntroductionCode.IntroCode();
                 else
                 {
                     if (File.Exists(string.Join(" ", args[0..])) == true)
                     {
-                        CompileCode(File.ReadAllLines(string.Join(" ", args[0..])));
+                        CompileCode(File.ReadAllLines(string.Join(" ", args[0..]))); 
                         return;
                     }
-                    else
-                    {
-                        Debugger.Error("File not found", $"File \'{string.Join("", args[0..])}\' is not found!");
-                    }
+                    else Debugger.Error("File not found", $"File \'{string.Join("", args[0..])}\' is not found!");
                 }
             }
 
@@ -167,7 +152,6 @@ namespace Easy14_Programming_Language
                             "Console Print { \"\" };",
                             "Console Print { \" Thanks to;\" };",
                             "Console Print { \"   Mervin14 for the Easy14 Language Project\" };",
-                            //"Console.Print(\"   Github for letting me host this project :>\");", too cringy i guess, plus this is an Open source project not personal one.. i mean it is, but people should be able to say what they want instead of what i want.. Please note that Mervin wrote this note not anyone else as to not confuse anything if someone forks my project and someone else sees this
                             "Console Print { \"\" };",
                         });
                         break;
@@ -200,8 +184,8 @@ namespace Easy14_Programming_Language
             try
             {
                 int xpos = Console.CursorLeft; int ypos = Console.CursorTop;
-                Console.BackgroundColor = ConsoleColor.Gray;
-                Console.ForegroundColor = ConsoleColor.Black;
+                Change.BackgroundColor(ConsoleColor.Gray);
+                Change.ForegroundColor(ConsoleColor.Black);
                 Console.SetCursorPosition(0, 0);
                 Console.Write($"{RuntimeInformation.FrameworkDescription}");
                 Console.SetCursorPosition(xpos, ypos);
@@ -254,23 +238,21 @@ namespace Easy14_Programming_Language
             return objectArray;
         }
 
-        /// <summary>
-        /// Uhh self-explanatory
-        /// </summary>
         public class Tokenizer
         {
+            string identifierPattern = @"[a-zA-Z_]\w*";
+            string methodsPattern = @"(.*?\ )([A-Za-z]+)\ \{(.*?)\};";
+            string numberPattern = @"\d+";
+            string operatorPattern = @"\+|-|\*|/";
+
             public List<Token> Tokenize(string input)
             {
-                List<Token> tokens = new List<Token>();
+                List<Token> tokens = new();
 
-                var identifierPattern = @"[a-zA-Z_]\w*";
-                var methodsPattern = @"(.*?\ )([A-Za-z]+)\ \{(.*?)\};";
-                var numberPattern = @"\d+";
-                var operatorPattern = @"\+|-|\*|/";
+                var combinedPatterns = string.Join("|", methodsPattern, identifierPattern, numberPattern, operatorPattern);
 
-                var combinedPattern = string.Join("|", methodsPattern, identifierPattern, numberPattern, operatorPattern);
+                var matches = Regex.Matches(input, combinedPatterns);
 
-                var matches = Regex.Matches(input, combinedPattern);
                 foreach (Match match in matches)
                 {
                     string value = match.Value;
@@ -306,20 +288,15 @@ namespace Easy14_Programming_Language
                 return tokens;
             }
 
-            /// <summary>
-            /// Determines the Tag of a token based on Regex (a bit bad but ehhh)
-            /// </summary>
-            /// <param name="value">The value of a token to detect it's type</param>
-            /// <returns></returns>
             private TokenType DetermineTag(string value)
             {
-                if (Regex.IsMatch(value, @"[a-zA-Z_]\w*"))
+                if (Regex.IsMatch(value, identifierPattern))
                 { return TokenType.Identifier; }
 
-                else if (Regex.IsMatch(value, @"\d+"))
+                else if (Regex.IsMatch(value, numberPattern))
                 { return TokenType.Number; }
 
-                else if (Regex.IsMatch(value, @"\+|-|\*|/"))
+                else if (Regex.IsMatch(value, operatorPattern))
                 { return TokenType.Operator; }
 
                 else { return TokenType.Unknown; }
@@ -549,7 +526,6 @@ namespace Easy14_Programming_Language
         /// <summary>
         /// CompileCode is the Main Interpreter method (as of commit 22 in V1P1 4PM on Nov 17 2023)
         /// </summary>
-        /// <param name="codeToExecute">As the name says, The code that will be interpreted by the interpreter method</param>
         /// <returns>The Return value of whatever code was executed</returns>
         public static List<object> CompileCode(string[] codeToExecute = null)
         {

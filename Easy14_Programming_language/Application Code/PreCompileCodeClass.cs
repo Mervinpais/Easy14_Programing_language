@@ -196,8 +196,8 @@ namespace Easy14_Programming_Language.Application_Code
                                     {
                                         Console.WriteLine(diagnostic);
                                     }
-                                    Console.BackgroundColor = ConsoleColor.Red;
-                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Change.BackgroundColor(ConsoleColor.Red);
+                                    Change.ForegroundColor(ConsoleColor.White);
                                     Console.WriteLine($"1 or More errors occured while pre-compiling code, this package [\"{theMethodOfTheLine}\"] of class(s) [\"{string.Join("", theClassesOfTheLine)}\"] has errors, want to continue with the remaining packages?");
                                     Console.ResetColor();
                                     Console.Write("(y/n)> ");

@@ -17,22 +17,22 @@ namespace Easy14_Programming_Language
             Message
         }
 
-        public static void CS_Error(string title, string message)
+        public static void CS_Error(string title = "Error", string message = "Unknown Error")
         {
             ReportError(ErrorLevel.CSharpError, title, message);
         }
 
-        public static void Error(string title, string message)
+        public static void Error(string title = "Error", string message = "Unknown Error")
         {
             ReportError(ErrorLevel.Error, title, message);
         }
 
-        public static void Warning(string title, string message)
+        public static void Warning(string title = "Warning", string message = "Unknown Warning")
         {
             ReportError(ErrorLevel.Warning, title, message);
         }
 
-        public static void Message(string title, string message)
+        public static void Message(string title = "Information", string message = "Some Information")
         {
             ReportError(ErrorLevel.Message, title, message);
         }
@@ -62,8 +62,8 @@ namespace Easy14_Programming_Language
                     break;
             }
 
-            Console.ForegroundColor = textColor;
-            Console.BackgroundColor = bgColor;
+            Change.ForegroundColor(textColor);
+            Change.BackgroundColor(bgColor);
             Console.WriteLine($"{errorLevel.ToString().ToUpper()}:> {message} \n {title}");
 
             Console.ResetColor();
