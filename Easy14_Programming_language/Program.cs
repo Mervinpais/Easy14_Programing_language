@@ -271,7 +271,7 @@ namespace Easy14_Programming_Language
             }
         }
 
-        static void FunctionParser(string[] codeToExecute, int i, List<object> results)
+        static List<object> FunctionParser(string[] codeToExecute, int i, List<object> results)
         {
             Tokenizer tokenizer = new();
             List<Token> tokens = tokenizer.Tokenize(codeToExecute[i]);
@@ -308,7 +308,7 @@ namespace Easy14_Programming_Language
 
                             // Execute the function with namespace
                             results.Add(ExecuteFunctionWithNamespace(Statements[0]));
-                            break;
+                            return results;
                         }
                     }
                 }
@@ -335,9 +335,10 @@ namespace Easy14_Programming_Language
                     break;
                 }
             }
+            return results;
         }
 
-        static (string[] codeToExecute, int i, List<object> results) BaseFunctionParser(string[] codeToExecute, int i, List<object> results)
+        static (string[] codeToExecute, int lineNumber, List<object> results) BaseFunctionParser(string[] codeToExecute, int i, List<object> results)
         {
             if (codeToExecute[i].StartsWith("/*"))
             {
@@ -498,35 +499,36 @@ namespace Easy14_Programming_Language
         {
             List<object> results = new List<object>() { };
 
-            for (int i = 0; i < codeToExecute.Length; i++)
+            for (int lineNumber = 0; lineNumber < codeToExecute.Length; lineNumber++)
             {
-                if (string.IsNullOrEmpty(codeToExecute[i].Trim())) { continue; }
+                if (string.IsNullOrEmpty(codeToExecute[lineNumber].Trim())) { continue; }
 
                 //var StatementResult = CommandParser.SplitCommand(textArray[i]);
 
-                if (double.TryParse(codeToExecute[i].ToCharArray(), out _) == true)
+                if (double.TryParse(codeToExecute[lineNumber].ToCharArray(), out _) == true)
                 {
                     try
                     {
-                        results.Add(Convert.ToDouble(new DataTable().Compute(codeToExecute[i], null)));
+                        results.Add(Convert.ToDouble(new DataTable().Compute(codeToExecute[lineNumber], null)));
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
-                        results.Add(e.Message);
+                        results.Add(ex.Message);
                     }
                 }
-                else if (codeToExecute[i].Trim().StartsWith("//")) { continue; }
+                else if (codeToExecute[lineNumber].Trim().StartsWith("//")) { continue; }
                 else
                 {
-                    var parserResult = BaseFunctionParser(codeToExecute, i, results);
-                    if (parserResult.i == -1)
+                    var parserResult = BaseFunctionParser(codeToExecute, lineNumber, results);
+                    int noLine = -1;
+                    if (parserResult.lineNumber == noLine)
                     {
-                        FunctionParser(codeToExecute, i, results);
+                        results = FunctionParser(codeToExecute, lineNumber, results);
                     }
                     else
                     {
                         codeToExecute = parserResult.codeToExecute;
-                        i = parserResult.i;
+                        lineNumber = parserResult.lineNumber;
                         results = parserResult.results;
                     }
                 }

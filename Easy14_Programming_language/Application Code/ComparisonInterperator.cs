@@ -8,26 +8,22 @@ namespace Easy14_Programming_Language
         public static (object, object) ConvertToLHS_RHS(string line)
         {
             line = line.Trim();
-            object LHS = line.Split("==")[0].Trim();
-            object RHS = line.Split("==")[1].Trim();
+            object LHS = "";
+            object RHS = "";
+            if (line.Contains("=="))
+            {
+                LHS = line.Split("==")[0].Trim();
+                RHS = line.Split("==")[1].Trim();
+            }
+            else if (line.Contains("!="))
+            {
+                LHS = line.Split("!=")[0].Trim();
+                RHS = line.Split("!=")[1].Trim();
+            }
 
             if (ItemChecks.DetectType(LHS.ToString()) == "var")
             {
-                Variable variable = null;
-                foreach (var item in VariableCode.variables)
-                {
-                    if (item.Name == (string)LHS)
-                    {
-                        variable = item;
-                        break;
-                    }
-                }
-
-                if (variable != null)
-                {
-                    var LHS_Var_value = VariableCode.variables.FirstOrDefault(v => v.Name == LHS.ToString())?.Contents;
-                    LHS = LHS_Var_value;
-                }
+                LHS = VariableCode.ReturnString((string)LHS);
             }
             if (ItemChecks.DetectType(RHS.ToString()) == "var")
             {

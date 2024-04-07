@@ -19,24 +19,27 @@
 
 ## Introduction
 
-[Provide a brief introduction to the programming language project, explaining its purpose and goals.]
+Easy14 is a programming language for basic console apps, I/O, and OOP Programming
 
 ## Features
 
-- [Feature 1]
-- [Feature 2]
-- [Feature 3]
-- ...
+- Console apps
+- I/O Work
+- Conditional Statements (If, while, etc.)
 
 ## Getting Started
 
 ### Installation
 
-[Instructions on how to install the programming language, including any prerequisites or dependencies.]
+Make sure you have C# installed, Latest Version Since we always update to the latest framework <s>since i dont have anything else to do and</s> to get newer features
 
 ### Usage
 
-[Examples and explanations on how to use the programming language.]
+Start off with your first Hello world!
+
+<code>
+Console Print { "Hello World!" };
+</code>
 
 ## Documentation
 
@@ -44,8 +47,10 @@
 
 ## Contributing
 
-[Guidelines for contributing to the project, including how to report bugs, suggest improvements, and submit pull requests.]
+Honestly we all know how to do this, but because i am have to give guidelines for the newbies;
+
+Go to issues, create a new issue, and make sure its about a bug, issue, or something wrong with the language, no spamming
 
 ## License
 
-[Specify the license under which the project is distributed. Common choices include MIT, Apache, or GPL licenses.]
+We follow the MIT License, which means you can fork our project, make it better (or worse) and publish it as your own! (with credit of course)
