@@ -1,6 +1,47 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
+﻿/*
+Cache Invalidation System:
+
+The goal of this system is to optimize the compilation process by implementing cache invalidation.
+The main idea is to compare the modification timestamps of files in the main directory with their
+corresponding precompiled versions in the output directory. If a file in the main directory is newer
+than its precompiled counterpart, it indicates that the file has been modified and needs to be 
+recompiled. By selectively recompiling only the outdated files, we can improve build times and 
+development efficiency.
+
+Steps to implement:
+1. Traverse through each file in the main directory.
+2. Check if a precompiled version of the file exists in the output directory.
+3. Compare the modification timestamps of the main directory file and its precompiled counterpart.
+4. If the main directory file is newer, mark it for recompilation.
+5. Implement logic to selectively recompile outdated files.
+6. Test and validate the cache invalidation system to ensure correctness and efficiency.
+
+Note: Remove this comment once the cache invalidation system is fully implemented.
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 using SDL2;
 using System;
 using System.Collections.Generic;
@@ -8,14 +49,18 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Easy14_Programming_Language.Program;
 using System.Reflection;
-using System.ComponentModel.DataAnnotations;
+using static Easy14_Programming_Language.Program;
 
 namespace Easy14_Programming_Language.Application_Code
 {
+    class FileInfos
+    {
+        public string fileLoc { get; set; }
+        public string fileName { get; set; }
+        public string[] directories { get; set; }
+    }
+
     public static class PreCompileCodeClass
     {
         public static string pathOfPackages = Program.pathOfPackages;
@@ -26,66 +71,70 @@ namespace Easy14_Programming_Language.Application_Code
             List<(List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven)> statementResult = new List<(List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven)>();
 
             bool alreadyPrecomp = true;
-            List<string> precompDirs = (from string e in Directory.GetDirectories(Path.Combine(executingAssemblyPath, "Precompiled"))
-                                        select e.Split("\\")[e.Split("\\").Length - 1]).ToList();
+            List<string> precompDirs = Directory.GetDirectories(Path.Combine(executingAssemblyPath, "Precompiled"))
+                                    .Select(directory => Path.GetFileName(directory))
+                                    .ToList();
 
-            foreach (string dir in Directory.GetDirectories(pathOfPackages))
+            string PrecompiledFolderpath = Path.Combine(executingAssemblyPath, "Precompiled");
+            if (!Directory.Exists(PrecompiledFolderpath))
             {
-                string dir_ = dir.Split("\\")[dir.Split("\\").Length - 1];
-                if (dir_.StartsWith(".")) continue;
-                if (!precompDirs.Contains(dir_))
-                {
-                    alreadyPrecomp = false;
-                    break;
-                }
-
-                // Check if the same files are there between the two subfolders
-                string precompiledDirPath = Path.Combine(executingAssemblyPath, "Precompiled", dir_);
-                string currentDirPath = Path.Combine(pathOfPackages, dir_);
-
-                string[] precompiledFiles = Directory.GetFiles(precompiledDirPath).Select(Path.GetFileNameWithoutExtension).ToArray();
-                string[] currentFiles = Directory.GetFiles(currentDirPath).Select(Path.GetFileNameWithoutExtension).ToArray();
-
-                if (!precompiledFiles.SequenceEqual(currentFiles))
-                {
-                    alreadyPrecomp = false;
-                    break;
-                }
+                Directory.CreateDirectory(PrecompiledFolderpath);
             }
 
-            if (alreadyPrecomp)
-            {
-                return;
-            }
+            List<FileInfos> filesToRecompile = new List<FileInfos>();//fileLoc, fileName, directories
 
-            foreach (string pathOfPackage in Directory.GetDirectories(pathOfPackages))
+            void CheckFilesAreOutDated(string FileLoc)
             {
-                if (pathOfPackage.Split("\\")[pathOfPackage.Split("\\").Length-1].StartsWith(".")) continue;
-                foreach (string files in Directory.GetFiles(pathOfPackage))
+                foreach (string dir in Directory.GetDirectories(FileLoc))
                 {
-                    if (files.EndsWith(".cs"))
+                    string directoryName = dir.Split("\\")[dir.Split("\\").Length - 1];
+
+                    if (directoryName.StartsWith('.')) continue;
+
+                    foreach (string file in Directory.GetFiles(dir))
                     {
-                        statementResult.Add((new List<string> { pathOfPackage }, files.Substring(0, files.Length - 3), new List<string> { }));
+                        string fileName = file.Split("\\")[file.Split("\\").Length - 1];
+                        fileName = fileName.Replace(".cs", ".dll");
+                        if (Directory.Exists(file))
+                        {
+                            CheckFilesAreOutDated(file);
+                        }
+
+                        string PreCompFileLoc = Path.Combine(PrecompiledFolderpath, directoryName, fileName);
+                        if (File.Exists(PreCompFileLoc))
+                        {
+                            if (File.GetLastWriteTime(file) > File.GetLastWriteTime(PreCompFileLoc))
+                            {
+                                Console.WriteLine($"File \'{fileName}\' needs recompiling");
+                                filesToRecompile.Add(new FileInfos
+                                {
+                                    fileLoc = file,
+                                    fileName = fileName,
+                                    directories = Path.Combine(pathOfPackages, directoryName).Split("\\")
+                                });
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Precompiled File \'{fileName}\' is up to date");
+                            }
+                        }
                     }
                 }
             }
 
-            if (!Directory.Exists(Path.Combine(executingAssemblyPath, "Precompiled")))
+
+            CheckFilesAreOutDated(pathOfPackages);
+            //return;
+            foreach (FileInfos file in filesToRecompile)
             {
-                Directory.CreateDirectory(Path.Combine(executingAssemblyPath, "Precompiled"));
+                runCode(file);
             }
 
-            foreach ((List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven) e in statementResult)
+            void runCode(FileInfos fileInfos)
             {
-                runCode(e.theClassesOfTheLine, e.theMethodOfTheLine, e.paramsGiven);
-            }
 
-            void runCode(List<string> theClassesOfTheLine, string theMethodOfTheLine, List<string> paramsGiven)
-            {
-                string classHierarchy = string.Join("/", theClassesOfTheLine);
-
-                string methodFolderPath = Path.Combine(pathOfPackages, classHierarchy);
-                string codeFilePath = Path.Combine(methodFolderPath, $"{theMethodOfTheLine}.cs");
+                string methodFolderPath = Path.Combine(pathOfPackages, string.Join("\\", fileInfos.directories));
+                string codeFilePath = Path.Combine(methodFolderPath, $"{fileInfos.fileName.Replace(".dll", ".cs")}");
 
                 if (File.Exists(codeFilePath))
                 {
@@ -94,16 +143,6 @@ namespace Easy14_Programming_Language.Application_Code
 
                     try
                     {
-                        //if (codeSplitIntoLines[0].StartsWith("//_params = "))
-                        //{
-                        //    (List<string> classes, string method, List<string> params_) statementResult = (theClassesOfTheLine, theMethodOfTheLine, paramsGiven);
-                        //    var ParamParserResult = NamespaceFunctionParamParser(paramsGiven, statementResult, codeSplitIntoLines, code);
-                        //    paramsGiven = ParamParserResult.ParamsGiven;
-                        //    statementResult = ParamParserResult.StatementResult;
-                        //    codeSplitIntoLines = ParamParserResult.CodeSplitIntoLines;
-                        //    code = ParamParserResult.Code;
-                        //}
-
                         var references = new List<MetadataReference>
                     {
                         MetadataReference.CreateFromFile(typeof(DataTable).Assembly.Location),
@@ -157,59 +196,50 @@ namespace Easy14_Programming_Language.Application_Code
                             .WithReferences(references)
                             .WithImports(imports);
 
-                        //code = code + $"{Environment.NewLine}Environment.Exit(0);";
                         var script = CSharpScript.Create(code, scriptOptions);
-                        //var result = script.RunAsync().Result;
-                        //if (result.Exception != null)
-                        //{
-                        //    Console.WriteLine("Error occurred: " + result.Exception);
-                        //}
-                        //if (result.ReturnValue != null)
-                        //{
-                        //    var returnValue = result.ReturnValue;
-                        //}
 
                         string currPath = Path.Combine(executingAssemblyPath, "Precompiled");
-                        foreach (string @class in theClassesOfTheLine)
+                        string precompDirectoriesClasses_ = string.Join("\\", fileInfos.directories);
+                        precompDirectoriesClasses_ = precompDirectoriesClasses_.Replace(pathOfPackages + "\\", "");
+                        string[] precompDirectoriesClasses_2 = precompDirectoriesClasses_.Split("\\");
+
+                        foreach (string @class in precompDirectoriesClasses_2)
                         {
-                            if (!Directory.Exists(Path.Combine(currPath, @class.Split("\\")[@class.Split("\\").Length-1])))
+                            if (!Directory.Exists(Path.Combine(currPath, @class.Split("\\")[@class.Split("\\").Length - 1])))
                             {
                                 Directory.CreateDirectory(Path.Combine(currPath, @class.Split("\\")[@class.Split("\\").Length - 1]));
                             }
                             currPath = Path.Combine(currPath, @class.Split("\\")[@class.Split("\\").Length - 1]);
                         }
 
-                        if (!File.Exists(Path.Combine(currPath, theMethodOfTheLine + ".dll")))
+                        var compilation = script.GetCompilation();
+                        using (var stream = new MemoryStream())
                         {
-                            var compilation = script.GetCompilation();
-                            using (var stream = new MemoryStream())
+                            var emitResult = compilation.Emit(stream);
+                            if (emitResult.Success)
                             {
-                                var emitResult = compilation.Emit(stream);
-                                if (emitResult.Success)
+                                File.WriteAllBytes(Path.Combine(currPath, fileInfos.fileName.Split("\\")[fileInfos.fileName.Split("\\").Length - 1]), stream.ToArray());
+                            }
+                            else
+                            {
+                                // Handle compilation errors
+                                foreach (var diagnostic in emitResult.Diagnostics)
                                 {
-                                    File.WriteAllBytes(Path.Combine(currPath, theMethodOfTheLine.Split("\\")[theMethodOfTheLine.Split("\\").Length - 1] + ".dll"), stream.ToArray());
+                                    Console.WriteLine(diagnostic);
                                 }
-                                else
+                                Change.BackgroundColor(ConsoleColor.Red);
+                                Change.ForegroundColor(ConsoleColor.White);
+                                Console.WriteLine($"1 or More errors occured while pre-compiling code, this package [\"{fileInfos.fileName.Replace(".dll", "")}\"] of class(s) [\"{string.Join("", string.Join("\\", fileInfos.directories))}\"] has errors, want to continue with the remaining packages?");
+                                Console.ResetColor();
+                                Console.Write("(y/n)> ");
+                                if (Console.ReadLine() == "n")
                                 {
-                                    // Handle compilation errors
-                                    foreach (var diagnostic in emitResult.Diagnostics)
-                                    {
-                                        Console.WriteLine(diagnostic);
-                                    }
-                                    Change.BackgroundColor(ConsoleColor.Red);
-                                    Change.ForegroundColor(ConsoleColor.White);
-                                    Console.WriteLine($"1 or More errors occured while pre-compiling code, this package [\"{theMethodOfTheLine}\"] of class(s) [\"{string.Join("", theClassesOfTheLine)}\"] has errors, want to continue with the remaining packages?");
-                                    Console.ResetColor();
-                                    Console.Write("(y/n)> ");
-                                    if (Console.ReadLine() == "n")
-                                    {
-                                        Environment.Exit(-1);
-                                    }
+                                    Environment.Exit(-1);
                                 }
                             }
                         }
-                        
                     }
+
                     catch (Exception e)
                     {
                         Debugger.CS_Error("Package Running Error", "An Error Occurred while running the Easy14 Package (C# Error)");
@@ -219,7 +249,7 @@ namespace Easy14_Programming_Language.Application_Code
                 }
                 else
                 {
-                    Debug.WriteLine($"The method '{theMethodOfTheLine.Split("\\")[theMethodOfTheLine.Split("\\").Length - 1]}' for class '{classHierarchy}' was not found.");
+                    Debug.WriteLine($"The method '{fileInfos.fileName.Replace(".dll", "").Split("\\")[fileInfos.fileName.Replace(".dll", "").Split("\\").Length - 1]}' for class '{string.Join("\\", fileInfos.directories)}' was not found.");
                     throw new Exception("Not valid statement");
                 }
             }

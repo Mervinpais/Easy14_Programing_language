@@ -16,7 +16,7 @@ namespace Easy14_Programming_Language
             configFile = File.ReadAllLines(optionsPath);
         }
 
-        public static bool GetBoolOptionValue(string optionName)
+        public static bool GetBoolValue(string optionName)
         {
             foreach (string line in configFile)
             {
@@ -26,7 +26,7 @@ namespace Easy14_Programming_Language
             return false;
         }
 
-        public static string GetStringOptionValue(string optionName)
+        public static string GetStringValue(string optionName)
         {
             foreach (string line in configFile)
             {
@@ -46,7 +46,7 @@ namespace Easy14_Programming_Language
             return "";
         }
 
-        public static int GetIntOptionValue(string optionName)
+        public static int GetIntValue(string optionName)
         {
             foreach (string line in configFile)
             {

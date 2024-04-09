@@ -63,7 +63,7 @@ namespace Easy14_Programming_Language
             object LHS = ConvertToLHS_RHS(line).Item1;
             object RHS = ConvertToLHS_RHS(line).Item2;
 
-            if (LHS.Equals(RHS))
+            if ((string)LHS == (string)RHS)
             {
                 return true;
             }
@@ -75,10 +75,11 @@ namespace Easy14_Programming_Language
             object LHS = ConvertToLHS_RHS(line).Item1;
             object RHS = ConvertToLHS_RHS(line).Item2;
 
-            if (!LHS.Equals(RHS))
+            if ((string)LHS != (string)RHS)
             {
                 return true;
             }
+
             return false;
         }
     }

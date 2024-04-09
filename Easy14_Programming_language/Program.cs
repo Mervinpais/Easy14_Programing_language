@@ -35,21 +35,26 @@ namespace Easy14_Programming_Language
 
         static void RunChecks()
         {
-            if (!Configuration.GetBoolOptionValue("UpdatesDisabled"))
-                UpdateChecker.CheckLatestVersion();
-
-            if (!string.IsNullOrEmpty(Configuration.GetStringOptionValue("packagePath")))
-                pathOfPackages = Configuration.GetStringOptionValue("packagePath");
-
-            if (Configuration.GetIntOptionValue("delay") != -1)
-                Task.Delay(Configuration.GetIntOptionValue("delay") * 1000).Wait();
-
-            if (Configuration.GetStringOptionValue("PreCompBaseCode") == "true")
+            if (!Configuration.GetBoolValue("UpdatesDisabled"))
             {
-                Change.BackgroundColor(ConsoleColor.White);
-                Change.ForegroundColor(ConsoleColor.Black);
+                UpdateChecker.CheckLatestVersion();
+            }
 
-                Console.WriteLine("Pre-compiling Base code... (Note: This will be optimised later)");
+            if (!string.IsNullOrEmpty(Configuration.GetStringValue("packagePath")))
+            {
+                pathOfPackages = Configuration.GetStringValue("packagePath");
+            }
+
+            if (Configuration.GetIntValue("delay") != -1)
+            {
+                Task.Delay(Configuration.GetIntValue("delay") * 1000).Wait();
+            }
+
+            if (Configuration.GetStringValue("PreCompBaseCode") == "true")
+            {
+                Change.BackgroundColor(ConsoleColor.White); Change.ForegroundColor(ConsoleColor.Black);
+
+                Console.WriteLine("Checking for new code to precompile...");
 
                 PreCompileCodeClass.PrecompileCode();
             }
@@ -59,12 +64,15 @@ namespace Easy14_Programming_Language
         {
             RunChecks(); Console.ResetColor(); Console.Clear();
 
-
             string versionName = "{Unknown Version}";
-            try 
-                {   versionName = File.ReadAllLines(version)[0].Split("/")[2];   }
+            try
+            {
+                versionName = File.ReadAllLines(version)[0].Split("/")[2];
+            }
             catch (Exception ex) 
-                {   Debugger.Error(message: $"{ex.Message}");   }
+            {
+                Debugger.Error(message: $"{ex.Message}");
+            }
 
             Console.WriteLine($"{$"{RuntimeInformation.OSDescription} {RuntimeInformation.OSArchitecture}"}\nEasy14 {versionName}");
 
@@ -80,17 +88,20 @@ namespace Easy14_Programming_Language
             }
 
             try
-                {   bool librariesDisabled = Configuration.GetBoolOptionValue("disableLibraries");   }
+            {
+                bool librariesDisabled = Configuration.GetBoolValue("disableLibraries");
+            }
             catch (Exception e)
-                {   Console.WriteLine(e.Message);
-                    Debugger.Warning(message: "Easy14 is using default settings due to error\n");   }
+            {
+                Console.WriteLine(e.Message);
+                Debugger.Warning(message: "Easy14 is using default settings due to error\n");
+            }
 
             InterpreterLoop();
         }
 
         public static void InterpreterLoop()
         {
-            Program compiler = new Program();
             bool debugMode = false;
             while (true)
             {
@@ -105,40 +116,40 @@ namespace Easy14_Programming_Language
                 switch (input)
                 {
                     case "$help":
-                        compiler.ExternalCompileCode(null, new string[] {
+                        CompileCode([
                             "Console Print { \"Help Guide!\" };",
                             "Console Print { \"\" };",
                             "Console Print { \"   - $help: Print this help guide \" };",
                             "Console Print { \"   - $copyright: Copyright rights to this product \" };",
                             "Console Print { \"   - $credits: Credits \" };",
-                            "Console Print { \"   - debugMode: debugging stuff \" };",
-                        });
+                            "Console Print { \"   - $debugMode: debugging stuff \" };",
+                        ]);
                         break;
 
                     case "$copyright":
-                        compiler.ExternalCompileCode(null, new string[] {
+                        CompileCode([
                             "Console Print { \"\" };",
                             "Console Print { \"Copyright (C) Mervinpais14 (formerly Mervinpaismakeswindows14) \" };",
                             "Console Print { \"   * MervinpaismakesWINDOWS14 is NOT affiliated with Microsoft or the Windows(TM) product\" };",
                             "Console Print { \"\" };",
-                        });
+                        ]);
                         break;
 
                     case "$credits":
-                        compiler.ExternalCompileCode(null, new string[] {
+                        CompileCode([
                             "Console Print { \"\" };",
                             "Console Print { \" Thanks to;\" };",
                             "Console Print { \"   Mervin14 for the Easy14 Language Project\" };",
                             "Console Print { \"\" };",
-                        });
+                        ]);
                         break;
                     case "$debugMode":
                         debugMode = !debugMode;
-                        compiler.ExternalCompileCode(textArray: [$"Console Print {{ \" Debug mode is now set to: {debugMode} \" }};"]);
+                        CompileCode([$"Console Print {{ \" Debug mode is now set to: {debugMode} \" }};"]);
                         break;
 
                     default:
-                        compiler.ExternalCompileCode(textArray: [input]);
+                        CompileCode([input]);
                         break;
                 }
             }
@@ -156,6 +167,8 @@ namespace Easy14_Programming_Language
 
         static public void DebugStats()
         {
+            throw new NotImplementedException("Debug stats is not implemented");
+            return;
             try
             {
                 int xpos = Console.CursorLeft; int ypos = Console.CursorTop;
@@ -163,7 +176,9 @@ namespace Easy14_Programming_Language
                 Change.CursorPos(0, 0); Console.Write(RuntimeInformation.FrameworkDescription); Change.CursorPos(xpos, ypos);
                 Console.ResetColor();
             }
-            catch (Exception ex) { Console.Write($"Failed to get debug info; crash details below;\n {ex.Message}"); }
+            catch (Exception ex) { 
+                Console.Write($"Failed to get debug info; crash details below;\n {ex.Message}"); 
+            }
         }
 
         public enum TokenType
@@ -342,28 +357,25 @@ namespace Easy14_Programming_Language
         {
             if (codeToExecute[i].StartsWith("/*"))
             {
-                if (codeToExecute[i].EndsWith("*/")) return (codeToExecute, i, results);
+                if (codeToExecute[i].EndsWith("*/"))    return (codeToExecute, i, results);
+
                 codeToExecute = CommentCode.Interperate(i, codeToExecute.ToList());
                 i = 0;
-                return (codeToExecute, i, results);
             }
             else if (codeToExecute[i].StartsWith("if"))
             {
                 codeToExecute = IfLoop.Interperate(i, codeToExecute.ToList());
                 i = 0;
-                return (codeToExecute, i, results);
             }
             else if (codeToExecute[i].StartsWith("while"))
             {
                 codeToExecute = WhileLoop.Interperate(i, codeToExecute.ToList());
                 i = 0;
-                return (codeToExecute, i, results);
             }
             else if (codeToExecute[i].StartsWith("for"))
             {
                 codeToExecute = RepeatLoop.Interperate(i, codeToExecute.ToList());
                 i = 0;
-                return (codeToExecute, i, results);
             }
             else if (codeToExecute[i].Trim().StartsWith("import"))
             {
@@ -374,7 +386,6 @@ namespace Easy14_Programming_Language
                 ];
                 codeToExecute = mainCode.ToArray();
                 i = i - 1;
-                return (codeToExecute, i, results);
             }
             else if (codeToExecute[i].Trim().StartsWith("method"))
             {
@@ -435,7 +446,6 @@ namespace Easy14_Programming_Language
                         methodCode.Add(line);
                     }
                     i = i + 1;
-                    return (codeToExecute, i, results);
                 }
                 else if (codeToExecute[i].EndsWith("();"))
                 {
@@ -444,9 +454,7 @@ namespace Easy14_Programming_Language
                     {
                         MethodLoop.ExecuteMethod(methodName);
                     }
-                    return (codeToExecute, i, results);
                 }
-                return (codeToExecute, i, results);
             }
             else if (codeToExecute[i].Trim().StartsWith("var"))
             {
@@ -468,19 +476,16 @@ namespace Easy14_Programming_Language
                 if (codeToExecute[i].Contains("="))
                 {
                     VariableCode.DefineVariable(variableName, variableContents);
-                    return (codeToExecute, i, results);
                 }
                 else
                 {
                     if (VariableCode.VariableExists(variableName))
                     {
                         results.Add(VariableCode.variables.FirstOrDefault(v => v.Name == variableName));
-                        return (codeToExecute, i, results);
                     }
                     else
                     {
                         Debugger.Error("", $"Variable {variableName} doesnt exist!");
-                        return (codeToExecute, i, results);
                     }
                 }
             }
@@ -489,6 +494,7 @@ namespace Easy14_Programming_Language
                 //Debugger.Error("Code Not Valid!", $"\'{codeToExecute[i]}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {i + 1}");
                 return (null, -1, null);
             }
+            return (codeToExecute, i, results);
         }
 
         /// <summary>
@@ -497,15 +503,20 @@ namespace Easy14_Programming_Language
         /// <returns>The Return value of whatever code was executed</returns>
         public static List<object> CompileCode(string[] codeToExecute = null)
         {
-            List<object> results = new List<object>() { };
+            List<string> codeToExecute_l = new List<string>();
+            foreach (string code in codeToExecute)
+            {
+                codeToExecute_l.Add(code.Trim());
+            }
+            codeToExecute = codeToExecute_l.ToArray();
+
+            List<object> results = new List<object>();
 
             for (int lineNumber = 0; lineNumber < codeToExecute.Length; lineNumber++)
             {
-                if (string.IsNullOrEmpty(codeToExecute[lineNumber].Trim())) { continue; }
+                if (string.IsNullOrEmpty(codeToExecute[lineNumber].Trim())) { continue; } //if the line is empty, what is the use of running it, plus may bug out if we let it run
 
-                //var StatementResult = CommandParser.SplitCommand(textArray[i]);
-
-                if (double.TryParse(codeToExecute[lineNumber].ToCharArray(), out _) == true)
+                if (double.TryParse(codeToExecute[lineNumber].ToCharArray(), out _) == true) // try to do maths operations, very shitty and old (2021-2022 code), but if it works, dont touch it
                 {
                     try
                     {
@@ -521,11 +532,11 @@ namespace Easy14_Programming_Language
                 {
                     var parserResult = BaseFunctionParser(codeToExecute, lineNumber, results);
                     int noLine = -1;
-                    if (parserResult.lineNumber == noLine)
+                    if (parserResult.lineNumber == noLine) //Basically, we check if the code is part of the base functions, else, we go to the libraries and run the code with funcparser
                     {
                         results = FunctionParser(codeToExecute, lineNumber, results);
                     }
-                    else
+                    else //if we got them results from BaseFuncParser
                     {
                         codeToExecute = parserResult.codeToExecute;
                         lineNumber = parserResult.lineNumber;
@@ -533,12 +544,9 @@ namespace Easy14_Programming_Language
                     }
                 }
 
-                if (results.Count! > 0) continue;
-
-                if (ProgramStatus.HasFlag(Status.CODE_ERROR) || ProgramStatus.HasFlag(Status.CSHARP_ERROR))
+                if (ProgramStatus.HasFlag(Status.CODE_ERROR) || ProgramStatus.HasFlag(Status.CSHARP_ERROR)) //Reset the flags so we dont get bugged about the last error that occured
                 {
-                    ProgramStatus = Status.NORMAL;
-                    continue;
+                    ProgramStatus = Status.NORMAL; continue;
                 }
             }
             return results;
@@ -727,12 +735,12 @@ namespace Easy14_Programming_Language
                         List<object> inputValues = new List<object>(StatementResult.params_);
 
                         // Call the method with the collected parameters
-                        method.Invoke(instance, inputValues.ToArray());
+                        return method.Invoke(instance, inputValues.ToArray());
                     }
                     else
                     {
                         // Call the method with no parameters
-                        method.Invoke(instance, null);
+                        return method.Invoke(instance, null);
                     }
 
                 }

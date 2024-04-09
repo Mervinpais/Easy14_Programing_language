@@ -32,7 +32,8 @@ namespace Easy14_Programming_Language
             if (variableContents.StartsWith("() => "))
             {
                 variableContents = variableContents.Substring(6).Trim();
-                variableContents = Program.CompileCode(codeToExecute: [ variableContents + ";"])[0].ToString();
+                object[] stuffff = Program.CompileCode(codeToExecute: [variableContents + ";"]).ToArray();
+                variableContents = string.Join("", stuffff);
             }
 
             // Add a new Variable to the list
