@@ -5,13 +5,13 @@ namespace LIM_package_manager
 {
     public static class DetectMissingPackages
     {
-        static List<string> packages = Directory.GetDirectories(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages")).ToList();
+        static readonly List<string> packages = Directory.GetDirectories(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages")).ToList();
 
         public static async Task<bool> AreFilesIdenticalAsync(string localFilePath, string remoteFileUrl)
         {
             try
             {
-                using (HttpClient client = new HttpClient())
+                using (HttpClient client = new())
                 {
                     // Fetch the remote file content
                     string remoteFileContent = await client.GetStringAsync(remoteFileUrl);
@@ -33,20 +33,50 @@ namespace LIM_package_manager
         }
         public static void Easy14StandardLibrary()
         {
-            List<string> requiredPackages = new List<string>
-            {
-                "Audio",
-                "Console",
-                "FileSystem",
-                "Network",
-                "Time"
-            };
+            ProgressBar.spinningSymbols = new() { "\\", "|", "/", "-" };
+            List<string> requiredPackages = new()
+    {
+        "Audio",
+        "Console",
+        "FileSystem",
+        "Network",
+        "Time"
+    };
 
-            ProgressBar.Show("Searching If All Base Packages Avaliable");
+            ProgressBar.Show("Searching If All Base Packages Available");
+
+            string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string cacheFilePath = Path.Combine(appdataPath, "lim_easy14_base_files_cache.txt");
+
+            if (File.Exists(cacheFilePath))
+            {
+                DateTime cacheFileLastWriteTime = File.GetLastWriteTime(cacheFilePath);
+                DateTime currentDateTime = DateTime.Now;
+                TimeSpan timeDifference = currentDateTime - cacheFileLastWriteTime;
+
+                // Check if the cache file is older than 3 hours (3 * 60 minutes * 60 seconds)
+                if (timeDifference.TotalSeconds > (3 * 60 * 60))
+                {
+                    // Cache file is older than 3 hours, delete it
+                    File.Delete(cacheFilePath);
+                }
+                else
+                {
+                    // Cache file is recent, read and return
+                    Console.WriteLine("\nUsing cached data...");
+                    Console.WriteLine("Differences or errors were found in the following files:");
+                    foreach (string differingFile in File.ReadAllLines(cacheFilePath))
+                    {
+                        Console.WriteLine(differingFile);
+                    }
+                    Console.WriteLine($"NOTE: This file was cached, if you want to recheck, remove the file at \"{cacheFilePath}\"");
+                    return;
+                }
+            }
 
             for (int i = 0; i < requiredPackages.Count; i++)
             {
-                ProgressBar.Update(i * 20, "Searching If All Base Packages Avaliable");
+                ProgressBar.Update(i * 20, "Searching If All Base Packages Available");
                 Thread.Sleep(100);
                 string requiredPackage = requiredPackages[i];
                 if (!packages.Any(package => package.EndsWith(requiredPackage)))
@@ -70,7 +100,7 @@ namespace LIM_package_manager
 
                 // List of local file paths
                 string? ConsoleFolder = packages.FirstOrDefault(package => package.EndsWith("Console"));
-                List<string> localFilePaths = new List<string>
+                List<string> localFilePaths = new()
                 {
                     Path.Combine(ConsoleFolder, "Print.cs"),
                     Path.Combine(ConsoleFolder, "Input.cs"),
@@ -82,7 +112,7 @@ namespace LIM_package_manager
                 };
 
                 // List of GitHub raw links
-                List<string> GitHubRawLinks = new List<string>
+                List<string> GitHubRawLinks = new()
                 {
                     "https://raw.githubusercontent.com/Mervinpais/Easy14-BasePackages/main/Console/Print.cs",
                     "https://raw.githubusercontent.com/Mervinpais/Easy14-BasePackages/main/Console/Input.cs",
@@ -94,15 +124,15 @@ namespace LIM_package_manager
                 };
 
                 // List to store files with differences or errors
-                List<string> differingFiles = new List<string>();
+                List<string> differingFiles = new();
 
                 // Compare each pair of local files and GitHub links
                 for (int i = 0; i < localFilePaths.Count; i++)
                 {
                     string localFilePath = localFilePaths[i];
-                    string githubRawLink = GitHubRawLinks[i];
+                    string GitHubRawLink = GitHubRawLinks[i];
 
-                    bool areFilesIdentical = AreFilesIdentical(localFilePath, githubRawLink);
+                    bool areFilesIdentical = AreFilesIdentical(localFilePath, GitHubRawLink);
 
                     if (!areFilesIdentical)
                     {
@@ -120,7 +150,7 @@ namespace LIM_package_manager
                     Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
                     Console.Write("                                               ");
                     Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
-                    Console.Write("All Base Packages for Easy14 are alright");
+                    Console.Write("All Base Packages for Easy14 are verified");
                 }
                 else
                 {
@@ -129,6 +159,7 @@ namespace LIM_package_manager
                     {
                         Console.WriteLine(differingFile);
                     }
+                    File.WriteAllLines(Path.Combine(appdataPath, "lim_easy14_base_files_cache.txt"), differingFiles);
                 }
             }
             else
@@ -140,9 +171,11 @@ namespace LIM_package_manager
         // Synchronous method to compare files
         public static bool AreFilesIdentical(string localFilePath, string remoteFileUrl)
         {
+            Ping p = new();
+            if (p.Send("www.google.com").Status != IPStatus.Success) return false;
             try
             {
-                using (HttpClient client = new HttpClient())
+                using (HttpClient client = new())
                 {
                     // Fetch the remote file content
                     string remoteFileContent = client.GetStringAsync(remoteFileUrl).Result;
@@ -151,7 +184,7 @@ namespace LIM_package_manager
                     string localFileContent = File.ReadAllText(localFilePath);
 
                     // Compare the two content strings
-                    return string.Equals(localFileContent, remoteFileContent, StringComparison.OrdinalIgnoreCase);
+                    return string.Equals(localFileContent, remoteFileContent);
                 }
             }
             catch (Exception ex)

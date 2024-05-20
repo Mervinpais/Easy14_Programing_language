@@ -7,7 +7,7 @@ namespace Easy14_Programming_Language
         public static void IntroCode()
         {
             Console.WriteLine("=== Intro to Easy14 ===");
-            Console.WriteLine("\n This Language is Built ontop of C# .Dotnet 7.0\n");
+            Console.WriteLine("\n This Language is Built ontop of C# .Dotnet 8.0\n");
             Console.WriteLine(string.Join(Environment.NewLine, new string[] {
                     """
                            _____                 __ __ __     ^___^
@@ -20,8 +20,7 @@ namespace Easy14_Programming_Language
                     By Mervinpais14 (Mervinpaismakeswindows14) on Github
                     """
             }));
-            Console.WriteLine("\nAlso, This language is having a rewrite");
-            Console.WriteLine("\nThanks for reading :)");
+            Console.WriteLine("*DEVNOTE: THIS IS INCOMPLETE :(");
         }
     }
 }

@@ -5,9 +5,8 @@ namespace Easy14_Programming_Language
 {
     public static class checkForInternet
     {
-        public static bool IsConnectedToInternet()
+        public static bool IsConnectedToInternet(string host = "www.google.com")
         {
-            string host = "www.google.com";
             Ping p = new Ping();
             try
             {

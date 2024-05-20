@@ -13,7 +13,7 @@ We pledge to act and interact in ways that contribute to an open, welcoming,
 diverse, inclusive, and healthy community.
 
 TL;DR
-We want to have a nice and kid community and that said community can contribute to the project so everyone has no issue to deal with
+We want to have a nice and kind community and that said community can contribute to the project so everyone has no issue to deal with
 
 ## Our Standards
 

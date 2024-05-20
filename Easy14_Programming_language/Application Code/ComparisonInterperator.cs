@@ -1,34 +1,69 @@
 ﻿using System.Linq;
+using static Easy14_Programming_Language.VariableCode;
 
 namespace Easy14_Programming_Language
 {
     public static class ComparisonInterperator
     {
-        public static bool IsTrueCompare(string line)
+        public static (object, object) ConvertToLHS_RHS(string line)
         {
             line = line.Trim();
-            object LHS = line.Split("==")[0].Trim();
-            object RHS = line.Split("==")[1].Trim();
-
-            //if (ItemChecks.detectType(LHS.ToString()) != ItemChecks.detectType(RHS.ToString())) return false;
+            object LHS = "";
+            object RHS = "";
+            if (line.Contains("=="))
+            {
+                LHS = line.Split("==")[0].Trim();
+                RHS = line.Split("==")[1].Trim();
+            }
+            else if (line.Contains("!="))
+            {
+                LHS = line.Split("!=")[0].Trim();
+                RHS = line.Split("!=")[1].Trim();
+            }
 
             if (ItemChecks.DetectType(LHS.ToString()) == "var")
             {
-                if (VariableCode.variableList.Keys.Any(varName => varName.Equals(LHS)))
-                {
-                    VariableCode.variableList.TryGetValue(LHS, out var LHS_Var_value);
-                    LHS = LHS_Var_value;
-                }
+                LHS = VariableCode.ReturnString((string)LHS);
             }
             if (ItemChecks.DetectType(RHS.ToString()) == "var")
             {
-                if (VariableCode.variableList.Keys.Any(varName => varName.Equals(RHS)))
+                Variable variable = null;
+                foreach (var item in VariableCode.variables)
                 {
-                    VariableCode.variableList.TryGetValue(RHS, out var RHS_Var_value);
+                    if (item.Name == (string)RHS)
+                    {
+                        variable = item;
+                        break;
+                    }
+                }
+
+                if (variable != null)
+                {
+                    var RHS_Var_value = VariableCode.variables.FirstOrDefault(v => v.Name == RHS.ToString())?.Contents;
                     RHS = RHS_Var_value;
                 }
             }
-            if (LHS.Equals(RHS))
+
+            if (ItemChecks.DetectType(LHS.ToString()) == "string")
+            {
+                LHS = LHS.ToString().Substring(1, LHS.ToString().Length - 2);
+            }
+            if (ItemChecks.DetectType(RHS.ToString()) == "string")
+            {
+                RHS = RHS.ToString().Substring(1, RHS.ToString().Length - 2);
+            }
+
+            return (LHS, RHS);
+        }
+
+
+
+        public static bool IsTrueCompare(string line)
+        {
+            object LHS = ConvertToLHS_RHS(line).Item1;
+            object RHS = ConvertToLHS_RHS(line).Item2;
+
+            if ((string)LHS == (string)RHS)
             {
                 return true;
             }
@@ -37,33 +72,14 @@ namespace Easy14_Programming_Language
 
         public static bool IsFalseCompare(string line)
         {
-            line = line.Trim();
-            object LHS = line.Split("!=")[0].Trim();
-            object RHS = line.Split("!=")[1].Trim();
+            object LHS = ConvertToLHS_RHS(line).Item1;
+            object RHS = ConvertToLHS_RHS(line).Item2;
 
-            //if (ItemChecks.detectType(LHS.ToString()) != ItemChecks.detectType(RHS.ToString())) return false;
-
-            if (ItemChecks.DetectType(LHS.ToString()) == "var")
-            {
-                if (VariableCode.variableList.Keys.Any(varName => varName.Equals(LHS)))
-                {
-                    VariableCode.variableList.TryGetValue(LHS, out var LHS_Var_value);
-                    LHS = LHS_Var_value;
-                }
-            }
-            if (ItemChecks.DetectType(RHS.ToString()) == "var")
-            {
-                if (VariableCode.variableList.Keys.Any(varName => varName.Equals(RHS)))
-                {
-                    VariableCode.variableList.TryGetValue(RHS, out var RHS_Var_value);
-                    RHS = RHS_Var_value;
-                }
-            }
-
-            if (!LHS.Equals(RHS))
+            if ((string)LHS != (string)RHS)
             {
                 return true;
             }
+
             return false;
         }
     }

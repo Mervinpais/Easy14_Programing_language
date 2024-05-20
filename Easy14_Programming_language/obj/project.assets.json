@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net7.0-windows7.0": {
+    "net8.0-windows7.0": {
       "Microsoft.CodeAnalysis.Analyzers/3.3.3": {
         "type": "package",
         "build": {
@@ -1223,7 +1223,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net7.0-windows7.0": [
+    "net8.0-windows7.0": [
       "Microsoft.CSharp >= 4.7.0",
       "Microsoft.CodeAnalysis.CSharp.Scripting >= 4.2.0",
       "Sayers.SDL2.Core >= 1.0.11",
@@ -1237,11 +1237,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14_Programming_Language.csproj",
+      "projectUniqueName": "D:\\Repos and Projects\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14_Programming_Language.csproj",
       "projectName": "Easy14_Programming_Language",
-      "projectPath": "c:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14_Programming_Language.csproj",
+      "projectPath": "D:\\Repos and Projects\\Easy14_Programming_Language\\Easy14_Programming_language\\Easy14_Programming_Language.csproj",
       "packagesPath": "C:\\Users\\mervi\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\mervi\\source\\repos\\Easy14_Programming_Language\\Easy14_Programming_language\\obj\\",
+      "outputPath": "D:\\Repos and Projects\\Easy14_Programming_Language\\Easy14_Programming_language\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -1252,16 +1252,15 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net7.0-windows"
+        "net8.0-windows"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net7.0-windows7.0": {
-          "targetAlias": "net7.0-windows",
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
           "projectReferences": {}
         }
       },
@@ -1269,11 +1268,16 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
-      "net7.0-windows7.0": {
-        "targetAlias": "net7.0-windows",
+      "net8.0-windows7.0": {
+        "targetAlias": "net8.0-windows",
         "dependencies": {
           "Microsoft.CSharp": {
             "target": "Package",
@@ -1311,7 +1315,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

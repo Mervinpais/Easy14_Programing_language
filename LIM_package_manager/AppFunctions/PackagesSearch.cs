@@ -5,12 +5,16 @@
         public static void Search()
         {
             // Get the list of packages in the specified directory
-            string packagesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
+            string packagesPath = 
+                Path.Combine(
+                    Environment.GetFolderPath(
+                        Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
+
             List<string> packages = Directory.GetDirectories(packagesPath).ToList();
 
             // Filter packages based on the search query
-            Console.Write("Enter the Name of the package you want to find >");
-            string? searchQuery = Console.ReadLine();
+            Console.Write("Enter the Name of the package you want to find >>>");
+            string searchQuery = Console.ReadLine();
 
             List<string> matchingPackages = new();
             foreach (var package in packages)
@@ -20,7 +24,6 @@
                     matchingPackages.Add(package);
                 }
             }
-            Console.WriteLine();
 
             int yPosCursor = Console.GetCursorPosition().Top;
             Console.SetCursorPosition(0, yPosCursor);

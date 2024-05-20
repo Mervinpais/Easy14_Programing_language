@@ -1,144 +1,57 @@
-﻿/*
- * Long Story Short; This was originally from my other project "MentalCrash" a test to see if i can make a programming language that runs in one line, because im lazy to rewrite it, and so i used the MentalCrash "ItemChecks.cs" and am now using it here
- */
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
 
-namespace Easy14_Programming_Language //Mental Crash
+namespace Easy14_Programming_Language
 {
     public static class ItemChecks
     {
-        /// <summary>
-        /// Detects the datatype of the variable; Possible return values are:
-        /// <list type="">
-        /// <item>- str: String</item>
-        /// <item>- int: Integer type</item>
-        /// <item>- double: Double type</item>
-        /// <item>- cmd: Command type</item>
-        /// <item>- bool: Boolean type</item>
-        /// <item>- var: Variable type</item>
-        /// </list>
-        /// </summary>
-        /// <param name="data">The input data to be analyzed.</param>
-        /// <returns>A string indicating the detected data type. Possible values are "str", "int", "double", "cmd", "bool", or "var".</returns>
         public static string DetectType(string data)
         {
-            if (IsString(data) == true)
-            {
+            if (IsString(data))
                 return "str";
-            }
-            else if (IsInt(data) == true)
-            {
+            else if (IsInt(data))
                 return "int";
-            }
-            else if (IsDouble(data) == true)
-            {
+            else if (IsDouble(data))
                 return "double";
-            }
-            else if (IsCommand(data) == true)
-            {
+            else if (IsCommand(data))
                 return "cmd";
-            }
-            else if (IsBoolean(data) == true)
-            {
+            else if (IsBoolean(data))
                 return "bool";
-            }
-            else if (IsVariable(data, VariableCode.variableList.Keys.ToList())) {
+            else if (IsVariable(data, VariableCode.variables))
                 return "var";
-            }
-            //IsVariable(data);
-            return "";
-        }
-        public static bool IsString(object? data)
-        {
-            try
-            {
-                if (data == null) return false;
-            }
-            catch { return false; }
-            try
-            {
-                string firstElement = data.ToString();
-                bool startsWithQuote = firstElement.StartsWith("\"");
-                bool endsWithQuote = firstElement.EndsWith("\"");
-                bool containsEscapedQuotes = false;
-                if (firstElement.Length > 2)
-                {
-                    string substring = firstElement.Substring(1, firstElement.Length - 2);
-                    containsEscapedQuotes = substring.Contains("\"");
-                }
 
-                if (startsWithQuote && endsWithQuote && !containsEscapedQuotes)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return false;
-            }
+            return "unkwn";
         }
-        public static bool IsCommand(object data)
+
+        public static bool IsString(string data)
         {
-            return data.ToString().StartsWith("() =>");
+            return data.StartsWith("\"") && data.EndsWith("\"") && !data.Substring(1, data.Length - 2).Contains("\"");
         }
-        public static bool IsBoolean(object data)
+
+        public static bool IsCommand(string data)
         {
-            return bool.TryParse((string?)data, out _);
+            return data.StartsWith("() =>");
         }
-        public static bool IsVariable(object data, List<object> variables)
+
+        public static bool IsBoolean(string data)
         {
-            var foundItem = variables.FirstOrDefault(item => item.ToString().StartsWith(data.ToString()));
-            if (foundItem != null)
-            {
-                return true;
-            }
-            return false;
+            return bool.TryParse(data, out _);
         }
-        public static bool IsInt(object data)
+
+        public static bool IsVariable(string data, List<VariableCode.Variable> variables)
         {
-            try
-            {
-                if (int.TryParse(data.ToString(), out _) == true)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch
-            {
-                return false;
-            }
+            return variables.FirstOrDefault(item => item.Name == data) != null;
         }
+
+        public static bool IsInt(string data)
+        {
+            return int.TryParse(data, out _);
+        }
+
         public static bool IsDouble(string data)
         {
-            try
-            {
-                if (double.TryParse(data, out _) == true)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch
-            {
-                return false;
-            }
+            return double.TryParse(data, out _);
         }
     }
 }

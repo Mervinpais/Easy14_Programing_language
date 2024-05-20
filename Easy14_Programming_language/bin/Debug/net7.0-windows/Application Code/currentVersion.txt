@@ -1,7 +1,0 @@
-[CURRENT VERSION]
-V1 - Whale
-
-[DATE OF UPDATE]
-7-13-23
-
-//[Date Format]: (DD/MM/YYYY)

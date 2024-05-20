@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-	<TargetFramework>net7.0-windows</TargetFramework>
+	<TargetFramework>net8.0-windows</TargetFramework>
 	  <UseWindowsForms>true</UseWindowsForms>
     <RootNamespace>Easy14_Programming_Language</RootNamespace>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -67,9 +67,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Application Code\currentVersion.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Application Code\options.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

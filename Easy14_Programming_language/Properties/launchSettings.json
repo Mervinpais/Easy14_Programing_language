@@ -3,9 +3,13 @@
     "Easy14_Programming_Language": {
       "commandName": "Project"
     },
-    "Exit Test": {
+    "Test with cool.e14": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\mervi\\Desktop\\for test.e14\""
+      "commandLineArgs": "\"C:\\Users\\mervi\\Desktop\\test.e14\""
+    },
+    "IntroTest": {
+      "commandName": "Project",
+      "commandLineArgs": "/intro"
     }
   }
 }
