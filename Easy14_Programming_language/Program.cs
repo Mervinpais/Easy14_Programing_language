@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -15,6 +16,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static Easy14_Programming_Language.Lexer;
+using static Easy14_Programming_Language.Program;
+using static Easy14_Programming_Language.AST;
+using static Easy14_Programming_Language.Values;
+using static Easy14_Programming_Language.Interpreter;
 
 namespace Easy14_Programming_Language
 {
@@ -37,7 +43,7 @@ namespace Easy14_Programming_Language
         {
             if (!Configuration.GetBoolValue("UpdatesDisabled"))
             {
-                UpdateChecker.CheckLatestVersion();
+                //UpdateChecker.CheckLatestVersion();
             }
 
             if (!string.IsNullOrEmpty(Configuration.GetStringValue("packagePath")))
@@ -69,7 +75,7 @@ namespace Easy14_Programming_Language
             {
                 versionName = File.ReadAllLines(version)[0].Split("/")[2];
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Debugger.Error(message: $"{ex.Message}");
             }
@@ -102,6 +108,39 @@ namespace Easy14_Programming_Language
 
         public static void InterpreterLoop()
         {
+            Parser parser = new Parser();
+            LanguageEnvironment env = LanguageEnvironment.setupGlobalEnv();
+
+            while (true)
+            {
+                var input = Console.ReadLine();
+                if (input.Trim() == "" || input.Contains("exit"))
+                {
+                    Environment.Exit(0);
+                }
+
+                var program = parser.produceAST(input);
+
+                RuntimeVal result = evaluate(program, env);
+                if (result is NumberVal)
+                {
+                    Console.WriteLine(((NumberVal)result).Value);
+                }
+                else if (result is BooleanVal)
+                {
+                    Console.WriteLine(((BooleanVal)result).Value);
+                }
+                else if (result is NullVal)
+                {
+                    Console.WriteLine(((NullVal)result).Value);
+                }
+                else
+                {
+                    Console.WriteLine(result);
+                }
+            }    
+
+            /*
             bool debugMode = false;
             while (true)
             {
@@ -153,12 +192,13 @@ namespace Easy14_Programming_Language
                         break;
                 }
             }
+            */
         }
 
         public object ExternalCompileCode(string fileLoc = null, string[] textArray = null)
         {
             if (textArray == null && fileLoc != null)
-                textArray = File.ReadAllLines(fileLoc.Trim()); 
+                textArray = File.ReadAllLines(fileLoc.Trim());
             else if (textArray == null && fileLoc == null)
                 textArray = [""];
 
@@ -176,113 +216,8 @@ namespace Easy14_Programming_Language
                 Change.CursorPos(0, 0); Console.Write(RuntimeInformation.FrameworkDescription); Change.CursorPos(xpos, ypos);
                 Console.ResetColor();
             }
-            catch (Exception ex) { 
-                Console.Write($"Failed to get debug info; crash details below;\n {ex.Message}"); 
-            }
-        }
-
-        public enum TokenType
-        {
-            Class, Method, Params, Number, Operator, Identifier, Unknown
-        }
-
-        public class Token
-        {
-            public string Value { get; set; }
-            public TokenType Tag { get; set; }
-            public int Position { get; set; }
-
-            public Token(string value, TokenType tag, int position) { 
-                Value = value;
-                Tag = tag;
-                Position = position;
-            }
-        }
-
-        static List<string> SplitByComma(string input)
-        {
-            // Use regex to match commas outside quotes
-            string pattern = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
-            string[] result = Regex.Split(input, pattern);
-
-            // Trim spaces from each element
-            for (int i = 0; i < result.Length; i++)
-            {
-                result[i] = result[i].Trim();
-            }
-
-            // Convert the string array to an object array
-            List<string> objectArray = result.ToList();
-
-            return objectArray;
-        }
-
-        public class Tokenizer
-        {
-            string identifierPattern = @"[a-zA-Z_]\w*";
-            string methodsPattern = @"(.*?\ )([A-Za-z]+)\ \{(.*?)\};";
-            string numberPattern = @"\d+";
-            string operatorPattern = @"\+|-|\*|/";
-
-            public List<Token> Tokenize(string input)
-            {
-                List<Token> tokens = new();
-
-                var combinedPatterns = string.Join("|", methodsPattern, identifierPattern, numberPattern, operatorPattern);
-
-                var matches = Regex.Matches(input, combinedPatterns);
-
-                foreach (Match match in matches)
-                {
-                    string value = match.Value;
-
-                    var methodMatch = Regex.Match(value, methodsPattern);
-                    if (methodMatch.Success)
-                    {
-                        string classPart = methodMatch.Groups[1].Value.TrimEnd();
-                        string methodPart = methodMatch.Groups[2].Value;
-                        string paramsPart = methodMatch.Groups[3].Value;
-
-                        List<string> parameters = new List<string>();
-                        StringBuilder currentParameter = new StringBuilder();
-
-                        parameters = SplitByComma(paramsPart);
-
-                        parameters.Add(currentParameter.ToString().Trim());
-                        parameters.RemoveAt(parameters.Count-1);
-
-                        tokens.Add(new Token(classPart, TokenType.Class, 1));
-                        tokens.Add(new Token(methodPart, TokenType.Method, 2));
-
-                        for (int i = 0; i < parameters.Count; i++)
-                        {
-                            string param = parameters[i];
-                            tokens.Add(new Token(param, TokenType.Params, 3+i));
-                        }
-                    }
-                    else
-                    {
-                        TokenType tag = DetermineTag(value); // Implement a function to determine the tag based on the matched value
-                        tokens.Add(new Token(value, tag, 1));
-                    }
-                }
-
-                return tokens;
-            }
-
-            private TokenType DetermineTag(string value)
-            {
-                if (Regex.IsMatch(value, identifierPattern))
-                    return TokenType.Identifier;
-
-                else if (Regex.IsMatch(value, numberPattern))
-                    return TokenType.Number;
-
-                else if (Regex.IsMatch(value, operatorPattern))
-                    return TokenType.Operator;
-
-                else 
-                    return TokenType.Unknown;
+            catch (Exception ex) {
+                Console.Write($"Failed to get debug info; crash details below;\n {ex.Message}");
             }
         }
 
@@ -291,65 +226,13 @@ namespace Easy14_Programming_Language
             Tokenizer tokenizer = new();
             List<Token> tokens = tokenizer.Tokenize(codeToExecute[i]);
 
-            for (int index = 0; index < tokens.Count; index++)
+            List<List<Token>> ast = new List<List<Token>>();
+
+            foreach (Token token in tokens)
             {
-                List<(List<string>, string, List<string>)> Statements = new();
-
-                if (tokens[index].Tag == TokenType.Class)
-                {
-                    // Parsing a Class
-                    var className = tokens[index].Value.Split(".").ToList();
-                    Statements.Add((className, null, null));
-
-                    index++;
-
-                    if (tokens[index].Tag == TokenType.Method)
-                    {
-                        // Parsing a Method inside a Class
-                        var method = tokens[index].Value;
-                        Statements.Add((className, method, null));
-                        Statements.RemoveAt(0); // Remove the class info as it's now part of the method
-
-                        index++;
-
-                        if (tokens[index].Tag == TokenType.Params)
-                        {
-                            // Parsing Method Parameters
-                            var parameters = tokens[index].Value.Split(",").ToList();
-                            Statements.Add((className, method, parameters));
-                            Statements.RemoveAt(0);
-
-                            index++;
-
-                            // Execute the function with namespace
-                            results.Add(ExecuteFunctionWithNamespace(Statements[0]));
-                            return results;
-                        }
-                    }
-                }
-                else if (tokens[index].Tag == TokenType.Number)
-                {
-                    // Parsing a numeric expression
-                    string expression = "";
-
-                    while (index < tokens.Count && (tokens[index].Tag == TokenType.Number || tokens[index].Tag == TokenType.Operator))
-                    {
-                        expression += tokens[index].Value; // Concatenate strings
-                        index++; // Increment index
-                    }
-
-                    try
-                    {
-                        // Evaluate the numeric expression
-                        results.Add(Convert.ToDouble(new DataTable().Compute(expression, null)));
-                    }
-                    catch (Exception e)
-                    {
-                        results.Add(e.Message);
-                    }
-                    break;
-                }
+                
             }
+
             return results;
         }
 
@@ -491,7 +374,6 @@ namespace Easy14_Programming_Language
             }
             else
             {
-                //Debugger.Error("Code Not Valid!", $"\'{codeToExecute[i]}\' is not a valid code statement\n  {' ',-7}^ \n Error was located on Line {i + 1}");
                 return (null, -1, null);
             }
             return (codeToExecute, i, results);
@@ -503,6 +385,7 @@ namespace Easy14_Programming_Language
         /// <returns>The Return value of whatever code was executed</returns>
         public static List<object> CompileCode(string[] codeToExecute = null)
         {
+            
             List<string> codeToExecute_l = new List<string>();
             foreach (string code in codeToExecute)
             {
@@ -530,11 +413,11 @@ namespace Easy14_Programming_Language
                 else if (codeToExecute[lineNumber].Trim().StartsWith("//")) { continue; }
                 else
                 {
+                    results = FunctionParser(codeToExecute, lineNumber, results);
                     var parserResult = BaseFunctionParser(codeToExecute, lineNumber, results);
                     int noLine = -1;
                     if (parserResult.lineNumber == noLine) //Basically, we check if the code is part of the base functions, else, we go to the libraries and run the code with funcparser
                     {
-                        results = FunctionParser(codeToExecute, lineNumber, results);
                     }
                     else //if we got them results from BaseFuncParser
                     {

@@ -1,9 +1,14 @@
 ﻿using LIM_package_manager.AppFunctions;
+using System.Reflection;
 
 namespace LIM_package_manager
 {
     class Program
     {
+        private static readonly string executingAssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private static readonly string versionFile = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(executingAssemblyPath).FullName).FullName).FullName).FullName, ".git", "HEAD");
+        private static readonly string version = File.ReadAllLines(versionFile)[0].Split("/")[2];
+
         static void Main(string[] args)
         {
             Console.ResetColor();
@@ -12,7 +17,7 @@ namespace LIM_package_manager
             while (true)
             {
                 Console.Write($"{Environment.NewLine}>>> ");
-                string command = "";
+                string command;
                 if (args.Length > 0) { command = string.Join(" ", args); }
                 else { command = Console.ReadLine(); }
                 HandleCommand(command);
@@ -21,69 +26,65 @@ namespace LIM_package_manager
 
         static void HandleCommand(string command)
         {
-            (string header, string command, string[] parameters) values = new("", "", new string[] { });
+            (string command, string[] parameters) values = new("", new string[] { });
+
             try
             {
-                values.header = command.Split(' ')[0];
-                values.command = command.Split(' ')[1];
-                values.parameters = command.Split(' ')[2..];
+                values.command = command.Split(' ')[0];
+                values.parameters = command.Split(' ')[1..];
             }
             catch (Exception ex)
             {
-                Console.WriteLine(
-                    string.Join(Environment.NewLine, new string[] {
-                    "An Error occured while reading command, please type your command in this format",
-                    "   class method --param1 --param2 ...",
-                    "last Exception Details can be shown through the command LIM debug --lastException",
-                    })
-                );
-                return;
+                if (!(values.parameters.Length > 0))
+                {
+                    values.parameters = ["--"];
+                }    
             }
 
-            if (values.command.ToLower() == "exit")
+            switch (values.command.ToLower())
             {
-                Console.WriteLine("!EXITING LIM!");
-                Environment.Exit(0);
-            }
-            else if (values.command.ToLower() == "add")
-            {
-                bool isLocal = values.parameters.Contains("--local");
-                bool isUpdate = values.command.ToLower() == "update";
-                _ = PackageInstall.Install(values.parameters.ToList(), isLocal, isUpdate);
-            }
-            else if (values.command.ToLower() == "search")
-            {
-                PackagesSearch.Search();
-            }
-            else if (values.command.ToLower() == "remove")
-            {
-                PackageUninstall.Uninstall(values.parameters.ToList());
-            }
-            else if (values.command.ToLower() == "list")
-            {
-                PackagesList.List();
-            }
-            else if (values.command.ToLower() == "make")
-            {
-                CreateAndSavePackage();
-            }
-            else if (values.command.ToLower() == "help")
-            {
-                DisplayHelpContent();
-            }
-            else
-            {
-                Console.WriteLine($"Unknown command method {values.command}");
+                case "exit" or "q":
+                    Environment.Exit(0);
+                    break;
+
+                case "add" or "install":
+                    {
+                        bool isLocal = values.parameters.Contains("--local");
+                        bool isUpdate = values.command.ToLower() == "update";
+                        _ = PackageInstall.Install(values.parameters.ToList(), isLocal, isUpdate);
+                        break;
+                    }
+                case "search" or "find" or "fd":
+                    PackagesSearch.Search();
+                    break;
+                case "remove" or "rm":
+                    PackageUninstall.Uninstall(values.parameters.ToList());
+                    break;
+                case "list" or "ls":
+                    PackagesList.List();
+                    break;
+                case "make" or "mk":
+                    CreateAndSavePackage();
+                    break;
+                case "help" or "?":
+                    DisplayHelpContent();
+                    break;
+                default:
+                    Console.WriteLine($"Unknown command \'{values.command}\'");
+                    break;
             }
         }
 
         static void CreateAndSavePackage()
         {
             Tuple<string[], string> package = PackageMaker.Make();
-            List<string> packageContent = package.Item1.ToList();
-            string[] lines = packageContent.ToArray();
-            string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages");
-            File.WriteAllLines(Path.Combine(appDataPath, $"{package.Item2}_Package_File.txt"), lines);
+            List<string> lines = [$"?PackageVersion = {version}"];
+            lines.AddRange(package.Item1.ToList());
+            string appDataPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Easy14 packages"
+                );
+
+            File.WriteAllLines(Path.Combine(appDataPath, $"{package.Item2}_Package_File.txt"), lines.ToArray());
         }
 
         static void DisplayHelpContent()

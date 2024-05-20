@@ -16,6 +16,10 @@ namespace LIM_package_manager
             }
 
             string jsonContent = File.ReadAllText(filePath);
+            if (!jsonContent.StartsWith("?PackageVersion = "))
+            {
+                Console.WriteLine("Incompatible Package, it will not work with current version(s)");
+            }
             var packageData = JsonConvert.DeserializeObject<PackageData>(jsonContent);
 
             if (packageData == null)

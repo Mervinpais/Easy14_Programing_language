@@ -1,4 +1,21 @@
 ﻿# Easy14 Programing Language
+
+### This project is FULLY ABANDONED 🥲😟
+
+#### I am not going to work on this anymore, due to the following;
+
+1. Lack of motivation; Programming a whole programming language is hard and not possible to do as 1 person (while it is possible, it needs alot of time and dedication) 😫
+2. Codebase is messy 🤒
+3. Making a programming language is one of those dreams newbie programmers can never achive (on their own) 🫠🫥
+
+If you wish to fork this project, you may, just email me for details
+
+Below is the last changes for the readme before the abandonment 👇
+
+Thank you for everything ❤️
+
+---
+
 ## v1p1 - Whale 🐋 Patch 1
 
 ![Thumbnail](Easy14_Programming_language/Images/repo%20github%20thumnail.png)

@@ -9,9 +9,11 @@ namespace Easy14_Programming_Language
     {
         private static readonly string executingAssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         private static readonly string version = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetParent(executingAssemblyPath).FullName).FullName).FullName).FullName, ".git", "HEAD");
+
         public static void CheckLatestVersion()
         {
-            string currentVersion = "V0 - Unknown";
+            return;
+            string currentVersion = "v0";
 
             if (File.ReadAllLines(version).Length > 0) currentVersion = File.ReadAllLines(version)[0].Split("/")[2]; // Read the first line
 
@@ -30,7 +32,7 @@ namespace Easy14_Programming_Language
                     if (latestVersion == "test")
                     { return; }
 
-                    // Extract the main version (V1) and patch version (P1) from both versions
+                    // Extract the main version (vX) and patch version (pX) from both versions
                     string[] currentVersionParts = currentVersion.Split('-');
                     string[] latestVersionParts = latestVersion.Split('-');
 
@@ -40,24 +42,20 @@ namespace Easy14_Programming_Language
                     string currentPatchVersion = "";
                     string latestPatchVersion = "";
 
-                    if (currentVersionParts.Length > 1)
-                    {
-                        currentPatchVersion = currentVersionParts[1].Trim();
-                    }
+                    if (currentVersionParts.Length > 1)  currentPatchVersion = currentVersionParts[1].Trim();
 
-                    if (latestVersionParts.Length > 1)
-                    {
-                        latestPatchVersion = latestVersionParts[1].Trim();
-                    }
+                    if (latestVersionParts.Length > 1)  latestPatchVersion = latestVersionParts[1].Trim();
 
                     // Compare the main version
                     int mainVersionComparison = string.Compare(currentMainVersion, latestMainVersion);
 
                     if (mainVersionComparison < 0)
                     {
-                        Console.WriteLine("A new update is available!");
-                        Console.WriteLine($"Current version: {currentVersion}");
-                        Console.WriteLine($"Latest version: {latestVersion}");
+                        Console.WriteLine($"""
+                            A new update is available!
+                            Current version: {currentVersion}
+                            Latest version: {latestVersion}
+                        """);
                         Debugger.Warning("EASY14 Update Message", "Use LIM to install this update");
                     }
                     else if (mainVersionComparison == 0)
